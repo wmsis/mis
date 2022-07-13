@@ -1,0 +1,23 @@
+{
+  "presets": [
+    ["env", {
+      "modules": false
+    }],
+    "stage-2",
+    ["es2015", { "modules": false }]
+  ],
+  "plugins": [
+    "transform-runtime",
+    [
+      "component",
+      {
+        "libraryName": "element-ui",
+        "styleLibraryName": "theme-chalk"
+      }
+    ],
+    ["import", {
+      "libraryName": "iview",
+      "libraryDirectory": "src/components"
+    }]
+  ]
+}
