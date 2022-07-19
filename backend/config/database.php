@@ -43,6 +43,7 @@ return [
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
 
+        //系统本身的数据所在的数据库
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
@@ -99,7 +100,29 @@ return [
             'database' => env('MONGODB_DATABASE', 'bigdata'),
             //'username' => env('MONGODB_USERNAME', 'Administrator'),
             //'password' => env('MONGODB_PASSWORD', ''),
-        ]
+        ],
+
+        //永强二期抓斗垃圾
+        'mysql_yongqiang2_grab_garbage' => [
+            'driver' => 'mysql',
+            'url' => env('DATABASE_URL_YQ_SECOND_GRAB_GRABAGE'),
+            'host' => env('DB_HOST_YQ_SECOND_GRAB_GRABAGE', '10.100.99.66'),
+            'port' => env('DB_PORT_YQ_SECOND_GRAB_GRABAGE', '3306'),
+            'database' => env('DB_DATABASE_YQ_SECOND_GRAB_GRABAGE', 'ebl_1to4local'),
+            //'database' => 'sis',
+            'username' => env('DB_USERNAME_YQ_SECOND_GRAB_GRABAGE', 'USER1'),
+            'password' => env('DB_PASSWORD_YQ_SECOND_GRAB_GRABAGE', '123456'),
+            'unix_socket' => env('DB_SOCKET_YQ_SECOND_GRAB_GRABAGE', ''),
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
     ],
 
     /*

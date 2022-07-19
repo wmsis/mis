@@ -1,28 +1,22 @@
 <?php
-/**
-* IEC104取得的电表数据控制器
-*
-* @author      叶文华
-* @version     1.0 版本号
-*/
+
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Models\SIS\WeighBridge;
+use Illuminate\Support\Facades\DB;
 use UtilService;
-use App\Http\Models\SIS\Electricity;
-use App\Http\Requests\API\StoreElectricityRequest;
-use Log;
 
-class ElectricityController extends Controller
+class WeighBrigeController extends Controller
 {
     /**
      * @SWG\GET(
-     *     path="/api/electricity/index",
-     *     tags={"electricity api"},
+     *     path="/api/weighbrige/index",
+     *     tags={"weighbrige api"},
      *     operationId="",
-     *     summary="获取电表数据列表",
-     *     description="使用说明：获取电表数据列表",
+     *     summary="获取地磅数据列表",
+     *     description="使用说明：获取地磅数据列表",
      *     produces={"application/json"},
      *     @SWG\Parameter(
      *         description="token",
@@ -57,7 +51,7 @@ class ElectricityController extends Controller
      *      @SWG\Parameter(
      *          description="中文名称搜索",
      *          in="query",
-     *          name="cn_name",
+     *          name="product",
      *          required=false,
      *          type="string",
      *      ),
@@ -66,10 +60,10 @@ class ElectricityController extends Controller
      *          description="succeed",
      *          @SWG\Schema(
      *               @SWG\Property(
-     *                   property="Electricities",
-     *                   description="Electricities",
+     *                   property="WeighBriges",
+     *                   description="WeighBriges",
      *                   allOf={
-     *                       @SWG\Schema(ref="#/definitions/Electricity")
+     *                       @SWG\Schema(ref="#/definitions/WeighBrige")
      *                   }
      *                )
      *           )
@@ -88,18 +82,18 @@ class ElectricityController extends Controller
         $page = $request->input('page');
         $page = $page ? $page : 1;
 
-        $cn_name = $request->input('cn_name');
+        $product = $request->input('product');
 
         if($factory == 'yongqiang2'){
-            $electricity = (new Electricity())->setTable('weighbridge_yongqiang2');
+            $WeighBrigeObj = (new WeighBrige())->setTable('weighbridge_yongqiang2');
         }
         else{
-            $electricity = null;
+            $WeighBrigeObj = null;
         }
 
-        $rows = $electricity->select(['*']);
+        $rows = $WeighBrigeObj->select(['*']);
         if ($cn_name) {
-            $rows = $rows->where('cn_name', 'like', "%{$cn_name}%");
+            $rows = $rows->where('product', 'like', "%{$product}%");
         }
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
@@ -108,8 +102,8 @@ class ElectricityController extends Controller
 
     /**
      * @SWG\POST(
-     *     path="/api/electricity/store_multi",
-     *     tags={"electricity api"},
+     *     path="/api/weighbrige/store_multi",
+     *     tags={"weighbrige api"},
      *     operationId="",
      *     summary="批量新增",
      *     description="使用说明：批量新增",
@@ -152,26 +146,43 @@ class ElectricityController extends Controller
             return UtilService::format_data(self::AJAX_FAIL, 'input参数错误', '');
         }
         else{
+            $updatelist = [];
             $datalist = json_decode($params['input'], true);
+
+            if($factory == 'yongqiang2'){
+                $WeighBrigeObj = (new WeighBrige())->setTable('weighbrige_yongqiang2');
+            }
+            else{
+
+            }
+
+            //查询数据是否存在，不存在则增加
+            foreach ($datalist as $key => $item) {
+                $datalist[$key]['created_at'] = date('Y-m-d H:i:s');
+                $datalist[$key]['updated_at'] = date('Y-m-d H:i:s');
+                $datalist[$key]['weighid'] = $item['id'];
+                $local_row = $WeighBrigeObj->findByWeighId($item['id']);
+                unset($datalist[$key]['id']);
+                if($local_row){
+                    $updatelist[] = $datalist[$key];
+                    unset($datalist[$key]);
+                }
+            }
+
+            DB::beginTransaction();
             try {
-                if($factory == 'yongqiang2'){
-                    $electricity = (new Electricity())->setTable('electricity_yongqiang2');
+                $WeighBrigeObj->insertMany($datalist);
+                foreach ($updatelist as $key => $item) {
+                    $where = array(
+                        "weighid" => $item['weighid']
+                    );
+                    unset($updatelist[$key]['weighid']);
+                    $WeighBrigeObj->updateOne($updatelist[$key], $where);
                 }
-                else{
-
-                }
-
-                foreach ($datalist as $key => $value) {
-                    $datalist[$key]['created_at'] = date('Y-m-d H:i:s');
-                    $datalist[$key]['updated_at'] = date('Y-m-d H:i:s');
-                    // $local_row = $electricity->findById($item['id']);
-                    // if(!$local_row){
-                    //     unset($datalist[$key]);
-                    // }
-                }
-                $res = $electricity->insertMany($datalist);
+                DB::commit();
             } catch (QueryException $e) {
-                return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+                DB::rollback();
+                return UtilService::format_data(self::AJAX_FAIL, '操作失败', $e->getMessage());
             }
             return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
         }

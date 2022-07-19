@@ -7,7 +7,8 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Console\Commands\ExcelReader;
 use App\Console\Commands\ExcelWriter;
 use App\Console\Commands\ExportEconomyDaily;
-use App\Console\Commands\CollectIEC104Data;
+use App\Console\Commands\IEC104Data;
+use App\Console\Commands\GrabGarbageData;
 
 class Kernel extends ConsoleKernel
 {
@@ -21,7 +22,8 @@ class Kernel extends ConsoleKernel
         ExcelReader::class,
         ExcelWriter::class,
         ExportEconomyDaily::class,
-        CollectIEC104Data::class
+        IEC104Data::class,
+        GrabGarbageData::class
     ];
 
     /**

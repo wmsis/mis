@@ -9,7 +9,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Log;
 
-class IEC104Data implements ShouldQueue
+class IEC104DataJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     protected $date;
@@ -39,11 +39,13 @@ class IEC104Data implements ShouldQueue
         $port = 2404;
         if(($sock = socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) === FALSE)
         {
+            Log::info('初始化socket资源错误');
             exit('初始化socket资源错误: ' . socket_strerror(socket_last_error($sock)));
         }
 
         if(socket_connect($sock, $host, $port) === FALSE)
         {
+            Log::info('连接socket失败');
             exit('连接socket失败: ' . socket_strerror(socket_last_error($sock)));
         }
 
@@ -53,6 +55,7 @@ class IEC104Data implements ShouldQueue
         {
             $data .= $response;
         }
+        Log::info('接收消息成功');
         socket_write($sock, '接收消息成功');
         echo $data . PHP_EOL;
 

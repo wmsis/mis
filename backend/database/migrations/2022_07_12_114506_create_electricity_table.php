@@ -13,7 +13,7 @@ class CreateElectricityTable extends Migration
      */
     public function up()
     {
-        Schema::create('electricity', function (Blueprint $table) {
+        Schema::create('electricity_yongqiang2', function (Blueprint $table) {
             $table->id();
             $table->integer('address')->nullable()->comment('地址');
             $table->integer('value')->nullable()->comment('远动获取的原始值');
@@ -34,6 +34,6 @@ class CreateElectricityTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('electricity');
+        Schema::dropIfExists('electricity_yongqiang2');
     }
 }
