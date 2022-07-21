@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use UtilService;
 use App\Http\Models\SIS\Electricity;
 use App\Http\Requests\API\StoreElectricityRequest;
+use Illuminate\Database\QueryException;
 use Log;
 
 class ElectricityController extends Controller
@@ -89,13 +90,8 @@ class ElectricityController extends Controller
         $page = $page ? $page : 1;
 
         $cn_name = $request->input('cn_name');
-
-        if($factory == 'yongqiang2'){
-            $electricity = (new Electricity())->setTable('weighbridge_yongqiang2');
-        }
-        else{
-            $electricity = null;
-        }
+        $tb = 'electricity_' . $factory;
+        $electricity = (new Electricity())->setTable($tb);
 
         $rows = $electricity->select(['*']);
         if ($cn_name) {
@@ -143,6 +139,7 @@ class ElectricityController extends Controller
      */
     public function store_multi(Request $request)
     {
+        $factory = $request['factory'];
         if(!$this->validate_factory($request['factory'])){
             return UtilService::format_data(self::AJAX_FAIL, 'factory参数错误', '');
         }
@@ -154,12 +151,8 @@ class ElectricityController extends Controller
         else{
             $datalist = json_decode($params['input'], true);
             try {
-                if($factory == 'yongqiang2'){
-                    $electricity = (new Electricity())->setTable('electricity_yongqiang2');
-                }
-                else{
-
-                }
+                $tb = 'electricity_' . $factory;
+                $electricity = (new Electricity())->setTable($tb);
 
                 foreach ($datalist as $key => $value) {
                     $datalist[$key]['created_at'] = date('Y-m-d H:i:s');
@@ -178,7 +171,7 @@ class ElectricityController extends Controller
     }
 
     private function validate_factory($factory){
-        $tb_list = array('yongqiang2');
+        $tb_list = config('factory');
         if(!$factory || ($factory && !in_array($factory, $tb_list))){
             return false;
         }

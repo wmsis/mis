@@ -8,12 +8,12 @@ use App\Http\Models\SIS\WeighBridge;
 use Illuminate\Support\Facades\DB;
 use UtilService;
 
-class WeighBrigeController extends Controller
+class WeighBridgeController extends Controller
 {
     /**
      * @SWG\GET(
-     *     path="/api/weighbrige/index",
-     *     tags={"weighbrige api"},
+     *     path="/api/weighbridge/index",
+     *     tags={"weighbridge api"},
      *     operationId="",
      *     summary="获取地磅数据列表",
      *     description="使用说明：获取地磅数据列表",
@@ -60,10 +60,10 @@ class WeighBrigeController extends Controller
      *          description="succeed",
      *          @SWG\Schema(
      *               @SWG\Property(
-     *                   property="WeighBriges",
-     *                   description="WeighBriges",
+     *                   property="WeighBridges",
+     *                   description="WeighBridges",
      *                   allOf={
-     *                       @SWG\Schema(ref="#/definitions/WeighBrige")
+     *                       @SWG\Schema(ref="#/definitions/WeighBridge")
      *                   }
      *                )
      *           )
@@ -84,14 +84,10 @@ class WeighBrigeController extends Controller
 
         $product = $request->input('product');
 
-        if($factory == 'yongqiang2'){
-            $WeighBrigeObj = (new WeighBrige())->setTable('weighbridge_yongqiang2');
-        }
-        else{
-            $WeighBrigeObj = null;
-        }
+        $tb = 'weighbridge_' . $factory;
+        $WeighBridgeObj = (new WeighBridge())->setTable($tb);
 
-        $rows = $WeighBrigeObj->select(['*']);
+        $rows = $WeighBridgeObj->select(['*']);
         if ($cn_name) {
             $rows = $rows->where('product', 'like', "%{$product}%");
         }
@@ -102,8 +98,8 @@ class WeighBrigeController extends Controller
 
     /**
      * @SWG\POST(
-     *     path="/api/weighbrige/store_multi",
-     *     tags={"weighbrige api"},
+     *     path="/api/weighbridge/store_multi",
+     *     tags={"weighbridge api"},
      *     operationId="",
      *     summary="批量新增",
      *     description="使用说明：批量新增",
@@ -137,6 +133,9 @@ class WeighBrigeController extends Controller
      */
     public function store_multi(Request $request)
     {
+        $fillable = ['truckno', 'productcode', 'product', 'firstweight', 'secondweight', 'firstdatetime', 'seconddatetime', 'grossdatetime', 'taredatetime',
+        'sender', 'transporter', 'receiver', 'gross', 'tare', 'net', 'datastatus', 'weighid'];
+        $factory = $request['factory'];
         if(!$this->validate_factory($request['factory'])){
             return UtilService::format_data(self::AJAX_FAIL, 'factory参数错误', '');
         }
@@ -147,22 +146,22 @@ class WeighBrigeController extends Controller
         }
         else{
             $updatelist = [];
+            $deletelist = [];
             $datalist = json_decode($params['input'], true);
-
-            if($factory == 'yongqiang2'){
-                $WeighBrigeObj = (new WeighBrige())->setTable('weighbrige_yongqiang2');
+            foreach ($datalist[0] as $key => $value) {
+                if(!in_array($key, $fillable)){
+                    return UtilService::format_data(self::AJAX_FAIL, '参数错误', $key);
+                }
             }
-            else{
 
-            }
+            $tb = 'weighbridge_' . $factory;
+            $WeighBridgeObj = (new WeighBridge())->setTable($tb);
 
             //查询数据是否存在，不存在则增加
             foreach ($datalist as $key => $item) {
                 $datalist[$key]['created_at'] = date('Y-m-d H:i:s');
                 $datalist[$key]['updated_at'] = date('Y-m-d H:i:s');
-                $datalist[$key]['weighid'] = $item['id'];
-                $local_row = $WeighBrigeObj->findByWeighId($item['id']);
-                unset($datalist[$key]['id']);
+                $local_row = $WeighBridgeObj->findByWeighId($item['weighid']);
                 if($local_row){
                     $updatelist[] = $datalist[$key];
                     unset($datalist[$key]);
@@ -171,25 +170,25 @@ class WeighBrigeController extends Controller
 
             DB::beginTransaction();
             try {
-                $WeighBrigeObj->insertMany($datalist);
+                $WeighBridgeObj->insertMany($datalist);
                 foreach ($updatelist as $key => $item) {
                     $where = array(
                         "weighid" => $item['weighid']
                     );
                     unset($updatelist[$key]['weighid']);
-                    $WeighBrigeObj->updateOne($updatelist[$key], $where);
+                    $WeighBridgeObj->updateOne($updatelist[$key], $where);
                 }
                 DB::commit();
             } catch (QueryException $e) {
                 DB::rollback();
                 return UtilService::format_data(self::AJAX_FAIL, '操作失败', $e->getMessage());
             }
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', '');
         }
     }
 
     private function validate_factory($factory){
-        $tb_list = array('yongqiang2');
+        $tb_list = config('factory');
         if(!$factory || ($factory && !in_array($factory, $tb_list))){
             return false;
         }

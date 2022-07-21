@@ -186,15 +186,22 @@ Route::group(['middleware' => ['api', 'permission', 'cors']], function () {
     // IEC104取得的电表数据
     Route::prefix('electricity')->group(function () {
         Route::get('index', 'API\ElectricityController@index');
-        Route::get('show/{id}', 'API\ElectricityController@show');
-        Route::delete('destroy/{id}', 'API\ElectricityController@destroy');
+    });
+
+    // 地磅上报数据接口
+    Route::prefix('weighbridge')->group(function () {
+        Route::get('index', 'API\WeighBridgeController@index');
     });
 });
 
 // IEC104取得的电表数据
 Route::prefix('electricity')->group(function () {
-    Route::post('store', 'API\ElectricityController@store');
     Route::post('store_multi', 'API\ElectricityController@store_multi');
+});
+
+// 地磅上报数据接口
+Route::prefix('weighbridge')->group(function () {
+    Route::post('store_multi', 'API\WeighBridgeController@store_multi');
 });
 
 
