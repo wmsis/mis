@@ -113,30 +113,12 @@ Route::group(['middleware' => ['api', 'permission', 'cors']], function () {
         Route::get('user', 'API\HistorianTagController@userTags');
     });
 
-    // Historian Module
-    Route::prefix('historian-module')->group(function () {
-        Route::get('index', 'API\HistorianModuleController@index');
-        Route::get('show/{id}', 'API\HistorianModuleController@show');
-        Route::post('store', 'API\HistorianModuleController@store');
-        Route::post('update/{id}', 'API\HistorianModuleController@update');
-        Route::delete('destroy/{id}', 'API\HistorianModuleController@destroy');
-    });
-
     // Historian Data
     Route::prefix('historian-data')->group(function () {
         Route::post('current-data', 'API\HistorianDataController@currentData');
         Route::post('raw-data', 'API\HistorianDataController@rawData');
         Route::post('sampled-data', 'API\HistorianDataController@sampledData');
         Route::post('watch-data', 'API\HistorianDataController@watchData');
-    });
-
-    // Tag Group
-    Route::prefix('tag-group')->group(function () {
-        Route::get('index', 'API\TagGroupController@index');
-        Route::get('show/{id}', 'API\TagGroupController@show');
-        Route::post('store', 'API\TagGroupController@store');
-        Route::post('update/{id}', 'API\TagGroupController@update');
-        Route::delete('destroy/{id}', 'API\TagGroupController@destroy');
     });
 
     // Equipment

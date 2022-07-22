@@ -2,20 +2,9 @@
     <div v-loading="loading">
         <limit-update :shows="shows"
                       :limit="row"
-                      :moduleList="moduleList"
                       v-on:listenChildClose="childClose">
         </limit-update>
-        <tag-assign :shows="shows"
-                      :moduleList="moduleList"
-                      :rows="rows"
-                      v-on:listenChildClose="childClose">
-        </tag-assign>
-        <tag-group :shows="shows"
-                    :rows="rows"
-                    v-on:listenChildClose="childClose">
-        </tag-group>
         <base-table ref="tableRef"
-                    v-if="init"
                     v-bind:columns="columns"
                     v-bind:pageUrl="pageUrl"
                     v-bind:searchForm="searchForm"
@@ -30,16 +19,7 @@
                 <FormItem label="标签名称">
                     <Input v-model="searchForm.searchTagName" placeholder="标签名称"/>
                 </FormItem>
-                <FormItem label="模块名称">
-                    <Select placeholder="请选择模块" v-model="searchForm.moduleId">
-                        <Option value="" key="all">所有模块</Option>
-                        <Option v-for="item in moduleList" :value="item.id" :key="item.id">{{ item.name }}</Option>
-                    </Select>
-                </FormItem>
             </div>
-            <template slot="module" slot-scope="{ row }">
-                <div>{{slotModule(row)}}</div>
-            </template>
             <template slot="option" slot-scope="{ row }">
                 <div>
                     <Button type="text" size="small" class="btn-my"
@@ -74,43 +54,27 @@
 
     import BaseTable from '@/components/baseTable';
     import limitUpdate from './Update.vue';
-    import tagAssign from './Assign.vue';
-    import tagGroup from './Group.vue';
 
     export default {
         name: "AlarmSetting",
         components: {
             'base-table': BaseTable,
             'limit-update': limitUpdate,
-            'tag-assign': tagAssign,
-            'tag-group': tagGroup
         },
         data: function () {
             return {
                 shows: {
                     search: false,
                     update: false,
-                    assign: false,
-                    group: false
+                    assign: false
                 },
                 pageUrl: this.$request.setting.limitload,
                 searchForm: {
                     searchTagName: '',
-                    moduleId: ''
                 },
                 row: {},
                 rows: [],
-                buttons: [{
-                    name: '绑定模块',
-                    icon: 'ios-hammer',
-                    method: 'assign',
-                    api_name: 'user-insert'
-                },{
-                    name: 'TAG分组',
-                    icon: 'md-git-network',
-                    method: 'group',
-                    api_name: 'user-insert'
-                }],
+                buttons: [],
                 columns: [
                     {
                         type: 'selection',
@@ -129,12 +93,6 @@
                         ellipsis: true,
                         tooltip: true,
                         minWidth: 180
-                    },
-                    {
-                        title: '所属模块',
-                        ellipsis: true,
-                        tooltip: true,
-                        slot: 'module'
                     },
                     {
                         title: '别名',
@@ -179,8 +137,6 @@
                         align: 'center'
                     }
                 ],
-                moduleList: [],
-                init: false,
                 loading: false
             }
         },
@@ -191,20 +147,6 @@
             update: function (row) {
                 this.row = row;
                 this.shows.update = true;
-            },
-            assign(){
-                if (this.rows.length == 0) {
-                    this.showMessage('请选择要绑定的Tag');
-                    return false;
-                }
-                this.shows.assign = true;
-            },
-            group(){
-                if (this.rows.length == 0) {
-                    this.showMessage('请选择要分组的Tag');
-                    return false;
-                }
-                this.shows.group = true;
             },
             selectionChange(rows) {
                 this.rows = [...rows];
@@ -220,47 +162,13 @@
                     this[method]();
                 }
             },
-            modules(){
-                let vm = this;
-                vm.init = false;
-                vm.loading = true;
-                vm.ajax({
-                    method: 'get',
-                    params: {
-                        num: 1000,
-                        page: 1
-                    },
-                    url: vm.$request.setting.pagemodule,
-                    success: (data) => {
-                        vm.moduleList = data.data;
-                        vm.init = true;
-                        vm.loading = false;
-                    },
-                    fail(){
-                        vm.init = true;
-                        vm.loading = false;
-                    }
-                });
-            },
-            slotModule(row){
-                let name = '';
-                if(row.historian_module_id) {
-                    for (let i=0; i<this.moduleList.length; i++) {
-                        if (this.moduleList[i].id == row.historian_module_id) {
-                            name = this.moduleList[i].name;
-                            break;
-                        }
-                    }
-                }
-                return name;
-            }
+
         },
         mounted(){
             let mid = this.$route.query.mid;
             if(mid){
                 this.searchForm.moduleId = mid;
             }
-            this.modules();
         }
     }
 </script>

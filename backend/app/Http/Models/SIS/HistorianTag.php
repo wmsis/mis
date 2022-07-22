@@ -19,7 +19,6 @@ use CacheService;
  * @property string|null $measure 量程
  * @property float|null $upper_limit 上限
  * @property float|null $lower_limit 下限
- * @property int|null $historian_module_id tag所属模块外键约束
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -31,7 +30,6 @@ use CacheService;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Http\Models\SIS\HistorianTag whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Http\Models\SIS\HistorianTag whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Http\Models\SIS\HistorianTag whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Http\Models\SIS\HistorianTag whereHistorianModuleId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Http\Models\SIS\HistorianTag whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Http\Models\SIS\HistorianTag whereLowerLimit($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Http\Models\SIS\HistorianTag whereMeasure($value)
@@ -42,10 +40,8 @@ use CacheService;
  * @method static \Illuminate\Database\Query\Builder|\App\Http\Models\SIS\HistorianTag withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Http\Models\SIS\HistorianTag withoutTrashed()
  * @mixin \Eloquent
- * @property int|null $tag_group_id Tag Group ID
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $users
  * @property-read int|null $users_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Http\Models\SIS\HistorianTag whereTagGroupId($value)
  * @property float|null $origin_upper_limit 原始上限值, historian记录的量程上限
  * @property float|null $origin_lower_limit 原始下限值, historian记录的量程下限
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Http\Models\SIS\HistorianTag whereOriginLowerLimit($value)
@@ -57,7 +53,7 @@ class HistorianTag extends Model
 
     protected $table = 'historian_tag';
     protected $fillable = ['tag_id', 'tag_name', 'description', 'alias', 'measure', 'upper_limit', 'lower_limit',
-        'historian_module_id', 'origin_upper_limit', 'origin_lower_limit'];
+        'origin_upper_limit', 'origin_lower_limit'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',
@@ -90,12 +86,6 @@ class HistorianTag extends Model
 
     public function findByPage($params){
         $tags = $this->select(['*']);
-        if (isset($params['historian_module_id']) && $params['historian_module_id']) {
-            $tags = $tags->where('historian_module_id', $params['historian_module_id']);
-        }
-        if (isset($params['tag_group_id']) && $params['tag_group_id']) {
-            $tags = $tags->where('tag_group_id', $params['tag_group_id']);
-        }
         if (isset($params['alias']) && $params['alias']) {
             $tags = $tags->where('alias', 'like', "%{$params['alias']}%");
         }
@@ -194,10 +184,6 @@ class HistorianTag extends Model
  *     @SWG\Property(
  *         property="lower_limit",
  *         type="number"
- *     ),
- *     @SWG\Property(
- *         property="historian_module_id",
- *         type="integer"
  *     ),
  *     @SWG\Property(
  *         property="origin_upper_limit",

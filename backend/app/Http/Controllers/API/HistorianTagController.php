@@ -8,10 +8,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Models\SIS\HistorianModule;
 use App\Http\Models\SIS\HistorianTag;
-use App\Http\Models\SIS\TagGroup;
-use App\Http\Models\SIS\TagRemember;
 use HistorianService;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -45,20 +42,6 @@ class HistorianTagController extends Controller
      *         required=true,
      *         type="string",
      *     ),
-     * @SWG\Parameter(
-     *     description="module id",
-     *     in="query",
-     *     name="moduleId",
-     *     required=false,
-     *     type="string",
-     * ),
-     * @SWG\Parameter(
-     *     description="tag group id",
-     *     in="query",
-     *     name="groupId",
-     *     required=false,
-     *     type="string",
-     * ),
      * @SWG\Parameter(
      *     description="每页数据量",
      *     in="query",
@@ -111,18 +94,10 @@ class HistorianTagController extends Controller
         $page = $request->input('page');
         $page = $page ? $page : 1;
 
-        $moduleId = $request->input('moduleId');
-        $groupId = $request->input('groupId');
         $searchName = $request->input('searchAlias');
         $searchTagName = $request->input('searchTagName');
 
         $params = [];
-        if ($moduleId) {
-            $params['historian_module_id'] = $moduleId;
-        }
-        if ($groupId) {
-            $params['tag_group_id'] = $groupId;
-        }
         if ($searchName) {
             $params['alias'] = $searchName;
         }
@@ -188,20 +163,6 @@ class HistorianTagController extends Controller
      *         type="string",
      *     ),
      * @SWG\Parameter(
-     *     description="module id",
-     *     in="query",
-     *     name="moduleId",
-     *     required=false,
-     *     type="string",
-     * ),
-     * @SWG\Parameter(
-     *     description="tag group id",
-     *     in="query",
-     *     name="groupId",
-     *     required=false,
-     *     type="string",
-     * ),
-     * @SWG\Parameter(
      *     description="每页数据量",
      *     in="query",
      *     name="num",
@@ -253,18 +214,10 @@ class HistorianTagController extends Controller
         $page = $request->input('page');
         $page = $page ? $page : 1;
 
-        $moduleId = $request->input('moduleId');
-        $groupId = $request->input('groupId');
         $searchName = $request->input('searchAlias');
         $searchTagName = $request->input('searchTagName');
 
         $params = [];
-        if ($moduleId) {
-            $params['historian_module_id'] = $moduleId;
-        }
-        if ($groupId) {
-            $params['tag_group_id'] = $groupId;
-        }
         if ($searchName) {
             $params['alias'] = $searchName;
         }
@@ -527,20 +480,6 @@ class HistorianTagController extends Controller
      *     required=false,
      *     type="string",
      * ),
-     * @SWG\Parameter(
-     *     description="模块 id",
-     *     in="formData",
-     *     name="historian_module_id",
-     *     required=false,
-     *     type="integer",
-     * ),
-     * @SWG\Parameter(
-     *     description="tag group id",
-     *     in="formData",
-     *     name="tag_group_id",
-     *     required=false,
-     *     type="string",
-     * ),
      * @SWG\Response(
      *     response=200,
      *     description="update succeed",
@@ -570,20 +509,7 @@ class HistorianTagController extends Controller
                 $tag[$field] = $inputValue;
             }
         }
-        if (($historian_module_id = $request->input('historian_module_id')) !== null) {
-            $module = HistorianModule::find($historian_module_id);
-            if (!$module) {
-                return response()->json(UtilService::format_data(self::AJAX_FAIL, '模块不存在,修改失败', ''));
-            }
-            $tag->historian_module_id = (int)$historian_module_id;
-        }
-        if (($groupId = $request->input('tag_group_id')) !== null) {
-            $group = TagGroup::find($groupId);
-            if (!$group) {
-                return response()->json(UtilService::format_data(self::AJAX_FAIL, 'group不存在,修改失败', ''));
-            }
-            $tag->tag_group_id = (int)$groupId;
-        }
+
         try {
             $tag->save();
             $tag->refresh();
@@ -594,134 +520,6 @@ class HistorianTagController extends Controller
             return response()->json(UtilService::format_data(self::AJAX_FAIL, '修改失败', ''));
         }
         return response()->json(UtilService::format_data(self::AJAX_SUCCESS, '修改成功', $tag));
-    }
-
-    /**
-     * @SWG\POST(
-     *     path="/api/historian-tag/bind-module",
-     *     tags={"historian tag api"},
-     *     operationId="",
-     *     summary="批量绑定 module id",
-     *     description="使用说明：批量绑定 module id",
-     *     produces={"application/json"},
-     *     @SWG\Parameter(
-     *         description="token",
-     *         in="query",
-     *         name="token",
-     *         required=true,
-     *         type="string",
-     *     ),
-     * @SWG\Parameter(
-     *     description="historian module 主键",
-     *     in="formData",
-     *     name="moduleId",
-     *     required=true,
-     *     type="string",
-     * ),
-     * @SWG\Parameter(
-     *     description="待绑定 historian tag ids, 以','分隔, example:'1,2,3'",
-     *     in="formData",
-     *     name="tagIds",
-     *     required=true,
-     *     type="string",
-     * ),
-     * @SWG\Response(
-     *     response=200,
-     *     description="detroy succeed",
-     * ),
-     * )
-     */
-    public function bindModule(Request $request)
-    {
-        $moduleId = $request->input('moduleId');
-        $tagsIdStr = $request->input('tagIds');
-        if (!$moduleId) {
-            return response()->json(UtilService::format_data(self::AJAX_FAIL, '未提交moduleId', ''));
-        }
-        if (!$tagsIdStr) {
-            return response()->json(UtilService::format_data(self::AJAX_FAIL, '未提交tagIds', ''));
-        }
-
-        $module = HistorianModule::find($moduleId);
-        if (!$module) {
-            return response()->json(UtilService::format_data(self::AJAX_FAIL, '模块不存在', ''));
-        }
-
-        $tagsIdList = explode(',', $tagsIdStr);
-        try {
-            HistorianTag::whereIn('id', $tagsIdList)
-                ->update(['historian_module_id' => $module->id]);
-
-            //删除缓存
-            $this->HistorianTag->updateCache(['ids'=>$tagsIdStr]);
-        } catch (QueryException $e) {
-            return response()->json(UtilService::format_data(self::AJAX_FAIL, '更新失败', ['errorMessage' => $e->errorInfo]));
-        }
-        return response()->json(UtilService::format_data(self::AJAX_SUCCESS, '修改成功', ''));
-    }
-
-    /**
-     * @SWG\POST(
-     *     path="/api/historian-tag/bind-group",
-     *     tags={"historian tag api"},
-     *     operationId="",
-     *     summary="批量绑定 group id",
-     *     description="使用说明：批量绑定 group id",
-     *     produces={"application/json"},
-     *     @SWG\Parameter(
-     *         description="token",
-     *         in="query",
-     *         name="token",
-     *         required=true,
-     *         type="string",
-     *     ),
-     * @SWG\Parameter(
-     *     description="tag group 主键",
-     *     in="formData",
-     *     name="groupId",
-     *     required=true,
-     *     type="string",
-     * ),
-     * @SWG\Parameter(
-     *     description="待绑定 historian tag ids, 以','分隔, example:'1,2,3'",
-     *     in="formData",
-     *     name="tagIds",
-     *     required=true,
-     *     type="string",
-     * ),
-     * @SWG\Response(
-     *     response=200,
-     *     description="detroy succeed",
-     * ),
-     * )
-     */
-    public function bindGroup(Request $request)
-    {
-        $groupId = $request->input('groupId');
-        $tagsIdStr = $request->input('tagIds');
-        if (!$groupId) {
-            return response()->json(UtilService::format_data(self::AJAX_FAIL, '未提交groupId', ''));
-        }
-        if (!$tagsIdStr) {
-            return response()->json(UtilService::format_data(self::AJAX_FAIL, '未提交tagIds', ''));
-        }
-
-        $group = TagGroup::find($groupId);
-        if (!$group) {
-            return response()->json(UtilService::format_data(self::AJAX_FAIL, 'group不存在', ''));
-        }
-
-        $tagsIdList = explode(',', $tagsIdStr);
-        try {
-            HistorianTag::whereIn('id', $tagsIdList)
-                ->update(['tag_group_id' => $group->id]);
-
-            //删除缓存
-            $this->HistorianTag->updateCache(['ids'=>$tagsIdStr]);
-        } catch (QueryException $e) {
-            return response()->json(UtilService::format_data(self::AJAX_FAIL, '更新失败', ['errorMessage' => $e->errorInfo]));
-        }
-        return response()->json(UtilService::format_data(self::AJAX_SUCCESS, '修改成功', ''));
     }
 
     /**
@@ -768,150 +566,6 @@ class HistorianTagController extends Controller
         return response()->json(UtilService::format_data(self::AJAX_SUCCESS, '删除成功', ''));
     }
 
-    /**
-     * @SWG\GET(
-     *     path="/api/historian-tag/remember/index",
-     *     tags={"historian tag api"},
-     *     operationId="",
-     *     summary="获取记忆tags",
-     *     description="使用说明：获取记忆tags",
-     *     produces={"application/json"},
-     *     @SWG\Parameter(
-     *         description="token",
-     *         in="query",
-     *         name="token",
-     *         required=true,
-     *         type="string",
-     *     ),
-     *     @SWG\Parameter(
-     *         description="path",
-     *         in="query",
-     *         name="path",
-     *         required=true,
-     *         type="string",
-     *     ),
-     * @SWG\Response(
-     *     response=200,
-     *     description="detroy succeed",
-     *     @SWG\Schema(
-     *          @SWG\Property(
-     *              property="historianTags",
-     *              description="historianTags",
-     *              allOf={
-     *                  @SWG\Schema(ref="#/definitions/HistorianTags")
-     *              }
-     * )
-     * )
-     * ),
-     * )
-     */
-    public function indexRememberTags(Request $request)
-    {
-        $userObj = auth()->user();
-        $userId = $userObj->id;
-
-        $path = $request->input('path');
-        if (!$path) {
-            return response()->json(UtilService::format_data(self::AJAX_FAIL, '未提供path参数', ''));
-        }
-        $remember = TagRemember::where('path', $path)->where('user_id', $userId)->first();
-        if (!$remember) {
-            $res = [
-                'tags' => [],
-                'uid' => ''
-            ];
-        } else {
-            $tagIdsStr = $remember->tag_ids;
-            $tagIdsList = explode(',', $tagIdsStr);
-            $tags = HistorianTag::whereIn('id', $tagIdsList)->get();
-            $res = [
-                'tags' => $tags,
-                'uid' => $remember->uid
-            ];
-        }
-        return response()->json(UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res));
-    }
-
-    /**
-     * @SWG\POST(
-     *     path="/api/historian-tag/remember/store",
-     *     tags={"historian tag api"},
-     *     operationId="",
-     *     summary="更新或新建记忆tags",
-     *     description="使用说明：更新或新建记忆tags",
-     *     produces={"application/json"},
-     *     @SWG\Parameter(
-     *         description="token",
-     *         in="query",
-     *         name="token",
-     *         required=true,
-     *         type="string",
-     *     ),
-     *     @SWG\Parameter(
-     *         description="path",
-     *         in="formData",
-     *         name="path",
-     *         required=true,
-     *         type="string",
-     *     ),
-     *     @SWG\Parameter(
-     *         description="tagIds",
-     *         in="formData",
-     *         name="tagIds",
-     *         required=true,
-     *         type="string",
-     *     ),
-     *     @SWG\Parameter(
-     *         description="uid",
-     *         in="formData",
-     *         name="uid",
-     *         required=false,
-     *         type="string",
-     *     ),
-     * @SWG\Response(
-     *     response=200,
-     *     description="detroy succeed",
-     *     @SWG\Schema(
-     *          @SWG\Property(
-     *              property="historianTags",
-     *              description="historianTags",
-     *              allOf={
-     *                  @SWG\Schema(ref="#/definitions/HistorianTags")
-     *              }
-     * )
-     * )
-     * ),
-     * )
-     */
-    public function storeRememberTags(Request $request)
-    {
-        $userObj = auth()->user();
-        $userId = $userObj->id;
-
-        $path = $request->input('path');
-        $inputs = $request->input();
-        if (!$path) {
-            return response()->json(UtilService::format_data(self::AJAX_FAIL, '未提供path参数', ''));
-        }
-
-        if (!key_exists('tagIds', $inputs)) {
-            return response()->json(UtilService::format_data(self::AJAX_FAIL, '未提供tagIds参数', ''));
-        }
-        try {
-            $uid = $request->input('uid');
-            $remember = TagRemember::updateOrCreate([
-                'path' => $path,
-                'user_id' => $userId
-            ],
-            [
-                'uid' => $uid ? $uid : null,
-                'tag_ids' => $inputs['tagIds']
-            ]);
-        } catch (QueryException $e) {
-            return response()->json(UtilService::format_data(self::AJAX_FAIL, '操作失败', ['errorMessage' => $e->errorInfo]));
-        }
-        return response()->json(UtilService::format_data(self::AJAX_SUCCESS, '操作成功', ''));
-    }
 
     /**
      * @SWG\GET(
@@ -928,20 +582,6 @@ class HistorianTagController extends Controller
      *         required=true,
      *         type="string",
      *     ),
-     * @SWG\Parameter(
-     *     description="module id",
-     *     in="query",
-     *     name="moduleId",
-     *     required=false,
-     *     type="string",
-     * ),
-     * @SWG\Parameter(
-     *     description="tag group id",
-     *     in="query",
-     *     name="groupId",
-     *     required=false,
-     *     type="string",
-     * ),
      * @SWG\Parameter(
      *     description="alias 搜索",
      *     in="query",
@@ -981,10 +621,8 @@ class HistorianTagController extends Controller
     public function userTags(Request $request)
     {
         $userObj = auth()->user();
-        $moduleId = $request->input('moduleId');
         $searchName = $request->input('searchAlias');
         $searchTagName = $request->input('searchTagName');
-        $groupId = $request->input('groupId');
         $uid = $request->input('uid');
 
         if ($uid == 'all') {
@@ -1001,12 +639,7 @@ class HistorianTagController extends Controller
             $tags = $userObj->tags();
         }
 
-        if ($moduleId && $moduleId !== 'all') {
-            $tags = $tags->where('historian_module_id', $moduleId);
-        }
-        if ($groupId && $groupId !== 'all') {
-            $tags = $tags->where('tag_group_id', $groupId);
-        }
+
         if ($searchName) {
             $tags = $tags->where('alias', 'like', "%{$searchName}%");
         }

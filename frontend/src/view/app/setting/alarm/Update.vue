@@ -41,25 +41,6 @@
                     </FormItem>
                 </Col>
             </Row>
-            <Row>
-                <Col span="11">
-                    <FormItem prop="historian_module_id" label="模块">
-                        <Select placeholder="请选择模块" v-model="formData.historian_module_id" filterable>
-                            <Option v-for="item in moduleList" :value="item.id" :key="item.id">{{ item.name }}</Option>
-                        </Select>
-                    </FormItem>
-                </Col>
-                <Col span="2">
-                    <div :style="{padding: '5px 5px 5px 5px'}"></div>
-                </Col>
-                <Col span="11">
-                    <FormItem prop="tag_group_id" label="分组">
-                        <Select placeholder="请选择分组" v-model="formData.tag_group_id" filterable>
-                            <Option v-for="item in groupList" :value="item.id" :key="item.id">{{ item.name }}</Option>
-                        </Select>
-                    </FormItem>
-                </Col>
-            </Row>
             <FormItem :style="{'text-align': 'right'}">
                 <Button type="primary" @click="handleSubmit('formRef')" :loading="submiting">提交</Button>
                 <Button @click="handleReset('formRef')" style="margin-left: 8px">重置</Button>
@@ -97,7 +78,7 @@
     Vue.use(Loading);
 
     export default {
-        props: ['shows', 'limit', 'moduleList'],
+        props: ['shows', 'limit'],
         data() {
             const upValidate = (rule, value, callback) => {
                 if (value == null) {
@@ -120,14 +101,11 @@
                 loading: false,
                 submiting: false,
                 width: '880px',
-                groupList: [],
                 formData: {
                     upper_limit: 0,
                     lower_limit: 0,
                     alias: '',
                     measure: '',
-                    tag_group_id: '',
-                    historian_module_id: ''
                 },
                 ruleValidate: {
                     upper_limit: [
@@ -146,36 +124,9 @@
                     this.formData.lower_limit = this.limit.lower_limit;
                     this.formData.alias = this.limit.alias ? this.limit.alias : "";
                     this.formData.measure = this.limit.measure ? this.limit.measure : "";
-                    this.formData.historian_module_id = this.limit.historian_module_id ? this.limit.historian_module_id : "";
-                    this.groups();
                 } else {
                     this.shows.update = false;
                 }
-            },
-            groups(){
-                let vm = this;
-                vm.loading = true;
-                vm.ajax({
-                    method: 'get',
-                    params: {
-                        num: 1000,
-                        page: 1
-                    },
-                    url: vm.$request.group.index,
-                    success: (data) => {
-                        vm.groupList = data.data;
-                        vm.loading = false;
-                        if(vm.limit && vm.limit.tag_group_id){
-                            vm.formData.tag_group_id = vm.limit.tag_group_id;
-                        }
-                        else{
-                            vm.formData.tag_group_id = vm.groupList[0].id;
-                        }
-                    },
-                    fail(){
-                        vm.loading = false;
-                    }
-                });
             },
             handleSubmit: function (name) {
                 let vm = this;

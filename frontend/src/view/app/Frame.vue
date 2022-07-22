@@ -371,7 +371,7 @@
             let that = this;
             that.loadMenus();
             that.$nextTick(()=>{
-              that.echo(this.token.access_token);
+              //that.echo(this.token.access_token);
             });
         },
         destroyed() {
