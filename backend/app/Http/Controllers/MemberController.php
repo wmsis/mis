@@ -27,7 +27,7 @@ class MemberController extends Controller
     /**
      * @OA\Get(
      *     path="/api/member/lists",
-     *     tags={"member api"},
+     *     tags={"member"},
      *     operationId="memberLists",
      *     summary="用户列表",
      *     description="使用说明：获取用户列表",
@@ -131,7 +131,7 @@ class MemberController extends Controller
     /**
      * @OA\Get(
      *     path="/api/member/{id}/info",
-     *     tags={"member api"},
+     *     tags={"member"},
      *     operationId="memberInfo",
      *     summary="用户详情",
      *     description="使用说明：获取用户详情",

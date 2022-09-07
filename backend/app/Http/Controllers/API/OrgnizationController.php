@@ -22,7 +22,7 @@ class OrgnizationController extends Controller
     /**
      * @OA\GET(
      *     path="/api/orgnizations/factories",
-     *     tags={"orgnizations api"},
+     *     tags={"orgnizations"},
      *     operationId="orgnizations-factories",
      *     summary="获取所有电厂列表",
      *     description="使用说明：获取所有电厂列表",
@@ -59,7 +59,7 @@ class OrgnizationController extends Controller
     /**
      * @OA\Get(
      *     path="/api/orgnizations/tree",
-     *     tags={"orgnizations api"},
+     *     tags={"orgnizations"},
      *     operationId="orgnizationsAll",
      *     summary="组织树",
      *     description="使用说明：获取组织树",
@@ -141,7 +141,7 @@ class OrgnizationController extends Controller
     /**
      * @OA\Post(
      *     path="/api/orgnizations/store",
-     *     tags={"orgnizations api"},
+     *     tags={"orgnizations"},
      *     operationId="storeOrgnization",
      *     summary="保存组织",
      *     description="使用说明：保存组织",
@@ -250,7 +250,7 @@ class OrgnizationController extends Controller
     /**
      * @OA\Get(
      *     path="/api/orgnizations/{id}/role",
-     *     tags={"orgnizations api"},
+     *     tags={"orgnizations"},
      *     operationId="getOrgRole",
      *     summary="用户组织角色",
      *     description="使用说明：获取用户组织角色",
@@ -290,7 +290,7 @@ class OrgnizationController extends Controller
     /**
      * @OA\Post(
      *     path="/api/orgnizations/{id}/role",
-     *     tags={"orgnizations api"},
+     *     tags={"orgnizations"},
      *     operationId="storeOrgRole",
      *     summary="保存用户组织角色",
      *     description="使用说明：保存用户组织角色",
@@ -350,7 +350,7 @@ class OrgnizationController extends Controller
     /**
      * @OA\Post(
      *     path="/api/orgnizations/delete",
-     *     tags={"orgnizations api"},
+     *     tags={"orgnizations"},
      *     operationId="deleteOrgnization",
      *     summary="删除用户组织",
      *     description="使用说明：删除用户组织",

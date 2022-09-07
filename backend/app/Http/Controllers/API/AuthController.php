@@ -46,7 +46,7 @@ class AuthController extends Controller
     /**
      * @OA\Post(
      *     path="/api/auth/login",
-     *     tags={"auth api"},
+     *     tags={"auth"},
      *     operationId="login",
      *     summary="登录",
      *     description="使用说明：登录",
@@ -259,7 +259,7 @@ class AuthController extends Controller
     /**
      * @OA\Get(
      *     path="/api/auth/logout",
-     *     tags={"auth api"},
+     *     tags={"auth"},
      *     operationId="logout",
      *     summary="退出登录",
      *     description="使用说明：退出登录",
@@ -300,7 +300,7 @@ class AuthController extends Controller
     /**
      * @OA\Get(
      *     path="/api/auth/refresh",
-     *     tags={"auth api"},
+     *     tags={"auth"},
      *     operationId="refresh",
      *     summary="刷新token",
      *     description="使用说明：刷新token",
@@ -335,7 +335,7 @@ class AuthController extends Controller
     /**
      * @OA\Get(
      *     path="/api/auth/me",
-     *     tags={"auth api"},
+     *     tags={"auth"},
      *     operationId="me",
      *     summary="我",
      *     description="使用说明：我",

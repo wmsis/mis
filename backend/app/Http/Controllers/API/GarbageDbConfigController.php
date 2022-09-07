@@ -1,140 +1,19 @@
 <?php
-/**
-* DCS标准名控制器
-*
-* @author      cat 叶文华
-* @version     1.0 版本号
-*/
 
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\SIS\DcsStandard;
+use App\Models\SIS\ConfigGarbageDB;
 use UtilService;
 
-class DcsStandardController extends Controller
+class GarbageDbConfigController extends Controller
 {
     /**
-     * @OA\GET(
-     *     path="/api/dcs-standard/lists",
-     *     tags={"dcs-standard"},
-     *     operationId="dcs-standard-lists",
-     *     summary="获取所有数据列表",
-     *     description="使用说明：获取所有数据列表",
-     *     @OA\Parameter(
-     *         description="token",
-     *         in="query",
-     *         name="token",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="string"
-     *         ),
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="succeed",
-     *         @OA\Schema(
-     *              @OA\Property(
-     *                  property="DcsStandards",
-     *                  description="DcsStandards",
-     *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/DcsStandards")
-     *                  }
-     *             )
-     *         )
-     *     ),
-     * )
-     */
-    public function lists(Request $request)
-    {
-        $data = DcsStandard::all();
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $data);
-    }
-
-    /**
-     * @OA\GET(
-     *     path="/api/dcs-standard/index",
-     *     tags={"dcs-standard"},
-     *     operationId="dcs-standard-index",
-     *     summary="分页获取数据列表",
-     *     description="使用说明：分页获取数据列表",
-     *     @OA\Parameter(
-     *         description="token",
-     *         in="query",
-     *         name="token",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="string"
-     *        )
-     *     ),
-     *     @OA\Parameter(
-     *         description="每页数据量",
-     *         in="query",
-     *         name="num",
-     *         required=false,
-     *         @OA\Schema(
-     *             type="integer",
-     *             default=20,
-     *         ),
-     *     ),
-     *     @OA\Parameter(
-     *         description="页数",
-     *         in="query",
-     *         name="page",
-     *         required=false,
-     *         @OA\Schema(
-     *             type="integer",
-     *             default=1,
-     *         ),
-     *     ),
-     *     @OA\Parameter(
-     *         description="关键字中文名搜索",
-     *         in="query",
-     *         name="cn_name",
-     *         required=false,
-     *         @OA\Schema(
-     *             type="string"
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="succeed",
-     *         @OA\Schema(
-     *              @OA\Property(
-     *                  property="DcsStandards",
-     *                  description="DcsStandards",
-     *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/DcsStandards")
-     *                  }
-     *             )
-     *         )
-     *     ),
-     * )
-     */
-    public function index(Request $request)
-    {
-        $perPage = $request->input('num');
-        $perPage = $perPage ? $perPage : 20;
-        $page = $request->input('page');
-        $page = $page ? $page : 1;
-
-        $name = $request->input('cn_name');
-
-        $rows = DcsStandard::select(['*']);
-        if ($name) {
-            $rows = $rows->where('cn_name', 'like', "%{$name}%");
-        }
-        $total = $rows->count();
-        $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total]);
-    }
-
-    /**
      * @OA\POST(
-     *     path="/api/dcs-standard/store",
-     *     tags={"dcs-standard"},
-     *     operationId="dcs-standard-store",
+     *     path="/api/garbage-db-config/store",
+     *     tags={"garbage-db-config"},
+     *     operationId="garbage-db-config-store",
      *     summary="新增单条数据",
      *     description="使用说明：新增单条数据",
      *     @OA\Parameter(
@@ -147,21 +26,66 @@ class DcsStandardController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="中文名字",
+     *         description="用户名",
      *         in="query",
-     *         name="cn_name",
+     *         name="user",
      *         required=true,
      *         @OA\Schema(
      *             type="string"
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="英文名字",
+     *         description="密码",
      *         in="query",
-     *         name="en_name",
-     *         required=false,
+     *         name="password",
+     *         required=true,
      *         @OA\Schema(
      *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="IP",
+     *         in="query",
+     *         name="ip",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="端口",
+     *         in="query",
+     *         name="port",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="数据库类型",
+     *         in="query",
+     *         name="type",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="数据库名称",
+     *         in="query",
+     *         name="db_name",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="组织ID",
+     *         in="query",
+     *         name="orgnization_id",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
      *         )
      *     ),
      *     @OA\Response(
@@ -169,10 +93,10 @@ class DcsStandardController extends Controller
      *         description="store succeed",
      *         @OA\Schema(
      *              @OA\Property(
-     *                  property="DcsStandard",
-     *                  description="DcsStandard",
+     *                  property="ConfigGarbageDB",
+     *                  description="ConfigGarbageDB",
      *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/DcsStandard")
+     *                      @OA\Schema(ref="#/definitions/ConfigGarbageDB")
      *                  }
      *               )
      *          )
@@ -181,9 +105,9 @@ class DcsStandardController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->only(['cn_name', 'en_name']);
+        $input = $request->only(['type', 'user', 'password', 'ip', 'port', 'db_name', 'orgnization_id']);
         try {
-            $res = DcsStandard::create($input);
+            $res = ConfigGarbageDB::create($input);
         } catch (QueryException $e) {
             return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
         }
@@ -192,9 +116,9 @@ class DcsStandardController extends Controller
 
     /**
      * @OA\GET(
-     *     path="/api/dcs-standard/show/{id}",
-     *     tags={"dcs-standard"},
-     *     operationId="dcs-standard-show",
+     *     path="/api/garbage-db-config/show/{id}",
+     *     tags={"garbage-db-config"},
+     *     operationId="garbage-db-config-show",
      *     summary="获取详细信息",
      *     description="使用说明：获取详细信息",
      *     @OA\Parameter(
@@ -207,7 +131,7 @@ class DcsStandardController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="DcsStandard主键",
+     *         description="组织ID",
      *         in="path",
      *         name="id",
      *         required=true,
@@ -220,10 +144,10 @@ class DcsStandardController extends Controller
      *         description="succeed",
      *         @OA\Schema(
      *              @OA\Property(
-     *                  property="DcsStandard",
-     *                  description="DcsStandard",
+     *                  property="ConfigGarbageDB",
+     *                  description="ConfigGarbageDB",
      *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/DcsStandard")
+     *                      @OA\Schema(ref="#/definitions/ConfigGarbageDB")
      *                  }
      *             )
      *         )
@@ -232,7 +156,7 @@ class DcsStandardController extends Controller
      */
     public function show($id)
     {
-        $row = DcsStandard::find($id);
+        $row = ConfigGarbageDB::where('orgnization_id', $id)->first();
         if (!$row) {
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
@@ -241,9 +165,9 @@ class DcsStandardController extends Controller
 
     /**
      * @OA\POST(
-     *     path="/api/dcs-standard/update/{id}",
-     *     tags={"dcs-standard"},
-     *     operationId="dcs-standard-update",
+     *     path="/api/garbage-db-config/update/{id}",
+     *     tags={"garbage-db-config"},
+     *     operationId="garbage-db-config-update",
      *     summary="修改",
      *     description="使用说明：修改单条数据",
      *     @OA\Parameter(
@@ -256,7 +180,7 @@ class DcsStandardController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="DcsStandard主键",
+     *         description="组织ID",
      *         in="path",
      *         name="id",
      *         required=true,
@@ -265,21 +189,66 @@ class DcsStandardController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="中文名字",
+     *         description="用户名",
      *         in="query",
-     *         name="cn_name",
-     *         required=false,
+     *         name="user",
+     *         required=true,
      *         @OA\Schema(
      *             type="string"
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="英文名字",
+     *         description="密码",
      *         in="query",
-     *         name="model",
-     *         required=false,
+     *         name="password",
+     *         required=true,
      *         @OA\Schema(
      *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="IP",
+     *         in="query",
+     *         name="ip",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="端口",
+     *         in="query",
+     *         name="port",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="数据库类型",
+     *         in="query",
+     *         name="type",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="数据库名称",
+     *         in="query",
+     *         name="db_name",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="组织ID",
+     *         in="query",
+     *         name="orgnization_id",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
      *         )
      *     ),
      *     @OA\Response(
@@ -287,10 +256,10 @@ class DcsStandardController extends Controller
      *         description="update succeed",
      *         @OA\Schema(
      *              @OA\Property(
-     *                  property="DcsStandard",
-     *                  description="DcsStandard",
+     *                  property="ConfigGarbageDB",
+     *                  description="ConfigGarbageDB",
      *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/DcsStandard")
+     *                      @OA\Schema(ref="#/definitions/ConfigGarbageDB")
      *                  }
      *             )
      *         )
@@ -299,12 +268,12 @@ class DcsStandardController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $row = DcsStandard::find($id);
+        $row = ConfigGarbageDB::where('orgnization_id', $id)->first();
         if (!$row) {
             return response()->json(UtilService::format_data(self::AJAX_FAIL, '该数据不存在', ''));
         }
         $input = $request->input();
-        $allowField = ['cn_name', 'en_name'];
+        $allowField = ['type', 'user', 'password', 'db_name', 'ip', 'port'];
         foreach ($allowField as $field) {
             if (key_exists($field, $input)) {
                 $inputValue = $input[$field];
@@ -312,12 +281,6 @@ class DcsStandardController extends Controller
             }
         }
         try {
-            if(isset($input['en_name'])){
-                $row = DcsStandard::where('en_name', $input['en_name'])->first();
-                if($row && $row->id != $id){
-                    return UtilService::format_data(self::AJAX_FAIL, '中文名称重复', '');
-                }
-            }
             $row->save();
             $row->refresh();
         } catch (Exception $ex) {
@@ -328,9 +291,9 @@ class DcsStandardController extends Controller
 
     /**
      * @OA\DELETE(
-     *     path="/api/dcs-standard/destroy/{id}",
-     *     tags={"dcs-standard"},
-     *     operationId="dcs-standard-destroy",
+     *     path="/api/garbage-db-config/destroy/{id}",
+     *     tags={"garbage-db-config"},
+     *     operationId="garbage-db-config-destroy",
      *     summary="删除单条数据",
      *     description="使用说明：删除单条数据",
      *     @OA\Parameter(
@@ -343,12 +306,12 @@ class DcsStandardController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="DcsStandard主键",
+     *         description="组织ID",
      *         in="path",
      *         name="id",
      *         required=true,
      *         @OA\Schema(
-     *             type="string"
+     *             type="integer"
      *         )
      *     ),
      *     @OA\Response(
@@ -359,7 +322,7 @@ class DcsStandardController extends Controller
      */
     public function destroy($id)
     {
-        $row = DcsStandard::find($id);
+        $row = ConfigGarbageDB::where('orgnization_id', $id)->first();
         if (!$row) {
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
@@ -372,10 +335,11 @@ class DcsStandardController extends Controller
     }
 }
 
+
 /**
  * @OA\Definition(
- *     definition="DcsStandards",
+ *     definition="ConfigGarbageDBs",
  *     type="array",
- *     @OA\Items(ref="#/definitions/DcsStandard")
+ *     @OA\Items(ref="#/definitions/ConfigGarbageDB")
  * )
  */

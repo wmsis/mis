@@ -18,7 +18,7 @@ class DcsMapController extends Controller
     /**
      * @OA\GET(
      *     path="/api/dcs-map/index",
-     *     tags={"dcs-map api"},
+     *     tags={"dcs-map"},
      *     operationId="dcs-map-index",
      *     summary="分页获取数据列表",
      *     description="使用说明：分页获取数据列表",
@@ -60,6 +60,15 @@ class DcsMapController extends Controller
      *             type="string"
      *         )
      *     ),
+     *     @OA\Parameter(
+     *         description="组织ID",
+     *         in="query",
+     *         name="orgnization_id",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="succeed",
@@ -77,6 +86,7 @@ class DcsMapController extends Controller
      */
     public function index(Request $request)
     {
+        $orgnization_id = $request->input('orgnization_id');
         $perPage = $request->input('num');
         $perPage = $perPage ? $perPage : 20;
         $page = $request->input('page');
@@ -84,7 +94,7 @@ class DcsMapController extends Controller
 
         $name = $request->input('cn_name');
 
-        $rows = DcsMap::select(['*']);
+        $rows = DcsMap::select(['*'])->where('orgnization_id', $orgnization_id);
         if ($name) {
             $rows = $rows->where('cn_name', 'like', "%{$name}%");
         }
@@ -96,7 +106,7 @@ class DcsMapController extends Controller
     /**
      * @OA\POST(
      *     path="/api/dcs-map/store",
-     *     tags={"dcs-map api"},
+     *     tags={"dcs-map"},
      *     operationId="dcs-map-store",
      *     summary="新增单条数据",
      *     description="使用说明：新增单条数据",
@@ -110,18 +120,36 @@ class DcsMapController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="中文名字",
+     *         description="historian id列表",
      *         in="query",
-     *         name="cn_name",
+     *         name="tag_ids",
      *         required=true,
      *         @OA\Schema(
      *             type="string"
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="英文名字",
+     *         description="标准dcs名称ID",
      *         in="query",
-     *         name="en_name",
+     *         name="dcs_standard_id",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="函数",
+     *         in="query",
+     *         name="func",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="组织ID",
+     *         in="query",
+     *         name="orgnization_id",
      *         required=false,
      *         @OA\Schema(
      *             type="string"
@@ -156,7 +184,7 @@ class DcsMapController extends Controller
     /**
      * @OA\GET(
      *     path="/api/dcs-map/show/{id}",
-     *     tags={"dcs-map api"},
+     *     tags={"dcs-map"},
      *     operationId="dcs-map-show",
      *     summary="获取详细信息",
      *     description="使用说明：获取详细信息",
@@ -205,7 +233,7 @@ class DcsMapController extends Controller
     /**
      * @OA\POST(
      *     path="/api/dcs-map/update/{id}",
-     *     tags={"dcs-map api"},
+     *     tags={"dcs-map"},
      *     operationId="dcs-map-update",
      *     summary="修改",
      *     description="使用说明：修改单条数据",
@@ -228,18 +256,36 @@ class DcsMapController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="中文名字",
+     *         description="historian id列表",
      *         in="query",
-     *         name="cn_name",
+     *         name="tag_ids",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="标准dcs名称ID",
+     *         in="query",
+     *         name="dcs_standard_id",
      *         required=false,
      *         @OA\Schema(
      *             type="string"
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="英文名字",
+     *         description="函数",
      *         in="query",
-     *         name="model",
+     *         name="func",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="组织ID",
+     *         in="query",
+     *         name="orgnization_id",
      *         required=false,
      *         @OA\Schema(
      *             type="string"
@@ -286,7 +332,7 @@ class DcsMapController extends Controller
     /**
      * @OA\DELETE(
      *     path="/api/dcs-map/destroy/{id}",
-     *     tags={"dcs-map api"},
+     *     tags={"dcs-map"},
      *     operationId="dcs-map-destroy",
      *     summary="删除单条数据",
      *     description="使用说明：删除单条数据",

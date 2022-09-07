@@ -9,7 +9,7 @@ class ConfigGarbageDB extends Model
 {
     use softDeletes;
     protected $table = 'config_garbage_db';
-    protected $fillable = ['user', 'password', 'ip', 'port', 'db_name', 'orgnization_id'];
+    protected $fillable = ['type', 'user', 'password', 'ip', 'port', 'db_name', 'orgnization_id'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',

@@ -26,7 +26,7 @@ class RoleController extends Controller
     /**
      * @OA\Get(
      *     path="/api/roles",
-     *     tags={"roles api"},
+     *     tags={"roles"},
      *     operationId="roles",
      *     summary="角色列表分页",
      *     description="使用说明：获取角色列表",
@@ -107,7 +107,7 @@ class RoleController extends Controller
     /**
      * @OA\Post(
      *     path="/api/roles/store",
-     *     tags={"roles api"},
+     *     tags={"roles"},
      *     operationId="roleStore",
      *     summary="保存集团角色",
      *     description="使用说明：保存集团角色",
@@ -181,7 +181,7 @@ class RoleController extends Controller
     /**
      * @OA\Get(
      *     path="/api/roles/{id}/permission",
-     *     tags={"roles api"},
+     *     tags={"roles"},
      *     operationId="rolePermission",
      *     summary="角色权限",
      *     description="使用说明：获取角色权限",
@@ -221,7 +221,7 @@ class RoleController extends Controller
     /**
      * @OA\Post(
      *     path="/api/roles/{id}/permission",
-     *     tags={"roles api"},
+     *     tags={"roles"},
      *     operationId="storeRolePermission",
      *     summary="保存角色权限",
      *     description="使用说明：保存角色权限",
@@ -291,7 +291,7 @@ class RoleController extends Controller
     /**
      * @OA\Post(
      *     path="/api/roles/delete",
-     *     tags={"roles api"},
+     *     tags={"roles"},
      *     operationId="roleDelete",
      *     summary="删除角色",
      *     description="使用说明：删除角色",
@@ -334,7 +334,7 @@ class RoleController extends Controller
     /**
      * @OA\Get(
      *     path="/api/roles/lists",
-     *     tags={"roles api"},
+     *     tags={"roles"},
      *     operationId="roleLists",
      *     summary="角色列表(不分页)",
      *     description="使用说明：获取角色列表",
@@ -367,7 +367,7 @@ class RoleController extends Controller
     /**
      * @OA\Get(
      *     path="/api/roles/{id}/api",
-     *     tags={"roles api"},
+     *     tags={"roles"},
      *     operationId="roleApi",
      *     summary="角色接口权限",
      *     description="使用说明：获取角色接口权限",
@@ -407,7 +407,7 @@ class RoleController extends Controller
     /**
      * @OA\Post(
      *     path="/api/roles/{id}/api",
-     *     tags={"roles api"},
+     *     tags={"roles"},
      *     operationId="storeRoleApi",
      *     summary="保存角色权接口限",
      *     description="使用说明：保存角色接口权限",

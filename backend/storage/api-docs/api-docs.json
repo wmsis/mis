@@ -9,7 +9,7 @@
         "/api/api/tree": {
             "get": {
                 "tags": [
-                    "apis api"
+                    "apis"
                 ],
                 "summary": "接口树",
                 "description": "使用说明：获取接口树",
@@ -35,7 +35,7 @@
         "/api/api/store": {
             "post": {
                 "tags": [
-                    "apis api"
+                    "apis"
                 ],
                 "summary": "保存接口",
                 "description": "使用说明：保存接口",
@@ -115,7 +115,7 @@
         "/api/api/delete": {
             "post": {
                 "tags": [
-                    "apis api"
+                    "apis"
                 ],
                 "summary": "删除用户接口",
                 "description": "使用说明：删除用户接口",
@@ -150,7 +150,7 @@
         "/api/auth/login": {
             "post": {
                 "tags": [
-                    "auth api"
+                    "auth"
                 ],
                 "summary": "登录",
                 "description": "使用说明：登录",
@@ -185,7 +185,7 @@
         "/api/auth/logout": {
             "get": {
                 "tags": [
-                    "auth api"
+                    "auth"
                 ],
                 "summary": "退出登录",
                 "description": "使用说明：退出登录",
@@ -211,7 +211,7 @@
         "/api/auth/refresh": {
             "get": {
                 "tags": [
-                    "auth api"
+                    "auth"
                 ],
                 "summary": "刷新token",
                 "description": "使用说明：刷新token",
@@ -237,7 +237,7 @@
         "/api/auth/me": {
             "get": {
                 "tags": [
-                    "auth api"
+                    "auth"
                 ],
                 "summary": "我",
                 "description": "使用说明：我",
@@ -260,10 +260,249 @@
                 }
             }
         },
+        "/api/dcs-db-config/store": {
+            "post": {
+                "tags": [
+                    "dcs-db-config"
+                ],
+                "summary": "新增单条数据",
+                "description": "使用说明：新增单条数据",
+                "operationId": "dcs-db-config-store",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "user",
+                        "in": "query",
+                        "description": "用户名",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "密码",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ip",
+                        "in": "query",
+                        "description": "IP",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "port",
+                        "in": "query",
+                        "description": "端口",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "version",
+                        "in": "query",
+                        "description": "版本",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "orgnization_id",
+                        "in": "query",
+                        "description": "组织ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "store succeed"
+                    }
+                }
+            }
+        },
+        "/api/dcs-db-config/show/{id}": {
+            "get": {
+                "tags": [
+                    "dcs-db-config"
+                ],
+                "summary": "获取详细信息",
+                "description": "使用说明：获取详细信息",
+                "operationId": "dcs-db-config-show",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "组织ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/dcs-db-config/update/{id}": {
+            "post": {
+                "tags": [
+                    "dcs-db-config"
+                ],
+                "summary": "修改",
+                "description": "使用说明：修改单条数据",
+                "operationId": "dcs-db-config-update",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "组织ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "user",
+                        "in": "query",
+                        "description": "用户名",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "密码",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ip",
+                        "in": "query",
+                        "description": "IP",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "port",
+                        "in": "query",
+                        "description": "端口",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "version",
+                        "in": "query",
+                        "description": "版本",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "orgnization_id",
+                        "in": "query",
+                        "description": "组织ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "update succeed"
+                    }
+                }
+            }
+        },
+        "/api/dcs-db-config/destroy/{id}": {
+            "delete": {
+                "tags": [
+                    "dcs-db-config"
+                ],
+                "summary": "删除单条数据",
+                "description": "使用说明：删除单条数据",
+                "operationId": "dcs-db-config-destroy",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "组织ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "detroy succeed"
+                    }
+                }
+            }
+        },
         "/api/dcs-map/index": {
             "get": {
                 "tags": [
-                    "dcs-map api"
+                    "dcs-map"
                 ],
                 "summary": "分页获取数据列表",
                 "description": "使用说明：分页获取数据列表",
@@ -306,6 +545,15 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "name": "orgnization_id",
+                        "in": "query",
+                        "description": "组织ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
                     }
                 ],
                 "responses": {
@@ -318,7 +566,7 @@
         "/api/dcs-map/store": {
             "post": {
                 "tags": [
-                    "dcs-map api"
+                    "dcs-map"
                 ],
                 "summary": "新增单条数据",
                 "description": "使用说明：新增单条数据",
@@ -334,18 +582,36 @@
                         }
                     },
                     {
-                        "name": "cn_name",
+                        "name": "tag_ids",
                         "in": "query",
-                        "description": "中文名字",
+                        "description": "historian id列表",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
                     },
                     {
-                        "name": "en_name",
+                        "name": "dcs_standard_id",
                         "in": "query",
-                        "description": "英文名字",
+                        "description": "标准dcs名称ID",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "func",
+                        "in": "query",
+                        "description": "函数",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "orgnization_id",
+                        "in": "query",
+                        "description": "组织ID",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -362,7 +628,7 @@
         "/api/dcs-map/show/{id}": {
             "get": {
                 "tags": [
-                    "dcs-map api"
+                    "dcs-map"
                 ],
                 "summary": "获取详细信息",
                 "description": "使用说明：获取详细信息",
@@ -397,7 +663,7 @@
         "/api/dcs-map/update/{id}": {
             "post": {
                 "tags": [
-                    "dcs-map api"
+                    "dcs-map"
                 ],
                 "summary": "修改",
                 "description": "使用说明：修改单条数据",
@@ -422,18 +688,36 @@
                         }
                     },
                     {
-                        "name": "cn_name",
+                        "name": "tag_ids",
                         "in": "query",
-                        "description": "中文名字",
+                        "description": "historian id列表",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "dcs_standard_id",
+                        "in": "query",
+                        "description": "标准dcs名称ID",
                         "required": false,
                         "schema": {
                             "type": "string"
                         }
                     },
                     {
-                        "name": "model",
+                        "name": "func",
                         "in": "query",
-                        "description": "英文名字",
+                        "description": "函数",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "orgnization_id",
+                        "in": "query",
+                        "description": "组织ID",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -450,7 +734,7 @@
         "/api/dcs-map/destroy/{id}": {
             "delete": {
                 "tags": [
-                    "dcs-map api"
+                    "dcs-map"
                 ],
                 "summary": "删除单条数据",
                 "description": "使用说明：删除单条数据",
@@ -485,7 +769,7 @@
         "/api/dcs-standard/lists": {
             "get": {
                 "tags": [
-                    "dcs-standard api"
+                    "dcs-standard"
                 ],
                 "summary": "获取所有数据列表",
                 "description": "使用说明：获取所有数据列表",
@@ -511,7 +795,7 @@
         "/api/dcs-standard/index": {
             "get": {
                 "tags": [
-                    "dcs-standard api"
+                    "dcs-standard"
                 ],
                 "summary": "分页获取数据列表",
                 "description": "使用说明：分页获取数据列表",
@@ -566,7 +850,7 @@
         "/api/dcs-standard/store": {
             "post": {
                 "tags": [
-                    "dcs-standard api"
+                    "dcs-standard"
                 ],
                 "summary": "新增单条数据",
                 "description": "使用说明：新增单条数据",
@@ -610,7 +894,7 @@
         "/api/dcs-standard/show/{id}": {
             "get": {
                 "tags": [
-                    "dcs-standard api"
+                    "dcs-standard"
                 ],
                 "summary": "获取详细信息",
                 "description": "使用说明：获取详细信息",
@@ -645,7 +929,7 @@
         "/api/dcs-standard/update/{id}": {
             "post": {
                 "tags": [
-                    "dcs-standard api"
+                    "dcs-standard"
                 ],
                 "summary": "修改",
                 "description": "使用说明：修改单条数据",
@@ -698,7 +982,7 @@
         "/api/dcs-standard/destroy/{id}": {
             "delete": {
                 "tags": [
-                    "dcs-standard api"
+                    "dcs-standard"
                 ],
                 "summary": "删除单条数据",
                 "description": "使用说明：删除单条数据",
@@ -733,7 +1017,7 @@
         "/api/electricity/index": {
             "get": {
                 "tags": [
-                    "electricity api"
+                    "electricity"
                 ],
                 "summary": "获取电表数据列表",
                 "description": "使用说明：获取电表数据列表",
@@ -797,7 +1081,7 @@
         "/api/electricity/store_multi": {
             "post": {
                 "tags": [
-                    "electricity api"
+                    "electricity"
                 ],
                 "summary": "批量新增",
                 "description": "使用说明：批量新增",
@@ -838,10 +1122,204 @@
                 }
             }
         },
+        "/api/electricity-db-config/store": {
+            "post": {
+                "tags": [
+                    "electricity-db-config"
+                ],
+                "summary": "新增单条数据",
+                "description": "使用说明：新增单条数据",
+                "operationId": "electricity-db-config-store",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "master_ip",
+                        "in": "query",
+                        "description": "主站IP",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "slave_ip",
+                        "in": "query",
+                        "description": "从站IP",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "common_addr",
+                        "in": "query",
+                        "description": "公共地址",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "orgnization_id",
+                        "in": "query",
+                        "description": "组织ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "store succeed"
+                    }
+                }
+            }
+        },
+        "/api/electricity-db-config/show/{id}": {
+            "get": {
+                "tags": [
+                    "electricity-db-config"
+                ],
+                "summary": "获取详细信息",
+                "description": "使用说明：获取详细信息",
+                "operationId": "electricity-db-config-show",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "组织ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/electricity-db-config/update/{id}": {
+            "post": {
+                "tags": [
+                    "electricity-db-config"
+                ],
+                "summary": "修改",
+                "description": "使用说明：修改单条数据",
+                "operationId": "electricity-db-config-update",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "master_ip",
+                        "in": "query",
+                        "description": "主站IP",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "slave_ip",
+                        "in": "query",
+                        "description": "从站IP",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "common_addr",
+                        "in": "query",
+                        "description": "公共地址",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "orgnization_id",
+                        "in": "query",
+                        "description": "组织ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "update succeed"
+                    }
+                }
+            }
+        },
+        "/api/electricity-db-config/destroy/{id}": {
+            "delete": {
+                "tags": [
+                    "electricity-db-config"
+                ],
+                "summary": "删除单条数据",
+                "description": "使用说明：删除单条数据",
+                "operationId": "electricity-db-config-destroy",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "组织ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "detroy succeed"
+                    }
+                }
+            }
+        },
         "/api/electricity-map/index": {
             "get": {
                 "tags": [
-                    "electricity-map api"
+                    "electricity-map"
                 ],
                 "summary": "分页获取数据列表",
                 "description": "使用说明：分页获取数据列表",
@@ -884,6 +1362,15 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "name": "orgnization_id",
+                        "in": "query",
+                        "description": "组织ID",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
@@ -896,7 +1383,7 @@
         "/api/electricity-map/store": {
             "post": {
                 "tags": [
-                    "electricity-map api"
+                    "electricity-map"
                 ],
                 "summary": "新增单条数据",
                 "description": "使用说明：新增单条数据",
@@ -921,12 +1408,30 @@
                         }
                     },
                     {
-                        "name": "en_name",
+                        "name": "addr",
                         "in": "query",
-                        "description": "英文名字",
+                        "description": "点位地址",
                         "required": false,
                         "schema": {
                             "type": "string"
+                        }
+                    },
+                    {
+                        "name": "func",
+                        "in": "query",
+                        "description": "函数",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "orgnization_id",
+                        "in": "query",
+                        "description": "组织ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
                         }
                     }
                 ],
@@ -940,7 +1445,7 @@
         "/api/electricity-map/show/{id}": {
             "get": {
                 "tags": [
-                    "electricity-map api"
+                    "electricity-map"
                 ],
                 "summary": "获取详细信息",
                 "description": "使用说明：获取详细信息",
@@ -975,7 +1480,7 @@
         "/api/electricity-map/update/{id}": {
             "post": {
                 "tags": [
-                    "electricity-map api"
+                    "electricity-map"
                 ],
                 "summary": "修改",
                 "description": "使用说明：修改单条数据",
@@ -1003,18 +1508,36 @@
                         "name": "cn_name",
                         "in": "query",
                         "description": "中文名字",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "addr",
+                        "in": "query",
+                        "description": "点位地址",
                         "required": false,
                         "schema": {
                             "type": "string"
                         }
                     },
                     {
-                        "name": "model",
+                        "name": "func",
                         "in": "query",
-                        "description": "英文名字",
-                        "required": false,
+                        "description": "函数",
+                        "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "orgnization_id",
+                        "in": "query",
+                        "description": "组织ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
                         }
                     }
                 ],
@@ -1028,7 +1551,7 @@
         "/api/electricity-map/destroy/{id}": {
             "delete": {
                 "tags": [
-                    "electricity-map api"
+                    "electricity-map"
                 ],
                 "summary": "删除单条数据",
                 "description": "使用说明：删除单条数据",
@@ -1060,10 +1583,267 @@
                 }
             }
         },
+        "/api/garbage-db-config/store": {
+            "post": {
+                "tags": [
+                    "garbage-db-config"
+                ],
+                "summary": "新增单条数据",
+                "description": "使用说明：新增单条数据",
+                "operationId": "garbage-db-config-store",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "user",
+                        "in": "query",
+                        "description": "用户名",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "密码",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ip",
+                        "in": "query",
+                        "description": "IP",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "port",
+                        "in": "query",
+                        "description": "端口",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "数据库类型",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "db_name",
+                        "in": "query",
+                        "description": "数据库名称",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "orgnization_id",
+                        "in": "query",
+                        "description": "组织ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "store succeed"
+                    }
+                }
+            }
+        },
+        "/api/garbage-db-config/show/{id}": {
+            "get": {
+                "tags": [
+                    "garbage-db-config"
+                ],
+                "summary": "获取详细信息",
+                "description": "使用说明：获取详细信息",
+                "operationId": "garbage-db-config-show",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "组织ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/garbage-db-config/update/{id}": {
+            "post": {
+                "tags": [
+                    "garbage-db-config"
+                ],
+                "summary": "修改",
+                "description": "使用说明：修改单条数据",
+                "operationId": "garbage-db-config-update",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "组织ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "user",
+                        "in": "query",
+                        "description": "用户名",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "密码",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ip",
+                        "in": "query",
+                        "description": "IP",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "port",
+                        "in": "query",
+                        "description": "端口",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "数据库类型",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "db_name",
+                        "in": "query",
+                        "description": "数据库名称",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "orgnization_id",
+                        "in": "query",
+                        "description": "组织ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "update succeed"
+                    }
+                }
+            }
+        },
+        "/api/garbage-db-config/destroy/{id}": {
+            "delete": {
+                "tags": [
+                    "garbage-db-config"
+                ],
+                "summary": "删除单条数据",
+                "description": "使用说明：删除单条数据",
+                "operationId": "garbage-db-config-destroy",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "组织ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "detroy succeed"
+                    }
+                }
+            }
+        },
         "/api/historian-data/current-data": {
             "post": {
                 "tags": [
-                    "historian data api"
+                    "historian data"
                 ],
                 "summary": "获取 current data",
                 "description": "使用说明：获取 current data",
@@ -1098,7 +1878,7 @@
         "/api/historian-data/raw-data": {
             "post": {
                 "tags": [
-                    "historian data api"
+                    "historian data"
                 ],
                 "summary": "获取原始数据 raw data",
                 "description": "使用说明：获取原始数据 data",
@@ -1161,7 +1941,7 @@
         "/api/historian-data/sampled-data": {
             "post": {
                 "tags": [
-                    "historian data api"
+                    "historian data"
                 ],
                 "summary": "获取 sampled data",
                 "description": "使用说明：获取 sampled data, 默认按count计算时间间隔,间隔内取平均值,取count个历史数据",
@@ -1253,7 +2033,7 @@
         "/api/historian-data/watch-data": {
             "post": {
                 "tags": [
-                    "historian data api"
+                    "historian data"
                 ],
                 "summary": "获取 watch data",
                 "description": "使用说明：获取 watch data",
@@ -1297,7 +2077,7 @@
         "/api/historian-tag/index": {
             "get": {
                 "tags": [
-                    "historian tag api"
+                    "historian tag"
                 ],
                 "summary": "获取 tag 列表",
                 "description": "使用说明：获取 tag 列表",
@@ -1361,7 +2141,7 @@
         "/api/historian-tag/all": {
             "get": {
                 "tags": [
-                    "historian tag api"
+                    "historian tag"
                 ],
                 "summary": "获取 tag 所有列表",
                 "description": "使用说明：获取 tag 所有列表",
@@ -1396,7 +2176,7 @@
         "/api/historian-tag/listdata": {
             "get": {
                 "tags": [
-                    "historian tag api"
+                    "historian tag"
                 ],
                 "summary": "获取 tag 列表（包含当前值）",
                 "description": "使用说明：获取 tag 列表（包含当前值）",
@@ -1459,7 +2239,7 @@
         "/api/historian-tag/show/{id}": {
             "get": {
                 "tags": [
-                    "historian tag api"
+                    "historian tag"
                 ],
                 "summary": "获取 tag 详细信息",
                 "description": "使用说明：获取 tag 详细信息",
@@ -1494,7 +2274,7 @@
         "/api/historian-tag/show-many": {
             "post": {
                 "tags": [
-                    "historian tag api"
+                    "historian tag"
                 ],
                 "summary": "批量获取 historan tag",
                 "description": "使用说明：批量获取 historan tag",
@@ -1529,7 +2309,7 @@
         "/api/historian-tag/load": {
             "get": {
                 "tags": [
-                    "historian tag api"
+                    "historian tag"
                 ],
                 "summary": "从 Historian 加载 tags",
                 "description": "使用说明：从 Historian 加载 tags, 保存到数据库",
@@ -1555,7 +2335,7 @@
         "/api/historian-tag/update/{id}": {
             "post": {
                 "tags": [
-                    "historian tag api"
+                    "historian tag"
                 ],
                 "summary": "修改 tag",
                 "description": "使用说明：修改 tag",
@@ -1635,7 +2415,7 @@
         "/api/historian-tag/destroy/{id}": {
             "delete": {
                 "tags": [
-                    "historian tag api"
+                    "historian tag"
                 ],
                 "summary": "删除 tag",
                 "description": "使用说明：删除 tag",
@@ -1670,7 +2450,7 @@
         "/api/orgnizations/factories": {
             "get": {
                 "tags": [
-                    "orgnizations api"
+                    "orgnizations"
                 ],
                 "summary": "获取所有电厂列表",
                 "description": "使用说明：获取所有电厂列表",
@@ -1696,7 +2476,7 @@
         "/api/orgnizations/tree": {
             "get": {
                 "tags": [
-                    "orgnizations api"
+                    "orgnizations"
                 ],
                 "summary": "组织树",
                 "description": "使用说明：获取组织树",
@@ -1731,7 +2511,7 @@
         "/api/orgnizations/store": {
             "post": {
                 "tags": [
-                    "orgnizations api"
+                    "orgnizations"
                 ],
                 "summary": "保存组织",
                 "description": "使用说明：保存组织",
@@ -1811,7 +2591,7 @@
         "/api/orgnizations/{id}/role": {
             "get": {
                 "tags": [
-                    "orgnizations api"
+                    "orgnizations"
                 ],
                 "summary": "用户组织角色",
                 "description": "使用说明：获取用户组织角色",
@@ -1844,7 +2624,7 @@
             },
             "post": {
                 "tags": [
-                    "orgnizations api"
+                    "orgnizations"
                 ],
                 "summary": "保存用户组织角色",
                 "description": "使用说明：保存用户组织角色",
@@ -1888,7 +2668,7 @@
         "/api/orgnizations/delete": {
             "post": {
                 "tags": [
-                    "orgnizations api"
+                    "orgnizations"
                 ],
                 "summary": "删除用户组织",
                 "description": "使用说明：删除用户组织",
@@ -1923,7 +2703,7 @@
         "/api/weighbridge/index": {
             "get": {
                 "tags": [
-                    "weighbridge api"
+                    "weighbridge"
                 ],
                 "summary": "获取地磅数据列表",
                 "description": "使用说明：获取地磅数据列表",
@@ -1987,7 +2767,7 @@
         "/api/weighbridge/store_multi": {
             "post": {
                 "tags": [
-                    "weighbridge api"
+                    "weighbridge"
                 ],
                 "summary": "批量新增",
                 "description": "使用说明：批量新增",
@@ -2031,7 +2811,7 @@
         "/api/weighbridge-category/lists-big": {
             "get": {
                 "tags": [
-                    "weighbridge-category api"
+                    "weighbridge-category"
                 ],
                 "summary": "获取所有大类垃圾数据",
                 "description": "使用说明：获取所有大类垃圾数据",
@@ -2057,7 +2837,7 @@
         "/api/weighbridge-category/page-big": {
             "get": {
                 "tags": [
-                    "weighbridge-category api"
+                    "weighbridge-category"
                 ],
                 "summary": "分页获取垃圾大类数据列表",
                 "description": "使用说明：分页获取垃圾大类数据列表",
@@ -2112,7 +2892,7 @@
         "/api/weighbridge-category/store-big": {
             "post": {
                 "tags": [
-                    "weighbridge-category api"
+                    "weighbridge-category"
                 ],
                 "summary": "新增单条大类数据",
                 "description": "使用说明：新增单条大类数据",
@@ -2156,7 +2936,7 @@
         "/api/weighbridge-category/show-big/{id}": {
             "get": {
                 "tags": [
-                    "weighbridge-category api"
+                    "weighbridge-category"
                 ],
                 "summary": "获取详细信息",
                 "description": "使用说明：获取详细信息",
@@ -2191,7 +2971,7 @@
         "/api/weighbridge-category/update-big/{id}": {
             "post": {
                 "tags": [
-                    "weighbridge-category api"
+                    "weighbridge-category"
                 ],
                 "summary": "修改",
                 "description": "使用说明：修改单条数据",
@@ -2244,7 +3024,7 @@
         "/api/weighbridge-category/destroy-big/{id}": {
             "delete": {
                 "tags": [
-                    "weighbridge-category api"
+                    "weighbridge-category"
                 ],
                 "summary": "删除单条数据",
                 "description": "使用说明：删除单条数据",
@@ -2279,7 +3059,7 @@
         "/api/weighbridge-category/store-small-multi": {
             "post": {
                 "tags": [
-                    "weighbridge-category api"
+                    "weighbridge-category"
                 ],
                 "summary": "批量新增小类",
                 "description": "使用说明：批量新增小类",
@@ -2314,7 +3094,7 @@
         "/api/weighbridge-category/page-small": {
             "get": {
                 "tags": [
-                    "weighbridge-category api"
+                    "weighbridge-category"
                 ],
                 "summary": "分页获取垃圾小类数据列表",
                 "description": "使用说明：分页获取垃圾小类数据列表",
@@ -2366,10 +3146,89 @@
                 }
             }
         },
+        "/api/weighbridge-category/bind-relation": {
+            "post": {
+                "tags": [
+                    "weighbridge-category"
+                ],
+                "summary": "绑定大小类关系",
+                "description": "使用说明：绑定大小类关系",
+                "operationId": "weighbridge-category-bind-relation",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "cate_big_id",
+                        "in": "query",
+                        "description": "大类ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "cate_small_ids",
+                        "in": "query",
+                        "description": "小类ID列表，英文逗号隔开",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "store succeed"
+                    }
+                }
+            }
+        },
+        "/api/weighbridge-category/show-relation/{id}": {
+            "get": {
+                "tags": [
+                    "weighbridge-category"
+                ],
+                "summary": "获取详细大类及关联信息",
+                "description": "使用说明：获取详细大类及关联信息",
+                "operationId": "weighbridge-category-show-relation",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "大类ID，WeighbridgeCateBig主键",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
         "/api/admin/login": {
             "post": {
                 "tags": [
-                    "admin api"
+                    "admin"
                 ],
                 "summary": "登录",
                 "description": "使用说明：登录",
@@ -2404,7 +3263,7 @@
         "/api/admin/me": {
             "get": {
                 "tags": [
-                    "admin api"
+                    "admin"
                 ],
                 "summary": "我",
                 "description": "使用说明：我",
@@ -2430,7 +3289,7 @@
         "/api/admin/logout": {
             "get": {
                 "tags": [
-                    "admin api"
+                    "admin"
                 ],
                 "summary": "退出登录",
                 "description": "使用说明：退出登录",
@@ -2456,7 +3315,7 @@
         "/api/admin/refresh": {
             "get": {
                 "tags": [
-                    "admin api"
+                    "admin"
                 ],
                 "summary": "刷新token",
                 "description": "使用说明：刷新token",
@@ -2482,7 +3341,7 @@
         "/api/member/lists": {
             "get": {
                 "tags": [
-                    "member api"
+                    "member"
                 ],
                 "summary": "用户列表",
                 "description": "使用说明：获取用户列表",
@@ -2541,7 +3400,7 @@
         "/api/member/{id}/info": {
             "get": {
                 "tags": [
-                    "member api"
+                    "member"
                 ],
                 "summary": "用户详情",
                 "description": "使用说明：获取用户详情",
@@ -2582,7 +3441,7 @@
         "/api/permissions/tree": {
             "get": {
                 "tags": [
-                    "permissions api"
+                    "permissions"
                 ],
                 "summary": "菜单权限列表(所有)",
                 "description": "使用说明：获取菜单权限列表(所有)",
@@ -2608,7 +3467,7 @@
         "/api/permissions/insert": {
             "post": {
                 "tags": [
-                    "permissions api"
+                    "permissions"
                 ],
                 "summary": "插入权限节点",
                 "description": "使用说明：获取插入权限节点",
@@ -2706,7 +3565,7 @@
         "/api/permissions/update": {
             "post": {
                 "tags": [
-                    "permissions api"
+                    "permissions"
                 ],
                 "summary": "修改权限分类",
                 "description": "使用说明：获取修改权限分类",
@@ -2795,7 +3654,7 @@
         "/api/permissions/delete": {
             "post": {
                 "tags": [
-                    "permissions api"
+                    "permissions"
                 ],
                 "summary": "删除权限分类",
                 "description": "使用说明：删除权限及其子权限",
@@ -2830,7 +3689,7 @@
         "/api/roles": {
             "get": {
                 "tags": [
-                    "roles api"
+                    "roles"
                 ],
                 "summary": "角色列表分页",
                 "description": "使用说明：获取角色列表",
@@ -2883,7 +3742,7 @@
         "/api/roles/store": {
             "post": {
                 "tags": [
-                    "roles api"
+                    "roles"
                 ],
                 "summary": "保存集团角色",
                 "description": "使用说明：保存集团角色",
@@ -2936,7 +3795,7 @@
         "/api/roles/{id}/permission": {
             "get": {
                 "tags": [
-                    "roles api"
+                    "roles"
                 ],
                 "summary": "角色权限",
                 "description": "使用说明：获取角色权限",
@@ -2969,7 +3828,7 @@
             },
             "post": {
                 "tags": [
-                    "roles api"
+                    "roles"
                 ],
                 "summary": "保存角色权限",
                 "description": "使用说明：保存角色权限",
@@ -3013,7 +3872,7 @@
         "/api/roles/delete": {
             "post": {
                 "tags": [
-                    "roles api"
+                    "roles"
                 ],
                 "summary": "删除角色",
                 "description": "使用说明：删除角色",
@@ -3048,7 +3907,7 @@
         "/api/roles/lists": {
             "get": {
                 "tags": [
-                    "roles api"
+                    "roles"
                 ],
                 "summary": "角色列表(不分页)",
                 "description": "使用说明：获取角色列表",
@@ -3074,7 +3933,7 @@
         "/api/roles/{id}/api": {
             "get": {
                 "tags": [
-                    "roles api"
+                    "roles"
                 ],
                 "summary": "角色接口权限",
                 "description": "使用说明：获取角色接口权限",
@@ -3107,7 +3966,7 @@
             },
             "post": {
                 "tags": [
-                    "roles api"
+                    "roles"
                 ],
                 "summary": "保存角色权接口限",
                 "description": "使用说明：保存角色接口权限",
@@ -3151,7 +4010,7 @@
         "/api/users": {
             "get": {
                 "tags": [
-                    "users api"
+                    "users"
                 ],
                 "summary": "用户列表",
                 "description": "使用说明：获取用户列表",
@@ -3213,7 +4072,7 @@
         "/api/users/store": {
             "post": {
                 "tags": [
-                    "users api"
+                    "users"
                 ],
                 "summary": "保存用户",
                 "description": "使用说明：保存用户",
@@ -3319,7 +4178,7 @@
         "/api/users/{id}/role": {
             "get": {
                 "tags": [
-                    "users api"
+                    "users"
                 ],
                 "summary": "用户角色",
                 "description": "使用说明：获取用户角色",
@@ -3352,7 +4211,7 @@
             },
             "post": {
                 "tags": [
-                    "users api"
+                    "users"
                 ],
                 "summary": "保存用户角色",
                 "description": "使用说明：保存用户角色",
@@ -3396,7 +4255,7 @@
         "/api/users/delete": {
             "post": {
                 "tags": [
-                    "users api"
+                    "users"
                 ],
                 "summary": "删除用户",
                 "description": "使用说明：删除用户",
@@ -3431,7 +4290,7 @@
         "/api/users/batchdelete": {
             "post": {
                 "tags": [
-                    "users api"
+                    "users"
                 ],
                 "summary": "删除用户（批量）",
                 "description": "使用说明：删除用户",
@@ -3475,7 +4334,7 @@
         "/api/users/chgpwd": {
             "post": {
                 "tags": [
-                    "users api"
+                    "users"
                 ],
                 "summary": "修改用户密码",
                 "description": "使用说明：修改用户密码",
@@ -3519,7 +4378,7 @@
         "/api/users/resetpwd": {
             "post": {
                 "tags": [
-                    "users api"
+                    "users"
                 ],
                 "summary": "重置密码",
                 "description": "使用说明：重置密码",
@@ -3554,7 +4413,7 @@
         "/api/users/bind-member": {
             "post": {
                 "tags": [
-                    "users api"
+                    "users"
                 ],
                 "summary": "綁定前端用戶",
                 "description": "使用说明：綁定前端用戶",
@@ -3589,7 +4448,7 @@
         "/api/users/{id}/orgnization": {
             "get": {
                 "tags": [
-                    "users api"
+                    "users"
                 ],
                 "summary": "用户组织",
                 "description": "使用说明：获取用户组织",
@@ -3621,7 +4480,7 @@
             },
             "post": {
                 "tags": [
-                    "users api"
+                    "users"
                 ],
                 "summary": "保存用户组织",
                 "description": "使用说明：保存用户组织",

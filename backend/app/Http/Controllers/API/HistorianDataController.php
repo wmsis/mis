@@ -66,7 +66,7 @@ class HistorianDataController extends Controller
     /**
      * @OA\POST(
      *     path="/api/historian-data/current-data",
-     *     tags={"historian data api"},
+     *     tags={"historian data"},
      *     operationId="current-data",
      *     summary="获取 current data",
      *     description="使用说明：获取 current data",
@@ -120,7 +120,7 @@ class HistorianDataController extends Controller
     /**
      * @OA\POST(
      *     path="/api/historian-data/raw-data",
-     *     tags={"historian data api"},
+     *     tags={"historian data"},
      *     operationId="raw-data",
      *     summary="获取原始数据 raw data",
      *     description="使用说明：获取原始数据 data",
@@ -212,7 +212,7 @@ class HistorianDataController extends Controller
     /**
      * @OA\POST(
      *     path="/api/historian-data/sampled-data",
-     *     tags={"historian data api"},
+     *     tags={"historian data"},
      *     operationId="sampled-data",
      *     summary="获取 sampled data",
      *     description="使用说明：获取 sampled data, 默认按count计算时间间隔,间隔内取平均值,取count个历史数据",
@@ -336,7 +336,7 @@ class HistorianDataController extends Controller
     /**
      * @OA\POST(
      *     path="/api/historian-data/watch-data",
-     *     tags={"historian data api"},
+     *     tags={"historian data"},
      *     operationId="watch-data",
      *     summary="获取 watch data",
      *     description="使用说明：获取 watch data",

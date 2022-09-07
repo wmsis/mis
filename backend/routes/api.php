@@ -161,6 +161,8 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
             Route::delete('destroy-big/{id}', 'WeighBridgeController@destroyBig');
             //Route::post('store-small-multi', 'WeighBridgeController@storeSmallMulti');
             Route::get('page-small', 'WeighBridgeController@pageSmall');
+            Route::get('show-relation', 'WeighBridgeController@showRelation');
+            Route::post('bind-relation', 'WeighBridgeController@bindRelation');
         });
 
         //API 资源路由
@@ -168,6 +170,9 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
             'dcs-standard' => DcsStandardController::class,
             'dcs-map' => DcsMapController::class,
             'electricity-map' => ElectricityMapController::class,
+            'garbage-db-config' => GarbageDbConfigController::class,
+            'electricity-db-config' => ElectricityDbConfigController::class,
+            'dcs-db-config' => DcsDbConfigController::class,
         ]);
     });
 });

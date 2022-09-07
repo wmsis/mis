@@ -21,7 +21,7 @@ class WeighbridgeCategoryController extends Controller
     /**
      * @OA\GET(
      *     path="/api/weighbridge-category/lists-big",
-     *     tags={"weighbridge-category api"},
+     *     tags={"weighbridge-category"},
      *     operationId="weighbridge-category-lists-big",
      *     summary="获取所有大类垃圾数据",
      *     description="使用说明：获取所有大类垃圾数据",
@@ -58,7 +58,7 @@ class WeighbridgeCategoryController extends Controller
     /**
      * @OA\GET(
      *     path="/api/weighbridge-category/page-big",
-     *     tags={"weighbridge-category api"},
+     *     tags={"weighbridge-category"},
      *     operationId="weighbridge-category-page-big",
      *     summary="分页获取垃圾大类数据列表",
      *     description="使用说明：分页获取垃圾大类数据列表",
@@ -136,7 +136,7 @@ class WeighbridgeCategoryController extends Controller
     /**
      * @OA\POST(
      *     path="/api/weighbridge-category/store-big",
-     *     tags={"weighbridge-category api"},
+     *     tags={"weighbridge-category"},
      *     operationId="weighbridge-category-store-big",
      *     summary="新增单条大类数据",
      *     description="使用说明：新增单条大类数据",
@@ -196,7 +196,7 @@ class WeighbridgeCategoryController extends Controller
     /**
      * @OA\GET(
      *     path="/api/weighbridge-category/show-big/{id}",
-     *     tags={"weighbridge-category api"},
+     *     tags={"weighbridge-category"},
      *     operationId="weighbridge-category-show",
      *     summary="获取详细信息",
      *     description="使用说明：获取详细信息",
@@ -245,7 +245,7 @@ class WeighbridgeCategoryController extends Controller
     /**
      * @OA\POST(
      *     path="/api/weighbridge-category/update-big/{id}",
-     *     tags={"weighbridge-category api"},
+     *     tags={"weighbridge-category"},
      *     operationId="weighbridge-category-update",
      *     summary="修改",
      *     description="使用说明：修改单条数据",
@@ -326,7 +326,7 @@ class WeighbridgeCategoryController extends Controller
     /**
      * @OA\DELETE(
      *     path="/api/weighbridge-category/destroy-big/{id}",
-     *     tags={"weighbridge-category api"},
+     *     tags={"weighbridge-category"},
      *     operationId="weighbridge-category-destroy-big",
      *     summary="删除单条数据",
      *     description="使用说明：删除单条数据",
@@ -371,7 +371,7 @@ class WeighbridgeCategoryController extends Controller
     /**
      * @OA\POST(
      *     path="/api/weighbridge-category/store-small-multi",
-     *     tags={"weighbridge-category api"},
+     *     tags={"weighbridge-category"},
      *     operationId="weighbridge-category-small-multi",
      *     summary="批量新增小类",
      *     description="使用说明：批量新增小类",
@@ -439,7 +439,7 @@ class WeighbridgeCategoryController extends Controller
     /**
      * @OA\GET(
      *     path="/api/weighbridge-category/page-small",
-     *     tags={"weighbridge-category api"},
+     *     tags={"weighbridge-category"},
      *     operationId="weighbridge-category-page-small",
      *     summary="分页获取垃圾小类数据列表",
      *     description="使用说明：分页获取垃圾小类数据列表",
@@ -512,6 +512,126 @@ class WeighbridgeCategoryController extends Controller
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
         return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total]);
+    }
+
+    /**
+     * @OA\POST(
+     *     path="/api/weighbridge-category/bind-relation",
+     *     tags={"weighbridge-category"},
+     *     operationId="weighbridge-category-bind-relation",
+     *     summary="绑定大小类关系",
+     *     description="使用说明：绑定大小类关系",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="大类ID",
+     *         in="query",
+     *         name="cate_big_id",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="小类ID列表，英文逗号隔开",
+     *         in="query",
+     *         name="cate_small_ids",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="store succeed",
+     *     ),
+     * )
+     */
+    public function bindRelation(Request $request)
+    {
+        $input = $request->only(['cate_big_id', 'cate_small_ids']);
+        DB::beginTransaction();
+        try {
+            $big = WeighbridgeCateBig::find($input['cate_big_id']);
+            $arr = explode(',', $input['cate_small_ids']); //新的最终小类ID列表
+            $already_in_arr = [];  //已经存在关联关系的小类列表
+            $old_small_names = $big->small_names();
+
+            //解除旧的关联
+            foreach ($old_small_names as $key => $small) {
+                if(!in_array($small->id, $arr)){
+                    //解除旧的关联
+                    $big->small_names()->dissociate($small);
+                    $big->save();
+                }
+                else{
+                    //已经存在关联关系的小类列表
+                    $already_in_arr[] = $small->id;
+                }
+            }
+
+            //绑定新的关联
+            foreach ($arr as $key => $cate_small_id) {
+                if(!in_array($cate_small_id, $already_in_arr)){
+                    $small = WeighbridgeCateSmall::find($cate_small_id);
+                    $big->small_names()->associate($small);
+                    $big->save();
+                }
+            }
+            DB::commit();
+        } catch (QueryException $e) {
+            DB::rollback();
+            return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+        }
+        return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+    }
+
+    /**
+     * @OA\GET(
+     *     path="/api/weighbridge-category/show-relation/{id}",
+     *     tags={"weighbridge-category"},
+     *     operationId="weighbridge-category-show-relation",
+     *     summary="获取详细大类及关联信息",
+     *     description="使用说明：获取详细大类及关联信息",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="大类ID，WeighbridgeCateBig主键",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="succeed",
+     *     ),
+     * )
+     */
+    public function showRelation($id)
+    {
+        $row = WeighbridgeCateBig::find($id);
+        if (!$row) {
+            return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
+        }
+        $row->small_names();
+        return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $row);
     }
 }
 

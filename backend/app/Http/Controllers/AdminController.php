@@ -1,5 +1,10 @@
 <?php
-
+/**
+* 总管理员控制器
+*
+* @author      cat 叶文华
+* @version     1.0 版本号
+*/
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -15,7 +20,7 @@ class AdminController extends Controller
     /**
      * @OA\Post(
      *     path="/api/admin/login",
-     *     tags={"admin api"},
+     *     tags={"admin"},
      *     operationId="admin login",
      *     summary="登录",
      *     description="使用说明：登录",
@@ -56,7 +61,7 @@ class AdminController extends Controller
     /**
      * @OA\Get(
      *     path="/api/admin/me",
-     *     tags={"admin api"},
+     *     tags={"admin"},
      *     operationId="admin me",
      *     summary="我",
      *     description="使用说明：我",
@@ -84,7 +89,7 @@ class AdminController extends Controller
     /**
      * @OA\Get(
      *     path="/api/admin/logout",
-     *     tags={"admin api"},
+     *     tags={"admin"},
      *     operationId="admin logout",
      *     summary="退出登录",
      *     description="使用说明：退出登录",
@@ -112,7 +117,7 @@ class AdminController extends Controller
     /**
      * @OA\Get(
      *     path="/api/admin/refresh",
-     *     tags={"admin api"},
+     *     tags={"admin"},
      *     operationId="admin refresh",
      *     summary="刷新token",
      *     description="使用说明：刷新token",

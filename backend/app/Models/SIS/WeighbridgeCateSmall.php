@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class WeighbridgeCateSmall extends Model
 {
     protected $table = 'weighbridge_cate_small';
-    protected $fillable = ['name', 'description'];
+    protected $fillable = ['name', 'description', 'weighbridge_cate_big_id'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',

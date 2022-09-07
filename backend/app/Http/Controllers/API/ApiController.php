@@ -22,7 +22,7 @@ class ApiController extends Controller
     /**
      * @OA\Get(
      *     path="/api/api/tree",
-     *     tags={"apis api"},
+     *     tags={"apis"},
      *     operationId="apisAll",
      *     summary="接口树",
      *     description="使用说明：获取接口树",
@@ -103,7 +103,7 @@ class ApiController extends Controller
     /**
      * @OA\Post(
      *     path="/api/api/store",
-     *     tags={"apis api"},
+     *     tags={"apis"},
      *     operationId="storeApi",
      *     summary="保存接口",
      *     description="使用说明：保存接口",
@@ -212,7 +212,7 @@ class ApiController extends Controller
     /**
      * @OA\Post(
      *     path="/api/api/delete",
-     *     tags={"apis api"},
+     *     tags={"apis"},
      *     operationId="deleteAPI",
      *     summary="删除用户接口",
      *     description="使用说明：删除用户接口",

@@ -1,113 +1,19 @@
 <?php
-/**
-* 南瑞电表映射关系控制器
-*
-* @author      cat 叶文华
-* @version     1.0 版本号
-*/
 
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\SIS\ElectricityMap;
+use App\Models\SIS\ConfigElectricityDB;
 use UtilService;
 
-class ElectricityMapController extends Controller
+class ElectricityDbConfigController extends Controller
 {
     /**
-     * @OA\GET(
-     *     path="/api/electricity-map/index",
-     *     tags={"electricity-map"},
-     *     operationId="electricity-map-index",
-     *     summary="分页获取数据列表",
-     *     description="使用说明：分页获取数据列表",
-     *     @OA\Parameter(
-     *         description="token",
-     *         in="query",
-     *         name="token",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="string"
-     *        )
-     *     ),
-     *     @OA\Parameter(
-     *         description="每页数据量",
-     *         in="query",
-     *         name="num",
-     *         required=false,
-     *         @OA\Schema(
-     *             type="integer",
-     *             default=20,
-     *         ),
-     *     ),
-     *     @OA\Parameter(
-     *         description="页数",
-     *         in="query",
-     *         name="page",
-     *         required=false,
-     *         @OA\Schema(
-     *             type="integer",
-     *             default=1,
-     *         ),
-     *     ),
-     *     @OA\Parameter(
-     *         description="关键字中文名搜索",
-     *         in="query",
-     *         name="cn_name",
-     *         required=false,
-     *         @OA\Schema(
-     *             type="string"
-     *         )
-     *     ),
-     *     @OA\Parameter(
-     *         description="组织ID",
-     *         in="query",
-     *         name="orgnization_id",
-     *         required=false,
-     *         @OA\Schema(
-     *             type="string"
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="succeed",
-     *         @OA\Schema(
-     *              @OA\Property(
-     *                  property="ElectricityMaps",
-     *                  description="ElectricityMaps",
-     *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/ElectricityMaps")
-     *                  }
-     *             )
-     *         )
-     *     ),
-     * )
-     */
-    public function index(Request $request)
-    {
-        $orgnization_id = $request->input('orgnization_id');
-        $perPage = $request->input('num');
-        $perPage = $perPage ? $perPage : 20;
-        $page = $request->input('page');
-        $page = $page ? $page : 1;
-
-        $name = $request->input('cn_name');
-
-        $rows = ElectricityMap::select(['*'])->where('orgnization_id', $orgnization_id);
-        if ($name) {
-            $rows = $rows->where('cn_name', 'like', "%{$name}%");
-        }
-        $total = $rows->count();
-        $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total]);
-    }
-
-    /**
      * @OA\POST(
-     *     path="/api/electricity-map/store",
-     *     tags={"electricity-map"},
-     *     operationId="electricity-map-store",
+     *     path="/api/electricity-db-config/store",
+     *     tags={"electricity-db-config"},
+     *     operationId="electricity-db-config-store",
      *     summary="新增单条数据",
      *     description="使用说明：新增单条数据",
      *     @OA\Parameter(
@@ -120,30 +26,30 @@ class ElectricityMapController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="中文名字",
+     *         description="主站IP",
      *         in="query",
-     *         name="cn_name",
+     *         name="master_ip",
      *         required=true,
      *         @OA\Schema(
      *             type="string"
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="点位地址",
+     *         description="从站IP",
      *         in="query",
-     *         name="addr",
-     *         required=false,
+     *         name="slave_ip",
+     *         required=true,
      *         @OA\Schema(
      *             type="string"
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="函数",
+     *         description="公共地址",
      *         in="query",
-     *         name="func",
+     *         name="common_addr",
      *         required=true,
      *         @OA\Schema(
-     *             type="integer"
+     *             type="string"
      *         )
      *     ),
      *     @OA\Parameter(
@@ -160,10 +66,10 @@ class ElectricityMapController extends Controller
      *         description="store succeed",
      *         @OA\Schema(
      *              @OA\Property(
-     *                  property="ElectricityMap",
-     *                  description="ElectricityMap",
+     *                  property="ConfigElectricityDB",
+     *                  description="ConfigElectricityDB",
      *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/ElectricityMap")
+     *                      @OA\Schema(ref="#/definitions/ConfigElectricityDB")
      *                  }
      *               )
      *          )
@@ -172,9 +78,9 @@ class ElectricityMapController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->only(['addr', 'cn_name', 'func', 'orgnization_id']);
+        $input = $request->only(['master_ip', 'slave_ip', 'common_addr', 'orgnization_id']);
         try {
-            $res = ElectricityMap::create($input);
+            $res = ConfigElectricityDB::create($input);
         } catch (QueryException $e) {
             return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
         }
@@ -183,9 +89,9 @@ class ElectricityMapController extends Controller
 
     /**
      * @OA\GET(
-     *     path="/api/electricity-map/show/{id}",
-     *     tags={"electricity-map"},
-     *     operationId="electricity-map-show",
+     *     path="/api/electricity-db-config/show/{id}",
+     *     tags={"electricity-db-config"},
+     *     operationId="electricity-db-config-show",
      *     summary="获取详细信息",
      *     description="使用说明：获取详细信息",
      *     @OA\Parameter(
@@ -198,7 +104,7 @@ class ElectricityMapController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="ElectricityMap主键",
+     *         description="组织ID",
      *         in="path",
      *         name="id",
      *         required=true,
@@ -211,10 +117,10 @@ class ElectricityMapController extends Controller
      *         description="succeed",
      *         @OA\Schema(
      *              @OA\Property(
-     *                  property="ElectricityMap",
-     *                  description="ElectricityMap",
+     *                  property="ConfigElectricityDB",
+     *                  description="ConfigElectricityDB",
      *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/ElectricityMap")
+     *                      @OA\Schema(ref="#/definitions/ConfigElectricityDB")
      *                  }
      *             )
      *         )
@@ -223,7 +129,7 @@ class ElectricityMapController extends Controller
      */
     public function show($id)
     {
-        $row = ElectricityMap::find($id);
+        $row = ConfigElectricityDB::where('orgnization_id', $id)->first();
         if (!$row) {
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
@@ -232,9 +138,9 @@ class ElectricityMapController extends Controller
 
     /**
      * @OA\POST(
-     *     path="/api/electricity-map/update/{id}",
-     *     tags={"electricity-map"},
-     *     operationId="electricity-map-update",
+     *     path="/api/electricity-db-config/update/{id}",
+     *     tags={"electricity-db-config"},
+     *     operationId="electricity-db-config-update",
      *     summary="修改",
      *     description="使用说明：修改单条数据",
      *     @OA\Parameter(
@@ -247,39 +153,30 @@ class ElectricityMapController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="ElectricityMap主键",
-     *         in="path",
-     *         name="id",
+     *         description="主站IP",
+     *         in="query",
+     *         name="master_ip",
      *         required=true,
      *         @OA\Schema(
      *             type="string"
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="中文名字",
+     *         description="从站IP",
      *         in="query",
-     *         name="cn_name",
+     *         name="slave_ip",
      *         required=true,
      *         @OA\Schema(
      *             type="string"
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="点位地址",
+     *         description="公共地址",
      *         in="query",
-     *         name="addr",
-     *         required=false,
-     *         @OA\Schema(
-     *             type="string"
-     *         )
-     *     ),
-     *     @OA\Parameter(
-     *         description="函数",
-     *         in="query",
-     *         name="func",
+     *         name="common_addr",
      *         required=true,
      *         @OA\Schema(
-     *             type="integer"
+     *             type="string"
      *         )
      *     ),
      *     @OA\Parameter(
@@ -296,10 +193,10 @@ class ElectricityMapController extends Controller
      *         description="update succeed",
      *         @OA\Schema(
      *              @OA\Property(
-     *                  property="ElectricityMap",
-     *                  description="ElectricityMap",
+     *                  property="ConfigElectricityDB",
+     *                  description="ConfigElectricityDB",
      *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/ElectricityMap")
+     *                      @OA\Schema(ref="#/definitions/ConfigElectricityDB")
      *                  }
      *             )
      *         )
@@ -308,12 +205,12 @@ class ElectricityMapController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $row = ElectricityMap::find($id);
+        $row = ConfigElectricityDB::where('orgnization_id', $id)->first();
         if (!$row) {
             return response()->json(UtilService::format_data(self::AJAX_FAIL, '该数据不存在', ''));
         }
         $input = $request->input();
-        $allowField = ['addr', 'cn_name', 'func', 'orgnization_id'];
+        $allowField = ['master_ip', 'slave_ip', 'common_addr'];
         foreach ($allowField as $field) {
             if (key_exists($field, $input)) {
                 $inputValue = $input[$field];
@@ -331,9 +228,9 @@ class ElectricityMapController extends Controller
 
     /**
      * @OA\DELETE(
-     *     path="/api/electricity-map/destroy/{id}",
-     *     tags={"electricity-map"},
-     *     operationId="electricity-map-destroy",
+     *     path="/api/electricity-db-config/destroy/{id}",
+     *     tags={"electricity-db-config"},
+     *     operationId="electricity-db-config-destroy",
      *     summary="删除单条数据",
      *     description="使用说明：删除单条数据",
      *     @OA\Parameter(
@@ -346,12 +243,12 @@ class ElectricityMapController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="ElectricityMap主键",
+     *         description="组织ID",
      *         in="path",
      *         name="id",
      *         required=true,
      *         @OA\Schema(
-     *             type="string"
+     *             type="integer"
      *         )
      *     ),
      *     @OA\Response(
@@ -362,7 +259,7 @@ class ElectricityMapController extends Controller
      */
     public function destroy($id)
     {
-        $row = ElectricityMap::find($id);
+        $row = ConfigElectricityDB::where('orgnization_id', $id)->first();
         if (!$row) {
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
@@ -378,8 +275,8 @@ class ElectricityMapController extends Controller
 
 /**
  * @OA\Definition(
- *     definition="ElectricityMaps",
+ *     definition="ConfigElectricityDBs",
  *     type="array",
- *     @OA\Items(ref="#/definitions/ElectricityMap")
+ *     @OA\Items(ref="#/definitions/ConfigElectricityDB")
  * )
  */
