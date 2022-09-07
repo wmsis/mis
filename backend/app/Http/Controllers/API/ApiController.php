@@ -1,4 +1,10 @@
 <?php
+/**
+* 接口权限控制器
+*
+* @author      cat 叶文华
+* @version     1.0 版本号
+*/
 
 namespace App\Http\Controllers\API;
 

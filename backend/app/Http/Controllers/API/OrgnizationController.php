@@ -1,4 +1,10 @@
 <?php
+/**
+* 租户组织控制器
+*
+* @author      cat 叶文华
+* @version     1.0 版本号
+*/
 
 namespace App\Http\Controllers\API;
 
@@ -13,6 +19,42 @@ use Log;
 
 class OrgnizationController extends Controller
 {
+    /**
+     * @OA\GET(
+     *     path="/api/orgnizations/factories",
+     *     tags={"orgnizations api"},
+     *     operationId="orgnizations-factories",
+     *     summary="获取所有电厂列表",
+     *     description="使用说明：获取所有电厂列表",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="succeed",
+     *         @OA\Schema(
+     *              @OA\Property(
+     *                  property="Orgnizations",
+     *                  description="Orgnizations",
+     *                  allOf={
+     *                      @OA\Schema(ref="#/definitions/Orgnizations")
+     *                  }
+     *             )
+     *         )
+     *     ),
+     * )
+     */
+    public function factory(Request $request)
+    {
+        $data = Orgnization::where('level', 3)->get();
+        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $data);
+    }
 
     /**
      * @OA\Get(
@@ -349,3 +391,11 @@ class OrgnizationController extends Controller
         }
     }
 }
+
+/**
+ * @OA\Definition(
+ *     definition="Orgnizations",
+ *     type="array",
+ *     @OA\Items(ref="#/definitions/Orgnization")
+ * )
+ */

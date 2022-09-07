@@ -13,7 +13,7 @@ class DcsMap extends Model
 {
     use softDeletes;
     protected $table = 'dcs_map';
-    protected $fillable = ['tag_ids', 'en_name', 'cn_name', 'func', 'orgnization_id'];
+    protected $fillable = ['tag_ids', 'dcs_standard_id', 'func', 'orgnization_id'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',

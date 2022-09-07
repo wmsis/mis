@@ -260,13 +260,261 @@
                 }
             }
         },
+        "/api/dcs-map/index": {
+            "get": {
+                "tags": [
+                    "dcs-map api"
+                ],
+                "summary": "分页获取数据列表",
+                "description": "使用说明：分页获取数据列表",
+                "operationId": "dcs-map-index",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "num",
+                        "in": "query",
+                        "description": "每页数据量",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "页数",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "cn_name",
+                        "in": "query",
+                        "description": "关键字中文名搜索",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/dcs-map/store": {
+            "post": {
+                "tags": [
+                    "dcs-map api"
+                ],
+                "summary": "新增单条数据",
+                "description": "使用说明：新增单条数据",
+                "operationId": "dcs-map-store",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "cn_name",
+                        "in": "query",
+                        "description": "中文名字",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "en_name",
+                        "in": "query",
+                        "description": "英文名字",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "store succeed"
+                    }
+                }
+            }
+        },
+        "/api/dcs-map/show/{id}": {
+            "get": {
+                "tags": [
+                    "dcs-map api"
+                ],
+                "summary": "获取详细信息",
+                "description": "使用说明：获取详细信息",
+                "operationId": "dcs-map-show",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "DcsMap主键",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/dcs-map/update/{id}": {
+            "post": {
+                "tags": [
+                    "dcs-map api"
+                ],
+                "summary": "修改",
+                "description": "使用说明：修改单条数据",
+                "operationId": "dcs-map-update",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "DcsMap主键",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "cn_name",
+                        "in": "query",
+                        "description": "中文名字",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "model",
+                        "in": "query",
+                        "description": "英文名字",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "update succeed"
+                    }
+                }
+            }
+        },
+        "/api/dcs-map/destroy/{id}": {
+            "delete": {
+                "tags": [
+                    "dcs-map api"
+                ],
+                "summary": "删除单条数据",
+                "description": "使用说明：删除单条数据",
+                "operationId": "dcs-map-destroy",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "DcsMap主键",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "detroy succeed"
+                    }
+                }
+            }
+        },
+        "/api/dcs-standard/lists": {
+            "get": {
+                "tags": [
+                    "dcs-standard api"
+                ],
+                "summary": "获取所有数据列表",
+                "description": "使用说明：获取所有数据列表",
+                "operationId": "dcs-standard-lists",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
         "/api/dcs-standard/index": {
             "get": {
                 "tags": [
                     "dcs-standard api"
                 ],
-                "summary": "获取数据列表",
-                "description": "使用说明：获取数据列表",
+                "summary": "分页获取数据列表",
+                "description": "使用说明：分页获取数据列表",
                 "operationId": "dcs-standard-index",
                 "parameters": [
                     {
@@ -364,8 +612,8 @@
                 "tags": [
                     "dcs-standard api"
                 ],
-                "summary": "获取 设备 详细信息",
-                "description": "使用说明：获取 设备 详细信息",
+                "summary": "获取详细信息",
+                "description": "使用说明：获取详细信息",
                 "operationId": "dcs-standard-show",
                 "parameters": [
                     {
@@ -452,7 +700,7 @@
                 "tags": [
                     "dcs-standard api"
                 ],
-                "summary": "删除单条数据t",
+                "summary": "删除单条数据",
                 "description": "使用说明：删除单条数据",
                 "operationId": "dcs-standard-destroy",
                 "parameters": [
@@ -586,6 +834,228 @@
                 "responses": {
                     "200": {
                         "description": "store succeed"
+                    }
+                }
+            }
+        },
+        "/api/electricity-map/index": {
+            "get": {
+                "tags": [
+                    "electricity-map api"
+                ],
+                "summary": "分页获取数据列表",
+                "description": "使用说明：分页获取数据列表",
+                "operationId": "electricity-map-index",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "num",
+                        "in": "query",
+                        "description": "每页数据量",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "页数",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "cn_name",
+                        "in": "query",
+                        "description": "关键字中文名搜索",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/electricity-map/store": {
+            "post": {
+                "tags": [
+                    "electricity-map api"
+                ],
+                "summary": "新增单条数据",
+                "description": "使用说明：新增单条数据",
+                "operationId": "electricity-map-store",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "cn_name",
+                        "in": "query",
+                        "description": "中文名字",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "en_name",
+                        "in": "query",
+                        "description": "英文名字",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "store succeed"
+                    }
+                }
+            }
+        },
+        "/api/electricity-map/show/{id}": {
+            "get": {
+                "tags": [
+                    "electricity-map api"
+                ],
+                "summary": "获取详细信息",
+                "description": "使用说明：获取详细信息",
+                "operationId": "electricity-map-show",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ElectricityMap主键",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/electricity-map/update/{id}": {
+            "post": {
+                "tags": [
+                    "electricity-map api"
+                ],
+                "summary": "修改",
+                "description": "使用说明：修改单条数据",
+                "operationId": "electricity-map-update",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ElectricityMap主键",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "cn_name",
+                        "in": "query",
+                        "description": "中文名字",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "model",
+                        "in": "query",
+                        "description": "英文名字",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "update succeed"
+                    }
+                }
+            }
+        },
+        "/api/electricity-map/destroy/{id}": {
+            "delete": {
+                "tags": [
+                    "electricity-map api"
+                ],
+                "summary": "删除单条数据",
+                "description": "使用说明：删除单条数据",
+                "operationId": "electricity-map-destroy",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ElectricityMap主键",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "detroy succeed"
                     }
                 }
             }
@@ -905,6 +1375,15 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "name": "code",
+                        "in": "query",
+                        "description": "电厂编码",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
@@ -1184,6 +1663,32 @@
                 "responses": {
                     "200": {
                         "description": "detroy succeed"
+                    }
+                }
+            }
+        },
+        "/api/orgnizations/factories": {
+            "get": {
+                "tags": [
+                    "orgnizations api"
+                ],
+                "summary": "获取所有电厂列表",
+                "description": "使用说明：获取所有电厂列表",
+                "operationId": "orgnizations-factories",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
                     }
                 }
             }
@@ -1519,6 +2024,344 @@
                 "responses": {
                     "200": {
                         "description": "store succeed"
+                    }
+                }
+            }
+        },
+        "/api/weighbridge-category/lists-big": {
+            "get": {
+                "tags": [
+                    "weighbridge-category api"
+                ],
+                "summary": "获取所有大类垃圾数据",
+                "description": "使用说明：获取所有大类垃圾数据",
+                "operationId": "weighbridge-category-lists-big",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/weighbridge-category/page-big": {
+            "get": {
+                "tags": [
+                    "weighbridge-category api"
+                ],
+                "summary": "分页获取垃圾大类数据列表",
+                "description": "使用说明：分页获取垃圾大类数据列表",
+                "operationId": "weighbridge-category-page-big",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "num",
+                        "in": "query",
+                        "description": "每页数据量",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "页数",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "关键字中文名搜索",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/weighbridge-category/store-big": {
+            "post": {
+                "tags": [
+                    "weighbridge-category api"
+                ],
+                "summary": "新增单条大类数据",
+                "description": "使用说明：新增单条大类数据",
+                "operationId": "weighbridge-category-store-big",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "名字",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "描述",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "store succeed"
+                    }
+                }
+            }
+        },
+        "/api/weighbridge-category/show-big/{id}": {
+            "get": {
+                "tags": [
+                    "weighbridge-category api"
+                ],
+                "summary": "获取详细信息",
+                "description": "使用说明：获取详细信息",
+                "operationId": "weighbridge-category-show",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "WeighbridgeCateBig主键",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/weighbridge-category/update-big/{id}": {
+            "post": {
+                "tags": [
+                    "weighbridge-category api"
+                ],
+                "summary": "修改",
+                "description": "使用说明：修改单条数据",
+                "operationId": "weighbridge-category-update",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "WeighbridgeCateBig主键",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "中文名字",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "描述",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "update succeed"
+                    }
+                }
+            }
+        },
+        "/api/weighbridge-category/destroy-big/{id}": {
+            "delete": {
+                "tags": [
+                    "weighbridge-category api"
+                ],
+                "summary": "删除单条数据",
+                "description": "使用说明：删除单条数据",
+                "operationId": "weighbridge-category-destroy-big",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "WeighbridgeCateBig主键",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "detroy succeed"
+                    }
+                }
+            }
+        },
+        "/api/weighbridge-category/store-small-multi": {
+            "post": {
+                "tags": [
+                    "weighbridge-category api"
+                ],
+                "summary": "批量新增小类",
+                "description": "使用说明：批量新增小类",
+                "operationId": "weighbridge-category-small-multi",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "垃圾小类名称",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "store succeed"
+                    }
+                }
+            }
+        },
+        "/api/weighbridge-category/page-small": {
+            "get": {
+                "tags": [
+                    "weighbridge-category api"
+                ],
+                "summary": "分页获取垃圾小类数据列表",
+                "description": "使用说明：分页获取垃圾小类数据列表",
+                "operationId": "weighbridge-category-page-small",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "num",
+                        "in": "query",
+                        "description": "每页数据量",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "页数",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "关键字中文名搜索",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
                     }
                 }
             }

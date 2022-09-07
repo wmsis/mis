@@ -2,7 +2,7 @@
 /**
 * historian数据获取控制器
 *
-* @author      alvin 叶文华
+* @author      cat 叶文华
 * @version     1.0 版本号
 */
 namespace App\Http\Controllers\API;

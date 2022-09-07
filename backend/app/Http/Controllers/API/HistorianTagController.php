@@ -2,7 +2,7 @@
 /**
 * historian tag控制器
 *
-* @author      alvin 叶文华
+* @author      cat 叶文华
 * @version     1.0 版本号
 */
 namespace App\Http\Controllers\API;
@@ -136,6 +136,15 @@ class HistorianTagController extends Controller
      *             type="string"
      *         ),
      *     ),
+     *     @OA\Parameter(
+     *         description="电厂编码",
+     *         in="query",
+     *         name="code",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="succeed",
@@ -153,7 +162,10 @@ class HistorianTagController extends Controller
      */
     public function all(Request $request)
     {
-        $data = HistorianTag::select(['id', 'tag_name', 'description', 'alias'])->get();
+        $code = $request->input('code');
+        $table = 'historian_tag_' . $code;
+        $obj_historian_tag = (new HistorianTag())->setTable($table);
+        $data = $obj_historian_tag->select(['id', 'tag_name', 'description', 'alias'])->get();
         return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $data);
     }
 

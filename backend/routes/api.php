@@ -152,9 +152,22 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
             Route::get('index', 'WeighBridgeController@index');
         });
 
+        Route::prefix('weighbridge-category')->group(function () {
+            Route::get('lists-big', 'WeighBridgeController@listsBig');
+            Route::get('page-big', 'WeighBridgeController@pageBig');
+            Route::get('show-big/{id}', 'WeighBridgeController@showBig');
+            Route::post('store-big', 'WeighBridgeController@storeBig');
+            Route::post('update-big/{id}', 'WeighBridgeController@updateBig');
+            Route::delete('destroy-big/{id}', 'WeighBridgeController@destroyBig');
+            //Route::post('store-small-multi', 'WeighBridgeController@storeSmallMulti');
+            Route::get('page-small', 'WeighBridgeController@pageSmall');
+        });
+
         //API 资源路由
         Route::apiResources([
             'dcs-standard' => DcsStandardController::class,
+            'dcs-map' => DcsMapController::class,
+            'electricity-map' => ElectricityMapController::class,
         ]);
     });
 });
@@ -168,6 +181,11 @@ Route::group(['namespace' => 'App\Http\Controllers\API'], function () {
     // 地磅上报数据接口
     Route::prefix('weighbridge')->group(function () {
         Route::post('store_multi', 'WeighBridgeController@store_multi');
+    });
+
+    // 地磅小分类上报数据接口
+    Route::prefix('weighbridge-category')->group(function () {
+        Route::post('store-small-multi', 'WeighBridgeController@storeSmallMulti');
     });
 });
 

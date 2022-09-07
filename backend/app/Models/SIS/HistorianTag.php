@@ -8,45 +8,6 @@ use Illuminate\Support\Facades\Cache;
 use Log;
 use CacheService;
 
-/**
- * App\Models\SIS\HistorianTag
- *
- * @property int $id
- * @property string $tag_id tag id
- * @property string $tag_name historian中的标签名
- * @property string|null $description
- * @property string|null $alias 别名
- * @property string|null $measure 量程
- * @property float|null $upper_limit 上限
- * @property float|null $lower_limit 下限
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SIS\HistorianTag newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SIS\HistorianTag newQuery()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\SIS\HistorianTag onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SIS\HistorianTag query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SIS\HistorianTag whereAlias($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SIS\HistorianTag whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SIS\HistorianTag whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SIS\HistorianTag whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SIS\HistorianTag whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SIS\HistorianTag whereLowerLimit($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SIS\HistorianTag whereMeasure($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SIS\HistorianTag whereTagId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SIS\HistorianTag whereTagName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SIS\HistorianTag whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SIS\HistorianTag whereUpperLimit($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\SIS\HistorianTag withTrashed()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\SIS\HistorianTag withoutTrashed()
- * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
- * @property-read int|null $users_count
- * @property float|null $origin_upper_limit 原始上限值, historian记录的量程上限
- * @property float|null $origin_lower_limit 原始下限值, historian记录的量程下限
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SIS\HistorianTag whereOriginLowerLimit($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SIS\HistorianTag whereOriginUpperLimit($value)
- */
 class HistorianTag extends Model
 {
     use SoftDeletes;

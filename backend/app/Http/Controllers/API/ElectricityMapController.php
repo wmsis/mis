@@ -1,6 +1,6 @@
 <?php
 /**
-* DCS标准名控制器
+* 南瑞电表映射关系控制器
 *
 * @author      cat 叶文华
 * @version     1.0 版本号
@@ -10,53 +10,16 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\SIS\DcsStandard;
+use App\Models\SIS\ElectricityMap;
 use UtilService;
 
-class DcsStandardController extends Controller
+class ElectricityMapController extends Controller
 {
     /**
      * @OA\GET(
-     *     path="/api/dcs-standard/lists",
-     *     tags={"dcs-standard api"},
-     *     operationId="dcs-standard-lists",
-     *     summary="获取所有数据列表",
-     *     description="使用说明：获取所有数据列表",
-     *     @OA\Parameter(
-     *         description="token",
-     *         in="query",
-     *         name="token",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="string"
-     *         ),
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="succeed",
-     *         @OA\Schema(
-     *              @OA\Property(
-     *                  property="DcsStandards",
-     *                  description="DcsStandards",
-     *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/DcsStandards")
-     *                  }
-     *             )
-     *         )
-     *     ),
-     * )
-     */
-    public function lists(Request $request)
-    {
-        $data = DcsStandard::all();
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $data);
-    }
-
-    /**
-     * @OA\GET(
-     *     path="/api/dcs-standard/index",
-     *     tags={"dcs-standard api"},
-     *     operationId="dcs-standard-index",
+     *     path="/api/electricity-map/index",
+     *     tags={"electricity-map api"},
+     *     operationId="electricity-map-index",
      *     summary="分页获取数据列表",
      *     description="使用说明：分页获取数据列表",
      *     @OA\Parameter(
@@ -102,10 +65,10 @@ class DcsStandardController extends Controller
      *         description="succeed",
      *         @OA\Schema(
      *              @OA\Property(
-     *                  property="DcsStandards",
-     *                  description="DcsStandards",
+     *                  property="ElectricityMaps",
+     *                  description="ElectricityMaps",
      *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/DcsStandards")
+     *                      @OA\Schema(ref="#/definitions/ElectricityMaps")
      *                  }
      *             )
      *         )
@@ -121,7 +84,7 @@ class DcsStandardController extends Controller
 
         $name = $request->input('cn_name');
 
-        $rows = DcsStandard::select(['*']);
+        $rows = ElectricityMap::select(['*']);
         if ($name) {
             $rows = $rows->where('cn_name', 'like', "%{$name}%");
         }
@@ -132,9 +95,9 @@ class DcsStandardController extends Controller
 
     /**
      * @OA\POST(
-     *     path="/api/dcs-standard/store",
-     *     tags={"dcs-standard api"},
-     *     operationId="dcs-standard-store",
+     *     path="/api/electricity-map/store",
+     *     tags={"electricity-map api"},
+     *     operationId="electricity-map-store",
      *     summary="新增单条数据",
      *     description="使用说明：新增单条数据",
      *     @OA\Parameter(
@@ -169,10 +132,10 @@ class DcsStandardController extends Controller
      *         description="store succeed",
      *         @OA\Schema(
      *              @OA\Property(
-     *                  property="DcsStandard",
-     *                  description="DcsStandard",
+     *                  property="ElectricityMap",
+     *                  description="ElectricityMap",
      *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/DcsStandard")
+     *                      @OA\Schema(ref="#/definitions/ElectricityMap")
      *                  }
      *               )
      *          )
@@ -181,9 +144,9 @@ class DcsStandardController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->only(['cn_name', 'en_name']);
+        $input = $request->only(['addr', 'cn_name', 'func', 'orgnization_id']);
         try {
-            $res = DcsStandard::create($input);
+            $res = ElectricityMap::create($input);
         } catch (QueryException $e) {
             return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
         }
@@ -192,9 +155,9 @@ class DcsStandardController extends Controller
 
     /**
      * @OA\GET(
-     *     path="/api/dcs-standard/show/{id}",
-     *     tags={"dcs-standard api"},
-     *     operationId="dcs-standard-show",
+     *     path="/api/electricity-map/show/{id}",
+     *     tags={"electricity-map api"},
+     *     operationId="electricity-map-show",
      *     summary="获取详细信息",
      *     description="使用说明：获取详细信息",
      *     @OA\Parameter(
@@ -207,7 +170,7 @@ class DcsStandardController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="DcsStandard主键",
+     *         description="ElectricityMap主键",
      *         in="path",
      *         name="id",
      *         required=true,
@@ -220,10 +183,10 @@ class DcsStandardController extends Controller
      *         description="succeed",
      *         @OA\Schema(
      *              @OA\Property(
-     *                  property="DcsStandard",
-     *                  description="DcsStandard",
+     *                  property="ElectricityMap",
+     *                  description="ElectricityMap",
      *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/DcsStandard")
+     *                      @OA\Schema(ref="#/definitions/ElectricityMap")
      *                  }
      *             )
      *         )
@@ -232,7 +195,7 @@ class DcsStandardController extends Controller
      */
     public function show($id)
     {
-        $row = DcsStandard::find($id);
+        $row = ElectricityMap::find($id);
         if (!$row) {
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
@@ -241,9 +204,9 @@ class DcsStandardController extends Controller
 
     /**
      * @OA\POST(
-     *     path="/api/dcs-standard/update/{id}",
-     *     tags={"dcs-standard api"},
-     *     operationId="dcs-standard-update",
+     *     path="/api/electricity-map/update/{id}",
+     *     tags={"electricity-map api"},
+     *     operationId="electricity-map-update",
      *     summary="修改",
      *     description="使用说明：修改单条数据",
      *     @OA\Parameter(
@@ -256,7 +219,7 @@ class DcsStandardController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="DcsStandard主键",
+     *         description="ElectricityMap主键",
      *         in="path",
      *         name="id",
      *         required=true,
@@ -287,10 +250,10 @@ class DcsStandardController extends Controller
      *         description="update succeed",
      *         @OA\Schema(
      *              @OA\Property(
-     *                  property="DcsStandard",
-     *                  description="DcsStandard",
+     *                  property="ElectricityMap",
+     *                  description="ElectricityMap",
      *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/DcsStandard")
+     *                      @OA\Schema(ref="#/definitions/ElectricityMap")
      *                  }
      *             )
      *         )
@@ -299,12 +262,12 @@ class DcsStandardController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $row = DcsStandard::find($id);
+        $row = ElectricityMap::find($id);
         if (!$row) {
             return response()->json(UtilService::format_data(self::AJAX_FAIL, '该数据不存在', ''));
         }
         $input = $request->input();
-        $allowField = ['cn_name', 'en_name'];
+        $allowField = ['addr', 'cn_name', 'func', 'orgnization_id'];
         foreach ($allowField as $field) {
             if (key_exists($field, $input)) {
                 $inputValue = $input[$field];
@@ -312,12 +275,6 @@ class DcsStandardController extends Controller
             }
         }
         try {
-            if(isset($input['en_name'])){
-                $row = DcsStandard::where('en_name', $input['en_name'])->first();
-                if($row && $row->id != $id){
-                    return UtilService::format_data(self::AJAX_FAIL, '中文名称重复', '');
-                }
-            }
             $row->save();
             $row->refresh();
         } catch (Exception $ex) {
@@ -328,9 +285,9 @@ class DcsStandardController extends Controller
 
     /**
      * @OA\DELETE(
-     *     path="/api/dcs-standard/destroy/{id}",
-     *     tags={"dcs-standard api"},
-     *     operationId="dcs-standard-destroy",
+     *     path="/api/electricity-map/destroy/{id}",
+     *     tags={"electricity-map api"},
+     *     operationId="electricity-map-destroy",
      *     summary="删除单条数据",
      *     description="使用说明：删除单条数据",
      *     @OA\Parameter(
@@ -343,7 +300,7 @@ class DcsStandardController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="DcsStandard主键",
+     *         description="ElectricityMap主键",
      *         in="path",
      *         name="id",
      *         required=true,
@@ -359,7 +316,7 @@ class DcsStandardController extends Controller
      */
     public function destroy($id)
     {
-        $row = DcsStandard::find($id);
+        $row = ElectricityMap::find($id);
         if (!$row) {
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
@@ -372,10 +329,11 @@ class DcsStandardController extends Controller
     }
 }
 
+
 /**
  * @OA\Definition(
- *     definition="DcsStandards",
+ *     definition="ElectricityMaps",
  *     type="array",
- *     @OA\Items(ref="#/definitions/DcsStandard")
+ *     @OA\Items(ref="#/definitions/ElectricityMap")
  * )
  */
