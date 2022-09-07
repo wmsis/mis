@@ -10,7 +10,7 @@ use Log;
 class ChangeDatabase
 {
     /**
-     * Handle an incoming request.
+     * 更改默认租户数据库连接
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
@@ -18,7 +18,7 @@ class ChangeDatabase
      */
     public function handle($request, Closure $next)
     {
-        $default = $request->para ? $request->para : 'mysql';
+        $default = $request->tenement ? $request->tenement : 'mysql';
 
         Config::set('database.default', $default);
         return $next($request);

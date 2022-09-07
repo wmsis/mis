@@ -18,6 +18,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+//SASS用户
 Route::group(['namespace' => 'App\Http\Controllers\API', 'prefix' => 'auth', 'middleware'=>['cors']], function () {
     Route::post('login', 'AuthController@login')->name('login');
     Route::get('logout', 'AuthController@logout');
@@ -25,18 +26,28 @@ Route::group(['namespace' => 'App\Http\Controllers\API', 'prefix' => 'auth', 'mi
     Route::get('me', 'AuthController@me')->middleware(['jwt.role:user', 'jwt.auth']);
 });
 
-
-# 后台用户登录
-Route::group(['namespace' => 'App\Http\Controllers', 'prefix' => 'admin'], function () {
+# 系统管理员
+Route::group(['namespace' => 'App\Http\Controllers\System', 'prefix' => 'admin'], function () {
     Route::post('login', 'AdminController@login')->name('login');
     Route::get('logout', 'AdminController@logout');
     Route::get('refresh', 'AdminController@refresh');
     Route::get('me', 'AdminController@me')->middleware(['jwt.role:admin', 'jwt.auth']);
 });
 
-// Optional: Disable authentication in development
-//Route::group(['middleware' => ['api', 'cors']], function () {
+//系统租户和系统组织
+Route::group(['namespace' => 'App\Http\Controllers\System'], function () {
+    //API 资源路由
+    Route::apiResources([
+        'system-tenement' => TenementController::class,
+        'system-orgnization' => OrgnizationController::class,
+    ]);
+
+    Route::get('tenement/lists', 'TenementController@lists');
+});
+
+////用户 角色 权限 微信  历史数据库  组织  接口权限 电表  地磅 地磅垃圾分类  DCS映射关系 标准DCS 电表映射关系 抓斗数据库配置 电表数据库配置 历史数据库配置
 Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth']], function () {
+    //用户 角色 权限 微信
     Route::group(['namespace' => 'App\Http\Controllers'], function () {
         //用户
         Route::get('users', 'UserController@index'); //用户列表页
@@ -104,6 +115,7 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
         Route::get('mini/wxlogin', 'MiniController@wxlogin');
     });
 
+    //历史数据库  组织  接口权限 电表  地磅 地磅垃圾分类  DCS映射关系 标准DCS 电表映射关系 抓斗数据库配置 电表数据库配置 历史数据库配置
     Route::group(['namespace' => 'App\Http\Controllers\API'], function () {
         //  Historian Tag
         Route::prefix('historian-tag')->group(function () {
@@ -128,6 +140,7 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
 
         //用户组织
         Route::prefix('orgnizations')->group(function () {
+            Route::get('factories', 'OrgnizationController@factories');
             Route::get('tree', 'OrgnizationController@tree');
             Route::post('store', 'OrgnizationController@store'); //创建用户组织保存
             Route::get('{orgnization}/role', 'OrgnizationController@role');  //用户组织角色页   路由模型绑定
@@ -152,6 +165,7 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
             Route::get('index', 'WeighBridgeController@index');
         });
 
+        //地磅垃圾分类
         Route::prefix('weighbridge-category')->group(function () {
             Route::get('lists-big', 'WeighBridgeController@listsBig');
             Route::get('page-big', 'WeighBridgeController@pageBig');
@@ -165,7 +179,7 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
             Route::post('bind-relation', 'WeighBridgeController@bindRelation');
         });
 
-        //API 资源路由
+        //API 资源路由  DCS映射关系 标准DCS 电表映射关系 抓斗数据库配置 电表数据库配置 历史数据库配置
         Route::apiResources([
             'dcs-standard' => DcsStandardController::class,
             'dcs-map' => DcsMapController::class,
@@ -177,8 +191,9 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
     });
 });
 
+//保存取得的电表数据  地磅上报数据接口  地磅小分类上报数据接口
 Route::group(['namespace' => 'App\Http\Controllers\API'], function () {
-    // IEC104取得的电表数据
+    // IEC104保存取得的电表数据
     Route::prefix('electricity')->group(function () {
         Route::post('store_multi', 'ElectricityController@store_multi');
     });
@@ -194,6 +209,7 @@ Route::group(['namespace' => 'App\Http\Controllers\API'], function () {
     });
 });
 
+//微信会员
 Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::get('member/lists', 'MemberController@lists');
     Route::get('member/{member}/info', 'MemberController@info');

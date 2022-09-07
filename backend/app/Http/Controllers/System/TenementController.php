@@ -1,28 +1,22 @@
 <?php
-/**
-* DCS标准名控制器
-*
-* @author      cat 叶文华
-* @version     1.0 版本号
-*/
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\System;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\SIS\DcsStandard;
+use App\Models\System\Tenement;
 use Illuminate\Database\QueryException;
 use UtilService;
 
-class DcsStandardController extends Controller
+class TenementController extends Controller
 {
     /**
      * @OA\GET(
-     *     path="/api/dcs-standard/lists",
-     *     tags={"DCS标准命名dcs-standard"},
-     *     operationId="dcs-standard-lists",
-     *     summary="获取所有数据列表",
-     *     description="使用说明：获取所有数据列表",
+     *     path="/api/tenement/lists",
+     *     tags={"租户tenement"},
+     *     operationId="tenement-lists",
+     *     summary="获取所有租户列表",
+     *     description="使用说明：获取所有租户列表",
      *     @OA\Parameter(
      *         description="token",
      *         in="query",
@@ -37,10 +31,10 @@ class DcsStandardController extends Controller
      *         description="succeed",
      *         @OA\Schema(
      *              @OA\Property(
-     *                  property="DcsStandards",
-     *                  description="DcsStandards",
+     *                  property="Tenements",
+     *                  description="Tenements",
      *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/DcsStandards")
+     *                      @OA\Schema(ref="#/definitions/Tenements")
      *                  }
      *             )
      *         )
@@ -49,15 +43,15 @@ class DcsStandardController extends Controller
      */
     public function lists(Request $request)
     {
-        $data = DcsStandard::all();
+        $data = Tenement::all();
         return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $data);
     }
 
     /**
      * @OA\GET(
-     *     path="/api/dcs-standard/index",
-     *     tags={"DCS标准命名dcs-standard"},
-     *     operationId="dcs-standard-index",
+     *     path="/api/tenement/index",
+     *     tags={"租户tenement"},
+     *     operationId="tenement-index",
      *     summary="分页获取数据列表",
      *     description="使用说明：分页获取数据列表",
      *     @OA\Parameter(
@@ -92,7 +86,7 @@ class DcsStandardController extends Controller
      *     @OA\Parameter(
      *         description="关键字中文名搜索",
      *         in="query",
-     *         name="cn_name",
+     *         name="username",
      *         required=false,
      *         @OA\Schema(
      *             type="string"
@@ -103,10 +97,10 @@ class DcsStandardController extends Controller
      *         description="succeed",
      *         @OA\Schema(
      *              @OA\Property(
-     *                  property="DcsStandards",
-     *                  description="DcsStandards",
+     *                  property="Tenements",
+     *                  description="Tenements",
      *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/DcsStandards")
+     *                      @OA\Schema(ref="#/definitions/Tenements")
      *                  }
      *             )
      *         )
@@ -120,11 +114,11 @@ class DcsStandardController extends Controller
         $page = $request->input('page');
         $page = $page ? $page : 1;
 
-        $name = $request->input('cn_name');
+        $name = $request->input('username');
 
-        $rows = DcsStandard::select(['*']);
+        $rows = Tenement::select(['*']);
         if ($name) {
-            $rows = $rows->where('cn_name', 'like', "%{$name}%");
+            $rows = $rows->where('username', 'like', "%{$name}%");
         }
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
@@ -133,9 +127,9 @@ class DcsStandardController extends Controller
 
     /**
      * @OA\POST(
-     *     path="/api/dcs-standard/store",
-     *     tags={"DCS标准命名dcs-standard"},
-     *     operationId="dcs-standard-store",
+     *     path="/api/tenement/store",
+     *     tags={"租户tenement"},
+     *     operationId="tenement-store",
      *     summary="新增单条数据",
      *     description="使用说明：新增单条数据",
      *     @OA\Parameter(
@@ -148,18 +142,63 @@ class DcsStandardController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="中文名字",
+     *         description="ip",
      *         in="query",
-     *         name="cn_name",
+     *         name="ip",
      *         required=true,
      *         @OA\Schema(
      *             type="string"
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="英文名字",
+     *         description="租户名称",
      *         in="query",
-     *         name="en_name",
+     *         name="username",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="编码",
+     *         in="query",
+     *         name="code",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="数据库名称",
+     *         in="query",
+     *         name="db_name",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="数据库用户名",
+     *         in="query",
+     *         name="db_user",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="数据库密码",
+     *         in="query",
+     *         name="db_pwd",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="备注",
+     *         in="query",
+     *         name="memo",
      *         required=false,
      *         @OA\Schema(
      *             type="string"
@@ -170,10 +209,10 @@ class DcsStandardController extends Controller
      *         description="store succeed",
      *         @OA\Schema(
      *              @OA\Property(
-     *                  property="DcsStandard",
-     *                  description="DcsStandard",
+     *                  property="Tenement",
+     *                  description="Tenement",
      *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/DcsStandard")
+     *                      @OA\Schema(ref="#/definitions/Tenement")
      *                  }
      *               )
      *          )
@@ -182,9 +221,9 @@ class DcsStandardController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->only(['cn_name', 'en_name']);
+        $input = $request->only(['ip', 'username', 'db_user', 'db_pwd', 'code', 'memo', 'db_name']);
         try {
-            $res = DcsStandard::create($input);
+            $res = Tenement::create($input);
         } catch (QueryException $e) {
             return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
         }
@@ -193,9 +232,9 @@ class DcsStandardController extends Controller
 
     /**
      * @OA\GET(
-     *     path="/api/dcs-standard/show/{id}",
-     *     tags={"DCS标准命名dcs-standard"},
-     *     operationId="dcs-standard-show",
+     *     path="/api/tenement/show/{id}",
+     *     tags={"租户tenement"},
+     *     operationId="tenement-show",
      *     summary="获取详细信息",
      *     description="使用说明：获取详细信息",
      *     @OA\Parameter(
@@ -208,7 +247,7 @@ class DcsStandardController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="DcsStandard主键",
+     *         description="Tenement主键",
      *         in="path",
      *         name="id",
      *         required=true,
@@ -221,10 +260,10 @@ class DcsStandardController extends Controller
      *         description="succeed",
      *         @OA\Schema(
      *              @OA\Property(
-     *                  property="DcsStandard",
-     *                  description="DcsStandard",
+     *                  property="Tenement",
+     *                  description="Tenement",
      *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/DcsStandard")
+     *                      @OA\Schema(ref="#/definitions/Tenement")
      *                  }
      *             )
      *         )
@@ -233,7 +272,7 @@ class DcsStandardController extends Controller
      */
     public function show($id)
     {
-        $row = DcsStandard::find($id);
+        $row = Tenement::find($id);
         if (!$row) {
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
@@ -242,9 +281,9 @@ class DcsStandardController extends Controller
 
     /**
      * @OA\POST(
-     *     path="/api/dcs-standard/update/{id}",
-     *     tags={"DCS标准命名dcs-standard"},
-     *     operationId="dcs-standard-update",
+     *     path="/api/tenement/update/{id}",
+     *     tags={"租户tenement"},
+     *     operationId="tenement-update",
      *     summary="修改",
      *     description="使用说明：修改单条数据",
      *     @OA\Parameter(
@@ -257,7 +296,7 @@ class DcsStandardController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="DcsStandard主键",
+     *         description="Tenement主键",
      *         in="path",
      *         name="id",
      *         required=true,
@@ -266,18 +305,63 @@ class DcsStandardController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="中文名字",
+     *         description="ip",
      *         in="query",
-     *         name="cn_name",
-     *         required=false,
+     *         name="ip",
+     *         required=true,
      *         @OA\Schema(
      *             type="string"
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="英文名字",
+     *         description="租户名称",
      *         in="query",
-     *         name="model",
+     *         name="username",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="编码",
+     *         in="query",
+     *         name="code",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="数据库名称",
+     *         in="query",
+     *         name="db_name",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="数据库用户名",
+     *         in="query",
+     *         name="db_user",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="数据库密码",
+     *         in="query",
+     *         name="db_pwd",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="备注",
+     *         in="query",
+     *         name="memo",
      *         required=false,
      *         @OA\Schema(
      *             type="string"
@@ -288,10 +372,10 @@ class DcsStandardController extends Controller
      *         description="update succeed",
      *         @OA\Schema(
      *              @OA\Property(
-     *                  property="DcsStandard",
-     *                  description="DcsStandard",
+     *                  property="Tenement",
+     *                  description="Tenement",
      *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/DcsStandard")
+     *                      @OA\Schema(ref="#/definitions/Tenement")
      *                  }
      *             )
      *         )
@@ -300,12 +384,12 @@ class DcsStandardController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $row = DcsStandard::find($id);
+        $row = Tenement::find($id);
         if (!$row) {
             return response()->json(UtilService::format_data(self::AJAX_FAIL, '该数据不存在', ''));
         }
         $input = $request->input();
-        $allowField = ['cn_name', 'en_name'];
+        $allowField = ['ip', 'username', 'db_user', 'db_pwd', 'code', 'memo', 'db_name'];
         foreach ($allowField as $field) {
             if (key_exists($field, $input)) {
                 $inputValue = $input[$field];
@@ -313,12 +397,6 @@ class DcsStandardController extends Controller
             }
         }
         try {
-            if(isset($input['en_name'])){
-                $row = DcsStandard::where('en_name', $input['en_name'])->first();
-                if($row && $row->id != $id){
-                    return UtilService::format_data(self::AJAX_FAIL, '中文名称重复', '');
-                }
-            }
             $row->save();
             $row->refresh();
         } catch (Exception $ex) {
@@ -329,9 +407,9 @@ class DcsStandardController extends Controller
 
     /**
      * @OA\DELETE(
-     *     path="/api/dcs-standard/destroy/{id}",
-     *     tags={"DCS标准命名dcs-standard"},
-     *     operationId="dcs-standard-destroy",
+     *     path="/api/tenement/destroy/{id}",
+     *     tags={"租户tenement"},
+     *     operationId="tenement-destroy",
      *     summary="删除单条数据",
      *     description="使用说明：删除单条数据",
      *     @OA\Parameter(
@@ -344,7 +422,7 @@ class DcsStandardController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="DcsStandard主键",
+     *         description="Tenement主键",
      *         in="path",
      *         name="id",
      *         required=true,
@@ -360,7 +438,7 @@ class DcsStandardController extends Controller
      */
     public function destroy($id)
     {
-        $row = DcsStandard::find($id);
+        $row = Tenement::find($id);
         if (!$row) {
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
@@ -373,10 +451,11 @@ class DcsStandardController extends Controller
     }
 }
 
+
 /**
  * @OA\Definition(
- *     definition="DcsStandards",
+ *     definition="Tenements",
  *     type="array",
- *     @OA\Items(ref="#/definitions/DcsStandard")
+ *     @OA\Items(ref="#/definitions/Tenement")
  * )
  */

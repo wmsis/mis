@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SIS\ConfigGarbageDB;
+use Illuminate\Database\QueryException;
 use UtilService;
 
 class GarbageDbConfigController extends Controller

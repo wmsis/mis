@@ -20,24 +20,15 @@ class DatabaseServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap services.
+     * 合并各租户数据库连接信息
      *
      * @return void
      */
     public function boot()
     {
-        $user = DB::table('orgnization')->where('id', 1)->first();
-
         $new = [];
-        $conn = array (
-            'driver' => 'mysql',
-            'host' => '127.0.0.1',
-            'port' => '3306',
-            'database' => 'wmmis',
-            'username' => 'root',
-            'password' => '64y7nudx',
-        );
-
         $base = array(
+            'driver' => 'mysql',
             'port' => '3306',
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
@@ -47,9 +38,18 @@ class DatabaseServiceProvider extends ServiceProvider
             'strict' => true,
             'engine' => null
         );
+        $tenements = DB::connection('mysql_mis')->table('tenement')->where('id', 1)->get();
+        foreach ($tenements as $key => $item) {
+            $conn = array (
+                'host' => $item->ip,
+                'database' => $item->db_name,
+                'username' => $item->db_user,
+                'password' => $item->db_pwd
+            );
+            $final = array_merge($conn, $base);
+            $new[$item->code] = $final;
+        }
 
-        $final = array_merge($conn, $base);
-        $new['mis'] = $final;
         $this->app['config']['database.connections'] = array_merge($this->app['config']['database.connections'], $new);
     }
 }

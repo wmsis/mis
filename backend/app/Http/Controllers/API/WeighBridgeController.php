@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use App\Models\SIS\WeighBridge;
 use App\Models\SIS\WeighBridgeFormat;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\QueryException;
 use UtilService;
 
 class WeighBridgeController extends Controller

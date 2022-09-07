@@ -5,8 +5,9 @@
 * @author      cat 叶文华
 * @version     1.0 版本号
 */
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\System;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use UtilService;
 

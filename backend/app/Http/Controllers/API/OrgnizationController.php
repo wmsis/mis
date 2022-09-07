@@ -50,7 +50,7 @@ class OrgnizationController extends Controller
      *     ),
      * )
      */
-    public function factory(Request $request)
+    public function factories(Request $request)
     {
         $data = Orgnization::where('level', 3)->get();
         return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $data);
@@ -203,6 +203,15 @@ class OrgnizationController extends Controller
      *         description="层级",
      *         in="query",
      *         name="level",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="排序号",
+     *         in="query",
+     *         name="sort",
      *         required=true,
      *         @OA\Schema(
      *             type="integer"

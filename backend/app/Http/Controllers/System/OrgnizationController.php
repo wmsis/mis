@@ -1,63 +1,20 @@
 <?php
-/**
-* DCS标准名控制器
-*
-* @author      cat 叶文华
-* @version     1.0 版本号
-*/
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\System;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\SIS\DcsStandard;
 use Illuminate\Database\QueryException;
+use App\Models\System\Orgnization;
 use UtilService;
 
-class DcsStandardController extends Controller
+class OrgnizationController extends Controller
 {
     /**
      * @OA\GET(
-     *     path="/api/dcs-standard/lists",
-     *     tags={"DCS标准命名dcs-standard"},
-     *     operationId="dcs-standard-lists",
-     *     summary="获取所有数据列表",
-     *     description="使用说明：获取所有数据列表",
-     *     @OA\Parameter(
-     *         description="token",
-     *         in="query",
-     *         name="token",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="string"
-     *         ),
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="succeed",
-     *         @OA\Schema(
-     *              @OA\Property(
-     *                  property="DcsStandards",
-     *                  description="DcsStandards",
-     *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/DcsStandards")
-     *                  }
-     *             )
-     *         )
-     *     ),
-     * )
-     */
-    public function lists(Request $request)
-    {
-        $data = DcsStandard::all();
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $data);
-    }
-
-    /**
-     * @OA\GET(
-     *     path="/api/dcs-standard/index",
-     *     tags={"DCS标准命名dcs-standard"},
-     *     operationId="dcs-standard-index",
+     *     path="/api/system-orgnization/index",
+     *     tags={"系统组织orgnization"},
+     *     operationId="system-orgnization-index",
      *     summary="分页获取数据列表",
      *     description="使用说明：分页获取数据列表",
      *     @OA\Parameter(
@@ -92,10 +49,19 @@ class DcsStandardController extends Controller
      *     @OA\Parameter(
      *         description="关键字中文名搜索",
      *         in="query",
-     *         name="cn_name",
+     *         name="name",
      *         required=false,
      *         @OA\Schema(
      *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="组织ID",
+     *         in="query",
+     *         name="orgnization_id",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
      *         )
      *     ),
      *     @OA\Response(
@@ -103,10 +69,10 @@ class DcsStandardController extends Controller
      *         description="succeed",
      *         @OA\Schema(
      *              @OA\Property(
-     *                  property="DcsStandards",
-     *                  description="DcsStandards",
+     *                  property="SystemOrgnizations",
+     *                  description="SystemOrgnizations",
      *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/DcsStandards")
+     *                      @OA\Schema(ref="#/definitions/SystemOrgnizations")
      *                  }
      *             )
      *         )
@@ -122,7 +88,7 @@ class DcsStandardController extends Controller
 
         $name = $request->input('cn_name');
 
-        $rows = DcsStandard::select(['*']);
+        $rows = Orgnization::select(['*']);
         if ($name) {
             $rows = $rows->where('cn_name', 'like', "%{$name}%");
         }
@@ -133,9 +99,9 @@ class DcsStandardController extends Controller
 
     /**
      * @OA\POST(
-     *     path="/api/dcs-standard/store",
-     *     tags={"DCS标准命名dcs-standard"},
-     *     operationId="dcs-standard-store",
+     *     path="/api/system-orgnization/store",
+     *     tags={"系统组织orgnization"},
+     *     operationId="system-orgnization-store",
      *     summary="新增单条数据",
      *     description="使用说明：新增单条数据",
      *     @OA\Parameter(
@@ -148,32 +114,68 @@ class DcsStandardController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="中文名字",
+     *         description="组织名称",
      *         in="query",
-     *         name="cn_name",
+     *         name="name",
      *         required=true,
      *         @OA\Schema(
      *             type="string"
-     *         )
+     *         ),
      *     ),
      *     @OA\Parameter(
-     *         description="英文名字",
+     *         description="所属租户ID",
      *         in="query",
-     *         name="en_name",
+     *         name="tenement_id",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="组织描述",
+     *         in="query",
+     *         name="description",
      *         required=false,
      *         @OA\Schema(
      *             type="string"
-     *         )
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="父组织ID",
+     *         in="query",
+     *         required=false,
+     *         name="parent_id",
+     *         @OA\Schema(
+     *             type="integer"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="层级",
+     *         in="query",
+     *         name="level",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="排序号",
+     *         in="query",
+     *         name="sort",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         ),
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="store succeed",
      *         @OA\Schema(
      *              @OA\Property(
-     *                  property="DcsStandard",
-     *                  description="DcsStandard",
+     *                  property="SystemOrgnization",
+     *                  description="SystemOrgnization",
      *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/DcsStandard")
+     *                      @OA\Schema(ref="#/definitions/SystemOrgnization")
      *                  }
      *               )
      *          )
@@ -182,9 +184,9 @@ class DcsStandardController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->only(['cn_name', 'en_name']);
+        $input = $request->only(['name', 'tenement_id', 'description', 'parent_id', 'level', 'sort']);
         try {
-            $res = DcsStandard::create($input);
+            $res = Orgnization::create($input);
         } catch (QueryException $e) {
             return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
         }
@@ -193,9 +195,9 @@ class DcsStandardController extends Controller
 
     /**
      * @OA\GET(
-     *     path="/api/dcs-standard/show/{id}",
-     *     tags={"DCS标准命名dcs-standard"},
-     *     operationId="dcs-standard-show",
+     *     path="/api/system-orgnization/show/{id}",
+     *     tags={"系统组织orgnization"},
+     *     operationId="system-orgnization-show",
      *     summary="获取详细信息",
      *     description="使用说明：获取详细信息",
      *     @OA\Parameter(
@@ -208,7 +210,7 @@ class DcsStandardController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="DcsStandard主键",
+     *         description="Orgnization主键",
      *         in="path",
      *         name="id",
      *         required=true,
@@ -221,10 +223,10 @@ class DcsStandardController extends Controller
      *         description="succeed",
      *         @OA\Schema(
      *              @OA\Property(
-     *                  property="DcsStandard",
-     *                  description="DcsStandard",
+     *                  property="SystemOrgnization",
+     *                  description="SystemOrgnization",
      *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/DcsStandard")
+     *                      @OA\Schema(ref="#/definitions/SystemOrgnization")
      *                  }
      *             )
      *         )
@@ -233,7 +235,7 @@ class DcsStandardController extends Controller
      */
     public function show($id)
     {
-        $row = DcsStandard::find($id);
+        $row = Orgnization::find($id);
         if (!$row) {
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
@@ -242,9 +244,9 @@ class DcsStandardController extends Controller
 
     /**
      * @OA\POST(
-     *     path="/api/dcs-standard/update/{id}",
-     *     tags={"DCS标准命名dcs-standard"},
-     *     operationId="dcs-standard-update",
+     *     path="/api/system-orgnization/update/{id}",
+     *     tags={"系统组织orgnization"},
+     *     operationId="system-orgnization-update",
      *     summary="修改",
      *     description="使用说明：修改单条数据",
      *     @OA\Parameter(
@@ -257,7 +259,7 @@ class DcsStandardController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="DcsStandard主键",
+     *         description="Orgnization主键",
      *         in="path",
      *         name="id",
      *         required=true,
@@ -266,32 +268,68 @@ class DcsStandardController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="中文名字",
+     *         description="组织名称",
      *         in="query",
-     *         name="cn_name",
-     *         required=false,
+     *         name="name",
+     *         required=true,
      *         @OA\Schema(
      *             type="string"
-     *         )
+     *         ),
      *     ),
      *     @OA\Parameter(
-     *         description="英文名字",
+     *         description="所属租户ID",
      *         in="query",
-     *         name="model",
+     *         name="tenement_id",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="组织描述",
+     *         in="query",
+     *         name="description",
      *         required=false,
      *         @OA\Schema(
      *             type="string"
-     *         )
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="父组织ID",
+     *         in="query",
+     *         required=false,
+     *         name="parent_id",
+     *         @OA\Schema(
+     *             type="integer"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="层级",
+     *         in="query",
+     *         name="level",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="排序号",
+     *         in="query",
+     *         name="sort",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         ),
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="update succeed",
      *         @OA\Schema(
      *              @OA\Property(
-     *                  property="DcsStandard",
-     *                  description="DcsStandard",
+     *                  property="SystemOrgnization",
+     *                  description="SystemOrgnization",
      *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/DcsStandard")
+     *                      @OA\Schema(ref="#/definitions/SystemOrgnization")
      *                  }
      *             )
      *         )
@@ -300,12 +338,12 @@ class DcsStandardController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $row = DcsStandard::find($id);
+        $row = Orgnization::find($id);
         if (!$row) {
             return response()->json(UtilService::format_data(self::AJAX_FAIL, '该数据不存在', ''));
         }
         $input = $request->input();
-        $allowField = ['cn_name', 'en_name'];
+        $allowField = ['name', 'tenement_id', 'description', 'parent_id', 'level', 'sort'];
         foreach ($allowField as $field) {
             if (key_exists($field, $input)) {
                 $inputValue = $input[$field];
@@ -313,12 +351,6 @@ class DcsStandardController extends Controller
             }
         }
         try {
-            if(isset($input['en_name'])){
-                $row = DcsStandard::where('en_name', $input['en_name'])->first();
-                if($row && $row->id != $id){
-                    return UtilService::format_data(self::AJAX_FAIL, '中文名称重复', '');
-                }
-            }
             $row->save();
             $row->refresh();
         } catch (Exception $ex) {
@@ -329,9 +361,9 @@ class DcsStandardController extends Controller
 
     /**
      * @OA\DELETE(
-     *     path="/api/dcs-standard/destroy/{id}",
-     *     tags={"DCS标准命名dcs-standard"},
-     *     operationId="dcs-standard-destroy",
+     *     path="/api/system-orgnization/destroy/{id}",
+     *     tags={"系统组织orgnization"},
+     *     operationId="system-orgnization-destroy",
      *     summary="删除单条数据",
      *     description="使用说明：删除单条数据",
      *     @OA\Parameter(
@@ -344,7 +376,7 @@ class DcsStandardController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="DcsStandard主键",
+     *         description="Orgnization主键",
      *         in="path",
      *         name="id",
      *         required=true,
@@ -360,7 +392,7 @@ class DcsStandardController extends Controller
      */
     public function destroy($id)
     {
-        $row = DcsStandard::find($id);
+        $row = Orgnization::find($id);
         if (!$row) {
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
@@ -373,10 +405,11 @@ class DcsStandardController extends Controller
     }
 }
 
+
 /**
  * @OA\Definition(
- *     definition="DcsStandards",
+ *     definition="SystemOrgnizations",
  *     type="array",
- *     @OA\Items(ref="#/definitions/DcsStandard")
+ *     @OA\Items(ref="#/definitions/SystemOrgnization")
  * )
  */
