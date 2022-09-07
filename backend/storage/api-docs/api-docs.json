@@ -1,0 +1,4047 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "SIS API 文档",
+        "description": "伟明环保设备有限公司SIS系统 API 文档 api/documentation  php artisan l5-swagger:generate",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/api/tree": {
+            "get": {
+                "tags": [
+                    "apis api"
+                ],
+                "summary": "接口树",
+                "description": "使用说明：获取接口树",
+                "operationId": "apisAll",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/api/store": {
+            "post": {
+                "tags": [
+                    "apis api"
+                ],
+                "summary": "保存接口",
+                "description": "使用说明：保存接口",
+                "operationId": "storeApi",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "接口id",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "接口名称",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "接口描述",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "url",
+                        "in": "query",
+                        "description": "接口路径",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "parent_id",
+                        "in": "query",
+                        "description": "父接口ID",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "level",
+                        "in": "query",
+                        "description": "所在层级",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/api/delete": {
+            "post": {
+                "tags": [
+                    "apis api"
+                ],
+                "summary": "删除用户接口",
+                "description": "使用说明：删除用户接口",
+                "operationId": "deleteAPI",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "用户接口ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "auth api"
+                ],
+                "summary": "登录",
+                "description": "使用说明：登录",
+                "operationId": "login",
+                "parameters": [
+                    {
+                        "name": "mobile",
+                        "in": "query",
+                        "description": "手机号码",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "密码",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/auth/logout": {
+            "get": {
+                "tags": [
+                    "auth api"
+                ],
+                "summary": "退出登录",
+                "description": "使用说明：退出登录",
+                "operationId": "logout",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/auth/refresh": {
+            "get": {
+                "tags": [
+                    "auth api"
+                ],
+                "summary": "刷新token",
+                "description": "使用说明：刷新token",
+                "operationId": "refresh",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/auth/me": {
+            "get": {
+                "tags": [
+                    "auth api"
+                ],
+                "summary": "我",
+                "description": "使用说明：我",
+                "operationId": "me",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/dcs-standard/index": {
+            "get": {
+                "tags": [
+                    "dcs-standard api"
+                ],
+                "summary": "获取数据列表",
+                "description": "使用说明：获取数据列表",
+                "operationId": "dcs-standard-index",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "num",
+                        "in": "query",
+                        "description": "每页数据量",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "页数",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "cn_name",
+                        "in": "query",
+                        "description": "关键字中文名搜索",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/dcs-standard/store": {
+            "post": {
+                "tags": [
+                    "dcs-standard api"
+                ],
+                "summary": "新增单条数据",
+                "description": "使用说明：新增单条数据",
+                "operationId": "dcs-standard-store",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "cn_name",
+                        "in": "query",
+                        "description": "中文名字",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "en_name",
+                        "in": "query",
+                        "description": "英文名字",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "store succeed"
+                    }
+                }
+            }
+        },
+        "/api/dcs-standard/show/{id}": {
+            "get": {
+                "tags": [
+                    "dcs-standard api"
+                ],
+                "summary": "获取 设备 详细信息",
+                "description": "使用说明：获取 设备 详细信息",
+                "operationId": "dcs-standard-show",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "DcsStandard主键",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/dcs-standard/update/{id}": {
+            "post": {
+                "tags": [
+                    "dcs-standard api"
+                ],
+                "summary": "修改",
+                "description": "使用说明：修改单条数据",
+                "operationId": "dcs-standard-update",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "DcsStandard主键",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "cn_name",
+                        "in": "query",
+                        "description": "中文名字",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "model",
+                        "in": "query",
+                        "description": "英文名字",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "update succeed"
+                    }
+                }
+            }
+        },
+        "/api/dcs-standard/destroy/{id}": {
+            "delete": {
+                "tags": [
+                    "dcs-standard api"
+                ],
+                "summary": "删除单条数据t",
+                "description": "使用说明：删除单条数据",
+                "operationId": "dcs-standard-destroy",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "DcsStandard主键",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "detroy succeed"
+                    }
+                }
+            }
+        },
+        "/api/electricity/index": {
+            "get": {
+                "tags": [
+                    "electricity api"
+                ],
+                "summary": "获取电表数据列表",
+                "description": "使用说明：获取电表数据列表",
+                "operationId": "electricity-index",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "factory",
+                        "in": "query",
+                        "description": "电厂英文名称  如永强二期：yongqiang2",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "num",
+                        "in": "query",
+                        "description": "每页数据量",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "页数",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "cn_name",
+                        "in": "query",
+                        "description": "中文名称搜索",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/electricity/store_multi": {
+            "post": {
+                "tags": [
+                    "electricity api"
+                ],
+                "summary": "批量新增",
+                "description": "使用说明：批量新增",
+                "operationId": "electricity-multi",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "factory",
+                        "in": "query",
+                        "description": "电厂英文名称  如永强二期：yongqiang2",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "input",
+                        "in": "query",
+                        "description": "input",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "store succeed"
+                    }
+                }
+            }
+        },
+        "/api/historian-data/current-data": {
+            "post": {
+                "tags": [
+                    "historian data api"
+                ],
+                "summary": "获取 current data",
+                "description": "使用说明：获取 current data",
+                "operationId": "current-data",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "tagIds",
+                        "in": "query",
+                        "description": "historian tag ids string，使用','分隔，example: tagIds=1,2,3",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "store succeed"
+                    }
+                }
+            }
+        },
+        "/api/historian-data/raw-data": {
+            "post": {
+                "tags": [
+                    "historian data api"
+                ],
+                "summary": "获取原始数据 raw data",
+                "description": "使用说明：获取原始数据 data",
+                "operationId": "raw-data",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "tagIds",
+                        "in": "query",
+                        "description": "historian tag ids string，使用','分隔，example: tagIds=1,2,3",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "起始时间 ISO8601 utc 时间字符串, example:2020-06-11T06:57:37.000Z",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "结束时间 ISO8601 utc 时间字符串, example:2020-06-11T06:57:37.000Z",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "count",
+                        "in": "query",
+                        "description": "每个tag的数据量，从开始时间取count条数据，默认为0，表示不限数量，以开始-结束时间为界。最大为5000。",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "0"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "store succeed"
+                    }
+                }
+            }
+        },
+        "/api/historian-data/sampled-data": {
+            "post": {
+                "tags": [
+                    "historian data api"
+                ],
+                "summary": "获取 sampled data",
+                "description": "使用说明：获取 sampled data, 默认按count计算时间间隔,间隔内取平均值,取count个历史数据",
+                "operationId": "sampled-data",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "tagIds",
+                        "in": "query",
+                        "description": "historian tag ids string，使用','分隔，example: tagIds=1,2,3",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "起始时间 ISO8601 utc 时间字符串, example:2020-06-11T06:57:37.000Z",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "结束时间 ISO8601 utc 时间字符串, example:2020-06-11T06:57:37.000Z",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "count",
+                        "in": "query",
+                        "description": "详见 Historian 文档",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "100"
+                        }
+                    },
+                    {
+                        "name": "samplingMode",
+                        "in": "query",
+                        "description": "详见 Historian 文档",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "2"
+                        }
+                    },
+                    {
+                        "name": "calculationMode",
+                        "in": "query",
+                        "description": "详见 Historian 文档",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "1"
+                        }
+                    },
+                    {
+                        "name": "intervalMS",
+                        "in": "query",
+                        "description": "详见 Historian 文档",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "store succeed"
+                    }
+                }
+            }
+        },
+        "/api/historian-data/watch-data": {
+            "post": {
+                "tags": [
+                    "historian data api"
+                ],
+                "summary": "获取 watch data",
+                "description": "使用说明：获取 watch data",
+                "operationId": "watch-data",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "tagIds",
+                        "in": "query",
+                        "description": "historian tag ids string，使用','分隔，example: tagIds=1,2,3",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "funcs",
+                        "in": "query",
+                        "description": "historian funcs string，使用','分隔",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "store succeed"
+                    }
+                }
+            }
+        },
+        "/api/historian-tag/index": {
+            "get": {
+                "tags": [
+                    "historian tag api"
+                ],
+                "summary": "获取 tag 列表",
+                "description": "使用说明：获取 tag 列表",
+                "operationId": "historian-tag-index",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "num",
+                        "in": "query",
+                        "description": "每页数据量",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "页数",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "searchAlias",
+                        "in": "query",
+                        "description": "alias 搜索",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "searchTagName",
+                        "in": "query",
+                        "description": "tag_name 搜索",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/historian-tag/all": {
+            "get": {
+                "tags": [
+                    "historian tag api"
+                ],
+                "summary": "获取 tag 所有列表",
+                "description": "使用说明：获取 tag 所有列表",
+                "operationId": "historian-tag-all",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/historian-tag/listdata": {
+            "get": {
+                "tags": [
+                    "historian tag api"
+                ],
+                "summary": "获取 tag 列表（包含当前值）",
+                "description": "使用说明：获取 tag 列表（包含当前值）",
+                "operationId": "historian-tag-listdata",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "num",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "页数",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "searchAlias",
+                        "in": "query",
+                        "description": "alias 搜索",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "searchTagName",
+                        "in": "query",
+                        "description": "tag_name 搜索",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/historian-tag/show/{id}": {
+            "get": {
+                "tags": [
+                    "historian tag api"
+                ],
+                "summary": "获取 tag 详细信息",
+                "description": "使用说明：获取 tag 详细信息",
+                "operationId": "historian-tag-show",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "tag 主键",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/historian-tag/show-many": {
+            "post": {
+                "tags": [
+                    "historian tag api"
+                ],
+                "summary": "批量获取 historan tag",
+                "description": "使用说明：批量获取 historan tag",
+                "operationId": "historian-tag-many",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ids",
+                        "in": "query",
+                        "description": "config ids string，使用','分隔，example: ids=1,2,3",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/historian-tag/load": {
+            "get": {
+                "tags": [
+                    "historian tag api"
+                ],
+                "summary": "从 Historian 加载 tags",
+                "description": "使用说明：从 Historian 加载 tags, 保存到数据库",
+                "operationId": "historian-tag-load",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/historian-tag/update/{id}": {
+            "post": {
+                "tags": [
+                    "historian tag api"
+                ],
+                "summary": "修改 tag",
+                "description": "使用说明：修改 tag",
+                "operationId": "historian-tag-update",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "tag 主键",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "alias",
+                        "in": "query",
+                        "description": "alias",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "description",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "measure",
+                        "in": "query",
+                        "description": "单位",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "upper_limit",
+                        "in": "query",
+                        "description": "上限值",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "lower_limit",
+                        "in": "query",
+                        "description": "下限值",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "update succeed"
+                    }
+                }
+            }
+        },
+        "/api/historian-tag/destroy/{id}": {
+            "delete": {
+                "tags": [
+                    "historian tag api"
+                ],
+                "summary": "删除 tag",
+                "description": "使用说明：删除 tag",
+                "operationId": "historian-tag-destroy",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "tag 主键",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "detroy succeed"
+                    }
+                }
+            }
+        },
+        "/api/orgnizations/tree": {
+            "get": {
+                "tags": [
+                    "orgnizations api"
+                ],
+                "summary": "组织树",
+                "description": "使用说明：获取组织树",
+                "operationId": "orgnizationsAll",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "level",
+                        "in": "query",
+                        "description": "最大层级",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/orgnizations/store": {
+            "post": {
+                "tags": [
+                    "orgnizations api"
+                ],
+                "summary": "保存组织",
+                "description": "使用说明：保存组织",
+                "operationId": "storeOrgnization",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "组织id",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "组织名称",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "code",
+                        "in": "query",
+                        "description": "组织编码(电厂英文全拼+数字)",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "组织描述",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "parent_id",
+                        "in": "query",
+                        "description": "父组织ID",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "level",
+                        "in": "query",
+                        "description": "层级",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/orgnizations/{id}/role": {
+            "get": {
+                "tags": [
+                    "orgnizations api"
+                ],
+                "summary": "用户组织角色",
+                "description": "使用说明：获取用户组织角色",
+                "operationId": "getOrgRole",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "用户组织ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "orgnizations api"
+                ],
+                "summary": "保存用户组织角色",
+                "description": "使用说明：保存用户组织角色",
+                "operationId": "storeOrgRole",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "用户组织ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "roles",
+                        "in": "query",
+                        "description": "角色ID列表",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/orgnizations/delete": {
+            "post": {
+                "tags": [
+                    "orgnizations api"
+                ],
+                "summary": "删除用户组织",
+                "description": "使用说明：删除用户组织",
+                "operationId": "deleteOrgnization",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "用户组织ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/weighbridge/index": {
+            "get": {
+                "tags": [
+                    "weighbridge api"
+                ],
+                "summary": "获取地磅数据列表",
+                "description": "使用说明：获取地磅数据列表",
+                "operationId": "weighbridge-index",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "factory",
+                        "in": "query",
+                        "description": "电厂英文名称  如永强二期：yongqiang2",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "num",
+                        "in": "query",
+                        "description": "每页数据量",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "页数",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "product",
+                        "in": "query",
+                        "description": "中文名称搜索",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/weighbridge/store_multi": {
+            "post": {
+                "tags": [
+                    "weighbridge api"
+                ],
+                "summary": "批量新增",
+                "description": "使用说明：批量新增",
+                "operationId": "weighbridge-multi",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "factory",
+                        "in": "query",
+                        "description": "电厂英文名称  如永强二期：yongqiang2",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "input",
+                        "in": "query",
+                        "description": "input",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "store succeed"
+                    }
+                }
+            }
+        },
+        "/api/admin/login": {
+            "post": {
+                "tags": [
+                    "admin api"
+                ],
+                "summary": "登录",
+                "description": "使用说明：登录",
+                "operationId": "admin login",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "query",
+                        "description": "用户名",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "密码",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/admin/me": {
+            "get": {
+                "tags": [
+                    "admin api"
+                ],
+                "summary": "我",
+                "description": "使用说明：我",
+                "operationId": "admin me",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/admin/logout": {
+            "get": {
+                "tags": [
+                    "admin api"
+                ],
+                "summary": "退出登录",
+                "description": "使用说明：退出登录",
+                "operationId": "admin logout",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/admin/refresh": {
+            "get": {
+                "tags": [
+                    "admin api"
+                ],
+                "summary": "刷新token",
+                "description": "使用说明：刷新token",
+                "operationId": "admin refresh",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/member/lists": {
+            "get": {
+                "tags": [
+                    "member api"
+                ],
+                "summary": "用户列表",
+                "description": "使用说明：获取用户列表",
+                "operationId": "memberLists",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "当前分页",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "num",
+                        "in": "query",
+                        "description": "每页获取数量",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "称搜索关键字",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthorized action."
+                    },
+                    "404": {
+                        "description": "not found."
+                    }
+                }
+            }
+        },
+        "/api/member/{id}/info": {
+            "get": {
+                "tags": [
+                    "member api"
+                ],
+                "summary": "用户详情",
+                "description": "使用说明：获取用户详情",
+                "operationId": "memberInfo",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "用户id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "401": {
+                        "description": "unauthorized action."
+                    },
+                    "404": {
+                        "description": "not found."
+                    }
+                }
+            }
+        },
+        "/api/permissions/tree": {
+            "get": {
+                "tags": [
+                    "permissions api"
+                ],
+                "summary": "菜单权限列表(所有)",
+                "description": "使用说明：获取菜单权限列表(所有)",
+                "operationId": "permissionsAll",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/permissions/insert": {
+            "post": {
+                "tags": [
+                    "permissions api"
+                ],
+                "summary": "插入权限节点",
+                "description": "使用说明：获取插入权限节点",
+                "operationId": "permissionsInsert",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "权限节点名称",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "parent_id",
+                        "in": "query",
+                        "description": "权限父节点ID",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "权限排序号",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "color",
+                        "in": "query",
+                        "description": "颜色",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page_url",
+                        "in": "query",
+                        "description": "页面URL",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "api_name",
+                        "in": "query",
+                        "description": "接口名",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "level",
+                        "in": "query",
+                        "description": "层级",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "权限类型",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/permissions/update": {
+            "post": {
+                "tags": [
+                    "permissions api"
+                ],
+                "summary": "修改权限分类",
+                "description": "使用说明：获取修改权限分类",
+                "operationId": "permissionsUpdate",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "权限节点名称",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "color",
+                        "in": "query",
+                        "description": "颜色",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "节点ID",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "权限排序号",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "api_name",
+                        "in": "query",
+                        "description": "权限名称",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page_url",
+                        "in": "query",
+                        "description": "页面URL",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "权限类型",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/permissions/delete": {
+            "post": {
+                "tags": [
+                    "permissions api"
+                ],
+                "summary": "删除权限分类",
+                "description": "使用说明：删除权限及其子权限",
+                "operationId": "permissionsDelete",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/roles": {
+            "get": {
+                "tags": [
+                    "roles api"
+                ],
+                "summary": "角色列表分页",
+                "description": "使用说明：获取角色列表",
+                "operationId": "roles",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "当前分页",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "num",
+                        "in": "query",
+                        "description": "每页获取数量",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "搜索关键词",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/roles/store": {
+            "post": {
+                "tags": [
+                    "roles api"
+                ],
+                "summary": "保存集团角色",
+                "description": "使用说明：保存集团角色",
+                "operationId": "roleStore",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "角色名称",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "desc",
+                        "in": "query",
+                        "description": "角色描述",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/roles/{id}/permission": {
+            "get": {
+                "tags": [
+                    "roles api"
+                ],
+                "summary": "角色权限",
+                "description": "使用说明：获取角色权限",
+                "operationId": "rolePermission",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "角色ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "roles api"
+                ],
+                "summary": "保存角色权限",
+                "description": "使用说明：保存角色权限",
+                "operationId": "storeRolePermission",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "角色ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "permissions",
+                        "in": "query",
+                        "description": "权限ID列表",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/roles/delete": {
+            "post": {
+                "tags": [
+                    "roles api"
+                ],
+                "summary": "删除角色",
+                "description": "使用说明：删除角色",
+                "operationId": "roleDelete",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "角色ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/roles/lists": {
+            "get": {
+                "tags": [
+                    "roles api"
+                ],
+                "summary": "角色列表(不分页)",
+                "description": "使用说明：获取角色列表",
+                "operationId": "roleLists",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/roles/{id}/api": {
+            "get": {
+                "tags": [
+                    "roles api"
+                ],
+                "summary": "角色接口权限",
+                "description": "使用说明：获取角色接口权限",
+                "operationId": "roleApi",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "角色ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "roles api"
+                ],
+                "summary": "保存角色权接口限",
+                "description": "使用说明：保存角色接口权限",
+                "operationId": "storeRoleApi",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "角色ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "permissions",
+                        "in": "query",
+                        "description": "接口权限ID列表",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/users": {
+            "get": {
+                "tags": [
+                    "users api"
+                ],
+                "summary": "用户列表",
+                "description": "使用说明：获取用户列表",
+                "operationId": "users",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "当前分页",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "num",
+                        "in": "query",
+                        "description": "每页获取数量",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "搜索关键词",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "roleid",
+                        "in": "query",
+                        "description": "角色ID",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/users/store": {
+            "post": {
+                "tags": [
+                    "users api"
+                ],
+                "summary": "保存用户",
+                "description": "使用说明：保存用户",
+                "operationId": "storeUser",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "id",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "用户名称",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "desc",
+                        "in": "query",
+                        "description": "用户描述",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "邮箱",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "mobile",
+                        "in": "query",
+                        "description": "手机",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "area",
+                        "in": "query",
+                        "description": "用户省市区",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "address",
+                        "in": "query",
+                        "description": "详细地址",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "isopen",
+                        "in": "query",
+                        "description": "是否开启",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "用户类型",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/users/{id}/role": {
+            "get": {
+                "tags": [
+                    "users api"
+                ],
+                "summary": "用户角色",
+                "description": "使用说明：获取用户角色",
+                "operationId": "getUserRole",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "用户ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "users api"
+                ],
+                "summary": "保存用户角色",
+                "description": "使用说明：保存用户角色",
+                "operationId": "storeUserRole",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "用户ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "roles",
+                        "in": "query",
+                        "description": "角色ID列表",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/users/delete": {
+            "post": {
+                "tags": [
+                    "users api"
+                ],
+                "summary": "删除用户",
+                "description": "使用说明：删除用户",
+                "operationId": "deleteUser",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "用户ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/users/batchdelete": {
+            "post": {
+                "tags": [
+                    "users api"
+                ],
+                "summary": "删除用户（批量）",
+                "description": "使用说明：删除用户",
+                "operationId": "batchDeleteUser",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "idstring",
+                        "in": "query",
+                        "description": "用户id列表",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "用户密码",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/users/chgpwd": {
+            "post": {
+                "tags": [
+                    "users api"
+                ],
+                "summary": "修改用户密码",
+                "description": "使用说明：修改用户密码",
+                "operationId": "chgpwd",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "oldpwd",
+                        "in": "query",
+                        "description": "原始密码",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "newpwd",
+                        "in": "query",
+                        "description": "新密码",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/users/resetpwd": {
+            "post": {
+                "tags": [
+                    "users api"
+                ],
+                "summary": "重置密码",
+                "description": "使用说明：重置密码",
+                "operationId": "resetpwd",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "idstring",
+                        "in": "query",
+                        "description": "用户ID列表",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/users/bind-member": {
+            "post": {
+                "tags": [
+                    "users api"
+                ],
+                "summary": "綁定前端用戶",
+                "description": "使用说明：綁定前端用戶",
+                "operationId": "bind-member",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "member_id",
+                        "in": "query",
+                        "description": "member_id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/users/{id}/orgnization": {
+            "get": {
+                "tags": [
+                    "users api"
+                ],
+                "summary": "用户组织",
+                "description": "使用说明：获取用户组织",
+                "operationId": "getOrgnization",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "用户ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "users api"
+                ],
+                "summary": "保存用户组织",
+                "description": "使用说明：保存用户组织",
+                "operationId": "storeUserOrgnization",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "用户ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "orgnizations",
+                        "in": "query",
+                        "description": "组织ID列表",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/wechat/pictxtlist": {
+            "get": {
+                "tags": [
+                    "wechat api"
+                ],
+                "summary": "图文列表（分页）",
+                "description": "使用说明：获取图文列表（分页）",
+                "operationId": "pictxtlist",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "当前分页",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "num",
+                        "in": "query",
+                        "description": "每页获取数量",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "搜索关键词",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/wechat/pictxtlistall": {
+            "get": {
+                "tags": [
+                    "wechat api"
+                ],
+                "summary": "图文列表（所有）",
+                "description": "使用说明：获取图文列表（所有）",
+                "operationId": "pictxtlistall",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/wechat/pictxt/{id}/materials": {
+            "get": {
+                "tags": [
+                    "wechat api"
+                ],
+                "summary": "某个图文素材列表",
+                "description": "使用说明：获取某个图文素材列表",
+                "operationId": "materials",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/wechat/storepictxt": {
+            "post": {
+                "tags": [
+                    "wechat api"
+                ],
+                "summary": "保存图文",
+                "description": "使用说明：保存图文",
+                "operationId": "storepictxt",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "图文id（修改时需要）",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "图文名称",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/wechat/deletepictxt": {
+            "post": {
+                "tags": [
+                    "wechat api"
+                ],
+                "summary": "删除图文",
+                "description": "使用说明：删除图文",
+                "operationId": "APIList",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "图文ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/wechat/storematerial": {
+            "post": {
+                "tags": [
+                    "wechat api"
+                ],
+                "summary": "保存微信素材",
+                "description": "使用说明：保存微信素材",
+                "operationId": "storematerial",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "微信素材id（修改时需要）",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "img",
+                        "in": "query",
+                        "description": "图片",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "description": "标题",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "描述",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "url",
+                        "in": "query",
+                        "description": "链接",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "排序号",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "send_num",
+                        "in": "query",
+                        "description": "发送数",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "read_num",
+                        "in": "query",
+                        "description": "阅读数",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "buy_num",
+                        "in": "query",
+                        "description": "购买数",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "素材类型",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pic_txt_id",
+                        "in": "query",
+                        "description": "图文id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/wechat/material/{id}": {
+            "get": {
+                "tags": [
+                    "wechat api"
+                ],
+                "summary": "某个图文素材详情",
+                "description": "使用说明：获取某个图文素材详情",
+                "operationId": "material-id",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "素材ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/wechat/deletematerial": {
+            "post": {
+                "tags": [
+                    "wechat api"
+                ],
+                "summary": "删除素材",
+                "description": "使用说明：删除素材",
+                "operationId": "deletematerial",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "素材ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/wechat/upload": {
+            "post": {
+                "tags": [
+                    "wechat api"
+                ],
+                "summary": "上传文件",
+                "description": "使用说明：上传文件",
+                "operationId": "wechat-upload",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "file",
+                        "in": "query",
+                        "description": "上传文件名",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/wechat/material/{id}/members": {
+            "get": {
+                "tags": [
+                    "wechat api"
+                ],
+                "summary": "素材用户",
+                "description": "使用说明：获取素材用户",
+                "operationId": "wechat-material-member",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "素材ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/wechat/storememberpictxt": {
+            "post": {
+                "tags": [
+                    "wechat api"
+                ],
+                "summary": "用户图文推送",
+                "description": "户图文推送",
+                "operationId": "storememberpictxt",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "member_ids",
+                        "in": "query",
+                        "description": "推送用户id列表",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "推送类型",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pic_txt_id",
+                        "in": "query",
+                        "description": "图文id",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "text",
+                        "in": "query",
+                        "description": "文本信息",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/wechat/pictxtqueue": {
+            "get": {
+                "tags": [
+                    "wechat api"
+                ],
+                "summary": "图文消息队列",
+                "description": "使用说明：获取图文消息队列",
+                "operationId": "72a97e75e8da5630630763a7f4f315da",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "当前分页",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "num",
+                        "in": "query",
+                        "description": "每页获取数量",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "搜索关键词",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/wechat/pictxtqueue/batchdelete": {
+            "post": {
+                "tags": [
+                    "wechat api"
+                ],
+                "summary": "删除图文消息队列（批量）",
+                "description": "使用说明：删除图文消息队列（批量）",
+                "operationId": "pictxtqueue-batchdelete",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "idstring",
+                        "in": "query",
+                        "description": "图文消息队列id列表",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/wechat/storeautoreply": {
+            "post": {
+                "tags": [
+                    "wechat api"
+                ],
+                "summary": "自动回复",
+                "description": "使用说明：自动回复",
+                "operationId": "storeautoreply",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "id（修改时需要）",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "category",
+                        "in": "query",
+                        "description": "回复类型",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "消息类型",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "text",
+                        "in": "query",
+                        "description": "文本信息",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pic_txt_id",
+                        "in": "query",
+                        "description": "图文id",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "img",
+                        "in": "query",
+                        "description": "图片路径",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "keyword",
+                        "in": "query",
+                        "description": "关键词回复",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "interval_time",
+                        "in": "query",
+                        "description": "间隔时间",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/wechat/deleteautoreply": {
+            "post": {
+                "tags": [
+                    "wechat api"
+                ],
+                "summary": "删除关键字自动回复",
+                "description": "使用说明：删除关键字自动回复",
+                "operationId": "deleteautoreply",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "关键字自动回复ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/wechat/autoreply": {
+            "get": {
+                "tags": [
+                    "wechat api"
+                ],
+                "summary": "获取自动回复",
+                "description": "使用说明：获取自动回复",
+                "operationId": "autoreply",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "category",
+                        "in": "query",
+                        "description": "category",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/wechat/keywords": {
+            "get": {
+                "tags": [
+                    "wechat api"
+                ],
+                "summary": "关键字列表（分页）",
+                "description": "使用说明：获取关键字列表（分页）",
+                "operationId": "wechat-keywords",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "当前分页",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "num",
+                        "in": "query",
+                        "description": "每页获取数量",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "搜索关键词",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/wechat/keylists": {
+            "get": {
+                "tags": [
+                    "wechat api"
+                ],
+                "summary": "关键字列表（不分页）",
+                "description": "使用说明：获取关键字列表（不分页）",
+                "operationId": "wechat-keylists",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/wechat/menus": {
+            "get": {
+                "tags": [
+                    "wechat api"
+                ],
+                "summary": "自定义菜单列表",
+                "description": "使用说明：自定义菜单列表",
+                "operationId": "wechat-menus",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/wechat/insertmenu": {
+            "post": {
+                "tags": [
+                    "wechat api"
+                ],
+                "summary": "插入菜单",
+                "description": "使用说明：获取插入菜单",
+                "operationId": "insertmenu",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "菜单节点名称",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "parent_path",
+                        "in": "query",
+                        "description": "菜单父节点path",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "菜单排序号",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "菜单类型",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "keyword",
+                        "in": "query",
+                        "description": "关键字",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "appid",
+                        "in": "query",
+                        "description": "小程序appid",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pagepath",
+                        "in": "query",
+                        "description": "小程序路径",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "url",
+                        "in": "query",
+                        "description": "菜单链接",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "is_open",
+                        "in": "query",
+                        "description": "是否开启",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "is_root",
+                        "in": "query",
+                        "description": "是否根节点",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/wechat/updatemenu": {
+            "post": {
+                "tags": [
+                    "wechat api"
+                ],
+                "summary": "修改菜单",
+                "description": "使用说明：获取修改菜单",
+                "operationId": "updatemenu",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "菜单节点名称",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "节点ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "菜单排序号",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "菜单类型",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "keyword",
+                        "in": "query",
+                        "description": "关键字",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "appid",
+                        "in": "query",
+                        "description": "小程序appid",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pagepath",
+                        "in": "query",
+                        "description": "小程序路径",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "url",
+                        "in": "query",
+                        "description": "菜单链接",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "is_open",
+                        "in": "query",
+                        "description": "是否开启",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/wechat/deletemenu": {
+            "post": {
+                "tags": [
+                    "wechat api"
+                ],
+                "summary": "删除菜单",
+                "description": "使用说明：删除菜单",
+                "operationId": "deletemenu",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "菜单ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/wechat/menuchildren": {
+            "get": {
+                "tags": [
+                    "wechat api"
+                ],
+                "summary": "菜单子节点",
+                "description": "使用说明：菜单子节点",
+                "operationId": "menuchildren",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "path",
+                        "in": "query",
+                        "description": "菜单path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/wechat/publishmenu": {
+            "get": {
+                "tags": [
+                    "wechat api"
+                ],
+                "summary": "发布菜单",
+                "description": "使用说明：发布菜单",
+                "operationId": "publishmenu",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/wechat/qrcode": {
+            "get": {
+                "tags": [
+                    "wechat api"
+                ],
+                "summary": "扫码登录二维码",
+                "description": "使用说明：获取扫码登录二维码",
+                "operationId": "wechat-qrcode",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        }
+    }
+}
