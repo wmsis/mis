@@ -20,7 +20,7 @@ class WeighBridgeController extends Controller
     /**
      * @OA\GET(
      *     path="/api/weighbridge/index",
-     *     tags={"weighbridge"},
+     *     tags={"地磅上报数据weighbridge"},
      *     operationId="weighbridge-index",
      *     summary="获取地磅数据列表",
      *     description="使用说明：获取地磅数据列表",
@@ -115,7 +115,7 @@ class WeighBridgeController extends Controller
     /**
      * @OA\POST(
      *     path="/api/weighbridge/store_multi",
-     *     tags={"weighbridge"},
+     *     tags={"地磅上报数据weighbridge"},
      *     operationId="weighbridge-multi",
      *     summary="批量新增",
      *     description="使用说明：批量新增",

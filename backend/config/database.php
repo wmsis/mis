@@ -43,6 +43,7 @@ return [
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
 
+        //默认sass平台数据库
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
@@ -63,6 +64,7 @@ return [
             ]) : [],
         ],
 
+        //系统数据库
         'mysql_mis' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),

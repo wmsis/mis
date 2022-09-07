@@ -20,7 +20,7 @@ class AdminController extends Controller
     /**
      * @OA\Post(
      *     path="/api/admin/login",
-     *     tags={"admin"},
+     *     tags={"系统管理员admin"},
      *     operationId="admin login",
      *     summary="登录",
      *     description="使用说明：登录",
@@ -61,7 +61,7 @@ class AdminController extends Controller
     /**
      * @OA\Get(
      *     path="/api/admin/me",
-     *     tags={"admin"},
+     *     tags={"系统管理员admin"},
      *     operationId="admin me",
      *     summary="我",
      *     description="使用说明：我",
@@ -89,7 +89,7 @@ class AdminController extends Controller
     /**
      * @OA\Get(
      *     path="/api/admin/logout",
-     *     tags={"admin"},
+     *     tags={"系统管理员admin"},
      *     operationId="admin logout",
      *     summary="退出登录",
      *     description="使用说明：退出登录",
@@ -117,7 +117,7 @@ class AdminController extends Controller
     /**
      * @OA\Get(
      *     path="/api/admin/refresh",
-     *     tags={"admin"},
+     *     tags={"系统管理员admin"},
      *     operationId="admin refresh",
      *     summary="刷新token",
      *     description="使用说明：刷新token",

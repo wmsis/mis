@@ -20,7 +20,7 @@ class ElectricityController extends Controller
     /**
      * @OA\GET(
      *     path="/api/electricity/index",
-     *     tags={"electricity"},
+     *     tags={"南瑞电表数据electricity"},
      *     operationId="electricity-index",
      *     summary="获取电表数据列表",
      *     description="使用说明：获取电表数据列表",
@@ -114,7 +114,7 @@ class ElectricityController extends Controller
     /**
      * @OA\POST(
      *     path="/api/electricity/store_multi",
-     *     tags={"electricity"},
+     *     tags={"南瑞电表数据electricity"},
      *     operationId="electricity-multi",
      *     summary="批量新增",
      *     description="使用说明：批量新增",

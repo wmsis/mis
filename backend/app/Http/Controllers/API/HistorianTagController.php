@@ -30,7 +30,7 @@ class HistorianTagController extends Controller
     /**
      * @OA\GET(
      *     path="/api/historian-tag/index",
-     *     tags={"historian tag"},
+     *     tags={"历史数据库标签historian tag"},
      *     operationId="historian-tag-index",
      *     summary="获取 tag 列表",
      *     description="使用说明：获取 tag 列表",
@@ -123,7 +123,7 @@ class HistorianTagController extends Controller
     /**
      * @OA\GET(
      *     path="/api/historian-tag/all",
-     *     tags={"historian tag"},
+     *     tags={"历史数据库标签historian tag"},
      *     operationId="historian-tag-all",
      *     summary="获取 tag 所有列表",
      *     description="使用说明：获取 tag 所有列表",
@@ -172,7 +172,7 @@ class HistorianTagController extends Controller
     /**
      * @OA\GET(
      *     path="/api/historian-tag/listdata",
-     *     tags={"historian tag"},
+     *     tags={"历史数据库标签historian tag"},
      *     operationId="historian-tag-listdata",
      *     summary="获取 tag 列表（包含当前值）",
      *     description="使用说明：获取 tag 列表（包含当前值）",
@@ -294,7 +294,7 @@ class HistorianTagController extends Controller
     /**
      * @OA\GET(
      *     path="/api/historian-tag/show/{id}",
-     *     tags={"historian tag"},
+     *     tags={"历史数据库标签historian tag"},
      *     operationId="historian-tag-show",
      *     summary="获取 tag 详细信息",
      *     description="使用说明：获取 tag 详细信息",
@@ -343,7 +343,7 @@ class HistorianTagController extends Controller
     /**
      * @OA\POST(
      *     path="/api/historian-tag/show-many",
-     *     tags={"historian tag"},
+     *     tags={"历史数据库标签historian tag"},
      *     operationId="historian-tag-many",
      *     summary="批量获取 historan tag",
      *     description="使用说明：批量获取 historan tag",
@@ -394,7 +394,7 @@ class HistorianTagController extends Controller
     /**
      * @OA\GET(
      *     path="/api/historian-tag/load",
-     *     tags={"historian tag"},
+     *     tags={"历史数据库标签historian tag"},
      *     operationId="historian-tag-load",
      *     summary="从 Historian 加载 tags",
      *     description="使用说明：从 Historian 加载 tags, 保存到数据库",
@@ -462,7 +462,7 @@ class HistorianTagController extends Controller
     /**
      * @OA\POST(
      *     path="/api/historian-tag/update/{id}",
-     *     tags={"historian tag"},
+     *     tags={"历史数据库标签historian tag"},
      *     operationId="historian-tag-update",
      *     summary="修改 tag",
      *     description="使用说明：修改 tag",
@@ -574,7 +574,7 @@ class HistorianTagController extends Controller
     /**
      * @OA\DELETE(
      *     path="/api/historian-tag/destroy/{id}",
-     *     tags={"historian tag"},
+     *     tags={"历史数据库标签historian tag"},
      *     operationId="historian-tag-destroy",
      *     summary="删除 tag",
      *     description="使用说明：删除 tag",

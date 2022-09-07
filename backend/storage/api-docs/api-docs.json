@@ -1,15 +1,15 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "SIS API 文档",
+        "title": "MIS API 文档",
         "description": "伟明环保设备有限公司SIS系统 API 文档 api/documentation  php artisan l5-swagger:generate",
-        "version": "1.0.0"
+        "version": "2.0.0"
     },
     "paths": {
         "/api/api/tree": {
             "get": {
                 "tags": [
-                    "apis"
+                    "接口权限apis"
                 ],
                 "summary": "接口树",
                 "description": "使用说明：获取接口树",
@@ -35,7 +35,7 @@
         "/api/api/store": {
             "post": {
                 "tags": [
-                    "apis"
+                    "接口权限apis"
                 ],
                 "summary": "保存接口",
                 "description": "使用说明：保存接口",
@@ -115,7 +115,7 @@
         "/api/api/delete": {
             "post": {
                 "tags": [
-                    "apis"
+                    "接口权限apis"
                 ],
                 "summary": "删除用户接口",
                 "description": "使用说明：删除用户接口",
@@ -150,7 +150,7 @@
         "/api/auth/login": {
             "post": {
                 "tags": [
-                    "auth"
+                    "权限认证auth"
                 ],
                 "summary": "登录",
                 "description": "使用说明：登录",
@@ -185,7 +185,7 @@
         "/api/auth/logout": {
             "get": {
                 "tags": [
-                    "auth"
+                    "权限认证auth"
                 ],
                 "summary": "退出登录",
                 "description": "使用说明：退出登录",
@@ -211,7 +211,7 @@
         "/api/auth/refresh": {
             "get": {
                 "tags": [
-                    "auth"
+                    "权限认证auth"
                 ],
                 "summary": "刷新token",
                 "description": "使用说明：刷新token",
@@ -237,7 +237,7 @@
         "/api/auth/me": {
             "get": {
                 "tags": [
-                    "auth"
+                    "权限认证auth"
                 ],
                 "summary": "我",
                 "description": "使用说明：我",
@@ -263,7 +263,7 @@
         "/api/dcs-db-config/store": {
             "post": {
                 "tags": [
-                    "dcs-db-config"
+                    "历史数据库配置dcs-db-config"
                 ],
                 "summary": "新增单条数据",
                 "description": "使用说明：新增单条数据",
@@ -343,7 +343,7 @@
         "/api/dcs-db-config/show/{id}": {
             "get": {
                 "tags": [
-                    "dcs-db-config"
+                    "历史数据库配置dcs-db-config"
                 ],
                 "summary": "获取详细信息",
                 "description": "使用说明：获取详细信息",
@@ -378,7 +378,7 @@
         "/api/dcs-db-config/update/{id}": {
             "post": {
                 "tags": [
-                    "dcs-db-config"
+                    "历史数据库配置dcs-db-config"
                 ],
                 "summary": "修改",
                 "description": "使用说明：修改单条数据",
@@ -467,7 +467,7 @@
         "/api/dcs-db-config/destroy/{id}": {
             "delete": {
                 "tags": [
-                    "dcs-db-config"
+                    "历史数据库配置dcs-db-config"
                 ],
                 "summary": "删除单条数据",
                 "description": "使用说明：删除单条数据",
@@ -502,7 +502,7 @@
         "/api/dcs-map/index": {
             "get": {
                 "tags": [
-                    "dcs-map"
+                    "DCS映射关系dcs-map"
                 ],
                 "summary": "分页获取数据列表",
                 "description": "使用说明：分页获取数据列表",
@@ -566,7 +566,7 @@
         "/api/dcs-map/store": {
             "post": {
                 "tags": [
-                    "dcs-map"
+                    "DCS映射关系dcs-map"
                 ],
                 "summary": "新增单条数据",
                 "description": "使用说明：新增单条数据",
@@ -628,7 +628,7 @@
         "/api/dcs-map/show/{id}": {
             "get": {
                 "tags": [
-                    "dcs-map"
+                    "DCS映射关系dcs-map"
                 ],
                 "summary": "获取详细信息",
                 "description": "使用说明：获取详细信息",
@@ -663,7 +663,7 @@
         "/api/dcs-map/update/{id}": {
             "post": {
                 "tags": [
-                    "dcs-map"
+                    "DCS映射关系dcs-map"
                 ],
                 "summary": "修改",
                 "description": "使用说明：修改单条数据",
@@ -734,7 +734,7 @@
         "/api/dcs-map/destroy/{id}": {
             "delete": {
                 "tags": [
-                    "dcs-map"
+                    "DCS映射关系dcs-map"
                 ],
                 "summary": "删除单条数据",
                 "description": "使用说明：删除单条数据",
@@ -769,7 +769,7 @@
         "/api/dcs-standard/lists": {
             "get": {
                 "tags": [
-                    "dcs-standard"
+                    "DCS标准命名dcs-standard"
                 ],
                 "summary": "获取所有数据列表",
                 "description": "使用说明：获取所有数据列表",
@@ -795,7 +795,7 @@
         "/api/dcs-standard/index": {
             "get": {
                 "tags": [
-                    "dcs-standard"
+                    "DCS标准命名dcs-standard"
                 ],
                 "summary": "分页获取数据列表",
                 "description": "使用说明：分页获取数据列表",
@@ -850,7 +850,7 @@
         "/api/dcs-standard/store": {
             "post": {
                 "tags": [
-                    "dcs-standard"
+                    "DCS标准命名dcs-standard"
                 ],
                 "summary": "新增单条数据",
                 "description": "使用说明：新增单条数据",
@@ -894,7 +894,7 @@
         "/api/dcs-standard/show/{id}": {
             "get": {
                 "tags": [
-                    "dcs-standard"
+                    "DCS标准命名dcs-standard"
                 ],
                 "summary": "获取详细信息",
                 "description": "使用说明：获取详细信息",
@@ -929,7 +929,7 @@
         "/api/dcs-standard/update/{id}": {
             "post": {
                 "tags": [
-                    "dcs-standard"
+                    "DCS标准命名dcs-standard"
                 ],
                 "summary": "修改",
                 "description": "使用说明：修改单条数据",
@@ -982,7 +982,7 @@
         "/api/dcs-standard/destroy/{id}": {
             "delete": {
                 "tags": [
-                    "dcs-standard"
+                    "DCS标准命名dcs-standard"
                 ],
                 "summary": "删除单条数据",
                 "description": "使用说明：删除单条数据",
@@ -1017,7 +1017,7 @@
         "/api/electricity/index": {
             "get": {
                 "tags": [
-                    "electricity"
+                    "南瑞电表数据electricity"
                 ],
                 "summary": "获取电表数据列表",
                 "description": "使用说明：获取电表数据列表",
@@ -1081,7 +1081,7 @@
         "/api/electricity/store_multi": {
             "post": {
                 "tags": [
-                    "electricity"
+                    "南瑞电表数据electricity"
                 ],
                 "summary": "批量新增",
                 "description": "使用说明：批量新增",
@@ -1125,7 +1125,7 @@
         "/api/electricity-db-config/store": {
             "post": {
                 "tags": [
-                    "electricity-db-config"
+                    "南瑞电表数据库配置electricity-db-config"
                 ],
                 "summary": "新增单条数据",
                 "description": "使用说明：新增单条数据",
@@ -1187,7 +1187,7 @@
         "/api/electricity-db-config/show/{id}": {
             "get": {
                 "tags": [
-                    "electricity-db-config"
+                    "南瑞电表数据库配置electricity-db-config"
                 ],
                 "summary": "获取详细信息",
                 "description": "使用说明：获取详细信息",
@@ -1222,7 +1222,7 @@
         "/api/electricity-db-config/update/{id}": {
             "post": {
                 "tags": [
-                    "electricity-db-config"
+                    "南瑞电表数据库配置electricity-db-config"
                 ],
                 "summary": "修改",
                 "description": "使用说明：修改单条数据",
@@ -1284,7 +1284,7 @@
         "/api/electricity-db-config/destroy/{id}": {
             "delete": {
                 "tags": [
-                    "electricity-db-config"
+                    "南瑞电表数据库配置electricity-db-config"
                 ],
                 "summary": "删除单条数据",
                 "description": "使用说明：删除单条数据",
@@ -1319,7 +1319,7 @@
         "/api/electricity-map/index": {
             "get": {
                 "tags": [
-                    "electricity-map"
+                    "电表地址映射关系electricity-map"
                 ],
                 "summary": "分页获取数据列表",
                 "description": "使用说明：分页获取数据列表",
@@ -1383,7 +1383,7 @@
         "/api/electricity-map/store": {
             "post": {
                 "tags": [
-                    "electricity-map"
+                    "电表地址映射关系electricity-map"
                 ],
                 "summary": "新增单条数据",
                 "description": "使用说明：新增单条数据",
@@ -1445,7 +1445,7 @@
         "/api/electricity-map/show/{id}": {
             "get": {
                 "tags": [
-                    "electricity-map"
+                    "电表地址映射关系electricity-map"
                 ],
                 "summary": "获取详细信息",
                 "description": "使用说明：获取详细信息",
@@ -1480,7 +1480,7 @@
         "/api/electricity-map/update/{id}": {
             "post": {
                 "tags": [
-                    "electricity-map"
+                    "电表地址映射关系electricity-map"
                 ],
                 "summary": "修改",
                 "description": "使用说明：修改单条数据",
@@ -1551,7 +1551,7 @@
         "/api/electricity-map/destroy/{id}": {
             "delete": {
                 "tags": [
-                    "electricity-map"
+                    "电表地址映射关系electricity-map"
                 ],
                 "summary": "删除单条数据",
                 "description": "使用说明：删除单条数据",
@@ -1586,7 +1586,7 @@
         "/api/garbage-db-config/store": {
             "post": {
                 "tags": [
-                    "garbage-db-config"
+                    "抓斗数据库配置garbage-db-config"
                 ],
                 "summary": "新增单条数据",
                 "description": "使用说明：新增单条数据",
@@ -1675,7 +1675,7 @@
         "/api/garbage-db-config/show/{id}": {
             "get": {
                 "tags": [
-                    "garbage-db-config"
+                    "抓斗数据库配置garbage-db-config"
                 ],
                 "summary": "获取详细信息",
                 "description": "使用说明：获取详细信息",
@@ -1710,7 +1710,7 @@
         "/api/garbage-db-config/update/{id}": {
             "post": {
                 "tags": [
-                    "garbage-db-config"
+                    "抓斗数据库配置garbage-db-config"
                 ],
                 "summary": "修改",
                 "description": "使用说明：修改单条数据",
@@ -1808,7 +1808,7 @@
         "/api/garbage-db-config/destroy/{id}": {
             "delete": {
                 "tags": [
-                    "garbage-db-config"
+                    "抓斗数据库配置garbage-db-config"
                 ],
                 "summary": "删除单条数据",
                 "description": "使用说明：删除单条数据",
@@ -1843,7 +1843,7 @@
         "/api/historian-data/current-data": {
             "post": {
                 "tags": [
-                    "historian data"
+                    "历史数据库数据historian data"
                 ],
                 "summary": "获取 current data",
                 "description": "使用说明：获取 current data",
@@ -1878,7 +1878,7 @@
         "/api/historian-data/raw-data": {
             "post": {
                 "tags": [
-                    "historian data"
+                    "历史数据库数据historian data"
                 ],
                 "summary": "获取原始数据 raw data",
                 "description": "使用说明：获取原始数据 data",
@@ -1941,7 +1941,7 @@
         "/api/historian-data/sampled-data": {
             "post": {
                 "tags": [
-                    "historian data"
+                    "历史数据库数据historian data"
                 ],
                 "summary": "获取 sampled data",
                 "description": "使用说明：获取 sampled data, 默认按count计算时间间隔,间隔内取平均值,取count个历史数据",
@@ -2033,7 +2033,7 @@
         "/api/historian-data/watch-data": {
             "post": {
                 "tags": [
-                    "historian data"
+                    "历史数据库数据historian data"
                 ],
                 "summary": "获取 watch data",
                 "description": "使用说明：获取 watch data",
@@ -2077,7 +2077,7 @@
         "/api/historian-tag/index": {
             "get": {
                 "tags": [
-                    "historian tag"
+                    "历史数据库标签historian tag"
                 ],
                 "summary": "获取 tag 列表",
                 "description": "使用说明：获取 tag 列表",
@@ -2141,7 +2141,7 @@
         "/api/historian-tag/all": {
             "get": {
                 "tags": [
-                    "historian tag"
+                    "历史数据库标签historian tag"
                 ],
                 "summary": "获取 tag 所有列表",
                 "description": "使用说明：获取 tag 所有列表",
@@ -2176,7 +2176,7 @@
         "/api/historian-tag/listdata": {
             "get": {
                 "tags": [
-                    "historian tag"
+                    "历史数据库标签historian tag"
                 ],
                 "summary": "获取 tag 列表（包含当前值）",
                 "description": "使用说明：获取 tag 列表（包含当前值）",
@@ -2239,7 +2239,7 @@
         "/api/historian-tag/show/{id}": {
             "get": {
                 "tags": [
-                    "historian tag"
+                    "历史数据库标签historian tag"
                 ],
                 "summary": "获取 tag 详细信息",
                 "description": "使用说明：获取 tag 详细信息",
@@ -2274,7 +2274,7 @@
         "/api/historian-tag/show-many": {
             "post": {
                 "tags": [
-                    "historian tag"
+                    "历史数据库标签historian tag"
                 ],
                 "summary": "批量获取 historan tag",
                 "description": "使用说明：批量获取 historan tag",
@@ -2309,7 +2309,7 @@
         "/api/historian-tag/load": {
             "get": {
                 "tags": [
-                    "historian tag"
+                    "历史数据库标签historian tag"
                 ],
                 "summary": "从 Historian 加载 tags",
                 "description": "使用说明：从 Historian 加载 tags, 保存到数据库",
@@ -2335,7 +2335,7 @@
         "/api/historian-tag/update/{id}": {
             "post": {
                 "tags": [
-                    "historian tag"
+                    "历史数据库标签historian tag"
                 ],
                 "summary": "修改 tag",
                 "description": "使用说明：修改 tag",
@@ -2415,7 +2415,7 @@
         "/api/historian-tag/destroy/{id}": {
             "delete": {
                 "tags": [
-                    "historian tag"
+                    "历史数据库标签historian tag"
                 ],
                 "summary": "删除 tag",
                 "description": "使用说明：删除 tag",
@@ -2450,7 +2450,7 @@
         "/api/orgnizations/factories": {
             "get": {
                 "tags": [
-                    "orgnizations"
+                    "公司组织架构orgnizations"
                 ],
                 "summary": "获取所有电厂列表",
                 "description": "使用说明：获取所有电厂列表",
@@ -2476,7 +2476,7 @@
         "/api/orgnizations/tree": {
             "get": {
                 "tags": [
-                    "orgnizations"
+                    "公司组织架构orgnizations"
                 ],
                 "summary": "组织树",
                 "description": "使用说明：获取组织树",
@@ -2511,7 +2511,7 @@
         "/api/orgnizations/store": {
             "post": {
                 "tags": [
-                    "orgnizations"
+                    "公司组织架构orgnizations"
                 ],
                 "summary": "保存组织",
                 "description": "使用说明：保存组织",
@@ -2591,7 +2591,7 @@
         "/api/orgnizations/{id}/role": {
             "get": {
                 "tags": [
-                    "orgnizations"
+                    "公司组织架构orgnizations"
                 ],
                 "summary": "用户组织角色",
                 "description": "使用说明：获取用户组织角色",
@@ -2624,7 +2624,7 @@
             },
             "post": {
                 "tags": [
-                    "orgnizations"
+                    "公司组织架构orgnizations"
                 ],
                 "summary": "保存用户组织角色",
                 "description": "使用说明：保存用户组织角色",
@@ -2668,7 +2668,7 @@
         "/api/orgnizations/delete": {
             "post": {
                 "tags": [
-                    "orgnizations"
+                    "公司组织架构orgnizations"
                 ],
                 "summary": "删除用户组织",
                 "description": "使用说明：删除用户组织",
@@ -2703,7 +2703,7 @@
         "/api/weighbridge/index": {
             "get": {
                 "tags": [
-                    "weighbridge"
+                    "地磅上报数据weighbridge"
                 ],
                 "summary": "获取地磅数据列表",
                 "description": "使用说明：获取地磅数据列表",
@@ -2767,7 +2767,7 @@
         "/api/weighbridge/store_multi": {
             "post": {
                 "tags": [
-                    "weighbridge"
+                    "地磅上报数据weighbridge"
                 ],
                 "summary": "批量新增",
                 "description": "使用说明：批量新增",
@@ -2811,7 +2811,7 @@
         "/api/weighbridge-category/lists-big": {
             "get": {
                 "tags": [
-                    "weighbridge-category"
+                    "地磅垃圾分类weighbridge-category"
                 ],
                 "summary": "获取所有大类垃圾数据",
                 "description": "使用说明：获取所有大类垃圾数据",
@@ -2837,7 +2837,7 @@
         "/api/weighbridge-category/page-big": {
             "get": {
                 "tags": [
-                    "weighbridge-category"
+                    "地磅垃圾分类weighbridge-category"
                 ],
                 "summary": "分页获取垃圾大类数据列表",
                 "description": "使用说明：分页获取垃圾大类数据列表",
@@ -2892,7 +2892,7 @@
         "/api/weighbridge-category/store-big": {
             "post": {
                 "tags": [
-                    "weighbridge-category"
+                    "地磅垃圾分类weighbridge-category"
                 ],
                 "summary": "新增单条大类数据",
                 "description": "使用说明：新增单条大类数据",
@@ -2936,7 +2936,7 @@
         "/api/weighbridge-category/show-big/{id}": {
             "get": {
                 "tags": [
-                    "weighbridge-category"
+                    "地磅垃圾分类weighbridge-category"
                 ],
                 "summary": "获取详细信息",
                 "description": "使用说明：获取详细信息",
@@ -2971,7 +2971,7 @@
         "/api/weighbridge-category/update-big/{id}": {
             "post": {
                 "tags": [
-                    "weighbridge-category"
+                    "地磅垃圾分类weighbridge-category"
                 ],
                 "summary": "修改",
                 "description": "使用说明：修改单条数据",
@@ -3024,7 +3024,7 @@
         "/api/weighbridge-category/destroy-big/{id}": {
             "delete": {
                 "tags": [
-                    "weighbridge-category"
+                    "地磅垃圾分类weighbridge-category"
                 ],
                 "summary": "删除单条数据",
                 "description": "使用说明：删除单条数据",
@@ -3059,7 +3059,7 @@
         "/api/weighbridge-category/store-small-multi": {
             "post": {
                 "tags": [
-                    "weighbridge-category"
+                    "地磅垃圾分类weighbridge-category"
                 ],
                 "summary": "批量新增小类",
                 "description": "使用说明：批量新增小类",
@@ -3094,7 +3094,7 @@
         "/api/weighbridge-category/page-small": {
             "get": {
                 "tags": [
-                    "weighbridge-category"
+                    "地磅垃圾分类weighbridge-category"
                 ],
                 "summary": "分页获取垃圾小类数据列表",
                 "description": "使用说明：分页获取垃圾小类数据列表",
@@ -3149,7 +3149,7 @@
         "/api/weighbridge-category/bind-relation": {
             "post": {
                 "tags": [
-                    "weighbridge-category"
+                    "地磅垃圾分类weighbridge-category"
                 ],
                 "summary": "绑定大小类关系",
                 "description": "使用说明：绑定大小类关系",
@@ -3193,7 +3193,7 @@
         "/api/weighbridge-category/show-relation/{id}": {
             "get": {
                 "tags": [
-                    "weighbridge-category"
+                    "地磅垃圾分类weighbridge-category"
                 ],
                 "summary": "获取详细大类及关联信息",
                 "description": "使用说明：获取详细大类及关联信息",
@@ -3228,7 +3228,7 @@
         "/api/admin/login": {
             "post": {
                 "tags": [
-                    "admin"
+                    "系统管理员admin"
                 ],
                 "summary": "登录",
                 "description": "使用说明：登录",
@@ -3263,7 +3263,7 @@
         "/api/admin/me": {
             "get": {
                 "tags": [
-                    "admin"
+                    "系统管理员admin"
                 ],
                 "summary": "我",
                 "description": "使用说明：我",
@@ -3289,7 +3289,7 @@
         "/api/admin/logout": {
             "get": {
                 "tags": [
-                    "admin"
+                    "系统管理员admin"
                 ],
                 "summary": "退出登录",
                 "description": "使用说明：退出登录",
@@ -3315,7 +3315,7 @@
         "/api/admin/refresh": {
             "get": {
                 "tags": [
-                    "admin"
+                    "系统管理员admin"
                 ],
                 "summary": "刷新token",
                 "description": "使用说明：刷新token",
@@ -3341,7 +3341,7 @@
         "/api/member/lists": {
             "get": {
                 "tags": [
-                    "member"
+                    "微信会员member"
                 ],
                 "summary": "用户列表",
                 "description": "使用说明：获取用户列表",
@@ -3400,7 +3400,7 @@
         "/api/member/{id}/info": {
             "get": {
                 "tags": [
-                    "member"
+                    "微信会员member"
                 ],
                 "summary": "用户详情",
                 "description": "使用说明：获取用户详情",
@@ -3441,7 +3441,7 @@
         "/api/permissions/tree": {
             "get": {
                 "tags": [
-                    "permissions"
+                    "菜单权限permissions"
                 ],
                 "summary": "菜单权限列表(所有)",
                 "description": "使用说明：获取菜单权限列表(所有)",
@@ -3467,7 +3467,7 @@
         "/api/permissions/insert": {
             "post": {
                 "tags": [
-                    "permissions"
+                    "菜单权限permissions"
                 ],
                 "summary": "插入权限节点",
                 "description": "使用说明：获取插入权限节点",
@@ -3565,7 +3565,7 @@
         "/api/permissions/update": {
             "post": {
                 "tags": [
-                    "permissions"
+                    "菜单权限permissions"
                 ],
                 "summary": "修改权限分类",
                 "description": "使用说明：获取修改权限分类",
@@ -3654,7 +3654,7 @@
         "/api/permissions/delete": {
             "post": {
                 "tags": [
-                    "permissions"
+                    "菜单权限permissions"
                 ],
                 "summary": "删除权限分类",
                 "description": "使用说明：删除权限及其子权限",
@@ -3689,7 +3689,7 @@
         "/api/roles": {
             "get": {
                 "tags": [
-                    "roles"
+                    "角色roles"
                 ],
                 "summary": "角色列表分页",
                 "description": "使用说明：获取角色列表",
@@ -3742,7 +3742,7 @@
         "/api/roles/store": {
             "post": {
                 "tags": [
-                    "roles"
+                    "角色roles"
                 ],
                 "summary": "保存集团角色",
                 "description": "使用说明：保存集团角色",
@@ -3795,7 +3795,7 @@
         "/api/roles/{id}/permission": {
             "get": {
                 "tags": [
-                    "roles"
+                    "角色roles"
                 ],
                 "summary": "角色权限",
                 "description": "使用说明：获取角色权限",
@@ -3828,7 +3828,7 @@
             },
             "post": {
                 "tags": [
-                    "roles"
+                    "角色roles"
                 ],
                 "summary": "保存角色权限",
                 "description": "使用说明：保存角色权限",
@@ -3872,7 +3872,7 @@
         "/api/roles/delete": {
             "post": {
                 "tags": [
-                    "roles"
+                    "角色roles"
                 ],
                 "summary": "删除角色",
                 "description": "使用说明：删除角色",
@@ -3907,7 +3907,7 @@
         "/api/roles/lists": {
             "get": {
                 "tags": [
-                    "roles"
+                    "角色roles"
                 ],
                 "summary": "角色列表(不分页)",
                 "description": "使用说明：获取角色列表",
@@ -3933,7 +3933,7 @@
         "/api/roles/{id}/api": {
             "get": {
                 "tags": [
-                    "roles"
+                    "角色roles"
                 ],
                 "summary": "角色接口权限",
                 "description": "使用说明：获取角色接口权限",
@@ -3966,7 +3966,7 @@
             },
             "post": {
                 "tags": [
-                    "roles"
+                    "角色roles"
                 ],
                 "summary": "保存角色权接口限",
                 "description": "使用说明：保存角色接口权限",
@@ -4010,7 +4010,7 @@
         "/api/users": {
             "get": {
                 "tags": [
-                    "users"
+                    "用户users"
                 ],
                 "summary": "用户列表",
                 "description": "使用说明：获取用户列表",
@@ -4072,7 +4072,7 @@
         "/api/users/store": {
             "post": {
                 "tags": [
-                    "users"
+                    "用户users"
                 ],
                 "summary": "保存用户",
                 "description": "使用说明：保存用户",
@@ -4178,7 +4178,7 @@
         "/api/users/{id}/role": {
             "get": {
                 "tags": [
-                    "users"
+                    "用户users"
                 ],
                 "summary": "用户角色",
                 "description": "使用说明：获取用户角色",
@@ -4211,7 +4211,7 @@
             },
             "post": {
                 "tags": [
-                    "users"
+                    "用户users"
                 ],
                 "summary": "保存用户角色",
                 "description": "使用说明：保存用户角色",
@@ -4255,7 +4255,7 @@
         "/api/users/delete": {
             "post": {
                 "tags": [
-                    "users"
+                    "用户users"
                 ],
                 "summary": "删除用户",
                 "description": "使用说明：删除用户",
@@ -4290,7 +4290,7 @@
         "/api/users/batchdelete": {
             "post": {
                 "tags": [
-                    "users"
+                    "用户users"
                 ],
                 "summary": "删除用户（批量）",
                 "description": "使用说明：删除用户",
@@ -4334,7 +4334,7 @@
         "/api/users/chgpwd": {
             "post": {
                 "tags": [
-                    "users"
+                    "用户users"
                 ],
                 "summary": "修改用户密码",
                 "description": "使用说明：修改用户密码",
@@ -4378,7 +4378,7 @@
         "/api/users/resetpwd": {
             "post": {
                 "tags": [
-                    "users"
+                    "用户users"
                 ],
                 "summary": "重置密码",
                 "description": "使用说明：重置密码",
@@ -4413,7 +4413,7 @@
         "/api/users/bind-member": {
             "post": {
                 "tags": [
-                    "users"
+                    "用户users"
                 ],
                 "summary": "綁定前端用戶",
                 "description": "使用说明：綁定前端用戶",
@@ -4448,7 +4448,7 @@
         "/api/users/{id}/orgnization": {
             "get": {
                 "tags": [
-                    "users"
+                    "用户users"
                 ],
                 "summary": "用户组织",
                 "description": "使用说明：获取用户组织",
@@ -4480,7 +4480,7 @@
             },
             "post": {
                 "tags": [
-                    "users"
+                    "用户users"
                 ],
                 "summary": "保存用户组织",
                 "description": "使用说明：保存用户组织",
@@ -4524,7 +4524,7 @@
         "/api/wechat/pictxtlist": {
             "get": {
                 "tags": [
-                    "wechat api"
+                    "微信wechat"
                 ],
                 "summary": "图文列表（分页）",
                 "description": "使用说明：获取图文列表（分页）",
@@ -4577,7 +4577,7 @@
         "/api/wechat/pictxtlistall": {
             "get": {
                 "tags": [
-                    "wechat api"
+                    "微信wechat"
                 ],
                 "summary": "图文列表（所有）",
                 "description": "使用说明：获取图文列表（所有）",
@@ -4603,7 +4603,7 @@
         "/api/wechat/pictxt/{id}/materials": {
             "get": {
                 "tags": [
-                    "wechat api"
+                    "微信wechat"
                 ],
                 "summary": "某个图文素材列表",
                 "description": "使用说明：获取某个图文素材列表",
@@ -4638,7 +4638,7 @@
         "/api/wechat/storepictxt": {
             "post": {
                 "tags": [
-                    "wechat api"
+                    "微信wechat"
                 ],
                 "summary": "保存图文",
                 "description": "使用说明：保存图文",
@@ -4682,7 +4682,7 @@
         "/api/wechat/deletepictxt": {
             "post": {
                 "tags": [
-                    "wechat api"
+                    "微信wechat"
                 ],
                 "summary": "删除图文",
                 "description": "使用说明：删除图文",
@@ -4717,7 +4717,7 @@
         "/api/wechat/storematerial": {
             "post": {
                 "tags": [
-                    "wechat api"
+                    "微信wechat"
                 ],
                 "summary": "保存微信素材",
                 "description": "使用说明：保存微信素材",
@@ -4842,7 +4842,7 @@
         "/api/wechat/material/{id}": {
             "get": {
                 "tags": [
-                    "wechat api"
+                    "微信wechat"
                 ],
                 "summary": "某个图文素材详情",
                 "description": "使用说明：获取某个图文素材详情",
@@ -4876,7 +4876,7 @@
         "/api/wechat/deletematerial": {
             "post": {
                 "tags": [
-                    "wechat api"
+                    "微信wechat"
                 ],
                 "summary": "删除素材",
                 "description": "使用说明：删除素材",
@@ -4911,7 +4911,7 @@
         "/api/wechat/upload": {
             "post": {
                 "tags": [
-                    "wechat api"
+                    "微信wechat"
                 ],
                 "summary": "上传文件",
                 "description": "使用说明：上传文件",
@@ -4946,7 +4946,7 @@
         "/api/wechat/material/{id}/members": {
             "get": {
                 "tags": [
-                    "wechat api"
+                    "微信wechat"
                 ],
                 "summary": "素材用户",
                 "description": "使用说明：获取素材用户",
@@ -4981,7 +4981,7 @@
         "/api/wechat/storememberpictxt": {
             "post": {
                 "tags": [
-                    "wechat api"
+                    "微信wechat"
                 ],
                 "summary": "用户图文推送",
                 "description": "户图文推送",
@@ -5043,7 +5043,7 @@
         "/api/wechat/pictxtqueue": {
             "get": {
                 "tags": [
-                    "wechat api"
+                    "微信wechat"
                 ],
                 "summary": "图文消息队列",
                 "description": "使用说明：获取图文消息队列",
@@ -5095,7 +5095,7 @@
         "/api/wechat/pictxtqueue/batchdelete": {
             "post": {
                 "tags": [
-                    "wechat api"
+                    "微信wechat"
                 ],
                 "summary": "删除图文消息队列（批量）",
                 "description": "使用说明：删除图文消息队列（批量）",
@@ -5130,7 +5130,7 @@
         "/api/wechat/storeautoreply": {
             "post": {
                 "tags": [
-                    "wechat api"
+                    "微信wechat"
                 ],
                 "summary": "自动回复",
                 "description": "使用说明：自动回复",
@@ -5228,7 +5228,7 @@
         "/api/wechat/deleteautoreply": {
             "post": {
                 "tags": [
-                    "wechat api"
+                    "微信wechat"
                 ],
                 "summary": "删除关键字自动回复",
                 "description": "使用说明：删除关键字自动回复",
@@ -5263,7 +5263,7 @@
         "/api/wechat/autoreply": {
             "get": {
                 "tags": [
-                    "wechat api"
+                    "微信wechat"
                 ],
                 "summary": "获取自动回复",
                 "description": "使用说明：获取自动回复",
@@ -5298,7 +5298,7 @@
         "/api/wechat/keywords": {
             "get": {
                 "tags": [
-                    "wechat api"
+                    "微信wechat"
                 ],
                 "summary": "关键字列表（分页）",
                 "description": "使用说明：获取关键字列表（分页）",
@@ -5351,7 +5351,7 @@
         "/api/wechat/keylists": {
             "get": {
                 "tags": [
-                    "wechat api"
+                    "微信wechat"
                 ],
                 "summary": "关键字列表（不分页）",
                 "description": "使用说明：获取关键字列表（不分页）",
@@ -5377,7 +5377,7 @@
         "/api/wechat/menus": {
             "get": {
                 "tags": [
-                    "wechat api"
+                    "微信wechat"
                 ],
                 "summary": "自定义菜单列表",
                 "description": "使用说明：自定义菜单列表",
@@ -5403,7 +5403,7 @@
         "/api/wechat/insertmenu": {
             "post": {
                 "tags": [
-                    "wechat api"
+                    "微信wechat"
                 ],
                 "summary": "插入菜单",
                 "description": "使用说明：获取插入菜单",
@@ -5519,7 +5519,7 @@
         "/api/wechat/updatemenu": {
             "post": {
                 "tags": [
-                    "wechat api"
+                    "微信wechat"
                 ],
                 "summary": "修改菜单",
                 "description": "使用说明：获取修改菜单",
@@ -5626,7 +5626,7 @@
         "/api/wechat/deletemenu": {
             "post": {
                 "tags": [
-                    "wechat api"
+                    "微信wechat"
                 ],
                 "summary": "删除菜单",
                 "description": "使用说明：删除菜单",
@@ -5661,7 +5661,7 @@
         "/api/wechat/menuchildren": {
             "get": {
                 "tags": [
-                    "wechat api"
+                    "微信wechat"
                 ],
                 "summary": "菜单子节点",
                 "description": "使用说明：菜单子节点",
@@ -5696,7 +5696,7 @@
         "/api/wechat/publishmenu": {
             "get": {
                 "tags": [
-                    "wechat api"
+                    "微信wechat"
                 ],
                 "summary": "发布菜单",
                 "description": "使用说明：发布菜单",
@@ -5722,7 +5722,7 @@
         "/api/wechat/qrcode": {
             "get": {
                 "tags": [
-                    "wechat api"
+                    "微信wechat"
                 ],
                 "summary": "扫码登录二维码",
                 "description": "使用说明：获取扫码登录二维码",

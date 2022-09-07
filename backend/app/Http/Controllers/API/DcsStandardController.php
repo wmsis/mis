@@ -18,7 +18,7 @@ class DcsStandardController extends Controller
     /**
      * @OA\GET(
      *     path="/api/dcs-standard/lists",
-     *     tags={"dcs-standard"},
+     *     tags={"DCS标准命名dcs-standard"},
      *     operationId="dcs-standard-lists",
      *     summary="获取所有数据列表",
      *     description="使用说明：获取所有数据列表",
@@ -55,7 +55,7 @@ class DcsStandardController extends Controller
     /**
      * @OA\GET(
      *     path="/api/dcs-standard/index",
-     *     tags={"dcs-standard"},
+     *     tags={"DCS标准命名dcs-standard"},
      *     operationId="dcs-standard-index",
      *     summary="分页获取数据列表",
      *     description="使用说明：分页获取数据列表",
@@ -133,7 +133,7 @@ class DcsStandardController extends Controller
     /**
      * @OA\POST(
      *     path="/api/dcs-standard/store",
-     *     tags={"dcs-standard"},
+     *     tags={"DCS标准命名dcs-standard"},
      *     operationId="dcs-standard-store",
      *     summary="新增单条数据",
      *     description="使用说明：新增单条数据",
@@ -193,7 +193,7 @@ class DcsStandardController extends Controller
     /**
      * @OA\GET(
      *     path="/api/dcs-standard/show/{id}",
-     *     tags={"dcs-standard"},
+     *     tags={"DCS标准命名dcs-standard"},
      *     operationId="dcs-standard-show",
      *     summary="获取详细信息",
      *     description="使用说明：获取详细信息",
@@ -242,7 +242,7 @@ class DcsStandardController extends Controller
     /**
      * @OA\POST(
      *     path="/api/dcs-standard/update/{id}",
-     *     tags={"dcs-standard"},
+     *     tags={"DCS标准命名dcs-standard"},
      *     operationId="dcs-standard-update",
      *     summary="修改",
      *     description="使用说明：修改单条数据",
@@ -329,7 +329,7 @@ class DcsStandardController extends Controller
     /**
      * @OA\DELETE(
      *     path="/api/dcs-standard/destroy/{id}",
-     *     tags={"dcs-standard"},
+     *     tags={"DCS标准命名dcs-standard"},
      *     operationId="dcs-standard-destroy",
      *     summary="删除单条数据",
      *     description="使用说明：删除单条数据",

@@ -36,7 +36,7 @@ class UserController extends Controller
     /**
      * @OA\Get(
      *     path="/api/users",
-     *     tags={"users"},
+     *     tags={"用户users"},
      *     operationId="users",
      *     summary="用户列表",
      *     description="使用说明：获取用户列表",
@@ -169,7 +169,7 @@ class UserController extends Controller
     /**
      * @OA\Post(
      *     path="/api/users/store",
-     *     tags={"users"},
+     *     tags={"用户users"},
      *     operationId="storeUser",
      *     summary="保存用户",
      *     description="使用说明：保存用户",
@@ -319,7 +319,7 @@ class UserController extends Controller
     /**
      * @OA\Get(
      *     path="/api/users/{id}/role",
-     *     tags={"users"},
+     *     tags={"用户users"},
      *     operationId="getUserRole",
      *     summary="用户角色",
      *     description="使用说明：获取用户角色",
@@ -365,7 +365,7 @@ class UserController extends Controller
     /**
      * @OA\Post(
      *     path="/api/users/{id}/role",
-     *     tags={"users"},
+     *     tags={"用户users"},
      *     operationId="storeUserRole",
      *     summary="保存用户角色",
      *     description="使用说明：保存用户角色",
@@ -428,7 +428,7 @@ class UserController extends Controller
     /**
      * @OA\Post(
      *     path="/api/users/delete",
-     *     tags={"users"},
+     *     tags={"用户users"},
      *     operationId="deleteUser",
      *     summary="删除用户",
      *     description="使用说明：删除用户",
@@ -472,7 +472,7 @@ class UserController extends Controller
     /**
      * @OA\Post(
      *     path="/api/users/batchdelete",
-     *     tags={"users"},
+     *     tags={"用户users"},
      *     operationId="batchDeleteUser",
      *     summary="删除用户（批量）",
      *     description="使用说明：删除用户",
@@ -534,7 +534,7 @@ class UserController extends Controller
     /**
      * @OA\Post(
      *     path="/api/users/chgpwd",
-     *     tags={"users"},
+     *     tags={"用户users"},
      *     operationId="chgpwd",
      *     summary="修改用户密码",
      *     description="使用说明：修改用户密码",
@@ -594,7 +594,7 @@ class UserController extends Controller
     /**
      * @OA\Post(
      *     path="/api/users/resetpwd",
-     *     tags={"users"},
+     *     tags={"用户users"},
      *     operationId="resetpwd",
      *     summary="重置密码",
      *     description="使用说明：重置密码",
@@ -643,7 +643,7 @@ class UserController extends Controller
     /**
      * @OA\Post(
      *     path="/api/users/bind-member",
-     *     tags={"users"},
+     *     tags={"用户users"},
      *     operationId="bind-member",
      *     summary="綁定前端用戶",
      *     description="使用说明：綁定前端用戶",
@@ -687,7 +687,7 @@ class UserController extends Controller
     /**
      * @OA\Get(
      *     path="/api/users/{id}/orgnization",
-     *     tags={"users"},
+     *     tags={"用户users"},
      *     operationId="getOrgnization",
      *     summary="用户组织",
      *     description="使用说明：获取用户组织",
@@ -729,7 +729,7 @@ class UserController extends Controller
     /**
      * @OA\Post(
      *     path="/api/users/{id}/orgnization",
-     *     tags={"users"},
+     *     tags={"用户users"},
      *     operationId="storeUserOrgnization",
      *     summary="保存用户组织",
      *     description="使用说明：保存用户组织",

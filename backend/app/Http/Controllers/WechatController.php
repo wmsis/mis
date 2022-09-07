@@ -559,7 +559,7 @@ class WechatController extends Controller
     /**
      * @OA\Get(
      *     path="/api/wechat/pictxtlist",
-     *     tags={"wechat api"},
+     *     tags={"微信wechat"},
      *     operationId="pictxtlist",
      *     summary="图文列表（分页）",
      *     description="使用说明：获取图文列表（分页）",
@@ -644,7 +644,7 @@ class WechatController extends Controller
     /**
      * @OA\Get(
      *     path="/api/wechat/pictxtlistall",
-     *     tags={"wechat api"},
+     *     tags={"微信wechat"},
      *     operationId="pictxtlistall",
      *     summary="图文列表（所有）",
      *     description="使用说明：获取图文列表（所有）",
@@ -673,7 +673,7 @@ class WechatController extends Controller
     /**
      * @OA\Get(
      *     path="/api/wechat/pictxt/{id}/materials",
-     *     tags={"wechat api"},
+     *     tags={"微信wechat"},
      *     operationId="materials",
      *     summary="某个图文素材列表",
      *     description="使用说明：获取某个图文素材列表",
@@ -714,7 +714,7 @@ class WechatController extends Controller
     /**
      * @OA\Post(
      *     path="/api/wechat/storepictxt",
-     *     tags={"wechat api"},
+     *     tags={"微信wechat"},
      *     operationId="storepictxt",
      *     summary="保存图文",
      *     description="使用说明：保存图文",
@@ -775,7 +775,7 @@ class WechatController extends Controller
     /**
      * @OA\Post(
      *     path="/api/wechat/deletepictxt",
-     *     tags={"wechat api"},
+     *     tags={"微信wechat"},
      *     operationId="APIList",
      *     summary="删除图文",
      *     description="使用说明：删除图文",
@@ -822,7 +822,7 @@ class WechatController extends Controller
     /**
      * @OA\Post(
      *     path="/api/wechat/storematerial",
-     *     tags={"wechat api"},
+     *     tags={"微信wechat"},
      *     operationId="storematerial",
      *     summary="保存微信素材",
      *     description="使用说明：保存微信素材",
@@ -973,7 +973,7 @@ class WechatController extends Controller
     /**
      * @OA\Get(
      *     path="/api/wechat/material/{id}",
-     *     tags={"wechat api"},
+     *     tags={"微信wechat"},
      *     operationId="material-id",
      *     summary="某个图文素材详情",
      *     description="使用说明：获取某个图文素材详情",
@@ -1015,7 +1015,7 @@ class WechatController extends Controller
     /**
      * @OA\Post(
      *     path="/api/wechat/deletematerial",
-     *     tags={"wechat api"},
+     *     tags={"微信wechat"},
      *     operationId="deletematerial",
      *     summary="删除素材",
      *     description="使用说明：删除素材",
@@ -1063,7 +1063,7 @@ class WechatController extends Controller
     /**
      * @OA\Post(
      *     path="/api/wechat/upload",
-     *     tags={"wechat api"},
+     *     tags={"微信wechat"},
      *     operationId="wechat-upload",
      *     summary="上传文件",
      *     description="使用说明：上传文件",
@@ -1112,7 +1112,7 @@ class WechatController extends Controller
     /**
      * @OA\Get(
      *     path="/api/wechat/material/{id}/members",
-     *     tags={"wechat api"},
+     *     tags={"微信wechat"},
      *     operationId="wechat-material-member",
      *     summary="素材用户",
      *     description="使用说明：获取素材用户",
@@ -1148,7 +1148,7 @@ class WechatController extends Controller
     /**
      * @OA\Post(
      *     path="/api/wechat/storememberpictxt",
-     *     tags={"wechat api"},
+     *     tags={"微信wechat"},
      *     operationId="storememberpictxt",
      *     summary="用户图文推送",
      *     description="户图文推送",
@@ -1251,7 +1251,7 @@ class WechatController extends Controller
     /**
      * @OA\Get(
      *     path="/api/wechat/pictxtqueue",
-     *     tags={"wechat api"},
+     *     tags={"微信wechat"},
      *     summary="图文消息队列",
      *     description="使用说明：获取图文消息队列",
      *     @OA\Parameter(
@@ -1350,7 +1350,7 @@ class WechatController extends Controller
      *         ),
      * @OA\Post(
      *     path="/api/wechat/deletepictxtqueue",
-     *     tags={"wechat api"},
+     *     tags={"微信wechat"},
      *     operationId="deletepictxtqueue",
      *     summary="删除图文消息队列",
      *     description="使用说明：删除图文消息队列",
@@ -1398,7 +1398,7 @@ class WechatController extends Controller
     /**
      * @OA\Post(
      *     path="/api/wechat/pictxtqueue/batchdelete",
-     *     tags={"wechat api"},
+     *     tags={"微信wechat"},
      *     operationId="pictxtqueue-batchdelete",
      *     summary="删除图文消息队列（批量）",
      *     description="使用说明：删除图文消息队列（批量）",
@@ -1440,7 +1440,7 @@ class WechatController extends Controller
     /**
      * @OA\Post(
      *     path="/api/wechat/storeautoreply",
-     *     tags={"wechat api"},
+     *     tags={"微信wechat"},
      *     operationId="storeautoreply",
      *     summary="自动回复",
      *     description="使用说明：自动回复",
@@ -1560,7 +1560,7 @@ class WechatController extends Controller
     /**
      * @OA\Post(
      *     path="/api/wechat/deleteautoreply",
-     *     tags={"wechat api"},
+     *     tags={"微信wechat"},
      *     operationId="deleteautoreply",
      *     summary="删除关键字自动回复",
      *     description="使用说明：删除关键字自动回复",
@@ -1608,7 +1608,7 @@ class WechatController extends Controller
     /**
      * @OA\Get(
      *     path="/api/wechat/autoreply",
-     *     tags={"wechat api"},
+     *     tags={"微信wechat"},
      *     operationId="autoreply",
      *     summary="获取自动回复",
      *     description="使用说明：获取自动回复",
@@ -1657,7 +1657,7 @@ class WechatController extends Controller
     /**
      * @OA\Get(
      *     path="/api/wechat/keywords",
-     *     tags={"wechat api"},
+     *     tags={"微信wechat"},
      *     operationId="wechat-keywords",
      *     summary="关键字列表（分页）",
      *     description="使用说明：获取关键字列表（分页）",
@@ -1739,7 +1739,7 @@ class WechatController extends Controller
     /**
      * @OA\Get(
      *     path="/api/wechat/keylists",
-     *     tags={"wechat api"},
+     *     tags={"微信wechat"},
      *     operationId="wechat-keylists",
      *     summary="关键字列表（不分页）",
      *     description="使用说明：获取关键字列表（不分页）",
@@ -1768,7 +1768,7 @@ class WechatController extends Controller
     /**
      * @OA\Get(
      *     path="/api/wechat/menus",
-     *     tags={"wechat api"},
+     *     tags={"微信wechat"},
      *     operationId="wechat-menus",
      *     summary="自定义菜单列表",
      *     description="使用说明：自定义菜单列表",
@@ -1801,7 +1801,7 @@ class WechatController extends Controller
     /**
      * @OA\Post(
      *     path="/api/wechat/insertmenu",
-     *     tags={"wechat api"},
+     *     tags={"微信wechat"},
      *     operationId="insertmenu",
      *     summary="插入菜单",
      *     description="使用说明：获取插入菜单",
@@ -1990,7 +1990,7 @@ class WechatController extends Controller
     /**
      * @OA\Post(
      *     path="/api/wechat/updatemenu",
-     *     tags={"wechat api"},
+     *     tags={"微信wechat"},
      *     operationId="updatemenu",
      *     summary="修改菜单",
      *     description="使用说明：获取修改菜单",
@@ -2136,7 +2136,7 @@ class WechatController extends Controller
     /**
      * @OA\Post(
      *     path="/api/wechat/deletemenu",
-     *     tags={"wechat api"},
+     *     tags={"微信wechat"},
      *     operationId="deletemenu",
      *     summary="删除菜单",
      *     description="使用说明：删除菜单",
@@ -2185,7 +2185,7 @@ class WechatController extends Controller
     /**
      * @OA\Get(
      *     path="/api/wechat/menuchildren",
-     *     tags={"wechat api"},
+     *     tags={"微信wechat"},
      *     operationId="menuchildren",
      *     summary="菜单子节点",
      *     description="使用说明：菜单子节点",
@@ -2228,7 +2228,7 @@ class WechatController extends Controller
     /**
      * @OA\Get(
      *     path="/api/wechat/publishmenu",
-     *     tags={"wechat api"},
+     *     tags={"微信wechat"},
      *     operationId="publishmenu",
      *     summary="发布菜单",
      *     description="使用说明：发布菜单",
@@ -2312,7 +2312,7 @@ class WechatController extends Controller
     /**
      * @OA\Get(
      *     path="/api/wechat/qrcode",
-     *     tags={"wechat api"},
+     *     tags={"微信wechat"},
      *     operationId="wechat-qrcode",
      *     summary="扫码登录二维码",
      *     description="使用说明：获取扫码登录二维码",

@@ -21,7 +21,7 @@ class WeighbridgeCategoryController extends Controller
     /**
      * @OA\GET(
      *     path="/api/weighbridge-category/lists-big",
-     *     tags={"weighbridge-category"},
+     *     tags={"地磅垃圾分类weighbridge-category"},
      *     operationId="weighbridge-category-lists-big",
      *     summary="获取所有大类垃圾数据",
      *     description="使用说明：获取所有大类垃圾数据",
@@ -58,7 +58,7 @@ class WeighbridgeCategoryController extends Controller
     /**
      * @OA\GET(
      *     path="/api/weighbridge-category/page-big",
-     *     tags={"weighbridge-category"},
+     *     tags={"地磅垃圾分类weighbridge-category"},
      *     operationId="weighbridge-category-page-big",
      *     summary="分页获取垃圾大类数据列表",
      *     description="使用说明：分页获取垃圾大类数据列表",
@@ -136,7 +136,7 @@ class WeighbridgeCategoryController extends Controller
     /**
      * @OA\POST(
      *     path="/api/weighbridge-category/store-big",
-     *     tags={"weighbridge-category"},
+     *     tags={"地磅垃圾分类weighbridge-category"},
      *     operationId="weighbridge-category-store-big",
      *     summary="新增单条大类数据",
      *     description="使用说明：新增单条大类数据",
@@ -196,7 +196,7 @@ class WeighbridgeCategoryController extends Controller
     /**
      * @OA\GET(
      *     path="/api/weighbridge-category/show-big/{id}",
-     *     tags={"weighbridge-category"},
+     *     tags={"地磅垃圾分类weighbridge-category"},
      *     operationId="weighbridge-category-show",
      *     summary="获取详细信息",
      *     description="使用说明：获取详细信息",
@@ -245,7 +245,7 @@ class WeighbridgeCategoryController extends Controller
     /**
      * @OA\POST(
      *     path="/api/weighbridge-category/update-big/{id}",
-     *     tags={"weighbridge-category"},
+     *     tags={"地磅垃圾分类weighbridge-category"},
      *     operationId="weighbridge-category-update",
      *     summary="修改",
      *     description="使用说明：修改单条数据",
@@ -326,7 +326,7 @@ class WeighbridgeCategoryController extends Controller
     /**
      * @OA\DELETE(
      *     path="/api/weighbridge-category/destroy-big/{id}",
-     *     tags={"weighbridge-category"},
+     *     tags={"地磅垃圾分类weighbridge-category"},
      *     operationId="weighbridge-category-destroy-big",
      *     summary="删除单条数据",
      *     description="使用说明：删除单条数据",
@@ -371,7 +371,7 @@ class WeighbridgeCategoryController extends Controller
     /**
      * @OA\POST(
      *     path="/api/weighbridge-category/store-small-multi",
-     *     tags={"weighbridge-category"},
+     *     tags={"地磅垃圾分类weighbridge-category"},
      *     operationId="weighbridge-category-small-multi",
      *     summary="批量新增小类",
      *     description="使用说明：批量新增小类",
@@ -439,7 +439,7 @@ class WeighbridgeCategoryController extends Controller
     /**
      * @OA\GET(
      *     path="/api/weighbridge-category/page-small",
-     *     tags={"weighbridge-category"},
+     *     tags={"地磅垃圾分类weighbridge-category"},
      *     operationId="weighbridge-category-page-small",
      *     summary="分页获取垃圾小类数据列表",
      *     description="使用说明：分页获取垃圾小类数据列表",
@@ -517,7 +517,7 @@ class WeighbridgeCategoryController extends Controller
     /**
      * @OA\POST(
      *     path="/api/weighbridge-category/bind-relation",
-     *     tags={"weighbridge-category"},
+     *     tags={"地磅垃圾分类weighbridge-category"},
      *     operationId="weighbridge-category-bind-relation",
      *     summary="绑定大小类关系",
      *     description="使用说明：绑定大小类关系",
@@ -596,7 +596,7 @@ class WeighbridgeCategoryController extends Controller
     /**
      * @OA\GET(
      *     path="/api/weighbridge-category/show-relation/{id}",
-     *     tags={"weighbridge-category"},
+     *     tags={"地磅垃圾分类weighbridge-category"},
      *     operationId="weighbridge-category-show-relation",
      *     summary="获取详细大类及关联信息",
      *     description="使用说明：获取详细大类及关联信息",

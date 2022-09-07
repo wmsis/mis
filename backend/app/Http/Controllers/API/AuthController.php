@@ -27,8 +27,8 @@ use App\Models\Permission;
 
 /**
  * @OA\Info(
- *     version="1.0.0",
- *     title="SIS API 文档",
+ *     version="2.0.0",
+ *     title="MIS API 文档",
  *     description="伟明环保设备有限公司SIS系统 API 文档 api/documentation  php artisan l5-swagger:generate"
  * )
  */
@@ -46,7 +46,7 @@ class AuthController extends Controller
     /**
      * @OA\Post(
      *     path="/api/auth/login",
-     *     tags={"auth"},
+     *     tags={"权限认证auth"},
      *     operationId="login",
      *     summary="登录",
      *     description="使用说明：登录",
@@ -259,7 +259,7 @@ class AuthController extends Controller
     /**
      * @OA\Get(
      *     path="/api/auth/logout",
-     *     tags={"auth"},
+     *     tags={"权限认证auth"},
      *     operationId="logout",
      *     summary="退出登录",
      *     description="使用说明：退出登录",
@@ -300,7 +300,7 @@ class AuthController extends Controller
     /**
      * @OA\Get(
      *     path="/api/auth/refresh",
-     *     tags={"auth"},
+     *     tags={"权限认证auth"},
      *     operationId="refresh",
      *     summary="刷新token",
      *     description="使用说明：刷新token",
@@ -335,7 +335,7 @@ class AuthController extends Controller
     /**
      * @OA\Get(
      *     path="/api/auth/me",
-     *     tags={"auth"},
+     *     tags={"权限认证auth"},
      *     operationId="me",
      *     summary="我",
      *     description="使用说明：我",

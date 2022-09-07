@@ -18,7 +18,7 @@ class ElectricityMapController extends Controller
     /**
      * @OA\GET(
      *     path="/api/electricity-map/index",
-     *     tags={"electricity-map"},
+     *     tags={"电表地址映射关系electricity-map"},
      *     operationId="electricity-map-index",
      *     summary="分页获取数据列表",
      *     description="使用说明：分页获取数据列表",
@@ -106,7 +106,7 @@ class ElectricityMapController extends Controller
     /**
      * @OA\POST(
      *     path="/api/electricity-map/store",
-     *     tags={"electricity-map"},
+     *     tags={"电表地址映射关系electricity-map"},
      *     operationId="electricity-map-store",
      *     summary="新增单条数据",
      *     description="使用说明：新增单条数据",
@@ -184,7 +184,7 @@ class ElectricityMapController extends Controller
     /**
      * @OA\GET(
      *     path="/api/electricity-map/show/{id}",
-     *     tags={"electricity-map"},
+     *     tags={"电表地址映射关系electricity-map"},
      *     operationId="electricity-map-show",
      *     summary="获取详细信息",
      *     description="使用说明：获取详细信息",
@@ -233,7 +233,7 @@ class ElectricityMapController extends Controller
     /**
      * @OA\POST(
      *     path="/api/electricity-map/update/{id}",
-     *     tags={"electricity-map"},
+     *     tags={"电表地址映射关系electricity-map"},
      *     operationId="electricity-map-update",
      *     summary="修改",
      *     description="使用说明：修改单条数据",
@@ -332,7 +332,7 @@ class ElectricityMapController extends Controller
     /**
      * @OA\DELETE(
      *     path="/api/electricity-map/destroy/{id}",
-     *     tags={"electricity-map"},
+     *     tags={"电表地址映射关系electricity-map"},
      *     operationId="electricity-map-destroy",
      *     summary="删除单条数据",
      *     description="使用说明：删除单条数据",

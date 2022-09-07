@@ -13,7 +13,7 @@ class DcsDbConfigController extends Controller
     /**
      * @OA\POST(
      *     path="/api/dcs-db-config/store",
-     *     tags={"dcs-db-config"},
+     *     tags={"历史数据库配置dcs-db-config"},
      *     operationId="dcs-db-config-store",
      *     summary="新增单条数据",
      *     description="使用说明：新增单条数据",
@@ -109,7 +109,7 @@ class DcsDbConfigController extends Controller
     /**
      * @OA\GET(
      *     path="/api/dcs-db-config/show/{id}",
-     *     tags={"dcs-db-config"},
+     *     tags={"历史数据库配置dcs-db-config"},
      *     operationId="dcs-db-config-show",
      *     summary="获取详细信息",
      *     description="使用说明：获取详细信息",
@@ -158,7 +158,7 @@ class DcsDbConfigController extends Controller
     /**
      * @OA\POST(
      *     path="/api/dcs-db-config/update/{id}",
-     *     tags={"dcs-db-config"},
+     *     tags={"历史数据库配置dcs-db-config"},
      *     operationId="dcs-db-config-update",
      *     summary="修改",
      *     description="使用说明：修改单条数据",
@@ -275,7 +275,7 @@ class DcsDbConfigController extends Controller
     /**
      * @OA\DELETE(
      *     path="/api/dcs-db-config/destroy/{id}",
-     *     tags={"dcs-db-config"},
+     *     tags={"历史数据库配置dcs-db-config"},
      *     operationId="dcs-db-config-destroy",
      *     summary="删除单条数据",
      *     description="使用说明：删除单条数据",

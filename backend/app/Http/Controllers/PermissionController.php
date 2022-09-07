@@ -22,7 +22,7 @@ class PermissionController extends Controller
     /**
      * @OA\Get(
      *     path="/api/permissions/tree",
-     *     tags={"permissions"},
+     *     tags={"菜单权限permissions"},
      *     operationId="permissionsAll",
      *     summary="菜单权限列表(所有)",
      *     description="使用说明：获取菜单权限列表(所有)",
@@ -88,7 +88,7 @@ class PermissionController extends Controller
     /**
      * @OA\Post(
      *     path="/api/permissions/insert",
-     *     tags={"permissions"},
+     *     tags={"菜单权限permissions"},
      *     operationId="permissionsInsert",
      *     summary="插入权限节点",
      *     description="使用说明：获取插入权限节点",
@@ -220,7 +220,7 @@ class PermissionController extends Controller
     /**
      * @OA\Post(
      *     path="/api/permissions/update",
-     *     tags={"permissions"},
+     *     tags={"菜单权限permissions"},
      *     operationId="permissionsUpdate",
      *     summary="修改权限分类",
      *     description="使用说明：获取修改权限分类",
@@ -338,7 +338,7 @@ class PermissionController extends Controller
     /**
      * @OA\Post(
      *     path="/api/permissions/delete",
-     *     tags={"permissions"},
+     *     tags={"菜单权限permissions"},
      *     operationId="permissionsDelete",
      *     summary="删除权限分类",
      *     description="使用说明：删除权限及其子权限",
