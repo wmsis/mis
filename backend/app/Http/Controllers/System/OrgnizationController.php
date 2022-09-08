@@ -12,9 +12,9 @@ class OrgnizationController extends Controller
 {
     /**
      * @OA\GET(
-     *     path="/api/system-orgnization/index",
+     *     path="/api/system-orgnizations",
      *     tags={"系统组织orgnization"},
-     *     operationId="system-orgnization-index",
+     *     operationId="system-orgnizations-index",
      *     summary="分页获取数据列表",
      *     description="使用说明：分页获取数据列表",
      *     @OA\Parameter(
@@ -99,9 +99,9 @@ class OrgnizationController extends Controller
 
     /**
      * @OA\POST(
-     *     path="/api/system-orgnization/store",
+     *     path="/api/system-orgnizations",
      *     tags={"系统组织orgnization"},
-     *     operationId="system-orgnization-store",
+     *     operationId="system-orgnizations-store",
      *     summary="新增单条数据",
      *     description="使用说明：新增单条数据",
      *     @OA\Parameter(
@@ -195,9 +195,9 @@ class OrgnizationController extends Controller
 
     /**
      * @OA\GET(
-     *     path="/api/system-orgnization/show/{id}",
+     *     path="/api/system-orgnizations/{orgnization}",
      *     tags={"系统组织orgnization"},
-     *     operationId="system-orgnization-show",
+     *     operationId="system-orgnizations-show",
      *     summary="获取详细信息",
      *     description="使用说明：获取详细信息",
      *     @OA\Parameter(
@@ -210,9 +210,9 @@ class OrgnizationController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="Orgnization主键",
+     *         description="Orgnization ID",
      *         in="path",
-     *         name="id",
+     *         name="orgnization",
      *         required=true,
      *         @OA\Schema(
      *             type="integer"
@@ -233,20 +233,19 @@ class OrgnizationController extends Controller
      *     ),
      * )
      */
-    public function show($id)
+    public function show(Orgnization $orgnization)
     {
-        $row = Orgnization::find($id);
-        if (!$row) {
+        if (!$orgnization) {
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $row);
+        return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $orgnization);
     }
 
     /**
-     * @OA\POST(
-     *     path="/api/system-orgnization/update/{id}",
+     * @OA\PUT(
+     *     path="/api/system-orgnizations/{orgnization}",
      *     tags={"系统组织orgnization"},
-     *     operationId="system-orgnization-update",
+     *     operationId="system-orgnizations-update",
      *     summary="修改",
      *     description="使用说明：修改单条数据",
      *     @OA\Parameter(
@@ -259,9 +258,9 @@ class OrgnizationController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="Orgnization主键",
+     *         description="Orgnization ID",
      *         in="path",
-     *         name="id",
+     *         name="orgnization",
      *         required=true,
      *         @OA\Schema(
      *             type="string"
@@ -336,10 +335,9 @@ class OrgnizationController extends Controller
      *     ),
      * )
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Orgnization $orgnization)
     {
-        $row = Orgnization::find($id);
-        if (!$row) {
+        if (!$orgnization) {
             return response()->json(UtilService::format_data(self::AJAX_FAIL, '该数据不存在', ''));
         }
         $input = $request->input();
@@ -347,23 +345,23 @@ class OrgnizationController extends Controller
         foreach ($allowField as $field) {
             if (key_exists($field, $input)) {
                 $inputValue = $input[$field];
-                $row[$field] = $inputValue;
+                $orgnization[$field] = $inputValue;
             }
         }
         try {
-            $row->save();
-            $row->refresh();
+            $orgnization->save();
+            $orgnization->refresh();
         } catch (Exception $ex) {
             return UtilService::format_data(self::AJAX_FAIL, '修改失败', $ex->getMessage());
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '修改成功', $row);
+        return UtilService::format_data(self::AJAX_SUCCESS, '修改成功', $orgnization);
     }
 
     /**
      * @OA\DELETE(
-     *     path="/api/system-orgnization/destroy/{id}",
+     *     path="/api/system-orgnizations/{orgnization}",
      *     tags={"系统组织orgnization"},
-     *     operationId="system-orgnization-destroy",
+     *     operationId="system-orgnizations-destroy",
      *     summary="删除单条数据",
      *     description="使用说明：删除单条数据",
      *     @OA\Parameter(
@@ -376,9 +374,9 @@ class OrgnizationController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="Orgnization主键",
+     *         description="Orgnization ID",
      *         in="path",
-     *         name="id",
+     *         name="orgnization",
      *         required=true,
      *         @OA\Schema(
      *             type="string"
@@ -390,14 +388,13 @@ class OrgnizationController extends Controller
      *     ),
      * )
      */
-    public function destroy($id)
+    public function destroy(Orgnization $orgnization)
     {
-        $row = Orgnization::find($id);
-        if (!$row) {
+        if (!$orgnization) {
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
         try {
-            $row->delete();
+            $orgnization->delete();
         } catch (Exception $e) {
             return UtilService::format_data(self::AJAX_FAIL, '删除失败', '');
         }

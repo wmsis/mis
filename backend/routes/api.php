@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\System\TenementController;
+use App\Http\Controllers\System\OrgnizationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +29,7 @@ Route::group(['namespace' => 'App\Http\Controllers\API', 'prefix' => 'auth', 'mi
 });
 
 # 系统管理员
-Route::group(['namespace' => 'App\Http\Controllers\System', 'prefix' => 'admin'], function () {
+Route::group(['namespace' => 'App\Http\Controllers\System', 'prefix' => 'admin', 'middleware'=>['cors']], function () {
     Route::post('login', 'AdminController@login')->name('login');
     Route::get('logout', 'AdminController@logout');
     Route::get('refresh', 'AdminController@refresh');
@@ -35,18 +37,18 @@ Route::group(['namespace' => 'App\Http\Controllers\System', 'prefix' => 'admin']
 });
 
 //系统租户和系统组织
-Route::group(['namespace' => 'App\Http\Controllers\System'], function () {
+Route::group(['middleware'=>['cors', 'jwt.role:admin', 'jwt.auth', 'auth:admin']], function () {
+    //补充路由应在 Route::resource 方法之前定义
+    Route::get('tenements/lists', [TenementController::class, 'lists']);
     //API 资源路由
     Route::apiResources([
-        'system-tenement' => TenementController::class,
-        'system-orgnization' => OrgnizationController::class,
+        'tenements' => TenementController::class,
+        'system-orgnizations' => OrgnizationController::class,
     ]);
-
-    Route::get('tenement/lists', 'TenementController@lists');
 });
 
 ////用户 角色 权限 微信  历史数据库  组织  接口权限 电表  地磅 地磅垃圾分类  DCS映射关系 标准DCS 电表映射关系 抓斗数据库配置 电表数据库配置 历史数据库配置
-Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth']], function () {
+Route::group(['middleware' => ['permission', 'cors', 'jwt.role:admin', 'jwt.auth', 'auth:admin']], function () {
     //用户 角色 权限 微信
     Route::group(['namespace' => 'App\Http\Controllers'], function () {
         //用户
@@ -179,6 +181,8 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
             Route::post('bind-relation', 'WeighBridgeController@bindRelation');
         });
 
+        //如有补充路由应在 Route::resource 方法之前定义
+        Route::get('dcs-standard/lists', [TenementController::class, 'lists']);
         //API 资源路由  DCS映射关系 标准DCS 电表映射关系 抓斗数据库配置 电表数据库配置 历史数据库配置
         Route::apiResources([
             'dcs-standard' => DcsStandardController::class,

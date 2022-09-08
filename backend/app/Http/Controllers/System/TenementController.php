@@ -12,9 +12,9 @@ class TenementController extends Controller
 {
     /**
      * @OA\GET(
-     *     path="/api/tenement/lists",
-     *     tags={"租户tenement"},
-     *     operationId="tenement-lists",
+     *     path="/api/tenements/lists",
+     *     tags={"系统租户tenement"},
+     *     operationId="tenements-lists",
      *     summary="获取所有租户列表",
      *     description="使用说明：获取所有租户列表",
      *     @OA\Parameter(
@@ -49,9 +49,9 @@ class TenementController extends Controller
 
     /**
      * @OA\GET(
-     *     path="/api/tenement/index",
-     *     tags={"租户tenement"},
-     *     operationId="tenement-index",
+     *     path="/api/tenements",
+     *     tags={"系统租户tenement"},
+     *     operationId="tenements-index",
      *     summary="分页获取数据列表",
      *     description="使用说明：分页获取数据列表",
      *     @OA\Parameter(
@@ -127,9 +127,9 @@ class TenementController extends Controller
 
     /**
      * @OA\POST(
-     *     path="/api/tenement/store",
-     *     tags={"租户tenement"},
-     *     operationId="tenement-store",
+     *     path="/api/tenements",
+     *     tags={"系统租户tenement"},
+     *     operationId="tenements-store",
      *     summary="新增单条数据",
      *     description="使用说明：新增单条数据",
      *     @OA\Parameter(
@@ -232,9 +232,9 @@ class TenementController extends Controller
 
     /**
      * @OA\GET(
-     *     path="/api/tenement/show/{id}",
-     *     tags={"租户tenement"},
-     *     operationId="tenement-show",
+     *     path="/api/tenements/{tenement}",
+     *     tags={"系统租户tenement"},
+     *     operationId="tenements-show",
      *     summary="获取详细信息",
      *     description="使用说明：获取详细信息",
      *     @OA\Parameter(
@@ -247,9 +247,9 @@ class TenementController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="Tenement主键",
+     *         description="Tenement ID",
      *         in="path",
-     *         name="id",
+     *         name="tenement",
      *         required=true,
      *         @OA\Schema(
      *             type="integer"
@@ -270,20 +270,16 @@ class TenementController extends Controller
      *     ),
      * )
      */
-    public function show($id)
+    public function show(Tenement $tenement)
     {
-        $row = Tenement::find($id);
-        if (!$row) {
-            return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
-        }
-        return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $row);
+        return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $tenement);
     }
 
     /**
-     * @OA\POST(
-     *     path="/api/tenement/update/{id}",
-     *     tags={"租户tenement"},
-     *     operationId="tenement-update",
+     * @OA\PUT(
+     *     path="/api/tenements/{tenement}",
+     *     tags={"系统租户tenement"},
+     *     operationId="tenements-update",
      *     summary="修改",
      *     description="使用说明：修改单条数据",
      *     @OA\Parameter(
@@ -296,9 +292,9 @@ class TenementController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="Tenement主键",
+     *         description="Tenement ID",
      *         in="path",
-     *         name="id",
+     *         name="tenement",
      *         required=true,
      *         @OA\Schema(
      *             type="string"
@@ -382,34 +378,30 @@ class TenementController extends Controller
      *     ),
      * )
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Tenement $tenement)
     {
-        $row = Tenement::find($id);
-        if (!$row) {
-            return response()->json(UtilService::format_data(self::AJAX_FAIL, '该数据不存在', ''));
-        }
         $input = $request->input();
         $allowField = ['ip', 'username', 'db_user', 'db_pwd', 'code', 'memo', 'db_name'];
         foreach ($allowField as $field) {
             if (key_exists($field, $input)) {
                 $inputValue = $input[$field];
-                $row[$field] = $inputValue;
+                $tenement[$field] = $inputValue;
             }
         }
         try {
-            $row->save();
-            $row->refresh();
+            $tenement->save();
+            $tenement->refresh();
         } catch (Exception $ex) {
             return UtilService::format_data(self::AJAX_FAIL, '修改失败', $ex->getMessage());
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '修改成功', $row);
+        return UtilService::format_data(self::AJAX_SUCCESS, '修改成功', $tenement);
     }
 
     /**
      * @OA\DELETE(
-     *     path="/api/tenement/destroy/{id}",
-     *     tags={"租户tenement"},
-     *     operationId="tenement-destroy",
+     *     path="/api/tenements/{tenement}",
+     *     tags={"系统租户tenement"},
+     *     operationId="tenements-destroy",
      *     summary="删除单条数据",
      *     description="使用说明：删除单条数据",
      *     @OA\Parameter(
@@ -422,9 +414,9 @@ class TenementController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="Tenement主键",
+     *         description="Tenement ID",
      *         in="path",
-     *         name="id",
+     *         name="tenement",
      *         required=true,
      *         @OA\Schema(
      *             type="string"
@@ -436,14 +428,10 @@ class TenementController extends Controller
      *     ),
      * )
      */
-    public function destroy($id)
+    public function destroy(Tenement $tenement)
     {
-        $row = Tenement::find($id);
-        if (!$row) {
-            return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
-        }
         try {
-            $row->delete();
+            $tenement->delete();
         } catch (Exception $e) {
             return UtilService::format_data(self::AJAX_FAIL, '删除失败', '');
         }

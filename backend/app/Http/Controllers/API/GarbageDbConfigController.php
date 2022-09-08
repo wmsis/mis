@@ -12,7 +12,7 @@ class GarbageDbConfigController extends Controller
 {
     /**
      * @OA\POST(
-     *     path="/api/garbage-db-config/store",
+     *     path="/api/garbage-db-config",
      *     tags={"抓斗数据库配置garbage-db-config"},
      *     operationId="garbage-db-config-store",
      *     summary="新增单条数据",
@@ -117,7 +117,7 @@ class GarbageDbConfigController extends Controller
 
     /**
      * @OA\GET(
-     *     path="/api/garbage-db-config/show/{id}",
+     *     path="/api/garbage-db-config/{id}",
      *     tags={"抓斗数据库配置garbage-db-config"},
      *     operationId="garbage-db-config-show",
      *     summary="获取详细信息",
@@ -165,8 +165,8 @@ class GarbageDbConfigController extends Controller
     }
 
     /**
-     * @OA\POST(
-     *     path="/api/garbage-db-config/update/{id}",
+     * @OA\PUT(
+     *     path="/api/garbage-db-config/{id}",
      *     tags={"抓斗数据库配置garbage-db-config"},
      *     operationId="garbage-db-config-update",
      *     summary="修改",
@@ -292,7 +292,7 @@ class GarbageDbConfigController extends Controller
 
     /**
      * @OA\DELETE(
-     *     path="/api/garbage-db-config/destroy/{id}",
+     *     path="/api/garbage-db-config/{id}",
      *     tags={"抓斗数据库配置garbage-db-config"},
      *     operationId="garbage-db-config-destroy",
      *     summary="删除单条数据",

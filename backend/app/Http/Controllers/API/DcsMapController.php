@@ -18,7 +18,7 @@ class DcsMapController extends Controller
 {
     /**
      * @OA\GET(
-     *     path="/api/dcs-map/index",
+     *     path="/api/dcs-map",
      *     tags={"DCS映射关系dcs-map"},
      *     operationId="dcs-map-index",
      *     summary="分页获取数据列表",
@@ -106,7 +106,7 @@ class DcsMapController extends Controller
 
     /**
      * @OA\POST(
-     *     path="/api/dcs-map/store",
+     *     path="/api/dcs-map",
      *     tags={"DCS映射关系dcs-map"},
      *     operationId="dcs-map-store",
      *     summary="新增单条数据",
@@ -184,7 +184,7 @@ class DcsMapController extends Controller
 
     /**
      * @OA\GET(
-     *     path="/api/dcs-map/show/{id}",
+     *     path="/api/dcs-map/{id}",
      *     tags={"DCS映射关系dcs-map"},
      *     operationId="dcs-map-show",
      *     summary="获取详细信息",
@@ -232,8 +232,8 @@ class DcsMapController extends Controller
     }
 
     /**
-     * @OA\POST(
-     *     path="/api/dcs-map/update/{id}",
+     * @OA\PUT(
+     *     path="/api/dcs-map/{id}",
      *     tags={"DCS映射关系dcs-map"},
      *     operationId="dcs-map-update",
      *     summary="修改",
@@ -332,7 +332,7 @@ class DcsMapController extends Controller
 
     /**
      * @OA\DELETE(
-     *     path="/api/dcs-map/destroy/{id}",
+     *     path="/api/dcs-map/{id}",
      *     tags={"DCS映射关系dcs-map"},
      *     operationId="dcs-map-destroy",
      *     summary="删除单条数据",

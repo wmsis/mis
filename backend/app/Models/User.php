@@ -87,11 +87,19 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /*
-     * 用户是否有某项权限
+     * 用户是否有某项菜单权限
      * 权限的角色和用户的角色是否有交集
      */
     public function hasPermission($permission){
         return $this->isInRoles($permission->roles);
+    }
+
+    /*
+     * 用户是否有某项接口权限
+     * 权限的角色和用户的角色是否有交集
+     */
+    public function hasApi($api){
+        return $this->isInRoles($api->roles);
     }
 
     public function findByEmail($email)

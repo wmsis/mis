@@ -260,7 +260,7 @@
                 }
             }
         },
-        "/api/dcs-db-config/store": {
+        "/api/dcs-db-configs": {
             "post": {
                 "tags": [
                     "历史数据库配置dcs-db-config"
@@ -340,7 +340,7 @@
                 }
             }
         },
-        "/api/dcs-db-config/show/{id}": {
+        "/api/dcs-db-configs/{id}": {
             "get": {
                 "tags": [
                     "历史数据库配置dcs-db-config"
@@ -361,7 +361,7 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "组织ID",
+                        "description": "主键ID",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -373,10 +373,8 @@
                         "description": "succeed"
                     }
                 }
-            }
-        },
-        "/api/dcs-db-config/update/{id}": {
-            "post": {
+            },
+            "put": {
                 "tags": [
                     "历史数据库配置dcs-db-config"
                 ],
@@ -396,7 +394,7 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "组织ID",
+                        "description": "主键ID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -462,9 +460,7 @@
                         "description": "update succeed"
                     }
                 }
-            }
-        },
-        "/api/dcs-db-config/destroy/{id}": {
+            },
             "delete": {
                 "tags": [
                     "历史数据库配置dcs-db-config"
@@ -485,7 +481,7 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "组织ID",
+                        "description": "主键ID",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -499,7 +495,7 @@
                 }
             }
         },
-        "/api/dcs-map/index": {
+        "/api/dcs-map": {
             "get": {
                 "tags": [
                     "DCS映射关系dcs-map"
@@ -561,9 +557,7 @@
                         "description": "succeed"
                     }
                 }
-            }
-        },
-        "/api/dcs-map/store": {
+            },
             "post": {
                 "tags": [
                     "DCS映射关系dcs-map"
@@ -625,7 +619,7 @@
                 }
             }
         },
-        "/api/dcs-map/show/{id}": {
+        "/api/dcs-map/{id}": {
             "get": {
                 "tags": [
                     "DCS映射关系dcs-map"
@@ -658,10 +652,8 @@
                         "description": "succeed"
                     }
                 }
-            }
-        },
-        "/api/dcs-map/update/{id}": {
-            "post": {
+            },
+            "put": {
                 "tags": [
                     "DCS映射关系dcs-map"
                 ],
@@ -729,9 +721,7 @@
                         "description": "update succeed"
                     }
                 }
-            }
-        },
-        "/api/dcs-map/destroy/{id}": {
+            },
             "delete": {
                 "tags": [
                     "DCS映射关系dcs-map"
@@ -792,7 +782,7 @@
                 }
             }
         },
-        "/api/dcs-standard/index": {
+        "/api/dcs-standard": {
             "get": {
                 "tags": [
                     "DCS标准命名dcs-standard"
@@ -845,9 +835,7 @@
                         "description": "succeed"
                     }
                 }
-            }
-        },
-        "/api/dcs-standard/store": {
+            },
             "post": {
                 "tags": [
                     "DCS标准命名dcs-standard"
@@ -891,7 +879,7 @@
                 }
             }
         },
-        "/api/dcs-standard/show/{id}": {
+        "/api/dcs-standard/{id}": {
             "get": {
                 "tags": [
                     "DCS标准命名dcs-standard"
@@ -924,10 +912,8 @@
                         "description": "succeed"
                     }
                 }
-            }
-        },
-        "/api/dcs-standard/update/{id}": {
-            "post": {
+            },
+            "put": {
                 "tags": [
                     "DCS标准命名dcs-standard"
                 ],
@@ -977,9 +963,7 @@
                         "description": "update succeed"
                     }
                 }
-            }
-        },
-        "/api/dcs-standard/destroy/{id}": {
+            },
             "delete": {
                 "tags": [
                     "DCS标准命名dcs-standard"
@@ -1122,7 +1106,7 @@
                 }
             }
         },
-        "/api/electricity-db-config/store": {
+        "/api/electricity-db-config": {
             "post": {
                 "tags": [
                     "南瑞电表数据库配置electricity-db-config"
@@ -1184,7 +1168,7 @@
                 }
             }
         },
-        "/api/electricity-db-config/show/{id}": {
+        "/api/electricity-db-config/{id}": {
             "get": {
                 "tags": [
                     "南瑞电表数据库配置electricity-db-config"
@@ -1205,7 +1189,7 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "组织ID",
+                        "description": "主键ID",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -1217,10 +1201,8 @@
                         "description": "succeed"
                     }
                 }
-            }
-        },
-        "/api/electricity-db-config/update/{id}": {
-            "post": {
+            },
+            "put": {
                 "tags": [
                     "南瑞电表数据库配置electricity-db-config"
                 ],
@@ -1279,9 +1261,7 @@
                         "description": "update succeed"
                     }
                 }
-            }
-        },
-        "/api/electricity-db-config/destroy/{id}": {
+            },
             "delete": {
                 "tags": [
                     "南瑞电表数据库配置electricity-db-config"
@@ -1316,7 +1296,7 @@
                 }
             }
         },
-        "/api/electricity-map/index": {
+        "/api/electricity-map": {
             "get": {
                 "tags": [
                     "电表地址映射关系electricity-map"
@@ -1378,9 +1358,7 @@
                         "description": "succeed"
                     }
                 }
-            }
-        },
-        "/api/electricity-map/store": {
+            },
             "post": {
                 "tags": [
                     "电表地址映射关系electricity-map"
@@ -1442,7 +1420,7 @@
                 }
             }
         },
-        "/api/electricity-map/show/{id}": {
+        "/api/electricity-map/{id}": {
             "get": {
                 "tags": [
                     "电表地址映射关系electricity-map"
@@ -1475,10 +1453,8 @@
                         "description": "succeed"
                     }
                 }
-            }
-        },
-        "/api/electricity-map/update/{id}": {
-            "post": {
+            },
+            "put": {
                 "tags": [
                     "电表地址映射关系electricity-map"
                 ],
@@ -1546,9 +1522,7 @@
                         "description": "update succeed"
                     }
                 }
-            }
-        },
-        "/api/electricity-map/destroy/{id}": {
+            },
             "delete": {
                 "tags": [
                     "电表地址映射关系electricity-map"
@@ -1583,7 +1557,7 @@
                 }
             }
         },
-        "/api/garbage-db-config/store": {
+        "/api/garbage-db-config": {
             "post": {
                 "tags": [
                     "抓斗数据库配置garbage-db-config"
@@ -1672,7 +1646,7 @@
                 }
             }
         },
-        "/api/garbage-db-config/show/{id}": {
+        "/api/garbage-db-config/{id}": {
             "get": {
                 "tags": [
                     "抓斗数据库配置garbage-db-config"
@@ -1705,10 +1679,8 @@
                         "description": "succeed"
                     }
                 }
-            }
-        },
-        "/api/garbage-db-config/update/{id}": {
-            "post": {
+            },
+            "put": {
                 "tags": [
                     "抓斗数据库配置garbage-db-config"
                 ],
@@ -1803,9 +1775,7 @@
                         "description": "update succeed"
                     }
                 }
-            }
-        },
-        "/api/garbage-db-config/destroy/{id}": {
+            },
             "delete": {
                 "tags": [
                     "抓斗数据库配置garbage-db-config"
@@ -4016,14 +3986,14 @@
                 }
             }
         },
-        "/api/system-orgnization/index": {
+        "/api/system-orgnizations": {
             "get": {
                 "tags": [
                     "系统组织orgnization"
                 ],
                 "summary": "分页获取数据列表",
                 "description": "使用说明：分页获取数据列表",
-                "operationId": "system-orgnization-index",
+                "operationId": "system-orgnizations-index",
                 "parameters": [
                     {
                         "name": "token",
@@ -4078,16 +4048,14 @@
                         "description": "succeed"
                     }
                 }
-            }
-        },
-        "/api/system-orgnization/store": {
+            },
             "post": {
                 "tags": [
                     "系统组织orgnization"
                 ],
                 "summary": "新增单条数据",
                 "description": "使用说明：新增单条数据",
-                "operationId": "system-orgnization-store",
+                "operationId": "system-orgnizations-store",
                 "parameters": [
                     {
                         "name": "token",
@@ -4160,14 +4128,14 @@
                 }
             }
         },
-        "/api/system-orgnization/show/{id}": {
+        "/api/system-orgnizations/{orgnization}": {
             "get": {
                 "tags": [
                     "系统组织orgnization"
                 ],
                 "summary": "获取详细信息",
                 "description": "使用说明：获取详细信息",
-                "operationId": "system-orgnization-show",
+                "operationId": "system-orgnizations-show",
                 "parameters": [
                     {
                         "name": "token",
@@ -4179,9 +4147,9 @@
                         }
                     },
                     {
-                        "name": "id",
+                        "name": "orgnization",
                         "in": "path",
-                        "description": "Orgnization主键",
+                        "description": "Orgnization ID",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -4193,16 +4161,14 @@
                         "description": "succeed"
                     }
                 }
-            }
-        },
-        "/api/system-orgnization/update/{id}": {
-            "post": {
+            },
+            "put": {
                 "tags": [
                     "系统组织orgnization"
                 ],
                 "summary": "修改",
                 "description": "使用说明：修改单条数据",
-                "operationId": "system-orgnization-update",
+                "operationId": "system-orgnizations-update",
                 "parameters": [
                     {
                         "name": "token",
@@ -4214,9 +4180,9 @@
                         }
                     },
                     {
-                        "name": "id",
+                        "name": "orgnization",
                         "in": "path",
-                        "description": "Orgnization主键",
+                        "description": "Orgnization ID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -4282,16 +4248,14 @@
                         "description": "update succeed"
                     }
                 }
-            }
-        },
-        "/api/system-orgnization/destroy/{id}": {
+            },
             "delete": {
                 "tags": [
                     "系统组织orgnization"
                 ],
                 "summary": "删除单条数据",
                 "description": "使用说明：删除单条数据",
-                "operationId": "system-orgnization-destroy",
+                "operationId": "system-orgnizations-destroy",
                 "parameters": [
                     {
                         "name": "token",
@@ -4303,9 +4267,9 @@
                         }
                     },
                     {
-                        "name": "id",
+                        "name": "orgnization",
                         "in": "path",
-                        "description": "Orgnization主键",
+                        "description": "Orgnization ID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -4319,14 +4283,14 @@
                 }
             }
         },
-        "/api/tenement/lists": {
+        "/api/tenements/lists": {
             "get": {
                 "tags": [
-                    "租户tenement"
+                    "系统租户tenement"
                 ],
                 "summary": "获取所有租户列表",
                 "description": "使用说明：获取所有租户列表",
-                "operationId": "tenement-lists",
+                "operationId": "tenements-lists",
                 "parameters": [
                     {
                         "name": "token",
@@ -4345,14 +4309,14 @@
                 }
             }
         },
-        "/api/tenement/index": {
+        "/api/tenements": {
             "get": {
                 "tags": [
-                    "租户tenement"
+                    "系统租户tenement"
                 ],
                 "summary": "分页获取数据列表",
                 "description": "使用说明：分页获取数据列表",
-                "operationId": "tenement-index",
+                "operationId": "tenements-index",
                 "parameters": [
                     {
                         "name": "token",
@@ -4398,16 +4362,14 @@
                         "description": "succeed"
                     }
                 }
-            }
-        },
-        "/api/tenement/store": {
+            },
             "post": {
                 "tags": [
-                    "租户tenement"
+                    "系统租户tenement"
                 ],
                 "summary": "新增单条数据",
                 "description": "使用说明：新增单条数据",
-                "operationId": "tenement-store",
+                "operationId": "tenements-store",
                 "parameters": [
                     {
                         "name": "token",
@@ -4489,14 +4451,14 @@
                 }
             }
         },
-        "/api/tenement/show/{id}": {
+        "/api/tenements/{tenement}": {
             "get": {
                 "tags": [
-                    "租户tenement"
+                    "系统租户tenement"
                 ],
                 "summary": "获取详细信息",
                 "description": "使用说明：获取详细信息",
-                "operationId": "tenement-show",
+                "operationId": "tenements-show",
                 "parameters": [
                     {
                         "name": "token",
@@ -4508,9 +4470,9 @@
                         }
                     },
                     {
-                        "name": "id",
+                        "name": "tenement",
                         "in": "path",
-                        "description": "Tenement主键",
+                        "description": "Tenement ID",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -4522,16 +4484,14 @@
                         "description": "succeed"
                     }
                 }
-            }
-        },
-        "/api/tenement/update/{id}": {
-            "post": {
+            },
+            "put": {
                 "tags": [
-                    "租户tenement"
+                    "系统租户tenement"
                 ],
                 "summary": "修改",
                 "description": "使用说明：修改单条数据",
-                "operationId": "tenement-update",
+                "operationId": "tenements-update",
                 "parameters": [
                     {
                         "name": "token",
@@ -4543,9 +4503,9 @@
                         }
                     },
                     {
-                        "name": "id",
+                        "name": "tenement",
                         "in": "path",
-                        "description": "Tenement主键",
+                        "description": "Tenement ID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -4620,16 +4580,14 @@
                         "description": "update succeed"
                     }
                 }
-            }
-        },
-        "/api/tenement/destroy/{id}": {
+            },
             "delete": {
                 "tags": [
-                    "租户tenement"
+                    "系统租户tenement"
                 ],
                 "summary": "删除单条数据",
                 "description": "使用说明：删除单条数据",
-                "operationId": "tenement-destroy",
+                "operationId": "tenements-destroy",
                 "parameters": [
                     {
                         "name": "token",
@@ -4641,9 +4599,9 @@
                         }
                     },
                     {
-                        "name": "id",
+                        "name": "tenement",
                         "in": "path",
-                        "description": "Tenement主键",
+                        "description": "Tenement ID",
                         "required": true,
                         "schema": {
                             "type": "string"

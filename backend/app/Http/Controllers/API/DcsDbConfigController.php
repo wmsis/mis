@@ -13,7 +13,7 @@ class DcsDbConfigController extends Controller
 
     /**
      * @OA\POST(
-     *     path="/api/dcs-db-config/store",
+     *     path="/api/dcs-db-configs",
      *     tags={"历史数据库配置dcs-db-config"},
      *     operationId="dcs-db-config-store",
      *     summary="新增单条数据",
@@ -109,7 +109,7 @@ class DcsDbConfigController extends Controller
 
     /**
      * @OA\GET(
-     *     path="/api/dcs-db-config/show/{id}",
+     *     path="/api/dcs-db-configs/{id}",
      *     tags={"历史数据库配置dcs-db-config"},
      *     operationId="dcs-db-config-show",
      *     summary="获取详细信息",
@@ -124,7 +124,7 @@ class DcsDbConfigController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="组织ID",
+     *         description="主键ID",
      *         in="path",
      *         name="id",
      *         required=true,
@@ -157,8 +157,8 @@ class DcsDbConfigController extends Controller
     }
 
     /**
-     * @OA\POST(
-     *     path="/api/dcs-db-config/update/{id}",
+     * @OA\PUT(
+     *     path="/api/dcs-db-configs/{id}",
      *     tags={"历史数据库配置dcs-db-config"},
      *     operationId="dcs-db-config-update",
      *     summary="修改",
@@ -173,7 +173,7 @@ class DcsDbConfigController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="组织ID",
+     *         description="主键ID",
      *         in="path",
      *         name="id",
      *         required=true,
@@ -275,7 +275,7 @@ class DcsDbConfigController extends Controller
 
     /**
      * @OA\DELETE(
-     *     path="/api/dcs-db-config/destroy/{id}",
+     *     path="/api/dcs-db-configs/{id}",
      *     tags={"历史数据库配置dcs-db-config"},
      *     operationId="dcs-db-config-destroy",
      *     summary="删除单条数据",
@@ -290,7 +290,7 @@ class DcsDbConfigController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="组织ID",
+     *         description="主键ID",
      *         in="path",
      *         name="id",
      *         required=true,

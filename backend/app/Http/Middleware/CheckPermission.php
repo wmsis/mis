@@ -40,12 +40,18 @@ class CheckPermission
         elseif(strpos($path, 'member') != false){
             $path = preg_replace($pattern, '{member}', $path);
         }
+        elseif(strpos($path, 'orgnization') != false){
+            $path = preg_replace($pattern, '{orgnization}', $path);
+        }
+        elseif(strpos($path, 'tenement') != false){
+            $path = preg_replace($pattern, '{tenement}', $path);
+        }
         else{
             $path = preg_replace($pattern, '{id}', $path);
         }
 
         $flag = false;
-        if($userObj->type == 'admin'){
+        if($userObj->type == 'admin' || $userObj->type == 'system'){
             $flag = true;
         }
         else {

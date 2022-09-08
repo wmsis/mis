@@ -12,7 +12,7 @@ class ElectricityDbConfigController extends Controller
 {
     /**
      * @OA\POST(
-     *     path="/api/electricity-db-config/store",
+     *     path="/api/electricity-db-config",
      *     tags={"南瑞电表数据库配置electricity-db-config"},
      *     operationId="electricity-db-config-store",
      *     summary="新增单条数据",
@@ -90,7 +90,7 @@ class ElectricityDbConfigController extends Controller
 
     /**
      * @OA\GET(
-     *     path="/api/electricity-db-config/show/{id}",
+     *     path="/api/electricity-db-config/{id}",
      *     tags={"南瑞电表数据库配置electricity-db-config"},
      *     operationId="electricity-db-config-show",
      *     summary="获取详细信息",
@@ -105,7 +105,7 @@ class ElectricityDbConfigController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="组织ID",
+     *         description="主键ID",
      *         in="path",
      *         name="id",
      *         required=true,
@@ -138,8 +138,8 @@ class ElectricityDbConfigController extends Controller
     }
 
     /**
-     * @OA\POST(
-     *     path="/api/electricity-db-config/update/{id}",
+     * @OA\PUT(
+     *     path="/api/electricity-db-config/{id}",
      *     tags={"南瑞电表数据库配置electricity-db-config"},
      *     operationId="electricity-db-config-update",
      *     summary="修改",
@@ -229,7 +229,7 @@ class ElectricityDbConfigController extends Controller
 
     /**
      * @OA\DELETE(
-     *     path="/api/electricity-db-config/destroy/{id}",
+     *     path="/api/electricity-db-config/{id}",
      *     tags={"南瑞电表数据库配置electricity-db-config"},
      *     operationId="electricity-db-config-destroy",
      *     summary="删除单条数据",

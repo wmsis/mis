@@ -84,7 +84,7 @@ class AdminController extends Controller
     public function me()
     {
         $user = auth('admin')->user();
-        return UtilService::format_data(self::AJAX_SUCCESS, '退出成功', $user);
+        return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $user);
     }
 
     /**
