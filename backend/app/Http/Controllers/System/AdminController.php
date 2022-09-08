@@ -10,12 +10,19 @@ namespace App\Http\Controllers\System;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use UtilService;
+use CacheService;
+use App\Models\System\Admin;
+use JWTAuth;
 
 class AdminController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth:admin', ['except' => ['login']]);
+    }
+
+    private function getKey($username){
+        return md5($username . '_SYSTEM_TOKEN');
     }
 
     /**
@@ -52,9 +59,24 @@ class AdminController extends Controller
     public function login()
     {
         $credentials = request(['username', 'password']);
+        $key = $this->getKey($credentials['username']);
+        $admin = Admin::where('username', $credentials['username'])->first();
+        if($admin){
+            $current_token = CacheService::getCache($key);
+            if($current_token){
+                //将老token加入黑名单
+                JWTAuth::unsetToken();
+            }
+        }
+        else{
+            return UtilService::format_data(self::AJAX_FAIL, '用户不存在', '');
+        }
+
         if (! $token = auth('admin')->attempt($credentials)) {
             return response()->json(['error' => '用户名或者密码错误'], 401);
         }
+        $expire = auth('admin')->factory()->getTTL() * 60;
+        CacheService::setCache($key, $token, $expire);
 
         return $this->respondWithToken($token);
     }
@@ -111,6 +133,12 @@ class AdminController extends Controller
      */
     public function logout()
     {
+        $admin = auth('admin')->user();
+        if($admin && isset($admin->username)) {
+            $key = $this->getKey($admin->username);
+            CacheService::clearCache($key);
+        }
+
         auth('admin')->logout();
         return UtilService::format_data(self::AJAX_SUCCESS, '退出成功', '');
     }
@@ -139,7 +167,14 @@ class AdminController extends Controller
      */
     public function refresh()
     {
-        return $this->respondWithToken(auth('admin')->refresh());
+        $admin = auth('admin')->user();
+        $token = auth('admin')->refresh();
+        if($admin) {
+            $key = $this->getKey($admin->username);
+            CacheService::setCache($key, $token, 3600);
+        }
+
+        return $this->respondWithToken($token);
     }
 
     /**

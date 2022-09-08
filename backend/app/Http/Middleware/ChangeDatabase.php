@@ -18,6 +18,7 @@ class ChangeDatabase
      */
     public function handle($request, Closure $next)
     {
+        //tenement为租户编号code
         $default = $request->tenement ? $request->tenement : 'mysql';
 
         Config::set('database.default', $default);
