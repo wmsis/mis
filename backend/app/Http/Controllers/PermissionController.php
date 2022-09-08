@@ -156,15 +156,6 @@ class PermissionController extends Controller
      *         ),
      *     ),
      *     @OA\Parameter(
-     *         description="层级",
-     *         in="query",
-     *         name="level",
-     *         required=false,
-     *         @OA\Schema(
-     *             type="string"
-     *         ),
-     *     ),
-     *     @OA\Parameter(
      *         description="权限类型",
      *         in="query",
      *         name="type",
@@ -188,9 +179,14 @@ class PermissionController extends Controller
         $color = $request->input('color');
         $type = $request->input('type');
         $api_name = $request->input('api_name');
-        $level = $request->input('level');
+        $level = 1;
         $page_url = $request->input('page_url');
         $icon = $request->input('icon');
+
+        if($parent_id){
+            $parent = Permission::find($parent_id);
+            $level = $parent && $parent->level ? $parent->level + 1 : 1;
+        }
 
         $p = array(
             'name' => $name,

@@ -39,10 +39,6 @@ class AuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login']]);
     }
 
-    private function getKey($mobile){
-        return md5($mobile . '_TOKEN');
-    }
-
     /**
      * @OA\Post(
      *     path="/api/auth/login",
@@ -108,7 +104,7 @@ class AuthController extends Controller
 
         $user = User::where('mobile', $credentials['mobile'])->first();
         try {
-            $key = $this->getKey($params['mobile']);
+            $key = $this->getKey($params['mobile'], 'TOKEN');
             $current_token = CacheService::getCache($key);
             if($current_token){
                 //将老token加入黑名单
@@ -283,7 +279,7 @@ class AuthController extends Controller
         try {
             $user = auth('api')->user();
             if($user && isset($user->mobile)) {
-                $key = $this->getKey($user->mobile);
+                $key = $this->getKey($user->mobile, 'TOKEN');
                 CacheService::clearCache($key);
             }
 
@@ -324,7 +320,7 @@ class AuthController extends Controller
         $token = auth('api')->refresh();
 
         if($user) {
-            $key = $this->getKey($user->mobile);
+            $key = $this->getKey($user->mobile, 'TOKEN');
             CacheService::setCache($key, $token, 3600);
         }
 

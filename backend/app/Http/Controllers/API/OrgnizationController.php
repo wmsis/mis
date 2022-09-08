@@ -200,15 +200,6 @@ class OrgnizationController extends Controller
      *         ),
      *     ),
      *     @OA\Parameter(
-     *         description="层级",
-     *         in="query",
-     *         name="level",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer"
-     *         ),
-     *     ),
-     *     @OA\Parameter(
      *         description="排序号",
      *         in="query",
      *         name="sort",
@@ -228,7 +219,7 @@ class OrgnizationController extends Controller
         $name = $request->input('name');
         $code = $request->input('code');
         $description = $request->input('description');
-        $level = $request->input('level');
+        $level = 1;
         $parent_id = $request->input('parent_id');
         $sort = $request->input('sort');
 
@@ -239,13 +230,17 @@ class OrgnizationController extends Controller
                 $row->name = $name;
                 $row->code = $code;
                 $row->description = $description;
-                $row->level = $level;
                 $row->parent_id = $parent_id;
                 $row->sort = $sort;
                 $row->save();
             }
             else {
-                $params = request(['name', 'code', 'description', 'level', 'parent_id', 'sort']);
+                $params = request(['name', 'code', 'description', 'parent_id', 'sort']);
+                if($parent_id){
+                    $parent = Orgnization::find($parent_id);
+                    $level = $parent && $parent->level ? $parent->level + 1 : 1;
+                }
+                $params['level'] = $level;
                 Orgnization::create($params); //save 和 create 的不同之处在于 save 接收整个 Eloquent 模型实例而 create 接收原生 PHP 数组
             }
             DB::commit();

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\System\Tenement;
 use Illuminate\Database\QueryException;
 use UtilService;
+use CacheService;
 
 class TenementController extends Controller
 {
@@ -43,8 +44,66 @@ class TenementController extends Controller
      */
     public function lists(Request $request)
     {
-        $data = Tenement::all();
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $data);
+        $user = auth('admin')->user();
+        $key = $this->getKey($user->id, 'TENEMENT');
+        $current_tenement = CacheService::getCache($key);
+        $datalist = Tenement::all();
+        foreach ($datalist as $key => $item) {
+            if($current_tenement && $current_tenement['code'] == $item->code){
+                $datalist[$key]['checked'] = true;
+            }
+            else{
+                $datalist[$key]['checked'] = false;
+            }
+        }
+        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $datalist);
+    }
+
+    /**
+     * @OA\POST(
+     *     path="/api/tenements/switch",
+     *     tags={"系统租户tenement"},
+     *     operationId="tenements-switch",
+     *     summary="切换租户",
+     *     description="使用说明：切换租户",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="租户ID",
+     *         in="query",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="succeed",
+     *     ),
+     * )
+     */
+    public function switch(Request $request)
+    {
+        $id = $request->input('id');
+        $data = Tenement::find($id)->toArray();
+        if($data){
+            $user = auth('admin')->user();
+            if($user){
+                $key = $this->getKey($user->id, 'TENEMENT');
+                $expire = auth('admin')->factory()->getTTL() * 60;
+                CacheService::setCache($key, $data, $expire);
+            }
+            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $data);
+        }
+        return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
     }
 
     /**

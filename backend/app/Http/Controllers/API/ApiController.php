@@ -161,15 +161,6 @@ class ApiController extends Controller
      *             type="integer"
      *         ),
      *     ),
-     *     @OA\Parameter(
-     *         description="所在层级",
-     *         in="query",
-     *         name="level",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer"
-     *         ),
-     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="successful operation",
@@ -181,7 +172,7 @@ class ApiController extends Controller
         $name = $request->input('name');
         $description = $request->input('description');
         $url = $request->input('url');
-        $level = $request->input('level');
+        $level = 1;
         $parent_id = $request->input('parent_id');
         $sort = $request->input('sort');
 
@@ -191,14 +182,18 @@ class ApiController extends Controller
                 $row = API::find($id);
                 $row->name = $name;
                 $row->description = $description;
-                $row->level = $level;
                 $row->url = $url;
                 $row->parent_id = $parent_id;
                 $row->sort = $sort;
                 $row->save();
             }
             else {
-                $params = request(['name', 'description', 'level', 'parent_id', 'sort', 'url']);
+                $params = request(['name', 'description', 'parent_id', 'sort', 'url']);
+                if($parent_id){
+                    $parent = API::find($parent_id);
+                    $level = $parent && $parent->level ? $parent->level + 1 : 1;
+                }
+                $params['level'] = $level;
                 API::create($params); //save 和 create 的不同之处在于 save 接收整个 Eloquent 模型实例而 create 接收原生 PHP 数组
             }
             DB::commit();

@@ -38,12 +38,12 @@ Route::group(['namespace' => 'App\Http\Controllers\System', 'prefix' => 'admin',
 
 //系统租户和系统组织
 Route::group(['middleware'=>['cors', 'jwt.role:admin', 'jwt.auth', 'auth:admin']], function () {
-    //补充路由应在 Route::resource 方法之前定义
+    //补充路由应在 Route::apiResources 方法之前定义
     Route::get('tenements/lists', [TenementController::class, 'lists']);
+    Route::post('tenements/switch', [TenementController::class, 'switch']);
     //API 资源路由
     Route::apiResources([
         'tenements' => TenementController::class,
-        'system-orgnizations' => OrgnizationController::class,
     ]);
 });
 
@@ -181,7 +181,7 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:admin', 'jwt.auth
             Route::post('bind-relation', 'WeighBridgeController@bindRelation');
         });
 
-        //如有补充路由应在 Route::resource 方法之前定义
+        //如有补充路由应在 Route::apiResources 方法之前定义
         Route::get('dcs-standard/lists', [TenementController::class, 'lists']);
         //API 资源路由  DCS映射关系 标准DCS 电表映射关系 抓斗数据库配置 电表数据库配置 历史数据库配置
         Route::apiResources([

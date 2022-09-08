@@ -14,4 +14,8 @@ class Controller extends BaseController
     const AJAX_SUCCESS = 0;
     const AJAX_FAIL = -1;
     const AJAX_NO_DATA = -2;
+
+    protected function getKey($key, $constant){
+        return md5($key . 'MIS' . $constant);
+    }
 }

@@ -94,15 +94,6 @@
                         "schema": {
                             "type": "integer"
                         }
-                    },
-                    {
-                        "name": "level",
-                        "in": "query",
-                        "description": "所在层级",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
                     }
                 ],
                 "responses": {
@@ -2542,15 +2533,6 @@
                         }
                     },
                     {
-                        "name": "level",
-                        "in": "query",
-                        "description": "层级",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
                         "name": "sort",
                         "in": "query",
                         "description": "排序号",
@@ -3403,15 +3385,6 @@
                         }
                     },
                     {
-                        "name": "level",
-                        "in": "query",
-                        "description": "层级",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
                         "name": "type",
                         "in": "query",
                         "description": "权限类型",
@@ -3986,303 +3959,6 @@
                 }
             }
         },
-        "/api/system-orgnizations": {
-            "get": {
-                "tags": [
-                    "系统组织orgnization"
-                ],
-                "summary": "分页获取数据列表",
-                "description": "使用说明：分页获取数据列表",
-                "operationId": "system-orgnizations-index",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "description": "token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "num",
-                        "in": "query",
-                        "description": "每页数据量",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "default": 20
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "页数",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "default": 1
-                        }
-                    },
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "description": "关键字中文名搜索",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "orgnization_id",
-                        "in": "query",
-                        "description": "组织ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "succeed"
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "系统组织orgnization"
-                ],
-                "summary": "新增单条数据",
-                "description": "使用说明：新增单条数据",
-                "operationId": "system-orgnizations-store",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "description": "token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "description": "组织名称",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "tenement_id",
-                        "in": "query",
-                        "description": "所属租户ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "description",
-                        "in": "query",
-                        "description": "组织描述",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "parent_id",
-                        "in": "query",
-                        "description": "父组织ID",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "level",
-                        "in": "query",
-                        "description": "层级",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "sort",
-                        "in": "query",
-                        "description": "排序号",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "store succeed"
-                    }
-                }
-            }
-        },
-        "/api/system-orgnizations/{orgnization}": {
-            "get": {
-                "tags": [
-                    "系统组织orgnization"
-                ],
-                "summary": "获取详细信息",
-                "description": "使用说明：获取详细信息",
-                "operationId": "system-orgnizations-show",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "description": "token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "orgnization",
-                        "in": "path",
-                        "description": "Orgnization ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "succeed"
-                    }
-                }
-            },
-            "put": {
-                "tags": [
-                    "系统组织orgnization"
-                ],
-                "summary": "修改",
-                "description": "使用说明：修改单条数据",
-                "operationId": "system-orgnizations-update",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "description": "token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "orgnization",
-                        "in": "path",
-                        "description": "Orgnization ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "description": "组织名称",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "tenement_id",
-                        "in": "query",
-                        "description": "所属租户ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "description",
-                        "in": "query",
-                        "description": "组织描述",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "parent_id",
-                        "in": "query",
-                        "description": "父组织ID",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "level",
-                        "in": "query",
-                        "description": "层级",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "sort",
-                        "in": "query",
-                        "description": "排序号",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "update succeed"
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "系统组织orgnization"
-                ],
-                "summary": "删除单条数据",
-                "description": "使用说明：删除单条数据",
-                "operationId": "system-orgnizations-destroy",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "description": "token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "orgnization",
-                        "in": "path",
-                        "description": "Orgnization ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "detroy succeed"
-                    }
-                }
-            }
-        },
         "/api/tenements/lists": {
             "get": {
                 "tags": [
@@ -4296,6 +3972,41 @@
                         "name": "token",
                         "in": "query",
                         "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/tenements/switch": {
+            "post": {
+                "tags": [
+                    "系统租户tenement"
+                ],
+                "summary": "切换租户",
+                "description": "使用说明：切换租户",
+                "operationId": "tenements-switch",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "租户ID",
                         "required": true,
                         "schema": {
                             "type": "string"
