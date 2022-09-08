@@ -2579,6 +2579,15 @@
                         "schema": {
                             "type": "integer"
                         }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "排序号",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
                     }
                 ],
                 "responses": {
@@ -3221,119 +3230,6 @@
                 "responses": {
                     "200": {
                         "description": "succeed"
-                    }
-                }
-            }
-        },
-        "/api/admin/login": {
-            "post": {
-                "tags": [
-                    "系统管理员admin"
-                ],
-                "summary": "登录",
-                "description": "使用说明：登录",
-                "operationId": "admin login",
-                "parameters": [
-                    {
-                        "name": "username",
-                        "in": "query",
-                        "description": "用户名",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "password",
-                        "in": "query",
-                        "description": "密码",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "successful operation"
-                    }
-                }
-            }
-        },
-        "/api/admin/me": {
-            "get": {
-                "tags": [
-                    "系统管理员admin"
-                ],
-                "summary": "我",
-                "description": "使用说明：我",
-                "operationId": "admin me",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "description": "token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "successful operation"
-                    }
-                }
-            }
-        },
-        "/api/admin/logout": {
-            "get": {
-                "tags": [
-                    "系统管理员admin"
-                ],
-                "summary": "退出登录",
-                "description": "使用说明：退出登录",
-                "operationId": "admin logout",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "description": "token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "successful operation"
-                    }
-                }
-            }
-        },
-        "/api/admin/refresh": {
-            "get": {
-                "tags": [
-                    "系统管理员admin"
-                ],
-                "summary": "刷新token",
-                "description": "使用说明：刷新token",
-                "operationId": "admin refresh",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "description": "token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "successful operation"
                     }
                 }
             }
@@ -4003,6 +3899,760 @@
                 "responses": {
                     "200": {
                         "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/admin/login": {
+            "post": {
+                "tags": [
+                    "系统管理员admin"
+                ],
+                "summary": "登录",
+                "description": "使用说明：登录",
+                "operationId": "admin login",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "query",
+                        "description": "用户名",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "密码",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/admin/me": {
+            "get": {
+                "tags": [
+                    "系统管理员admin"
+                ],
+                "summary": "我",
+                "description": "使用说明：我",
+                "operationId": "admin me",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/admin/logout": {
+            "get": {
+                "tags": [
+                    "系统管理员admin"
+                ],
+                "summary": "退出登录",
+                "description": "使用说明：退出登录",
+                "operationId": "admin logout",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/admin/refresh": {
+            "get": {
+                "tags": [
+                    "系统管理员admin"
+                ],
+                "summary": "刷新token",
+                "description": "使用说明：刷新token",
+                "operationId": "admin refresh",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/system-orgnization/index": {
+            "get": {
+                "tags": [
+                    "系统组织orgnization"
+                ],
+                "summary": "分页获取数据列表",
+                "description": "使用说明：分页获取数据列表",
+                "operationId": "system-orgnization-index",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "num",
+                        "in": "query",
+                        "description": "每页数据量",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "页数",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "关键字中文名搜索",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "orgnization_id",
+                        "in": "query",
+                        "description": "组织ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/system-orgnization/store": {
+            "post": {
+                "tags": [
+                    "系统组织orgnization"
+                ],
+                "summary": "新增单条数据",
+                "description": "使用说明：新增单条数据",
+                "operationId": "system-orgnization-store",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "组织名称",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "tenement_id",
+                        "in": "query",
+                        "description": "所属租户ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "组织描述",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "parent_id",
+                        "in": "query",
+                        "description": "父组织ID",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "level",
+                        "in": "query",
+                        "description": "层级",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "排序号",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "store succeed"
+                    }
+                }
+            }
+        },
+        "/api/system-orgnization/show/{id}": {
+            "get": {
+                "tags": [
+                    "系统组织orgnization"
+                ],
+                "summary": "获取详细信息",
+                "description": "使用说明：获取详细信息",
+                "operationId": "system-orgnization-show",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Orgnization主键",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/system-orgnization/update/{id}": {
+            "post": {
+                "tags": [
+                    "系统组织orgnization"
+                ],
+                "summary": "修改",
+                "description": "使用说明：修改单条数据",
+                "operationId": "system-orgnization-update",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Orgnization主键",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "组织名称",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "tenement_id",
+                        "in": "query",
+                        "description": "所属租户ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "组织描述",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "parent_id",
+                        "in": "query",
+                        "description": "父组织ID",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "level",
+                        "in": "query",
+                        "description": "层级",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "排序号",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "update succeed"
+                    }
+                }
+            }
+        },
+        "/api/system-orgnization/destroy/{id}": {
+            "delete": {
+                "tags": [
+                    "系统组织orgnization"
+                ],
+                "summary": "删除单条数据",
+                "description": "使用说明：删除单条数据",
+                "operationId": "system-orgnization-destroy",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Orgnization主键",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "detroy succeed"
+                    }
+                }
+            }
+        },
+        "/api/tenement/lists": {
+            "get": {
+                "tags": [
+                    "租户tenement"
+                ],
+                "summary": "获取所有租户列表",
+                "description": "使用说明：获取所有租户列表",
+                "operationId": "tenement-lists",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/tenement/index": {
+            "get": {
+                "tags": [
+                    "租户tenement"
+                ],
+                "summary": "分页获取数据列表",
+                "description": "使用说明：分页获取数据列表",
+                "operationId": "tenement-index",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "num",
+                        "in": "query",
+                        "description": "每页数据量",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "页数",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "username",
+                        "in": "query",
+                        "description": "关键字中文名搜索",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/tenement/store": {
+            "post": {
+                "tags": [
+                    "租户tenement"
+                ],
+                "summary": "新增单条数据",
+                "description": "使用说明：新增单条数据",
+                "operationId": "tenement-store",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ip",
+                        "in": "query",
+                        "description": "ip",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "username",
+                        "in": "query",
+                        "description": "租户名称",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "code",
+                        "in": "query",
+                        "description": "编码",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "db_name",
+                        "in": "query",
+                        "description": "数据库名称",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "db_user",
+                        "in": "query",
+                        "description": "数据库用户名",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "db_pwd",
+                        "in": "query",
+                        "description": "数据库密码",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "memo",
+                        "in": "query",
+                        "description": "备注",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "store succeed"
+                    }
+                }
+            }
+        },
+        "/api/tenement/show/{id}": {
+            "get": {
+                "tags": [
+                    "租户tenement"
+                ],
+                "summary": "获取详细信息",
+                "description": "使用说明：获取详细信息",
+                "operationId": "tenement-show",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Tenement主键",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/tenement/update/{id}": {
+            "post": {
+                "tags": [
+                    "租户tenement"
+                ],
+                "summary": "修改",
+                "description": "使用说明：修改单条数据",
+                "operationId": "tenement-update",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Tenement主键",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ip",
+                        "in": "query",
+                        "description": "ip",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "username",
+                        "in": "query",
+                        "description": "租户名称",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "code",
+                        "in": "query",
+                        "description": "编码",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "db_name",
+                        "in": "query",
+                        "description": "数据库名称",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "db_user",
+                        "in": "query",
+                        "description": "数据库用户名",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "db_pwd",
+                        "in": "query",
+                        "description": "数据库密码",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "memo",
+                        "in": "query",
+                        "description": "备注",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "update succeed"
+                    }
+                }
+            }
+        },
+        "/api/tenement/destroy/{id}": {
+            "delete": {
+                "tags": [
+                    "租户tenement"
+                ],
+                "summary": "删除单条数据",
+                "description": "使用说明：删除单条数据",
+                "operationId": "tenement-destroy",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Tenement主键",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "detroy succeed"
                     }
                 }
             }
