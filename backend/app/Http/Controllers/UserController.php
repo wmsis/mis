@@ -259,7 +259,12 @@ class UserController extends Controller
      *         name="type",
      *         required=false,
      *         @OA\Schema(
-     *             type="string"
+     *             type="array",
+     *             default="instation",
+     *             @OA\Items(
+     *                 type="string",
+     *                 enum = {"admin", "group", "webmaster", "instation"},
+     *             )
      *         ),
      *     ),
      *     @OA\Response(

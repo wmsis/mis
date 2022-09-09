@@ -35,15 +35,25 @@ class DcsStandardController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="succeed",
-     *         @OA\Schema(
-     *              @OA\Property(
-     *                  property="DcsStandards",
-     *                  description="DcsStandards",
-     *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/DcsStandards")
-     *                  }
-     *             )
-     *         )
+     *         @OA\JsonContent(
+     *             @OA\Property(
+	 *              	property="code",
+	 *                  description="错误代码，0：为没有错误",
+	 *                  type="integer",
+	 *					default="0"
+	 *             ),
+     *             @OA\Property(
+	 *                  property="data",
+	 *                  description="返回数据",
+     *                  type="array",
+     *                  @OA\Items(ref="#/components/schemas/DcsStandard")
+     *             ),
+     *             @OA\Property(
+	 *              	property="message",
+	 *                  description="错误消息",
+	 *                  type="string"
+	 *             )
+     *         ),
      *     ),
      * )
      */
@@ -101,15 +111,25 @@ class DcsStandardController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="succeed",
-     *         @OA\Schema(
-     *              @OA\Property(
-     *                  property="DcsStandards",
-     *                  description="DcsStandards",
-     *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/DcsStandards")
-     *                  }
-     *             )
-     *         )
+     *         @OA\JsonContent(
+     *             @OA\Property(
+	 *              	property="code",
+	 *                  description="错误代码，0：为没有错误",
+	 *                  type="integer",
+	 *					default="0"
+	 *             ),
+     *             @OA\Property(
+	 *                  property="data",
+	 *                  description="返回数据",
+     *                  type="array",
+     *                  @OA\Items(ref="#/components/schemas/DcsStandard")
+     *             ),
+     *             @OA\Property(
+	 *              	property="message",
+	 *                  description="错误消息",
+	 *                  type="string"
+	 *             )
+     *         ),
      *     ),
      * )
      */
@@ -168,15 +188,27 @@ class DcsStandardController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="store succeed",
-     *         @OA\Schema(
-     *              @OA\Property(
-     *                  property="DcsStandard",
-     *                  description="DcsStandard",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+	 *              	property="code",
+	 *                  description="错误代码，0：为没有错误",
+	 *                  type="integer",
+	 *					default="0"
+	 *             ),
+     *             @OA\Property(
+	 *                  property="data",
+	 *                  description="返回数据",
+     *                  type="object",
      *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/DcsStandard")
+     *                      @OA\Schema(ref="#/components/schemas/DcsStandard"),
      *                  }
-     *               )
-     *          )
+     *             ),
+     *             @OA\Property(
+	 *              	property="message",
+	 *                  description="错误消息",
+	 *                  type="string"
+	 *             )
+     *         ),
      *     ),
      * )
      */
@@ -219,15 +251,27 @@ class DcsStandardController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="succeed",
-     *         @OA\Schema(
-     *              @OA\Property(
-     *                  property="DcsStandard",
-     *                  description="DcsStandard",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+	 *              	property="code",
+	 *                  description="错误代码，0：为没有错误",
+	 *                  type="integer",
+	 *					default="0"
+	 *             ),
+     *             @OA\Property(
+	 *                  property="data",
+	 *                  description="返回数据",
+     *                  type="object",
      *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/DcsStandard")
+     *                      @OA\Schema(ref="#/components/schemas/DcsStandard"),
      *                  }
-     *             )
-     *         )
+     *             ),
+     *             @OA\Property(
+	 *              	property="message",
+	 *                  description="错误消息",
+	 *                  type="string"
+	 *             )
+     *         ),
      *     ),
      * )
      */
@@ -286,15 +330,27 @@ class DcsStandardController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="update succeed",
-     *         @OA\Schema(
-     *              @OA\Property(
-     *                  property="DcsStandard",
-     *                  description="DcsStandard",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+	 *              	property="code",
+	 *                  description="错误代码，0：为没有错误",
+	 *                  type="integer",
+	 *					default="0"
+	 *             ),
+     *             @OA\Property(
+	 *                  property="data",
+	 *                  description="返回数据",
+     *                  type="object",
      *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/DcsStandard")
+     *                      @OA\Schema(ref="#/components/schemas/DcsStandard"),
      *                  }
-     *             )
-     *         )
+     *             ),
+     *             @OA\Property(
+	 *              	property="message",
+	 *                  description="错误消息",
+	 *                  type="string"
+	 *             )
+     *         ),
      *     ),
      * )
      */
@@ -372,11 +428,3 @@ class DcsStandardController extends Controller
         return UtilService::format_data(self::AJAX_SUCCESS, '删除成功', '');
     }
 }
-
-/**
- * @OA\Definition(
- *     definition="DcsStandards",
- *     type="array",
- *     @OA\Items(ref="#/definitions/DcsStandard")
- * )
- */

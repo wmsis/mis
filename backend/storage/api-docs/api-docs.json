@@ -768,7 +768,32 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "succeed"
+                        "description": "succeed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "错误代码，0：为没有错误",
+                                            "type": "integer",
+                                            "default": "0"
+                                        },
+                                        "data": {
+                                            "description": "返回数据",
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/DcsStandard"
+                                            }
+                                        },
+                                        "message": {
+                                            "description": "错误消息",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -823,7 +848,32 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "succeed"
+                        "description": "succeed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "错误代码，0：为没有错误",
+                                            "type": "integer",
+                                            "default": "0"
+                                        },
+                                        "data": {
+                                            "description": "返回数据",
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/DcsStandard"
+                                            }
+                                        },
+                                        "message": {
+                                            "description": "错误消息",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -865,7 +915,34 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "store succeed"
+                        "description": "store succeed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "错误代码，0：为没有错误",
+                                            "type": "integer",
+                                            "default": "0"
+                                        },
+                                        "data": {
+                                            "description": "返回数据",
+                                            "type": "object",
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/components/schemas/DcsStandard"
+                                                }
+                                            ]
+                                        },
+                                        "message": {
+                                            "description": "错误消息",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -900,7 +977,34 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "succeed"
+                        "description": "succeed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "错误代码，0：为没有错误",
+                                            "type": "integer",
+                                            "default": "0"
+                                        },
+                                        "data": {
+                                            "description": "返回数据",
+                                            "type": "object",
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/components/schemas/DcsStandard"
+                                                }
+                                            ]
+                                        },
+                                        "message": {
+                                            "description": "错误消息",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -951,7 +1055,34 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "update succeed"
+                        "description": "update succeed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "错误代码，0：为没有错误",
+                                            "type": "integer",
+                                            "default": "0"
+                                        },
+                                        "data": {
+                                            "description": "返回数据",
+                                            "type": "object",
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/components/schemas/DcsStandard"
+                                                }
+                                            ]
+                                        },
+                                        "message": {
+                                            "description": "错误消息",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -4483,7 +4614,17 @@
                         "description": "用户类型",
                         "required": false,
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "admin",
+                                    "group",
+                                    "webmaster",
+                                    "instation"
+                                ]
+                            },
+                            "default": "instation"
                         }
                     }
                 ],
@@ -6062,6 +6203,27 @@
                         "description": "successful operation"
                     }
                 }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "DcsStandard": {
+                "title": "DcsStandard model",
+                "description": "DcsStandard model",
+                "properties": {
+                    "id": {
+                        "description": "创建数据模型",
+                        "type": "integer"
+                    },
+                    "en_name": {
+                        "type": "string"
+                    },
+                    "cn_name": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
             }
         }
     }
