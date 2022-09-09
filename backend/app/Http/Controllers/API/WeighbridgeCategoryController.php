@@ -19,7 +19,7 @@ use UtilService;
 class WeighbridgeCategoryController extends Controller
 {
     /**
-     * @OA\GET(
+     * @OA\Get(
      *     path="/api/weighbridge-category/lists-big",
      *     tags={"地磅垃圾分类weighbridge-category"},
      *     operationId="weighbridge-category-lists-big",
@@ -56,7 +56,7 @@ class WeighbridgeCategoryController extends Controller
     }
 
     /**
-     * @OA\GET(
+     * @OA\Get(
      *     path="/api/weighbridge-category/page-big",
      *     tags={"地磅垃圾分类weighbridge-category"},
      *     operationId="weighbridge-category-page-big",
@@ -134,7 +134,7 @@ class WeighbridgeCategoryController extends Controller
     }
 
     /**
-     * @OA\POST(
+     * @OA\Post(
      *     path="/api/weighbridge-category/store-big",
      *     tags={"地磅垃圾分类weighbridge-category"},
      *     operationId="weighbridge-category-store-big",
@@ -194,7 +194,7 @@ class WeighbridgeCategoryController extends Controller
     }
 
     /**
-     * @OA\GET(
+     * @OA\Get(
      *     path="/api/weighbridge-category/show-big/{id}",
      *     tags={"地磅垃圾分类weighbridge-category"},
      *     operationId="weighbridge-category-show",
@@ -243,7 +243,7 @@ class WeighbridgeCategoryController extends Controller
     }
 
     /**
-     * @OA\POST(
+     * @OA\Post(
      *     path="/api/weighbridge-category/update-big/{id}",
      *     tags={"地磅垃圾分类weighbridge-category"},
      *     operationId="weighbridge-category-update",
@@ -369,7 +369,7 @@ class WeighbridgeCategoryController extends Controller
     }
 
     /**
-     * @OA\POST(
+     * @OA\Post(
      *     path="/api/weighbridge-category/store-small-multi",
      *     tags={"地磅垃圾分类weighbridge-category"},
      *     operationId="weighbridge-category-small-multi",
@@ -437,7 +437,7 @@ class WeighbridgeCategoryController extends Controller
     }
 
     /**
-     * @OA\GET(
+     * @OA\Get(
      *     path="/api/weighbridge-category/page-small",
      *     tags={"地磅垃圾分类weighbridge-category"},
      *     operationId="weighbridge-category-page-small",
@@ -515,7 +515,7 @@ class WeighbridgeCategoryController extends Controller
     }
 
     /**
-     * @OA\POST(
+     * @OA\Post(
      *     path="/api/weighbridge-category/bind-relation",
      *     tags={"地磅垃圾分类weighbridge-category"},
      *     operationId="weighbridge-category-bind-relation",
@@ -594,7 +594,7 @@ class WeighbridgeCategoryController extends Controller
     }
 
     /**
-     * @OA\GET(
+     * @OA\Get(
      *     path="/api/weighbridge-category/show-relation/{id}",
      *     tags={"地磅垃圾分类weighbridge-category"},
      *     operationId="weighbridge-category-show-relation",

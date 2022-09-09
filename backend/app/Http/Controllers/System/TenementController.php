@@ -12,7 +12,7 @@ use CacheService;
 class TenementController extends Controller
 {
     /**
-     * @OA\GET(
+     * @OA\Get(
      *     path="/api/tenements/lists",
      *     tags={"系统租户tenement"},
      *     operationId="tenements-lists",
@@ -60,7 +60,7 @@ class TenementController extends Controller
     }
 
     /**
-     * @OA\POST(
+     * @OA\Post(
      *     path="/api/tenements/switch",
      *     tags={"系统租户tenement"},
      *     operationId="tenements-switch",
@@ -107,7 +107,7 @@ class TenementController extends Controller
     }
 
     /**
-     * @OA\GET(
+     * @OA\Get(
      *     path="/api/tenements",
      *     tags={"系统租户tenement"},
      *     operationId="tenements-index",
@@ -185,7 +185,7 @@ class TenementController extends Controller
     }
 
     /**
-     * @OA\POST(
+     * @OA\Post(
      *     path="/api/tenements",
      *     tags={"系统租户tenement"},
      *     operationId="tenements-store",
@@ -290,7 +290,7 @@ class TenementController extends Controller
     }
 
     /**
-     * @OA\GET(
+     * @OA\Get(
      *     path="/api/tenements/{tenement}",
      *     tags={"系统租户tenement"},
      *     operationId="tenements-show",

@@ -17,7 +17,7 @@ use UtilService;
 class ElectricityMapController extends Controller
 {
     /**
-     * @OA\GET(
+     * @OA\Get(
      *     path="/api/electricity-map",
      *     tags={"电表地址映射关系electricity-map"},
      *     operationId="electricity-map-index",
@@ -105,7 +105,7 @@ class ElectricityMapController extends Controller
     }
 
     /**
-     * @OA\POST(
+     * @OA\Post(
      *     path="/api/electricity-map",
      *     tags={"电表地址映射关系electricity-map"},
      *     operationId="electricity-map-store",
@@ -183,7 +183,7 @@ class ElectricityMapController extends Controller
     }
 
     /**
-     * @OA\GET(
+     * @OA\Get(
      *     path="/api/electricity-map/{id}",
      *     tags={"电表地址映射关系electricity-map"},
      *     operationId="electricity-map-show",

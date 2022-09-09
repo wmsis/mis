@@ -64,7 +64,7 @@ class HistorianDataController extends Controller
     }
 
     /**
-     * @OA\POST(
+     * @OA\Post(
      *     path="/api/historian-data/current-data",
      *     tags={"历史数据库数据historian data"},
      *     operationId="current-data",
@@ -118,7 +118,7 @@ class HistorianDataController extends Controller
     }
 
     /**
-     * @OA\POST(
+     * @OA\Post(
      *     path="/api/historian-data/raw-data",
      *     tags={"历史数据库数据historian data"},
      *     operationId="raw-data",
@@ -210,7 +210,7 @@ class HistorianDataController extends Controller
     }
 
     /**
-     * @OA\POST(
+     * @OA\Post(
      *     path="/api/historian-data/sampled-data",
      *     tags={"历史数据库数据historian data"},
      *     operationId="sampled-data",
@@ -334,7 +334,7 @@ class HistorianDataController extends Controller
     }
 
     /**
-     * @OA\POST(
+     * @OA\Post(
      *     path="/api/historian-data/watch-data",
      *     tags={"历史数据库数据historian data"},
      *     operationId="watch-data",

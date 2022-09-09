@@ -19,7 +19,7 @@ use UtilService;
 class WeighBridgeController extends Controller
 {
     /**
-     * @OA\GET(
+     * @OA\Get(
      *     path="/api/weighbridge/index",
      *     tags={"地磅上报数据weighbridge"},
      *     operationId="weighbridge-index",
@@ -114,7 +114,7 @@ class WeighBridgeController extends Controller
     }
 
     /**
-     * @OA\POST(
+     * @OA\Post(
      *     path="/api/weighbridge/store_multi",
      *     tags={"地磅上报数据weighbridge"},
      *     operationId="weighbridge-multi",

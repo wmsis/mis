@@ -18,7 +18,7 @@ use Log;
 class ElectricityController extends Controller
 {
     /**
-     * @OA\GET(
+     * @OA\Get(
      *     path="/api/electricity/index",
      *     tags={"南瑞电表数据electricity"},
      *     operationId="electricity-index",
@@ -112,7 +112,7 @@ class ElectricityController extends Controller
     }
 
     /**
-     * @OA\POST(
+     * @OA\Post(
      *     path="/api/electricity/store_multi",
      *     tags={"南瑞电表数据electricity"},
      *     operationId="electricity-multi",

@@ -11,7 +11,7 @@ use UtilService;
 class GarbageDbConfigController extends Controller
 {
     /**
-     * @OA\POST(
+     * @OA\Post(
      *     path="/api/garbage-db-config",
      *     tags={"抓斗数据库配置garbage-db-config"},
      *     operationId="garbage-db-config-store",
@@ -116,7 +116,7 @@ class GarbageDbConfigController extends Controller
     }
 
     /**
-     * @OA\GET(
+     * @OA\Get(
      *     path="/api/garbage-db-config/{id}",
      *     tags={"抓斗数据库配置garbage-db-config"},
      *     operationId="garbage-db-config-show",

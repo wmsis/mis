@@ -17,7 +17,7 @@ use UtilService;
 class DcsMapController extends Controller
 {
     /**
-     * @OA\GET(
+     * @OA\Get(
      *     path="/api/dcs-map",
      *     tags={"DCS映射关系dcs-map"},
      *     operationId="dcs-map-index",
@@ -105,7 +105,7 @@ class DcsMapController extends Controller
     }
 
     /**
-     * @OA\POST(
+     * @OA\Post(
      *     path="/api/dcs-map",
      *     tags={"DCS映射关系dcs-map"},
      *     operationId="dcs-map-store",
@@ -183,7 +183,7 @@ class DcsMapController extends Controller
     }
 
     /**
-     * @OA\GET(
+     * @OA\Get(
      *     path="/api/dcs-map/{id}",
      *     tags={"DCS映射关系dcs-map"},
      *     operationId="dcs-map-show",

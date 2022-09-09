@@ -17,7 +17,7 @@ use UtilService;
 class DcsStandardController extends Controller
 {
     /**
-     * @OA\GET(
+     * @OA\Get(
      *     path="/api/dcs-standard/lists",
      *     tags={"DCS标准命名dcs-standard"},
      *     operationId="dcs-standard-lists",
@@ -54,7 +54,7 @@ class DcsStandardController extends Controller
     }
 
     /**
-     * @OA\GET(
+     * @OA\Get(
      *     path="/api/dcs-standard",
      *     tags={"DCS标准命名dcs-standard"},
      *     operationId="dcs-standard-index",
@@ -132,7 +132,7 @@ class DcsStandardController extends Controller
     }
 
     /**
-     * @OA\POST(
+     * @OA\Post(
      *     path="/api/dcs-standard",
      *     tags={"DCS标准命名dcs-standard"},
      *     operationId="dcs-standard-store",
@@ -192,7 +192,7 @@ class DcsStandardController extends Controller
     }
 
     /**
-     * @OA\GET(
+     * @OA\Get(
      *     path="/api/dcs-standard/{id}",
      *     tags={"DCS标准命名dcs-standard"},
      *     operationId="dcs-standard-show",

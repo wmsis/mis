@@ -12,7 +12,7 @@ class DcsDbConfigController extends Controller
 {
 
     /**
-     * @OA\POST(
+     * @OA\Post(
      *     path="/api/dcs-db-configs",
      *     tags={"历史数据库配置dcs-db-config"},
      *     operationId="dcs-db-config-store",
@@ -108,7 +108,7 @@ class DcsDbConfigController extends Controller
     }
 
     /**
-     * @OA\GET(
+     * @OA\Get(
      *     path="/api/dcs-db-configs/{id}",
      *     tags={"历史数据库配置dcs-db-config"},
      *     operationId="dcs-db-config-show",

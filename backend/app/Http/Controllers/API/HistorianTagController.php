@@ -28,7 +28,7 @@ class HistorianTagController extends Controller
     }
 
     /**
-     * @OA\GET(
+     * @OA\Get(
      *     path="/api/historian-tag/index",
      *     tags={"历史数据库标签historian tag"},
      *     operationId="historian-tag-index",
@@ -121,7 +121,7 @@ class HistorianTagController extends Controller
     }
 
     /**
-     * @OA\GET(
+     * @OA\Get(
      *     path="/api/historian-tag/all",
      *     tags={"历史数据库标签historian tag"},
      *     operationId="historian-tag-all",
@@ -170,7 +170,7 @@ class HistorianTagController extends Controller
     }
 
     /**
-     * @OA\GET(
+     * @OA\Get(
      *     path="/api/historian-tag/listdata",
      *     tags={"历史数据库标签historian tag"},
      *     operationId="historian-tag-listdata",
@@ -292,7 +292,7 @@ class HistorianTagController extends Controller
     }
 
     /**
-     * @OA\GET(
+     * @OA\Get(
      *     path="/api/historian-tag/show/{id}",
      *     tags={"历史数据库标签historian tag"},
      *     operationId="historian-tag-show",
@@ -341,7 +341,7 @@ class HistorianTagController extends Controller
     }
 
     /**
-     * @OA\POST(
+     * @OA\Post(
      *     path="/api/historian-tag/show-many",
      *     tags={"历史数据库标签historian tag"},
      *     operationId="historian-tag-many",
@@ -392,7 +392,7 @@ class HistorianTagController extends Controller
     }
 
     /**
-     * @OA\GET(
+     * @OA\Get(
      *     path="/api/historian-tag/load",
      *     tags={"历史数据库标签historian tag"},
      *     operationId="historian-tag-load",
@@ -460,7 +460,7 @@ class HistorianTagController extends Controller
     }
 
     /**
-     * @OA\POST(
+     * @OA\Post(
      *     path="/api/historian-tag/update/{id}",
      *     tags={"历史数据库标签historian tag"},
      *     operationId="historian-tag-update",

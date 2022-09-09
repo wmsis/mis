@@ -20,7 +20,7 @@ use Log;
 class OrgnizationController extends Controller
 {
     /**
-     * @OA\GET(
+     * @OA\Get(
      *     path="/api/orgnizations/factories",
      *     tags={"公司组织架构orgnizations"},
      *     operationId="orgnizations-factories",

@@ -11,7 +11,7 @@ use UtilService;
 class ElectricityDbConfigController extends Controller
 {
     /**
-     * @OA\POST(
+     * @OA\Post(
      *     path="/api/electricity-db-config",
      *     tags={"南瑞电表数据库配置electricity-db-config"},
      *     operationId="electricity-db-config-store",
@@ -89,7 +89,7 @@ class ElectricityDbConfigController extends Controller
     }
 
     /**
-     * @OA\GET(
+     * @OA\Get(
      *     path="/api/electricity-db-config/{id}",
      *     tags={"南瑞电表数据库配置electricity-db-config"},
      *     operationId="electricity-db-config-show",
