@@ -4,6 +4,10 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Jobs\GrabGarbageDataJob;
+use Illuminate\Support\Facades\DB;
+use App\Models\SIS\Orgnization;
+use App\Models\SIS\ConfigGarbageDB;
+use Log;
 
 class GrabGarbageData extends Command
 {
@@ -15,7 +19,7 @@ class GrabGarbageData extends Command
      * @param connection 获取数据的远程数据库连接
      * @param table 存储数据的本地数据库表
      */
-    protected $signature = 'collect:grabGarbageData {--date=default} {--connection=default} {--table=default}';
+    protected $signature = 'collect:grabGarbageData {--date=default}';
 
     /**
      * The console command description.
@@ -35,7 +39,7 @@ class GrabGarbageData extends Command
     }
 
     /**
-     * Execute the console command.
+     * 循环个租户下面的歌电厂，每个电厂的数据一个队列取数据
      *
      * @return int
      */
@@ -49,23 +53,32 @@ class GrabGarbageData extends Command
             $date = date('Y-m-d');
         }
 
-        $optionConnection = $this->option('connection');
-        if($optionConnection != 'default'){
-            $connection = $optionConnection;
+        $tenements = DB::connection('mysql_mis')->table('tenement')->get();
+        //循环租户
+        foreach ($tenements as $k1 => $tenement) {
+            $tenement_conn = $tenement->code; //租户数据库连接名称
+            $configGarbage = (new ConfigGarbageDB())->setConnection($tenement_conn); //连接特定租户下面的抓斗数据库配置表
+            $orgObj = (new Orgnization())->setConnection($tenement_conn);
+            //循环电厂
+            $factories = $orgObj->where('level', 3)->get();
+            foreach ($factories as $k2 => $factory) {
+                if($factory->code){
+                    //具体电厂的抓斗数据库配置信息
+                    Log::info('0000000000000');
+                    Log::info(var_export($factory->id, true));
+                    $row = $configGarbage->all();
+                    Log::info('33333333333');
+                    Log::info(var_export($row, true));
+                    if($row){
+                        Log::info('11111111111111');
+                        Log::info(var_export($row, true));
+                        $remote_conn =  substr(md5($row->id), 16);       //电厂抓斗数据库连接名称
+                        $local_table = 'grab_garbage_' . $factory->code; //本地存储数据库表名称
+                        dispatch(new GrabGarbageDataJob($date, $tenement_conn, $remote_conn, $local_table));
+                    }
+                }
+            }
         }
-        else{
-            $connection = 'mysql_yongqiang2_grab_garbage';
-        }
-
-        $optionTable = $this->option('table');
-        if($optionTable != 'default'){
-            $table = $optionTable;
-        }
-        else{
-            $table = 'grab_garbage_yongqiang2';
-        }
-
-        dispatch(new GrabGarbageDataJob($date, $connection, $table));
         return 0;
     }
 }

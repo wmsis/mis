@@ -35,7 +35,6 @@ class Electricity extends Model
         return self::insert($params);
     }
 
-
     public function findByDateAndHour($date, $hour){
         $begin = strtotime($date.' '.$hour.':00:00');
         $end = strtotime($date.' '.$hour.':59:59');

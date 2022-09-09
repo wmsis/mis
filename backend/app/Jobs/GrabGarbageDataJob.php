@@ -26,11 +26,12 @@ class GrabGarbageDataJob implements ShouldQueue
      * @param table 存储数据的本地数据库表
      * @return void
      */
-    public function __construct($date=null, $connection=null, $table=null)
+    public function __construct($date=null, $tenement_conn=null, $remote_conn=null, $local_table=null)
     {
         $this->date = $date;
-        $this->conn = $connection;
-        $this->tb = $table;
+        $this->tenement_conn = $tenement_conn;
+        $this->remote_conn = $remote_conn;
+        $this->local_table = $local_table;
     }
 
     /**
@@ -41,8 +42,8 @@ class GrabGarbageDataJob implements ShouldQueue
     public function handle()
     {
         $params = [];
-        $obj_grab_garbage_factory = (new GrabGarbageFactoryModel())->setConnection($this->conn);
-        $obj_grab_garbage_local = (new GrabGarbageLocalModel())->setTable($this->tb);
+        $obj_grab_garbage_factory = (new GrabGarbageFactoryModel())->setConnection($this->remote_conn);  //连接电厂内部数据库
+        $obj_grab_garbage_local = (new GrabGarbageLocalModel())->setConnection($this->tenement_conn)->setTable($this->local_table); //连接特定租户下面的本地数据库表
         $rows = $obj_grab_garbage_factory->findByDate($this->date);
         if($rows && count($rows) > 0){
             foreach ($rows as $key => $item) {

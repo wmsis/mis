@@ -71,12 +71,12 @@ class IEC104DataJob implements ShouldQueue
                         $cmd = "68 04 07 00 00 00";
                         $this->build_packet_and_sent($cmd, 'U');
                         $is_begin = false;
-                        Log::info('=========发送启动帧68 04 07 00 00 00=========');
+                        //Log::info('=========发送启动帧68 04 07 00 00 00=========');
                     }
                     $receiveStr = socket_read($this->sock, 1024);
                     $receiveStrHex = bin2hex($receiveStr); // 将2进制数据转换成16进制
-                    Log::info('收到16进制报文');
-                    Log::info($receiveStrHex);
+                    //Log::info('收到16进制报文');
+                    //Log::info($receiveStrHex);
 
                     if (strlen($receiveStrHex) == 12){
                         #U帧和S帧
@@ -94,7 +94,7 @@ class IEC104DataJob implements ShouldQueue
                         $this->i_frame($receiveStrHex);
                     }
                 }
-                Log::info('接收消息结束');
+                //Log::info('接收消息结束');
 
                 socket_close($this->sock);
             }
@@ -197,15 +197,15 @@ class IEC104DataJob implements ShouldQueue
             #接收U帧 测试帧  超过一定时间没有下发和上报时
             $cmd = '68 04 83 00 00 00';  #应答U帧
             $this->build_packet_and_sent($cmd, 'U');
-            Log::info('======收到测试帧，应答U帧 ' . $cmd . '=======');
+            //Log::info('======收到测试帧，应答U帧 ' . $cmd . '=======');
         }
         elseif($hex_str == '68040b000000'){
-            Log::info('=========收到启动确认帧68 04 0b 00 00 00==========');
+            //Log::info('=========收到启动确认帧68 04 0b 00 00 00==========');
             #3、68（启动符）0E（长度）04  00（发送序号）0E  00（接收序号）65（类型标示）01（可变结构限定词）06  00（传输原因）01  00（公共地址）00 00 00（信息体地址）45（QCC）
             $tx = $this->getHexTx();  #发送序号
             $rx = $this->getHexRx();  #接收序号
             $cmd = '68 0e ' . $tx . ' ' . $rx . ' 65 01 06 00 01 00 00 00 00 45';
-            Log::info('=========发送电度总召帧' . $cmd . '==========');
+            //Log::info('=========发送电度总召帧' . $cmd . '==========');
             $this->build_packet_and_sent($cmd, 'I');
         }
         else{
@@ -222,7 +222,7 @@ class IEC104DataJob implements ShouldQueue
         if ($len == '0e' && $type == '65' && $cause == '0700'){
             #接收电度总召唤确认
             #68（启动符）0E（长度）10  00（发送序号）06  00（接收序号）65（类型标示）01（可变结构限定词）07  00（传输原因）01  00（公共地址）00 00 00（信息体地址）45（QCC）
-            Log::info('======接收电度总召唤确认=========');
+            //Log::info('======接收电度总召唤确认=========');
             # $rx = $this->getHexRx();  #接收序号
             # $cmd = '68 04 01 00 ' . $rx;  #应答S帧
             # $this->build_packet_and_sent($cmd, 'S');
@@ -232,18 +232,18 @@ class IEC104DataJob implements ShouldQueue
         elseif ($len == '0e' && $type == '65' && $cause == '0a00'){
             #接收结束电度总召唤帧
             #68（启动符）0E（长度）14  00（发送序号）06  00（接收序号）65（类型标示）01（可变结构限定词）0a  00（传输原因）01  00（公共地址）00 00 00（信息体地址）45（QCC）
-            Log::info('======接收结束电度总召唤帧=========');
+            //Log::info('======接收结束电度总召唤帧=========');
             $rx = $this->getHexRx();  #接收序号
             $cmd = '68 04 01 00 ' . $rx;  #应答S帧
             $this->build_packet_and_sent($cmd, 'S');
-            Log::info('========应答S帧=========>' . $cmd);
+            //Log::info('========应答S帧=========>' . $cmd);
             $this->is_over = true;
 
             sleep(1);
             $this->submit();  #收到电度总召结束帧后再提交数据到服务器
         }
         elseif ($type == '0f'){
-            Log::info('======接收电度数据=========');
+            //Log::info('======接收电度数据=========');
             $this->parse_data($hex_str);
 
             // $rx = $this->getHexRx();  #接收序号
@@ -327,13 +327,13 @@ class IEC104DataJob implements ShouldQueue
                     $params[$key]['updated_at'] = date('Y-m-d H:i:s');
                 }
                 $electricity->insertMany($params);
-                Log::info('=========操作成功=========');
+                //Log::info('=========操作成功=========');
             } catch (QueryException $e) {
 
             }
         }
         else{
-            Log::info('数据匹配不上');
+            //Log::info('数据匹配不上');
         }
     }
 }

@@ -6208,6 +6208,62 @@
     },
     "components": {
         "schemas": {
+            "ElectricityData": {
+                "title": "ElectrityData Model",
+                "description": "ElectrityData Model",
+                "properties": {
+                    "_id": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "number"
+                    },
+                    "value": {
+                        "type": "number"
+                    },
+                    "actual_value": {
+                        "type": "number"
+                    },
+                    "quality": {
+                        "type": "number"
+                    },
+                    "factor": {
+                        "type": "number"
+                    },
+                    "cn_name": {
+                        "type": "string"
+                    },
+                    "datetime": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "HistorianData": {
+                "title": "HistorianData Model",
+                "description": "HistorianData Model",
+                "properties": {
+                    "_id": {
+                        "type": "string"
+                    },
+                    "cn_name": {
+                        "type": "string"
+                    },
+                    "en_name": {
+                        "type": "string"
+                    },
+                    "tag_name": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "type": "string"
+                    },
+                    "time": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
             "DcsStandard": {
                 "title": "DcsStandard model",
                 "description": "DcsStandard model",
