@@ -64,14 +64,8 @@ class GrabGarbageData extends Command
             foreach ($factories as $k2 => $factory) {
                 if($factory->code){
                     //具体电厂的抓斗数据库配置信息
-                    Log::info('0000000000000');
-                    Log::info(var_export($factory->id, true));
-                    $row = $configGarbage->all();
-                    Log::info('33333333333');
-                    Log::info(var_export($row, true));
+                    $row = $configGarbage->where('orgnization_id', $factory->id)->first();
                     if($row){
-                        Log::info('11111111111111');
-                        Log::info(var_export($row, true));
                         $remote_conn =  substr(md5($row->id), 16);       //电厂抓斗数据库连接名称
                         $local_table = 'grab_garbage_' . $factory->code; //本地存储数据库表名称
                         dispatch(new GrabGarbageDataJob($date, $tenement_conn, $remote_conn, $local_table));
