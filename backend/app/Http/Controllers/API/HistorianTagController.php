@@ -572,7 +572,7 @@ class HistorianTagController extends Controller
     }
 
     /**
-     * @OA\DELETE(
+     * @OA\Delete(
      *     path="/api/historian-tag/destroy/{id}",
      *     tags={"历史数据库标签historian tag"},
      *     operationId="historian-tag-destroy",

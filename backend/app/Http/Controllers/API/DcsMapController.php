@@ -232,7 +232,7 @@ class DcsMapController extends Controller
     }
 
     /**
-     * @OA\PUT(
+     * @OA\Put(
      *     path="/api/dcs-map/{id}",
      *     tags={"DCS映射关系dcs-map"},
      *     operationId="dcs-map-update",
@@ -331,7 +331,7 @@ class DcsMapController extends Controller
     }
 
     /**
-     * @OA\DELETE(
+     * @OA\Delete(
      *     path="/api/dcs-map/{id}",
      *     tags={"DCS映射关系dcs-map"},
      *     operationId="dcs-map-destroy",

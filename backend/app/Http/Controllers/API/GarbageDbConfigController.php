@@ -165,7 +165,7 @@ class GarbageDbConfigController extends Controller
     }
 
     /**
-     * @OA\PUT(
+     * @OA\Put(
      *     path="/api/garbage-db-config/{id}",
      *     tags={"抓斗数据库配置garbage-db-config"},
      *     operationId="garbage-db-config-update",
@@ -291,7 +291,7 @@ class GarbageDbConfigController extends Controller
     }
 
     /**
-     * @OA\DELETE(
+     * @OA\Delete(
      *     path="/api/garbage-db-config/{id}",
      *     tags={"抓斗数据库配置garbage-db-config"},
      *     operationId="garbage-db-config-destroy",

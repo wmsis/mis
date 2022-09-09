@@ -232,7 +232,7 @@ class ElectricityMapController extends Controller
     }
 
     /**
-     * @OA\PUT(
+     * @OA\Put(
      *     path="/api/electricity-map/{id}",
      *     tags={"电表地址映射关系electricity-map"},
      *     operationId="electricity-map-update",
@@ -331,7 +331,7 @@ class ElectricityMapController extends Controller
     }
 
     /**
-     * @OA\DELETE(
+     * @OA\Delete(
      *     path="/api/electricity-map/{id}",
      *     tags={"电表地址映射关系electricity-map"},
      *     operationId="electricity-map-destroy",

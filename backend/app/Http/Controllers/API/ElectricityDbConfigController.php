@@ -138,7 +138,7 @@ class ElectricityDbConfigController extends Controller
     }
 
     /**
-     * @OA\PUT(
+     * @OA\Put(
      *     path="/api/electricity-db-config/{id}",
      *     tags={"南瑞电表数据库配置electricity-db-config"},
      *     operationId="electricity-db-config-update",
@@ -228,7 +228,7 @@ class ElectricityDbConfigController extends Controller
     }
 
     /**
-     * @OA\DELETE(
+     * @OA\Delete(
      *     path="/api/electricity-db-config/{id}",
      *     tags={"南瑞电表数据库配置electricity-db-config"},
      *     operationId="electricity-db-config-destroy",

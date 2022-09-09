@@ -157,7 +157,7 @@ class DcsDbConfigController extends Controller
     }
 
     /**
-     * @OA\PUT(
+     * @OA\Put(
      *     path="/api/dcs-db-configs/{id}",
      *     tags={"历史数据库配置dcs-db-config"},
      *     operationId="dcs-db-config-update",
@@ -274,7 +274,7 @@ class DcsDbConfigController extends Controller
     }
 
     /**
-     * @OA\DELETE(
+     * @OA\Delete(
      *     path="/api/dcs-db-configs/{id}",
      *     tags={"历史数据库配置dcs-db-config"},
      *     operationId="dcs-db-config-destroy",

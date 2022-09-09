@@ -335,7 +335,7 @@ class TenementController extends Controller
     }
 
     /**
-     * @OA\PUT(
+     * @OA\Put(
      *     path="/api/tenements/{tenement}",
      *     tags={"系统租户tenement"},
      *     operationId="tenements-update",
@@ -457,7 +457,7 @@ class TenementController extends Controller
     }
 
     /**
-     * @OA\DELETE(
+     * @OA\Delete(
      *     path="/api/tenements/{tenement}",
      *     tags={"系统租户tenement"},
      *     operationId="tenements-destroy",

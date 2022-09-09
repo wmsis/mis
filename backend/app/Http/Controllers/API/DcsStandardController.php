@@ -285,7 +285,7 @@ class DcsStandardController extends Controller
     }
 
     /**
-     * @OA\PUT(
+     * @OA\Put(
      *     path="/api/dcs-standard/{id}",
      *     tags={"DCS标准命名dcs-standard"},
      *     operationId="dcs-standard-update",
@@ -384,7 +384,7 @@ class DcsStandardController extends Controller
     }
 
     /**
-     * @OA\DELETE(
+     * @OA\Delete(
      *     path="/api/dcs-standard/{id}",
      *     tags={"DCS标准命名dcs-standard"},
      *     operationId="dcs-standard-destroy",

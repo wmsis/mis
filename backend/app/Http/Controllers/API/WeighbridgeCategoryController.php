@@ -324,7 +324,7 @@ class WeighbridgeCategoryController extends Controller
     }
 
     /**
-     * @OA\DELETE(
+     * @OA\Delete(
      *     path="/api/weighbridge-category/destroy-big/{id}",
      *     tags={"地磅垃圾分类weighbridge-category"},
      *     operationId="weighbridge-category-destroy-big",
