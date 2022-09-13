@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SIS\WeighbridgeCateBig;
 use App\Models\SIS\WeighbridgeCateSmall;
+use App\Models\SIS\WeighBridgeFormat;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 use UtilService;

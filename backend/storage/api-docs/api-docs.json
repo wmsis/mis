@@ -2875,6 +2875,15 @@
                         }
                     },
                     {
+                        "name": "tenement",
+                        "in": "query",
+                        "description": "租户编码",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "factory",
                         "in": "query",
                         "description": "电厂英文名称  如永强二期：yongqiang2",

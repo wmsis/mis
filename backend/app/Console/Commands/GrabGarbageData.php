@@ -66,7 +66,7 @@ class GrabGarbageData extends Command
                     //具体电厂的抓斗数据库配置信息
                     $row = $configGarbage->where('orgnization_id', $factory->id)->first();
                     if($row){
-                        $remote_conn =  substr(md5($row->id), 16);       //电厂抓斗数据库连接名称
+                        $remote_conn =  'garbage_' . $tenement->id . '_' . $row->id;       //电厂抓斗数据库连接名称
                         $local_table = 'grab_garbage_' . $factory->code; //本地存储数据库表名称
                         dispatch(new GrabGarbageDataJob($date, $tenement_conn, $remote_conn, $local_table));
                     }

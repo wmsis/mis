@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Log;
 use Illuminate\Support\Facades\DB;
+use App\Models\SIS\ConfigGarbageDB;
 
 class DatabaseServiceProvider extends ServiceProvider
 {
@@ -38,6 +39,8 @@ class DatabaseServiceProvider extends ServiceProvider
             'strict' => true,
             'engine' => null
         );
+
+        //租户数据库
         $tenements = DB::connection('mysql_mis')->table('tenement')->where('id', 1)->get();
         foreach ($tenements as $key => $item) {
             $conn = array (
@@ -48,6 +51,24 @@ class DatabaseServiceProvider extends ServiceProvider
             );
             $final = array_merge($conn, $base);
             $new[$item->code] = $final;
+
+            //抓斗数据库
+            $obj_config_garbage_db = (new ConfigGarbageDB())->setConnection($item->code);
+            $garbage_db_list = $obj_config_garbage_db->all();
+            foreach ($garbage_db_list as $k9 => $db) {
+                if($db && $db->type && $db->type=='mysql'){
+                    $conn = array (
+                        'host' => $db->ip,
+                        'database' => $db->db_name,
+                        'username' => $db->user,
+                        'password' => $db->password,
+                        'port' => $db->port
+                    );
+                    $final = array_merge($conn, $base);
+                    $conn_name = 'garbage_' . $item->id . '_' . $db->id;
+                    //$new[$conn_name] = $final;
+                }
+            }
         }
 
         $this->app['config']['database.connections'] = array_merge($this->app['config']['database.connections'], $new);

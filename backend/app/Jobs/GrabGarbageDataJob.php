@@ -10,13 +10,15 @@ use Illuminate\Queue\SerializesModels;
 use App\Models\Factory\GrabGarbage as GrabGarbageFactoryModel;  //电厂数据模型
 use App\Models\SIS\GrabGarbage as GrabGarbageLocalModel;        //本地数据模型
 use Log;
+use Config;
 
 class GrabGarbageDataJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     protected $date;
-    protected $conn;
-    protected $tb;
+    protected $tenement_conn;
+    protected $remote_conn;
+    protected $local_table;
     public $tries = 3;
 
     /**
@@ -32,6 +34,11 @@ class GrabGarbageDataJob implements ShouldQueue
         $this->tenement_conn = $tenement_conn;
         $this->remote_conn = $remote_conn;
         $this->local_table = $local_table;
+
+        $conn = Config::get('database.connections');
+        Log::info('999999999999999');
+        Log::info($remote_conn);
+        //Log::info($conn);
     }
 
     /**

@@ -14,6 +14,8 @@ use Log;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\DB;
 use App\Models\Mongo\HistorianData;
+use App\Models\Factory\GrabGarbage;  //电厂数据模型
+use App\Models\SIS\WeighBridgeFormat;
 
 class HistorianController extends Controller
 {
@@ -29,11 +31,15 @@ class HistorianController extends Controller
 
     public function tagslist()
     {
+        //$obj = (new GrabGarbage())->setConnection('likeshop');
+        //$obj = new GrabGarbage();
+        //$list = $obj->all();
+        //dd($list[0]->name);
         //$user = new UserRepository();
         //$lists = $user->all();
         //$user = DB::table('orgnization')->where('id', 1)->first();
         //dd($user);
-        //phpinfo();
+        phpinfo();
 
         //插入
         // $mongo = HistorianData::create([
@@ -44,8 +50,8 @@ class HistorianController extends Controller
         //查询
         // $info = HistorianData::first()->toArray();//单条查询
         // dd($info);
-        $info = HistorianData::where('_id','6317e9f64116000013006fa3')->get()->toArray();//单条查询
-        dd($info);
+        //$info = HistorianData::where('_id','6317e9f64116000013006fa3')->get()->toArray();//单条查询
+        //dd($info);
         // $list = HistorianData::get()->toArray();//多条查询
         //
         // //删除
