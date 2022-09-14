@@ -13,12 +13,7 @@ class GrabGarbage extends Model
 {
     protected $connection = 'garbage';
     protected $table = 'log';
-    //protected $primaryKey = 'allsn';
     protected $fillable = ['allsn', 'sn', 'time', 'che', 'dou', 'liao', 'code', 'lost', 'hev'];
-
-    // protected $connection = 'likeshop';
-    // protected $table = 'ls_admin';
-    // protected $fillable = ['name', 'account'];
 
     public function findByDate($date){
         $begin = strtotime($date.' 00:00:00');

@@ -2314,7 +2314,7 @@ class WechatController extends Controller
      *     path="/api/wechat/qrcode",
      *     tags={"微信wechat"},
      *     operationId="wechat-qrcode",
-     *     summary="扫码登录二维码",
+     *     summary="扫码登录二维码(SASS端用户使用)",
      *     description="使用说明：获取扫码登录二维码",
      *     @OA\Parameter(
      *         description="token",

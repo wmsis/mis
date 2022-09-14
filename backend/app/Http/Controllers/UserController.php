@@ -29,6 +29,8 @@ use App\Http\Requests\User\StoreTagRequest;
 use Illuminate\Database\QueryException;
 use App\Models\SIS\Orgnization;
 use App\Http\Requests\User\StoreOrgnizationRequest;
+use App\Models\User;
+use App\Models\Role;
 
 class UserController extends Controller
 {
@@ -101,8 +103,8 @@ class UserController extends Controller
         $like = '%' . $search . '%';
         $type_array = array('admin', 'group', 'webmaster');
 
-        $total = \App\Models\User::select(['id'])->whereIn('type', $type_array);
-        $users = \App\Models\User::select(['*'])->whereIn('type', $type_array);
+        $total = User::select(['id'])->whereIn('type', $type_array);
+        $users = User::select(['*'])->whereIn('type', $type_array);
 
         if($search){
             $total = $total->where('name', 'like', $like);
@@ -274,9 +276,6 @@ class UserController extends Controller
      * )
      */
     public function store(StoreRequest $request){
-        $userObj = auth()->user();
-        $roles = $userObj->roles;
-
         $id = $request->input('id');
         $name = $request->input('name');
         $desc = $request->input('desc');
@@ -287,7 +286,7 @@ class UserController extends Controller
         $isopen = $request->input('isopen');
         $type = $request->input('type');
 
-        $obj = new \App\Models\User();
+        $obj = new User();
         $row = $obj->isMobileExist($mobile);
 
         if (($id && $row && $row->id != $id) || (!$id && $row)) {
@@ -296,7 +295,7 @@ class UserController extends Controller
             DB::beginTransaction();
             try {
                 if ($id) {
-                    $user = \App\Models\User::find($id);
+                    $user = User::find($id);
                     $user->name = $name;
                     $user->desc = $desc;
                     $user->email = $email;
@@ -310,7 +309,7 @@ class UserController extends Controller
                 else {
                     $params = request(['name', 'desc', 'email', 'type', 'mobile', 'area', 'address', 'isopen']);
                     $params['password'] = bcrypt('123456');
-                    \App\Models\User::create($params); //save 和 create 的不同之处在于 save 接收整个 Eloquent 模型实例而 create 接收原生 PHP 数组
+                    User::create($params); //save 和 create 的不同之处在于 save 接收整个 Eloquent 模型实例而 create 接收原生 PHP 数组
                 }
                 DB::commit();
                 return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', '');
@@ -352,12 +351,12 @@ class UserController extends Controller
      *     )
      * )
      */
-    public function role(\App\Models\User $user){
+    public function role(User $user){
         if($user->type == 'type'){
-            $roles = \App\Models\Role::all(); // all roles
+            $roles = Role::all(); // all roles
         }
         else{
-            $roles = \App\Models\Role::where('type', '<>', 'admin')->get();
+            $roles = Role::where('type', '<>', 'admin')->get();
         }
 
         $myRoles = $user->roles; //带括号的是返回关联对象实例，不带括号是返回动态属性
@@ -407,12 +406,11 @@ class UserController extends Controller
      *     )
      * )
      */
-    public function storeRole(StoreRoleRequest $request, \App\Models\User $user){
-        $userObj = auth()->user();
-        $roles = $userObj->roles;
+    public function storeRole(StoreRoleRequest $request, User $user){
+        $roles = $user->roles;
 
         //验证
-        $roles = \App\Models\Role::findMany(request('roles'));
+        $roles = Role::findMany(request('roles'));
         $myRoles = $user->roles;
 
         //要增加的角色
@@ -464,7 +462,7 @@ class UserController extends Controller
     public function delete(SingleDeleteRequest $request){
         $id = $request->input('id');
 
-        $user = \App\Models\User::find($id);
+        $user = User::find($id);
         $res = $user->delete();
         if($user && $res){
             return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
@@ -515,7 +513,7 @@ class UserController extends Controller
      * )
      */
     public function batchdelete(BatchDeleteRequest $request){
-        $userObj = auth()->user();
+        $userObj = auth('admin')->user();
         $idstring = $request->input('idstring');
         $password = $request->input('password');
 
@@ -524,7 +522,7 @@ class UserController extends Controller
 
         if (Hash::check($password, $userObj->password)){
             $idarray = explode(',', $idstring);
-            $res = \App\Models\User::whereIn('id', $idarray)->delete();;
+            $res = User::whereIn('id', $idarray)->delete();;
             if ($res) {
                 return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
             } else {
@@ -580,7 +578,7 @@ class UserController extends Controller
         $oldpwd = $request->input('oldpwd');
         $newpwd = $request->input('newpwd');
 
-        $user = auth()->user();
+        $user = auth('admin')->user();
         $flag = Hash::check($oldpwd, $user->password);
         if($flag) {
             $user->password = bcrypt($newpwd);
@@ -628,13 +626,10 @@ class UserController extends Controller
      * )
      */
     public function resetpwd(ResetpwdRequest $request){
-        $user = auth()->user();
-        $roles = $user->roles;
-
         $idstring = $request->input('idstring');
         $idarray = explode(',', $idstring);
         $password = bcrypt('123456');
-        $res = \App\Models\User::whereIn('id', $idarray)->update([
+        $res = User::whereIn('id', $idarray)->update([
             'password' => $password
         ]);
 
@@ -650,7 +645,7 @@ class UserController extends Controller
      *     path="/api/users/bind-member",
      *     tags={"用户users"},
      *     operationId="bind-member",
-     *     summary="綁定前端用戶",
+     *     summary="綁定前端用戶(SASS端用户使用)",
      *     description="使用说明：綁定前端用戶",
      *     @OA\Parameter(
      *         description="token",
@@ -722,7 +717,7 @@ class UserController extends Controller
      *     )
      * )
      */
-    public function orgnization(\App\Models\User $user){
+    public function orgnization(User $user){
         $orgnizations = Orgnization::all(); // all
         $myOrgnizations = $user->orgnizations; //带括号的是返回关联对象实例，不带括号是返回动态属性
 
@@ -771,7 +766,7 @@ class UserController extends Controller
      *     )
      * )
      */
-    public function storeOrgnization(StoreOrgnizationRequest $request, \App\Models\User $user){
+    public function storeOrgnization(StoreOrgnizationRequest $request, User $user){
         //验证
         $orgnizations = Orgnization::findMany(request('orgnizations'));
         $myOrgnizations = $user->orgnizations;

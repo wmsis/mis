@@ -226,12 +226,11 @@ class WeighBridgeController extends Controller
                 }
                 else{
                     $formatlist[] = array(
-                        'product' => $item['product'],
                         'grossdatetime' => $item['grossdatetime'],
                         'taredatetime' => $item['taredatetime'],
                         'net' => $item['net'],
                         'weighid' => $item['weighid'],
-                        'weighbridge_cate_big_id' => $row_samll_cate['weighbridge_cate_big_id'],
+                        'weighbridge_cate_small_id' => $row_samll_cate['id'],
                         'created_at' => date('Y-m-d H:i:s'),
                         'updated_at' => date('Y-m-d H:i:s')
                     );

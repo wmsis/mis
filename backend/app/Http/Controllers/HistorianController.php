@@ -31,10 +31,6 @@ class HistorianController extends Controller
 
     public function tagslist()
     {
-        //$obj = (new GrabGarbage())->setConnection('likeshop');
-        //$obj = new GrabGarbage();
-        //$list = $obj->all();
-        //dd($list[0]->name);
         //$user = new UserRepository();
         //$lists = $user->all();
         //$user = DB::table('orgnization')->where('id', 1)->first();
