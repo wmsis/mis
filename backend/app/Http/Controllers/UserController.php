@@ -30,7 +30,6 @@ use Illuminate\Database\QueryException;
 use App\Models\SIS\Orgnization;
 use App\Http\Requests\User\StoreOrgnizationRequest;
 use App\Models\User;
-use App\Models\Role;
 
 class UserController extends Controller
 {
