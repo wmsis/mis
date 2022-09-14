@@ -15,6 +15,7 @@ use App\Models\SIS\Orgnization;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 use App\Http\Requests\User\StoreRoleRequest;
+use App\Models\Role;
 use Log;
 
 class OrgnizationController extends Controller
@@ -283,7 +284,7 @@ class OrgnizationController extends Controller
      * )
      */
     public function role(Orgnization $orgnization){
-        $roles = \App\Models\Role::all(); // all roles
+        $roles = Role::all(); // all roles
         $myRoles = $orgnization->roles; //带括号的是返回关联对象实例，不带括号是返回动态属性
 
         //compact 创建一个包含变量名和它们的值的数组
@@ -333,7 +334,8 @@ class OrgnizationController extends Controller
      */
     public function storeRole(StoreRoleRequest $request, Orgnization $orgnization){
         //验证
-        $roles = \App\Models\Role::findMany(request('roles'));
+        $param_arr = explode(',', request('roles'));
+        $roles = Role::whereIn('id', $param_arr)->get();
         $myRoles = $orgnization->roles;
 
         //要增加的角色

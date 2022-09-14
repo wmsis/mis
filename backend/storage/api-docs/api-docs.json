@@ -4884,7 +4884,7 @@
                 "tags": [
                     "用户users"
                 ],
-                "summary": "綁定前端用戶",
+                "summary": "綁定前端用戶(SASS端用户使用)",
                 "description": "使用说明：綁定前端用戶",
                 "operationId": "bind-member",
                 "parameters": [
@@ -4928,7 +4928,7 @@
                         "in": "query",
                         "description": "token",
                         "schema": {
-                            "type": "integer"
+                            "type": "string"
                         }
                     },
                     {
@@ -6193,7 +6193,7 @@
                 "tags": [
                     "微信wechat"
                 ],
-                "summary": "扫码登录二维码",
+                "summary": "扫码登录二维码(SASS端用户使用)",
                 "description": "使用说明：获取扫码登录二维码",
                 "operationId": "wechat-qrcode",
                 "parameters": [

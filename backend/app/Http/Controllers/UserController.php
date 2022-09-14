@@ -409,7 +409,8 @@ class UserController extends Controller
         $roles = $user->roles;
 
         //验证
-        $roles = Role::findMany(request('roles'));
+        $param_arr = explode(',', request('roles'));
+        $roles = Role::whereIn('id', $param_arr)->get();
         $myRoles = $user->roles;
 
         //要增加的角色
@@ -695,9 +696,6 @@ class UserController extends Controller
      *         in="query",
      *         name="token",
      *         @OA\Schema(
-     *             type="integer"
-     *         ),
-     *         @OA\Schema(
      *             type="string"
      *         ),
      *     ),
@@ -767,7 +765,8 @@ class UserController extends Controller
      */
     public function storeOrgnization(StoreOrgnizationRequest $request, User $user){
         //验证
-        $orgnizations = Orgnization::findMany(request('orgnizations'));
+        $param_arr = explode(',', request('orgnizations'));
+        $orgnizations = Orgnization::whereIn('id', $param_arr)->get();
         $myOrgnizations = $user->orgnizations;
 
         DB::beginTransaction();

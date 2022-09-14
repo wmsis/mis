@@ -10,7 +10,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use UtilService;
-use App\Models\Role;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\Role\PageRequest;
 use App\Http\Requests\Role\DeleteRequest;
@@ -19,6 +18,8 @@ use App\Http\Requests\Role\StorePermissionRequest;
 use App\Http\Requests\Role\StoreApiRequest;
 use Illuminate\Database\QueryException;
 use App\Models\SIS\API;
+use App\Models\Permission;
+use App\Models\Role;
 
 class RoleController extends Controller
 {
@@ -81,11 +82,11 @@ class RoleController extends Controller
         $like = '%'.$search.'%';
         $type_array = array('group', 'admin');
 
-        $total = \App\Models\Role::where('name', 'like', $like)
+        $total = Role::where('name', 'like', $like)
             ->whereIn('type', $type_array)
             ->count();
 
-        $roles = \App\Models\Role::where('name', 'like', $like)
+        $roles = Role::where('name', 'like', $like)
             ->whereIn('type', $type_array)
             ->orderBy('id', 'desc')
             ->offset($offset)
@@ -158,7 +159,7 @@ class RoleController extends Controller
         $name = $request->input('name');
         $desc = $request->input('desc');
         if($id){
-            $role = \App\Models\Role::find($id);
+            $role = Role::find($id);
             $role->name = $name;
             $role->type = 'group';
             $role->desc = $desc;
@@ -167,7 +168,7 @@ class RoleController extends Controller
         else{
             $params = request(['name', 'desc']);
             $params['type'] = 'group';
-            $res = \App\Models\Role::create($params); //save 和 create 的不同之处在于 save 接收整个 Eloquent 模型实例而 create 接收原生 PHP 数组
+            $res = Role::create($params); //save 和 create 的不同之处在于 save 接收整个 Eloquent 模型实例而 create 接收原生 PHP 数组
         }
 
         if($res){
@@ -209,8 +210,8 @@ class RoleController extends Controller
      *     )
      * )
      */
-    public function permission(\App\Models\Role $role){
-        $permissions = \App\Models\Permission::all(); // all permissions
+    public function permission(Role $role){
+        $permissions = Permission::all(); // all permissions
         $myPermissions = $role->permissions; //带括号的是返回关联对象实例，不带括号是返回动态属性
 
         //compact 创建一个包含变量名和它们的值的数组
@@ -258,10 +259,11 @@ class RoleController extends Controller
      *     )
      * )
      */
-    public function storePermission(StorePermissionRequest $request, \App\Models\Role $role){
+    public function storePermission(StorePermissionRequest $request, Role $role){
         //验证
         //获取权限参数
-        $permissions = \App\Models\Permission::findMany(request('permissions'));
+        $param_arr = explode(',', request('permissions'));
+        $permissions = Permission::whereIn('id', $param_arr)->get();
         //当前角色权限
         $myPermissions = $role->permissions;
 
@@ -321,7 +323,7 @@ class RoleController extends Controller
      */
     public function delete(DeleteRequest $request){
         $id = $request->input('id');
-        $role = \App\Models\Role::find($id);
+        $role = Role::find($id);
         $res = $role->delete();
         if($role && $res){
             return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
@@ -395,7 +397,7 @@ class RoleController extends Controller
      *     )
      * )
      */
-    public function api(\App\Models\Role $role){
+    public function api(Role $role){
         $apis = API::all(); // all permissions
         $myApis = $role->apis; //带括号的是返回关联对象实例，不带括号是返回动态属性
 
@@ -444,10 +446,11 @@ class RoleController extends Controller
      *     )
      * )
      */
-    public function storeApi(StoreApiRequest $request, \App\Models\Role $role){
+    public function storeApi(StoreApiRequest $request, Role $role){
         //验证
         //获取权限参数
-        $apis = API::findMany(request('apis'));
+        $param_arr = explode(',', request('apis'));
+        $apis = API::whereIn('id', $param_arr)->get();
         //当前角色权限
         $myApis = $role->apis;
 
