@@ -275,7 +275,6 @@ class UserController extends Controller
      * )
      */
     public function store(StoreRequest $request){
-        Log::info('00000000000000');
         $id = $request->input('id');
         $name = $request->input('name');
         $desc = $request->input('desc');
