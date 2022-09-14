@@ -4550,7 +4550,7 @@
                         "name": "id",
                         "in": "query",
                         "description": "id",
-                        "required": false,
+                        "required": true,
                         "schema": {
                             "type": "integer"
                         }
@@ -4659,7 +4659,7 @@
                         "description": "token",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "string"
                         }
                     },
                     {
