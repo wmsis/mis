@@ -56,6 +56,10 @@ class TenementController extends Controller
                 $datalist[$key]['checked'] = false;
             }
         }
+
+        if(!$current_tenement){
+            $datalist[0]['checked'] = true;
+        }
         return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $datalist);
     }
 
