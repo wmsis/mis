@@ -34,11 +34,6 @@ class GrabGarbageDataJob implements ShouldQueue
         $this->tenement_conn = $tenement_conn;
         $this->remote_conn = $remote_conn;
         $this->local_table = $local_table;
-
-        $conn = Config::get('database.connections');
-        Log::info('999999999999999');
-        Log::info($remote_conn);
-        //Log::info($conn);
     }
 
     /**

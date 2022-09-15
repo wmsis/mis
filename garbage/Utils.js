@@ -71,3 +71,5 @@ exports.wait = async (ms) => {
 exports.formatDateNumber = time => moment(time).format('YYYYMMDD');
 
 exports.formatTime = time => moment(time).format('YYYY-MM-DD HH:mm:ss');
+
+exports.formatDate = time => moment(time).format('YYYY-MM-DD');
