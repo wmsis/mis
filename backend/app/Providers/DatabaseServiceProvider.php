@@ -41,7 +41,7 @@ class DatabaseServiceProvider extends ServiceProvider
         );
 
         //租户数据库
-        $tenements = DB::connection('mysql_mis')->table('tenement')->where('id', 1)->get();
+        $tenements = DB::connection('mysql_mis')->table('tenement')->get();
         foreach ($tenements as $key => $item) {
             $conn = array (
                 'host' => $item->ip,
