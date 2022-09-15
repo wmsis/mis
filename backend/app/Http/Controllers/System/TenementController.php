@@ -45,7 +45,7 @@ class TenementController extends Controller
     public function lists(Request $request)
     {
         $user = auth('admin')->user();
-        $key = $this->getKey($user->id, 'TENEMENT');
+        $key = UtilService::getKey($user->id, 'TENEMENT');
         $current_tenement = CacheService::getCache($key);
         $datalist = Tenement::all();
         foreach ($datalist as $key => $item) {
@@ -101,7 +101,7 @@ class TenementController extends Controller
         if($data){
             $user = auth('admin')->user();
             if($user){
-                $key = $this->getKey($user->id, 'TENEMENT');
+                $key = UtilService::getKey($user->id, 'TENEMENT');
                 $expire = auth('admin')->factory()->getTTL() * 60;
                 CacheService::setCache($key, $data, $expire);
             }

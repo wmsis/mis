@@ -55,7 +55,7 @@ class AdminController extends Controller
     public function login()
     {
         $credentials = request(['username', 'password']);
-        $key = $this->getKey($credentials['username'], 'SYSTEM_TOKEN');
+        $key = UtilService::getKey($credentials['username'], 'SYSTEM_TOKEN');
         $admin = Admin::where('username', $credentials['username'])->first();
         if($admin){
             $current_token = CacheService::getCache($key);
@@ -131,7 +131,7 @@ class AdminController extends Controller
     {
         $admin = auth('admin')->user();
         if($admin && isset($admin->username)) {
-            $key = $this->getKey($admin->username, 'SYSTEM_TOKEN');
+            $key = UtilService::getKey($admin->username, 'SYSTEM_TOKEN');
             CacheService::clearCache($key);
         }
 
@@ -166,7 +166,7 @@ class AdminController extends Controller
         $admin = auth('admin')->user();
         $token = auth('admin')->refresh();
         if($admin) {
-            $key = $this->getKey($admin->username, 'SYSTEM_TOKEN');
+            $key = UtilService::getKey($admin->username, 'SYSTEM_TOKEN');
             CacheService::setCache($key, $token, 3600);
         }
 

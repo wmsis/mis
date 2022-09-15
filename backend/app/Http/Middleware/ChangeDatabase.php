@@ -22,7 +22,7 @@ class ChangeDatabase
         $default = 'mysql';
         $user = auth('admin')->user();
         if($user){
-            $key = $this->getKey($user->id, 'TENEMENT');
+            $key = UtilService::getKey($user->id, 'TENEMENT');
             $tenement = CacheService::getCache($key);
             //$default = $request->tenement ? $request->tenement : 'mysql';  //tenement为租户编号code
             $default = $tenement && isset($tenement['code']) ? $tenement['code'] : 'mysql';
@@ -30,9 +30,5 @@ class ChangeDatabase
 
         Config::set('database.default', $default);
         return $next($request);
-    }
-
-    private function getKey($key, $constant){
-        return md5($key . 'MIS' . $constant);
     }
 }

@@ -187,4 +187,8 @@ class UtilService
 
         return $str;
     }
+
+    public function getKey($key, $constant){
+        return md5($key . 'MIS' . $constant);
+    }
 }
