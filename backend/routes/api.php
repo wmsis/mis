@@ -162,6 +162,11 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:admin', 'jwt.auth
             Route::get('index', 'ElectricityController@index');
         });
 
+        // 获取抓斗数据列表
+        Route::prefix('garbage')->group(function () {
+            Route::get('index', 'GarbageController@index');
+        });
+
         // 地磅上报数据接口
         Route::prefix('weighbridge')->group(function () {
             Route::get('index', 'WeighBridgeController@index');

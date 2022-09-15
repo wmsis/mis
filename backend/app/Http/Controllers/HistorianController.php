@@ -25,7 +25,7 @@ class HistorianController extends Controller
 
     public function tags()
     {
-        $rtn = HistorianService::tags();
+        $rtn = HistorianService::tagslist();
         dd($rtn);
     }
 
@@ -33,7 +33,6 @@ class HistorianController extends Controller
     {
         //$user = new UserRepository();
         //$lists = $user->all();
-        //$user = DB::table('orgnization')->where('id', 1)->first();
         //dd($user);
         phpinfo();
 

@@ -1679,6 +1679,61 @@
                 }
             }
         },
+        "/api/garbage/index": {
+            "get": {
+                "tags": [
+                    "抓斗数据garbage"
+                ],
+                "summary": "获取抓斗数据列表",
+                "description": "使用说明：获取抓斗数据列表",
+                "operationId": "garbage-index",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "factory",
+                        "in": "query",
+                        "description": "电厂英文名称  如永强二期：yongqiang2",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "num",
+                        "in": "query",
+                        "description": "每页数据量",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "页数",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
         "/api/garbage-db-config": {
             "post": {
                 "tags": [
@@ -3924,7 +3979,7 @@
                         "description": "token",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "string"
                         }
                     },
                     {

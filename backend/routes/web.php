@@ -23,14 +23,14 @@ Route::get('/', function () {
 
 Route::any('wechat/main', [WechatController::class, 'main']);
 Route::get('wxpay/product', [WxpayController::class, 'product']);
-Route::get('wxpay/notify', [WechatController::class, 'notify']);
-Route::post('wxpay/notify', [WechatController::class, 'notify']);
-Route::post('wxpay/prepay', [WechatController::class, 'prepay']);
+Route::get('wxpay/notify', [WxpayController::class, 'notify']);
+Route::post('wxpay/notify', [WxpayController::class, 'notify']);
+Route::post('wxpay/prepay', [WxpayController::class, 'prepay']);
 Route::get('flush', [WechatController::class, 'ilovethisgame']);
 
 
 //Historian
-Route::get('historian/tags', [WechatController::class, 'tags']);
+Route::get('historian/tags', [HistorianController::class, 'tags']);
 Route::get('historian/tagslist', [HistorianController::class, 'tagslist']);
 
 Route::get('phpinfo', [WechatController::class, 'phpinfo']);
