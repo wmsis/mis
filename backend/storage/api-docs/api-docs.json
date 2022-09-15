@@ -2594,6 +2594,61 @@
                 }
             }
         },
+        "/api/orgnizations/page": {
+            "get": {
+                "tags": [
+                    "公司组织架构orgnizations"
+                ],
+                "summary": "分页获取电厂数据列表",
+                "description": "使用说明：分页获取电厂数据列表",
+                "operationId": "orgnizations-page",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "num",
+                        "in": "query",
+                        "description": "每页数据量",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "页数",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "中文名称搜索",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
         "/api/orgnizations/factories": {
             "get": {
                 "tags": [

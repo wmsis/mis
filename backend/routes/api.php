@@ -142,6 +142,7 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:admin', 'jwt.auth
 
         //用户组织
         Route::prefix('orgnizations')->group(function () {
+            Route::get('page', 'OrgnizationController@index');
             Route::get('factories', 'OrgnizationController@factories');
             Route::get('tree', 'OrgnizationController@tree');
             Route::post('store', 'OrgnizationController@store'); //创建用户组织保存

@@ -22,6 +22,84 @@ class OrgnizationController extends Controller
 {
     /**
      * @OA\Get(
+     *     path="/api/orgnizations/page",
+     *     tags={"公司组织架构orgnizations"},
+     *     operationId="orgnizations-page",
+     *     summary="分页获取电厂数据列表",
+     *     description="使用说明：分页获取电厂数据列表",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="每页数据量",
+     *         in="query",
+     *         name="num",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="integer",
+     *             default=20,
+     *         ),
+     *      ),
+     *      @OA\Parameter(
+     *          description="页数",
+     *          in="query",
+     *          name="page",
+     *          @OA\Schema(
+     *             type="integer",
+     *             default=1,
+     *          ),
+     *          required=false,
+     *      ),
+     *      @OA\Parameter(
+     *          description="中文名称搜索",
+     *          in="query",
+     *          name="name",
+     *          required=false,
+     *          @OA\Schema(
+     *             type="string"
+     *         )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="succeed",
+     *          @OA\Schema(
+     *               @OA\Property(
+     *                   property="Orgnizations",
+     *                   description="Orgnizations",
+     *                   allOf={
+     *                       @OA\Schema(ref="#/definitions/Orgnization")
+     *                   }
+     *                )
+     *           )
+     *      ),
+     * )
+     */
+    public function index(Request $request)
+    {
+        $perPage = $request->input('num');
+        $perPage = $perPage ? $perPage : 20;
+        $page = $request->input('page');
+        $page = $page ? $page : 1;
+        $name = $request->input('name');
+        $obj = new Orgnization();
+
+        $rows = $obj->select(['*'])->where('level', 3);
+        if ($name) {
+            $rows = $rows->where('name', 'like', "%{$name}%");
+        }
+        $total = $rows->count();
+        $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
+        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total]);
+    }
+
+    /**
+     * @OA\Get(
      *     path="/api/orgnizations/factories",
      *     tags={"公司组织架构orgnizations"},
      *     operationId="orgnizations-factories",
