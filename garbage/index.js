@@ -70,19 +70,24 @@ async function getConfigGarbageDB(config) {
                 let insertSql = 'INSERT INTO ' + table + '(allsn, sn, time, che, dou, liao, code, lost, hev, created_at, updated_at) VALUES ?';
                 let params = [];
                 for(let data of datalists){
-                    params.push([
-                        data.allsn,
-                        data.sn,
-                        data.time,
-                        data.che,
-                        data.dou,
-                        data.liao,
-                        data.code,
-                        data.lost,
-                        data.hev,
-                        now,
-                        now
-                    ]);
+                    //判断是否数据已存在，不存在则插入
+                    let sql = 'SELECT * FROM ' + table + ' WHERE allsn = ?';
+                    let row = await conn.query(sql, [data.allsn]);
+                    if(!row || row.length == 0){
+                        params.push([
+                            data.allsn,
+                            data.sn,
+                            data.time,
+                            data.che,
+                            data.dou,
+                            data.liao,
+                            data.code,
+                            data.lost,
+                            data.hev,
+                            now,
+                            now
+                        ]);
+                    }
                 }
 
                 if(params.length > 0){

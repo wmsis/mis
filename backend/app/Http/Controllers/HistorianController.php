@@ -25,7 +25,7 @@ class HistorianController extends Controller
 
     public function tags()
     {
-        $rtn = HistorianService::tagslist();
+        $rtn = HistorianService::tags();
         dd($rtn);
     }
 
