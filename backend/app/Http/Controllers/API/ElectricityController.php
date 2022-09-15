@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use UtilService;
 use App\Models\SIS\Electricity;
+use App\Models\SIS\Orgnization;
 use App\Http\Requests\API\StoreElectricityRequest;
 use Illuminate\Database\QueryException;
 use Log;
@@ -97,7 +98,6 @@ class ElectricityController extends Controller
         $perPage = $perPage ? $perPage : 20;
         $page = $request->input('page');
         $page = $page ? $page : 1;
-
         $cn_name = $request->input('cn_name');
         $tb = 'electricity_' . $factory;
         $electricity = (new Electricity())->setTable($tb);
@@ -185,7 +185,11 @@ class ElectricityController extends Controller
     }
 
     private function validate_factory($factory){
-        $tb_list = config('factory');
+        $tb_list = [];
+        $datalist = Orgnization::where('level', 3)->get();
+        foreach ($datalist as $key => $item) {
+            $tb_list[] = $item->code;
+        }
         if(!$factory || ($factory && !in_array($factory, $tb_list))){
             return false;
         }

@@ -66,8 +66,8 @@ class PermissionController extends Controller
     }
 
     private function children($parent_id){
-        $org = new Permission();
-        $rows = $org->children($parent_id);
+        $obj = new Permission();
+        $rows = $obj->children($parent_id);
         $arr = [];
         foreach ($rows as $key => $item) {
             $arr[] = array(

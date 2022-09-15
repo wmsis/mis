@@ -15,6 +15,7 @@ use App\Models\SIS\WeighBridgeFormat;
 use App\Models\SIS\WeighbridgeCateSmall;
 use Illuminate\Support\Facades\DB;
 use App\Models\System\Tenement;
+use App\Models\SIS\Orgnization;
 use Illuminate\Database\QueryException;
 use UtilService;
 use Log;
@@ -101,14 +102,13 @@ class WeighBridgeController extends Controller
         $perPage = $perPage ? $perPage : 20;
         $page = $request->input('page');
         $page = $page ? $page : 1;
-
         $product = $request->input('product');
 
         $tb = 'weighbridge_' . $factory;
         $WeighBridgeObj = (new WeighBridge())->setTable($tb);
 
         $rows = $WeighBridgeObj->select(['*']);
-        if ($cn_name) {
+        if ($product) {
             $rows = $rows->where('product', 'like', "%{$product}%");
         }
         $total = $rows->count();
@@ -263,7 +263,11 @@ class WeighBridgeController extends Controller
     }
 
     private function validate_factory($factory){
-        $tb_list = config('factory');
+        $tb_list = [];
+        $datalist = Orgnization::where('level', 3)->get();
+        foreach ($datalist as $key => $item) {
+            $tb_list[] = $item->code;
+        }
         if(!$factory || ($factory && !in_array($factory, $tb_list))){
             return false;
         }

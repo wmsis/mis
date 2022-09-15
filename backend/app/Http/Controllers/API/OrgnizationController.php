@@ -257,8 +257,8 @@ class OrgnizationController extends Controller
      *     path="/api/orgnizations/{id}/role",
      *     tags={"公司组织架构orgnizations"},
      *     operationId="getOrgRole",
-     *     summary="用户组织角色",
-     *     description="使用说明：获取用户组织角色",
+     *     summary="组织角色",
+     *     description="使用说明：获取组织角色",
      *     @OA\Parameter(
      *         description="token",
      *         in="query",
@@ -297,8 +297,8 @@ class OrgnizationController extends Controller
      *     path="/api/orgnizations/{id}/role",
      *     tags={"公司组织架构orgnizations"},
      *     operationId="storeOrgRole",
-     *     summary="保存用户组织角色",
-     *     description="使用说明：保存用户组织角色",
+     *     summary="保存组织角色",
+     *     description="使用说明：保存组织角色",
      *     @OA\Parameter(
      *         description="token",
      *         in="query",
@@ -358,8 +358,8 @@ class OrgnizationController extends Controller
      *     path="/api/orgnizations/delete",
      *     tags={"公司组织架构orgnizations"},
      *     operationId="deleteOrgnization",
-     *     summary="删除用户组织",
-     *     description="使用说明：删除用户组织",
+     *     summary="删除组织",
+     *     description="使用说明：删除组织",
      *     @OA\Parameter(
      *         description="token",
      *         in="query",

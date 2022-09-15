@@ -2685,8 +2685,8 @@
                 "tags": [
                     "公司组织架构orgnizations"
                 ],
-                "summary": "用户组织角色",
-                "description": "使用说明：获取用户组织角色",
+                "summary": "组织角色",
+                "description": "使用说明：获取组织角色",
                 "operationId": "getOrgRole",
                 "parameters": [
                     {
@@ -2718,8 +2718,8 @@
                 "tags": [
                     "公司组织架构orgnizations"
                 ],
-                "summary": "保存用户组织角色",
-                "description": "使用说明：保存用户组织角色",
+                "summary": "保存组织角色",
+                "description": "使用说明：保存组织角色",
                 "operationId": "storeOrgRole",
                 "parameters": [
                     {
@@ -2762,8 +2762,8 @@
                 "tags": [
                     "公司组织架构orgnizations"
                 ],
-                "summary": "删除用户组织",
-                "description": "使用说明：删除用户组织",
+                "summary": "删除组织",
+                "description": "使用说明：删除组织",
                 "operationId": "deleteOrgnization",
                 "parameters": [
                     {

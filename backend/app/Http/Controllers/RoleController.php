@@ -211,12 +211,49 @@ class RoleController extends Controller
      * )
      */
     public function permission(Role $role){
-        $permissions = Permission::all(); // all permissions
+        $obj = new Permission();
+        $rows = $obj->roots();
+        if($rows){
+            $permissions = [];
+            foreach ($rows as $key => $item) {
+                $permissions[] = array(
+                    'id' => $item->id,
+                    'name' => $item->name,
+                    'title' => $item->name,
+                    'sort' => $item->sort,
+                    'parent_id' => $item->parent_id,
+                    'level' => $item->level,
+                    'description' => $item->description,
+                    'children' => $this->permissionChildren($item->id)
+                );
+            }
+        }
+
         $myPermissions = $role->permissions; //带括号的是返回关联对象实例，不带括号是返回动态属性
 
         //compact 创建一个包含变量名和它们的值的数组
         $data = compact('permissions', 'myPermissions', 'role');
         return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $data);
+    }
+
+    private function permissionChildren($parent_id){
+        $obj = new Permission();
+        $rows = $obj->children($parent_id);
+        $arr = [];
+        foreach ($rows as $key => $item) {
+            $arr[] = array(
+                'id' => $item->id,
+                'name' => $item->name,
+                'title' => $item->name,
+                'sort' => $item->sort,
+                'parent_id' => $item->parent_id,
+                'level' => $item->level,
+                'description' => $item->description,
+                'children' => $this->permissionChildren($item->id)
+            );
+        }
+
+        return $arr;
     }
 
     /**
@@ -379,7 +416,7 @@ class RoleController extends Controller
      *         name="token",
      *         required=true,
      *         @OA\Schema(
-     *             type="integer"
+     *             type="string"
      *         ),
      *     ),
      *     @OA\Parameter(
@@ -398,12 +435,49 @@ class RoleController extends Controller
      * )
      */
     public function api(Role $role){
-        $apis = API::all(); // all permissions
+        $obj = new API();
+        $rows = $obj->roots();
+        if($rows){
+            $apis = [];
+            foreach ($rows as $key => $item) {
+                $apis[] = array(
+                    'id' => $item->id,
+                    'name' => $item->name,
+                    'title' => $item->name,
+                    'sort' => $item->sort,
+                    'parent_id' => $item->parent_id,
+                    'level' => $item->level,
+                    'description' => $item->description,
+                    'children' => $this->apiChildren($item->id)
+                );
+            }
+        }
+
         $myApis = $role->apis; //带括号的是返回关联对象实例，不带括号是返回动态属性
 
         //compact 创建一个包含变量名和它们的值的数组
         $data = compact('apis', 'myApis', 'role');
         return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $data);
+    }
+
+    private function apiChildren($parent_id){
+        $obj = new API();
+        $rows = $obj->children($parent_id);
+        $arr = [];
+        foreach ($rows as $key => $item) {
+            $arr[] = array(
+                'id' => $item->id,
+                'name' => $item->name,
+                'title' => $item->name,
+                'sort' => $item->sort,
+                'parent_id' => $item->parent_id,
+                'level' => $item->level,
+                'description' => $item->description,
+                'children' => $this->apiChildren($item->id)
+            );
+        }
+
+        return $arr;
     }
 
     /**
