@@ -22,10 +22,10 @@ class ChangeDatabase
         $default = 'mysql';
         $user = auth('admin')->user();
         if($user){
-            $key = $this->getKey($user->id, 'tenement');
+            $key = $this->getKey($user->id, 'TENEMENT');
             $tenement = CacheService::getCache($key);
             //$default = $request->tenement ? $request->tenement : 'mysql';  //tenement为租户编号code
-            $default = $tenement ? $tenement['code'] : 'mysql';
+            $default = $tenement && isset($tenement['code']) ? $tenement['code'] : 'mysql';
         }
 
         Config::set('database.default', $default);
