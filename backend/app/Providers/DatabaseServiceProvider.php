@@ -52,23 +52,29 @@ class DatabaseServiceProvider extends ServiceProvider
             $final = array_merge($conn, $base);
             $new[$item->code] = $final;
 
-            // //抓斗数据库  因恩倍力mysql数据库版本太低  该方案终止
-            // $obj_config_garbage_db = (new ConfigGarbageDB())->setConnection($item->code);
-            // $garbage_db_list = $obj_config_garbage_db->all();
-            // foreach ($garbage_db_list as $k9 => $db) {
-            //     if($db && $db->type && $db->type=='mysql'){
-            //         $conn = array (
-            //             'host' => $db->ip,
-            //             'database' => $db->db_name,
-            //             'username' => $db->user,
-            //             'password' => $db->password,
-            //             'port' => $db->port
-            //         );
-            //         $final = array_merge($conn, $base);
-            //         $conn_name = 'garbage_' . $item->id . '_' . $db->id;
-            //         //$new[$conn_name] = $final;
-            //     }
-            // }
+            //抓斗数据库  因恩倍力mysql数据库版本太低  该方案终止
+            $obj_config_garbage_db = (new ConfigGarbageDB())->setConnection($item->code);
+            $garbage_db_list = $obj_config_garbage_db->all();
+            foreach ($garbage_db_list as $k9 => $db) {
+                if($db && $db->type && $db->type=='mysql'){
+                    $conn = array (
+                        'host' => $db->ip,
+                        'database' => $db->db_name,
+                        'username' => $db->user,
+                        'password' => $db->password,
+                        'port' => $db->port,
+                        'charset' => 'utf8',
+                        'collation' => 'utf8_unicode_ci',
+                        'prefix' => '',
+                        'prefix_indexes' => true,
+                        'strict' => true,
+                        'engine' => null
+                    );
+                    $final = array_merge($base, $conn);
+                    $conn_name = 'garbage_' . $item->id . '_' . $db->id;
+                    $new[$conn_name] = $final;
+                }
+            }
         }
 
         $this->app['config']['database.connections'] = array_merge($this->app['config']['database.connections'], $new);

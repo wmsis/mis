@@ -122,26 +122,6 @@ return [
             //'password' => env('MONGODB_PASSWORD', ''),
         ],
 
-        // 'garbage_1_1' => [
-        //     'driver' => 'mysql',
-        //     'url' => env('DATABASE_URL'),
-        //     'host' => '10.99.99.100',
-        //     'port' => env('DB_PORT', '3306'),
-        //     'database' => 'ebl_1to4local',
-        //     'username' => 'root',
-        //     'password' => 'admin123',
-        //     'unix_socket' => env('DB_SOCKET', ''),
-        //     'charset' => 'utf8',
-        //     'collation' => 'utf8_unicode_ci',
-        //     'prefix' => '',
-        //     'prefix_indexes' => true,
-        //     'strict' => true,
-        //     'engine' => null,
-        //     'options' => extension_loaded('pdo_mysql') ? array_filter([
-        //         PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-        //     ]) : [],
-        // ],
-
     ],
 
     /*

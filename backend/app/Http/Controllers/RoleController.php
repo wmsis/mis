@@ -224,6 +224,10 @@ class RoleController extends Controller
                     'parent_id' => $item->parent_id,
                     'level' => $item->level,
                     'description' => $item->description,
+                    'color' => $item->color,
+                    'page_url' => $item->page_url,
+                    'api_name' => $item->api_name,
+                    'type' => $item->type,
                     'children' => $this->permissionChildren($item->id)
                 );
             }
@@ -249,6 +253,10 @@ class RoleController extends Controller
                 'parent_id' => $item->parent_id,
                 'level' => $item->level,
                 'description' => $item->description,
+                'color' => $item->color,
+                'page_url' => $item->page_url,
+                'api_name' => $item->api_name,
+                'type' => $item->type,
                 'children' => $this->permissionChildren($item->id)
             );
         }

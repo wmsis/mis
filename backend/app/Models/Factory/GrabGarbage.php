@@ -3,6 +3,7 @@
 namespace App\Models\Factory;
 
 use Illuminate\Database\Eloquent\Model;
+use Log;
 
 /**
  * App\Models\Factory\GrabGarbage
@@ -11,7 +12,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 class GrabGarbage extends Model
 {
-    protected $connection = 'garbage';
     protected $table = 'log';
     protected $fillable = ['allsn', 'sn', 'time', 'che', 'dou', 'liao', 'code', 'lost', 'hev'];
 

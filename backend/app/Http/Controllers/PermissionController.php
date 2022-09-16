@@ -55,6 +55,10 @@ class PermissionController extends Controller
                     'parent_id' => $item->parent_id,
                     'level' => $item->level,
                     'description' => $item->description,
+                    'color' => $item->color,
+                    'page_url' => $item->page_url,
+                    'api_name' => $item->api_name,
+                    'type' => $item->type,
                     'children' => $this->children($item->id)
                 );
             }
@@ -78,6 +82,10 @@ class PermissionController extends Controller
                 'parent_id' => $item->parent_id,
                 'level' => $item->level,
                 'description' => $item->description,
+                'color' => $item->color,
+                'page_url' => $item->page_url,
+                'api_name' => $item->api_name,
+                'type' => $item->type,
                 'children' => $this->children($item->id)
             );
         }

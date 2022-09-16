@@ -74,7 +74,7 @@ class GrabGarbageDataJob implements ShouldQueue
             Log::info($this->date . '恩倍力抓斗数据插入成功'.count($params).'条');
         }
         else{
-            Log::info($this->date . '恩倍力抓斗数据插入失败');
+            Log::info($this->date . '恩倍力抓斗没有数据插入');
         }
     }
 }

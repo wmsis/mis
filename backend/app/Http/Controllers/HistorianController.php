@@ -32,7 +32,7 @@ class HistorianController extends Controller
     public function tagslist()
     {
         $list = GrabGarbage::first();
-        dd($list);
+        dd($list->che);
         //$user = new UserRepository();
         //$lists = $user->all();
         //dd($user);

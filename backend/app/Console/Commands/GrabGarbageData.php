@@ -7,6 +7,7 @@ use App\Jobs\GrabGarbageDataJob;
 use Illuminate\Support\Facades\DB;
 use App\Models\SIS\Orgnization;
 use App\Models\SIS\ConfigGarbageDB;
+use App\Models\Factory\GrabGarbage;
 use Log;
 
 class GrabGarbageData extends Command
@@ -68,6 +69,7 @@ class GrabGarbageData extends Command
                     if($row){
                         $remote_conn =  'garbage_' . $tenement->id . '_' . $row->id;       //电厂抓斗数据库连接名称
                         $local_table = 'grab_garbage_' . $factory->code; //本地存储数据库表名称
+
                         dispatch(new GrabGarbageDataJob($date, $tenement_conn, $remote_conn, $local_table));
                     }
                 }
