@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\SIS\ConfigElectricityDB;
 use Illuminate\Database\QueryException;
 use UtilService;
+use Log;
 
 class ElectricityDbConfigController extends Controller
 {
@@ -182,7 +183,7 @@ class ElectricityDbConfigController extends Controller
      *     ),
      *     @OA\Parameter(
      *         description="组织ID",
-     *         in="query",
+     *         in="path",
      *         name="id",
      *         required=true,
      *         @OA\Schema(

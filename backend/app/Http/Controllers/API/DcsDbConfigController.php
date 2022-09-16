@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\SIS\ConfigHistorianDB;
 use Illuminate\Database\QueryException;
 use UtilService;
+use Log;
 
 class DcsDbConfigController extends Controller
 {
