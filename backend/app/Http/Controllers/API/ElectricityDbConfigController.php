@@ -81,6 +81,11 @@ class ElectricityDbConfigController extends Controller
     public function store(Request $request)
     {
         $input = $request->only(['master_ip', 'slave_ip', 'common_addr', 'orgnization_id']);
+        $row = ConfigElectricityDB::where('orgnization_id', $input['orgnization_id'])->first();
+        if ($row) {
+            return UtilService::format_data(self::AJAX_FAIL, '该组织配置数据已存在', '');
+        }
+
         try {
             $res = ConfigElectricityDB::create($input);
         } catch (QueryException $e) {

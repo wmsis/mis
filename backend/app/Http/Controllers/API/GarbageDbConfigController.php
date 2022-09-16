@@ -107,6 +107,11 @@ class GarbageDbConfigController extends Controller
     public function store(Request $request)
     {
         $input = $request->only(['type', 'user', 'password', 'ip', 'port', 'db_name', 'orgnization_id']);
+        $row = ConfigGarbageDB::where('orgnization_id', $input['orgnization_id'])->first();
+        if ($row) {
+            return UtilService::format_data(self::AJAX_FAIL, '该组织配置数据已存在', '');
+        }
+
         try {
             $res = ConfigGarbageDB::create($input);
         } catch (QueryException $e) {

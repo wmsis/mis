@@ -100,6 +100,11 @@ class DcsDbConfigController extends Controller
     public function store(Request $request)
     {
         $input = $request->only(['user', 'password', 'ip', 'port', 'version', 'orgnization_id']);
+        $row = ConfigHistorianDB::where('orgnization_id', $input['orgnization_id'])->first();
+        if (!$row) {
+            return UtilService::format_data(self::AJAX_FAIL, '该组织配置数据已存在', '');
+        }
+
         try {
             $res = ConfigHistorianDB::create($input);
         } catch (QueryException $e) {
