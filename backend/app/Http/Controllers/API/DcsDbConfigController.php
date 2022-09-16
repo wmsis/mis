@@ -13,7 +13,7 @@ class DcsDbConfigController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/dcs-db-configs",
+     *     path="/api/dcs-db-config",
      *     tags={"历史数据库配置dcs-db-config"},
      *     operationId="dcs-db-config-store",
      *     summary="新增单条数据",
@@ -109,7 +109,7 @@ class DcsDbConfigController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/dcs-db-configs/{id}",
+     *     path="/api/dcs-db-config/{id}",
      *     tags={"历史数据库配置dcs-db-config"},
      *     operationId="dcs-db-config-show",
      *     summary="获取详细信息",
@@ -124,7 +124,7 @@ class DcsDbConfigController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="主键ID",
+     *         description="组织ID",
      *         in="path",
      *         name="id",
      *         required=true,
@@ -158,7 +158,7 @@ class DcsDbConfigController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/dcs-db-configs/{id}",
+     *     path="/api/dcs-db-config/{id}",
      *     tags={"历史数据库配置dcs-db-config"},
      *     operationId="dcs-db-config-update",
      *     summary="修改",
@@ -173,12 +173,12 @@ class DcsDbConfigController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="主键ID",
+     *         description="组织ID",
      *         in="path",
      *         name="id",
      *         required=true,
      *         @OA\Schema(
-     *             type="string"
+     *             type="integer"
      *         )
      *     ),
      *     @OA\Parameter(
@@ -226,15 +226,6 @@ class DcsDbConfigController extends Controller
      *             type="integer"
      *         )
      *     ),
-     *     @OA\Parameter(
-     *         description="组织ID",
-     *         in="query",
-     *         name="orgnization_id",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer"
-     *         )
-     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="update succeed",
@@ -275,7 +266,7 @@ class DcsDbConfigController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/dcs-db-configs/{id}",
+     *     path="/api/dcs-db-config/{id}",
      *     tags={"历史数据库配置dcs-db-config"},
      *     operationId="dcs-db-config-destroy",
      *     summary="删除单条数据",
@@ -290,7 +281,7 @@ class DcsDbConfigController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="主键ID",
+     *         description="组织ID",
      *         in="path",
      *         name="id",
      *         required=true,

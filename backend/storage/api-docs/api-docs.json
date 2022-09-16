@@ -251,7 +251,7 @@
                 }
             }
         },
-        "/api/dcs-db-configs": {
+        "/api/dcs-db-config": {
             "post": {
                 "tags": [
                     "历史数据库配置dcs-db-config"
@@ -331,7 +331,7 @@
                 }
             }
         },
-        "/api/dcs-db-configs/{id}": {
+        "/api/dcs-db-config/{id}": {
             "get": {
                 "tags": [
                     "历史数据库配置dcs-db-config"
@@ -352,7 +352,7 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "主键ID",
+                        "description": "组织ID",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -385,10 +385,10 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "主键ID",
+                        "description": "组织ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
                         }
                     },
                     {
@@ -435,15 +435,6 @@
                         "schema": {
                             "type": "integer"
                         }
-                    },
-                    {
-                        "name": "orgnization_id",
-                        "in": "query",
-                        "description": "组织ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
                     }
                 ],
                 "responses": {
@@ -472,7 +463,7 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "主键ID",
+                        "description": "组织ID",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -1311,7 +1302,7 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "主键ID",
+                        "description": "组织ID",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -1369,7 +1360,7 @@
                         }
                     },
                     {
-                        "name": "orgnization_id",
+                        "name": "id",
                         "in": "query",
                         "description": "组织ID",
                         "required": true,
@@ -1935,15 +1926,6 @@
                         "required": true,
                         "schema": {
                             "type": "string"
-                        }
-                    },
-                    {
-                        "name": "orgnization_id",
-                        "in": "query",
-                        "description": "组织ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
                         }
                     }
                 ],

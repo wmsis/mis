@@ -105,7 +105,7 @@ class ElectricityDbConfigController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="主键ID",
+     *         description="组织ID",
      *         in="path",
      *         name="id",
      *         required=true,
@@ -183,7 +183,7 @@ class ElectricityDbConfigController extends Controller
      *     @OA\Parameter(
      *         description="组织ID",
      *         in="query",
-     *         name="orgnization_id",
+     *         name="id",
      *         required=true,
      *         @OA\Schema(
      *             type="integer"

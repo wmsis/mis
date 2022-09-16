@@ -243,15 +243,6 @@ class GarbageDbConfigController extends Controller
      *             type="string"
      *         )
      *     ),
-     *     @OA\Parameter(
-     *         description="组织ID",
-     *         in="query",
-     *         name="orgnization_id",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer"
-     *         )
-     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="update succeed",
