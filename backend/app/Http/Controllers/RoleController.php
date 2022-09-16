@@ -508,7 +508,7 @@ class RoleController extends Controller
      *     @OA\Parameter(
      *         description="接口权限ID列表",
      *         in="query",
-     *         name="permissions",
+     *         name="apis",
      *         required=true,
      *         @OA\Schema(
      *             type="string"

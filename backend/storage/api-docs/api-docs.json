@@ -4062,7 +4062,7 @@
                         }
                     },
                     {
-                        "name": "permissions",
+                        "name": "apis",
                         "in": "query",
                         "description": "接口权限ID列表",
                         "required": true,

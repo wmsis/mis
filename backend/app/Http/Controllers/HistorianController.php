@@ -31,10 +31,12 @@ class HistorianController extends Controller
 
     public function tagslist()
     {
+        $list = GrabGarbage::first();
+        dd($list);
         //$user = new UserRepository();
         //$lists = $user->all();
         //dd($user);
-        phpinfo();
+        //phpinfo();
 
         //插入
         // $mongo = HistorianData::create([
