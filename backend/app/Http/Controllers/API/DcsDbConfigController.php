@@ -308,7 +308,7 @@ class DcsDbConfigController extends Controller
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
         try {
-            $row->delete();
+            $row->forceDelete();
         } catch (Exception $e) {
             return UtilService::format_data(self::AJAX_FAIL, '删除失败', '');
         }
