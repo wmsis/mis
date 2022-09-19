@@ -4,7 +4,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\System\TenementController;
 use App\Http\Controllers\System\OrgnizationController;
-use App\Http\Controllers\API\DcsStandardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -189,7 +188,7 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:admin', 'jwt.auth
         });
 
         //如有补充路由应在 Route::apiResources 方法之前定义
-        Route::get('dcs-standard/lists', [DcsStandardController::class, 'lists']);
+        Route::get('dcs-standard/lists', 'DcsStandardController@lists');
         //API 资源路由  DCS映射关系 标准DCS 电表映射关系 抓斗数据库配置 电表数据库配置 历史数据库配置
         Route::apiResources([
             'dcs-standard' => DcsStandardController::class,
