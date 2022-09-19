@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\System\TenementController;
 use App\Http\Controllers\System\OrgnizationController;
+use App\Http\Controllers\API\DcsStandardController;
 
 /*
 |--------------------------------------------------------------------------
