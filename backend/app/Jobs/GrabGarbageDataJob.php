@@ -44,8 +44,15 @@ class GrabGarbageDataJob implements ShouldQueue
     public function handle()
     {
         $params = [];
-        $obj_grab_garbage_factory = (new GrabGarbageFactoryModel())->setConnection($this->remote_conn);  //连接电厂内部数据库
-        $obj_grab_garbage_local = (new GrabGarbageLocalModel())->setConnection($this->tenement_conn)->setTable($this->local_table); //连接特定租户下面的本地数据库表
+        try{
+            $obj_grab_garbage_factory = (new GrabGarbageFactoryModel())->setConnection($this->remote_conn);  //连接电厂内部数据库
+            $obj_grab_garbage_local = (new GrabGarbageLocalModel())->setConnection($this->tenement_conn)->setTable($this->local_table); //连接特定租户下面的本地数据库表
+        }
+        catch(Exception $ex){
+            Log::info('连接电厂数据库异常');
+            Log::info(var_export($ex, true));
+        }
+
         $rows = $obj_grab_garbage_factory->findByDate($this->date);
         if($rows && count($rows) > 0){
             foreach ($rows as $key => $item) {

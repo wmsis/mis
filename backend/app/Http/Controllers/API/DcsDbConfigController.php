@@ -101,7 +101,7 @@ class DcsDbConfigController extends Controller
     {
         $input = $request->only(['user', 'password', 'ip', 'port', 'version', 'orgnization_id']);
         $row = ConfigHistorianDB::where('orgnization_id', $input['orgnization_id'])->first();
-        if (!$row) {
+        if ($row) {
             return UtilService::format_data(self::AJAX_FAIL, '该组织配置数据已存在', '');
         }
 
