@@ -175,16 +175,16 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:admin', 'jwt.auth
 
         //地磅垃圾分类
         Route::prefix('weighbridge-category')->group(function () {
-            Route::get('lists-big', 'WeighBridgeController@listsBig');
-            Route::get('page-big', 'WeighBridgeController@pageBig');
-            Route::get('show-big/{id}', 'WeighBridgeController@showBig');
-            Route::post('store-big', 'WeighBridgeController@storeBig');
-            Route::post('update-big/{id}', 'WeighBridgeController@updateBig');
-            Route::delete('destroy-big/{id}', 'WeighBridgeController@destroyBig');
-            //Route::post('store-small-multi', 'WeighBridgeController@storeSmallMulti');
-            Route::get('page-small', 'WeighBridgeController@pageSmall');
-            Route::get('show-relation', 'WeighBridgeController@showRelation');
-            Route::post('bind-relation', 'WeighBridgeController@bindRelation');
+            Route::get('lists-big', 'WeighbridgeCategoryController@listsBig');
+            Route::get('page-big', 'WeighbridgeCategoryController@pageBig');
+            Route::get('show-big/{id}', 'WeighbridgeCategoryController@showBig');
+            Route::post('store-big', 'WeighbridgeCategoryController@storeBig');
+            Route::post('update-big/{id}', 'WeighbridgeCategoryController@updateBig');
+            Route::delete('destroy-big/{id}', 'WeighbridgeCategoryController@destroyBig');
+            //Route::post('store-small-multi', 'WeighbridgeCategoryController@storeSmallMulti');
+            Route::get('page-small', 'WeighbridgeCategoryController@pageSmall');
+            Route::get('show-relation', 'WeighbridgeCategoryController@showRelation');
+            Route::post('bind-relation', 'WeighbridgeCategoryController@bindRelation');
         });
 
         //如有补充路由应在 Route::apiResources 方法之前定义
@@ -215,7 +215,7 @@ Route::group(['namespace' => 'App\Http\Controllers\API'], function () {
 
     // 地磅小分类上报数据接口
     Route::prefix('weighbridge-category')->group(function () {
-        Route::post('store-small-multi', 'WeighBridgeController@storeSmallMulti');
+        Route::post('store-small-multi', 'WeighbridgeCategoryController@storeSmallMulti');
     });
 });
 
