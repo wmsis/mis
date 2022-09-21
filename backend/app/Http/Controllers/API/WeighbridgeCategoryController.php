@@ -570,7 +570,7 @@ class WeighbridgeCategoryController extends Controller
             foreach ($old_small_names as $key => $small) {
                 if(!in_array($small->id, $final_samll_arr)){
                     //解除旧的关联
-                    $small->weighbridge_cate_big()->dissociate($big->id);
+                    $small->weighbridge_cate_big()->dissociate($big->id);  //解除时用belongsTo方使用dissociate方法
                     $small->save();
                 }
                 else{
@@ -583,7 +583,7 @@ class WeighbridgeCategoryController extends Controller
             foreach ($final_samll_arr as $key => $cate_small_id) {
                 if(!in_array($cate_small_id, $already_in_arr)){
                     $small = WeighbridgeCateSmall::find($cate_small_id);
-                    $big->small_names()->save($small);
+                    $big->small_names()->save($small);  //或在hasMany端使用attach()添加 $big->small_names()->attach($small->id);  $small->weighbridge_cate_big()->associate($big->id);
                     $big->save();
                 }
             }
