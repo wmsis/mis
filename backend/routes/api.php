@@ -181,9 +181,8 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:admin', 'jwt.auth
             Route::post('store-big', 'WeighbridgeCategoryController@storeBig');
             Route::post('update-big/{id}', 'WeighbridgeCategoryController@updateBig');
             Route::delete('destroy-big/{id}', 'WeighbridgeCategoryController@destroyBig');
-            //Route::post('store-small-multi', 'WeighbridgeCategoryController@storeSmallMulti');
             Route::get('page-small', 'WeighbridgeCategoryController@pageSmall');
-            Route::get('show-relation', 'WeighbridgeCategoryController@showRelation');
+            Route::get('show-relation/{id}', 'WeighbridgeCategoryController@showRelation');
             Route::post('bind-relation', 'WeighbridgeCategoryController@bindRelation');
         });
 

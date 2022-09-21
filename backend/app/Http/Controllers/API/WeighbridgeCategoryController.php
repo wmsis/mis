@@ -16,6 +16,7 @@ use App\Models\SIS\WeighBridgeFormat;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 use UtilService;
+use Log;
 
 class WeighbridgeCategoryController extends Controller
 {
@@ -563,14 +564,14 @@ class WeighbridgeCategoryController extends Controller
             $big = WeighbridgeCateBig::find($input['cate_big_id']);
             $final_samll_arr = explode(',', $input['cate_small_ids']); //新的最终小类ID列表
             $already_in_arr = [];  //已经存在关联关系的小类列表
-            $old_small_names = $big->small_names();
+            $old_small_names = $big->small_names;
 
             //解除旧的关联
             foreach ($old_small_names as $key => $small) {
                 if(!in_array($small->id, $final_samll_arr)){
                     //解除旧的关联
-                    $big->small_names()->dissociate($small);
-                    $big->save();
+                    $small->weighbridge_cate_big()->dissociate($big->id);
+                    $small->save();
                 }
                 else{
                     //已经存在关联关系的小类列表
@@ -582,7 +583,7 @@ class WeighbridgeCategoryController extends Controller
             foreach ($final_samll_arr as $key => $cate_small_id) {
                 if(!in_array($cate_small_id, $already_in_arr)){
                     $small = WeighbridgeCateSmall::find($cate_small_id);
-                    $big->small_names()->associate($small);
+                    $big->small_names()->save($small);
                     $big->save();
                 }
             }
@@ -591,7 +592,7 @@ class WeighbridgeCategoryController extends Controller
             DB::rollback();
             return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+        return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', '');
     }
 
     /**
@@ -611,7 +612,7 @@ class WeighbridgeCategoryController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="大类ID，WeighbridgeCateBig主键",
+     *         description="WeighbridgeCateBig主键",
      *         in="path",
      *         name="id",
      *         required=true,
@@ -631,7 +632,7 @@ class WeighbridgeCategoryController extends Controller
         if (!$row) {
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
-        $row->small_names();
+        $row->small_names;
         return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $row);
     }
 }

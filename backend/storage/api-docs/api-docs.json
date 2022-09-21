@@ -3404,7 +3404,7 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "大类ID，WeighbridgeCateBig主键",
+                        "description": "WeighbridgeCateBig主键",
                         "required": true,
                         "schema": {
                             "type": "integer"

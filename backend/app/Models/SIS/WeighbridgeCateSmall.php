@@ -14,7 +14,7 @@ class WeighbridgeCateSmall extends Model
         'updated_at' => 'datetime:Y-m-d H:i:s'
     ];
 
-    public function big_name()
+    public function weighbridge_cate_big()
     {
         return $this->belongsTo('App\Models\SIS\WeighbridgeCateBig');
     }
