@@ -71,6 +71,7 @@
                 pageUrl: this.$request.setting.limitload,
                 searchForm: {
                     searchTagName: '',
+                    factory: 'yongqiang2'
                 },
                 row: {},
                 rows: [],
