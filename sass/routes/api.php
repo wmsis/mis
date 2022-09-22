@@ -151,31 +151,6 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
         Route::prefix('weighbridge')->group(function () {
             Route::get('index', 'WeighBridgeController@index');
         });
-
-        //地磅垃圾分类
-        Route::prefix('weighbridge-category')->group(function () {
-            Route::get('lists-big', 'WeighbridgeCategoryController@listsBig');
-            Route::get('page-big', 'WeighbridgeCategoryController@pageBig');
-            Route::get('show-big/{id}', 'WeighbridgeCategoryController@showBig');
-            Route::post('store-big', 'WeighbridgeCategoryController@storeBig');
-            Route::post('update-big/{id}', 'WeighbridgeCategoryController@updateBig');
-            Route::delete('destroy-big/{id}', 'WeighbridgeCategoryController@destroyBig');
-            Route::get('page-small', 'WeighbridgeCategoryController@pageSmall');
-            Route::get('show-relation/{id}', 'WeighbridgeCategoryController@showRelation');
-            Route::post('bind-relation', 'WeighbridgeCategoryController@bindRelation');
-        });
-
-        //如有补充路由应在 Route::apiResources 方法之前定义
-        Route::get('dcs-standard/lists', 'DcsStandardController@lists');
-        //API 资源路由  DCS映射关系 标准DCS 电表映射关系 抓斗数据库配置 电表数据库配置 历史数据库配置
-        Route::apiResources([
-            'dcs-standard' => DcsStandardController::class,
-            'dcs-map' => DcsMapController::class,
-            'electricity-map' => ElectricityMapController::class,
-            'garbage-db-config' => GarbageDbConfigController::class,
-            'electricity-db-config' => ElectricityDbConfigController::class,
-            'dcs-db-config' => DcsDbConfigController::class,
-        ]);
     });
 });
 
