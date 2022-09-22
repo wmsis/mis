@@ -180,7 +180,7 @@ class HistorianTagController extends Controller
     public function all(Request $request)
     {
         $factory = $request->input('factory');
-        $table = 'historian_tag_' . $code;
+        $table = 'historian_tag_' . $factory;
         $obj_historian_tag = (new HistorianTag())->setTable($table);
         $data = $obj_historian_tag->select(['id', 'tag_name', 'description', 'alias'])->get();
         return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $data);
