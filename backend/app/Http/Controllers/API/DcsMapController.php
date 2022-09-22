@@ -12,6 +12,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use App\Models\SIS\DcsMap;
+use App\Models\SIS\Orgnization;
+use App\Models\SIS\DcsStandard;
+use App\Models\SIS\HistorianTag;
 use UtilService;
 
 class DcsMapController extends Controller
@@ -101,6 +104,16 @@ class DcsMapController extends Controller
         }
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
+        foreach ($rows as $key => $item) {
+            $org = Orgnization::find($item->orgnization_id)->toArray();
+            $dcs_standard = DcsStandard::find($item->dcs_standard_id)->toArray();
+            $tag_id_arr = explode(',', $item->tag_ids);
+            $tb = 'historian_tag_' . $org['code'];
+            $tags = (new HistorianTag())->setTable($tb)->whereIn('id', $tag_id_arr)->get()->toArray();
+            $rows[$key]['orgnization'] = $org;
+            $rows[$key]['dcs_standard'] = $dcs_standard;
+            $rows[$key]['tags'] = $tags;
+        }
         return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total]);
     }
 
