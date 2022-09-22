@@ -10,14 +10,14 @@ class HistorianService
     const AJAX_SUCCESS = 0;
     const AJAX_FAIL = -1;
 
-    private function token()
+    private function token($factory)
     {
         $access_token = null;
         $auth = array(
-            "username" => config('historian.username'),
-            "password" => config('historian.password')
+            "username" => $factory['user'],
+            "password" => $factory['password']
         );
-        $key = md5($auth['username'] . 'wm_lucky' . $auth['password']);
+        $key = md5($auth['username'] . 'wm_lucky' . $auth['password'] . $factory['id']);
         $has_cache_data = false;
         if (Cache::has($key)) {
             $val = Cache::get($key);
@@ -43,7 +43,7 @@ class HistorianService
                 ]
             );
 
-            $url = config('historian.servername');
+            $url = 'https://' . $factory['ip'] . ':' . $factory['port'];
             $path = "/uaa/oauth/token";
             $response = \UtilService::client_post($url, $path, $params);
             $code = $response->getStatusCode();
@@ -66,7 +66,7 @@ class HistorianService
         return $access_token;
     }
 
-    private function response($res)
+    private function response($factory, $res)
     {
         $code = $res->getStatusCode();
         $body = $res->getBody();
@@ -76,10 +76,10 @@ class HistorianService
             return $json_data;
         } else if ($res && $code && $code == 401) {
             $auth = array(
-                "username" => config('historian.username'),
-                "password" => config('historian.password')
+                "username" => $factory['user'],
+                "password" => $factory['password']
             );
-            $key = md5($auth['username'] . 'wm_lucky' . $auth['password']);
+            $key = md5($auth['username'] . 'wm_lucky' . $auth['password'] . $factory['id']);
             if (Cache::has($key)) {
                 Cache::forget($key);  //清除缓存
             }
@@ -95,11 +95,11 @@ class HistorianService
         }
     }
 
-    public function tags()
+    public function tags($factory)
     {
-        $access_token = $this->token();
+        $access_token = $this->token($factory);
         if ($access_token) {
-            $url = config('historian.servername');
+            $url = 'https://' . $factory['ip'] . ':' . $factory['port'];
             $path = "/historian-rest-api/v1/tags";
             $params = array(
                 'verify' => false,
@@ -112,18 +112,18 @@ class HistorianService
                 ]
             );
             $res = UtilService::client_get($url, $path, $params);
-            $rtn = $this->response($res);
+            $rtn = $this->response($factory, $res);
             return UtilService::format_data(self::AJAX_SUCCESS, "获取成功", $rtn);
         } else {
             return UtilService::format_data(self::AJAX_FAIL, "获取token失败", array());
         }
     }
 
-    public function tagslist()
+    public function tagslist($factory)
     {
-        $access_token = $this->token();
+        $access_token = $this->token($factory);
         if ($access_token) {
-            $url = config('historian.servername');
+            $url = 'https://' . $factory['ip'] . ':' . $factory['port'];
             $path = "/historian-rest-api/v1/tagslist";
             $params = array(
                 'verify' => false,
@@ -132,18 +132,18 @@ class HistorianService
                 ]
             );
             $res = UtilService::client_get($url, $path, $params);
-            $rtn = $this->response($res);
+            $rtn = $this->response($factory, $res);
             return UtilService::format_data(self::AJAX_SUCCESS, "获取成功", $rtn);
         } else {
             return UtilService::format_data(self::AJAX_FAIL, "获取token失败", array());
         }
     }
 
-    public function rawData($tagNames, $start, $end, $count)
+    public function rawData($factory, $tagNames, $start, $end, $count)
     {
-        $access_token = $this->token();
+        $access_token = $this->token($factory);
         if ($access_token) {
-            $url = config('historian.servername');
+            $url = 'https://' . $factory['ip'] . ':' . $factory['port'];
             $path = "/historian-rest-api/v1/datapoints/raw/" . $start . '/' . $end . '/0/' . $count;
             $params = array(
                 'verify' => false,
@@ -155,23 +155,23 @@ class HistorianService
                 ]
             );
             $res = UtilService::client_post($url, $path, $params);
-            $rtn = $this->response($res);
+            $rtn = $this->response($factory, $res);
             return UtilService::format_data(self::AJAX_SUCCESS, "获取成功", $rtn);
         } else {
             return UtilService::format_data(self::AJAX_FAIL, "获取token失败", array());
         }
     }
 
-    public function InterpolateData()
+    public function InterpolateData($factory)
     {
 
     }
 
-    public function currentData($tagNames)
+    public function currentData($factory, $tagNames)
     {
-        $access_token = $this->token();
+        $access_token = $this->token($factory);
         if ($access_token) {
-            $url = config('historian.servername');
+            $url = 'https://' . $factory['ip'] . ':' . $factory['port'];
             $path = "/historian-rest-api/v1/datapoints/currentvalue";
             $params = array(
                 'verify' => false,
@@ -183,18 +183,18 @@ class HistorianService
                 ]
             );
             $res = UtilService::client_post($url, $path, $params);
-            $rtn = $this->response($res);
+            $rtn = $this->response($factory, $res);
             return UtilService::format_data(self::AJAX_SUCCESS, "获取成功", $rtn);
         } else {
             return UtilService::format_data(self::AJAX_FAIL, "获取token失败", array());
         }
     }
 
-    public function SampledData($tagNames, $start, $end, $count, $samplingMode, $calculationMode, $intervalMS = null)
+    public function SampledData($factory, $tagNames, $start, $end, $count, $samplingMode, $calculationMode, $intervalMS = null)
     {
-        $access_token = $this->token();
+        $access_token = $this->token($factory);
         if ($access_token) {
-            $url = config('historian.servername');
+            $url = 'https://' . $factory['ip'] . ':' . $factory['port'];
             $path = "/historian-rest-api/v1/datapoints/sampled";
             $params = array(
                 'verify' => false,
@@ -214,23 +214,23 @@ class HistorianService
                 $params['json']['intervalMs'] = $intervalMS;
             }
             $res = UtilService::client_post($url, $path, $params);
-            $rtn = $this->response($res);
+            $rtn = $this->response($factory, $res);
             return UtilService::format_data(self::AJAX_SUCCESS, "获取成功", $rtn);
         } else {
             return UtilService::format_data(self::AJAX_FAIL, "获取token失败", array());
         }
     }
 
-    public function trendData()
+    public function trendData($factory)
     {
 
     }
 
-    public function properties($tagName, $properties = null)
+    public function properties($factory, $tagName, $properties = null)
     {
-        $access_token = $this->token();
+        $access_token = $this->token($factory);
         if ($access_token) {
-            $url = config('historian.servername');
+            $url = 'https://' . $factory['ip'] . ':' . $factory['port'];
             $path = "/historian-rest-api/v1/tags/properties/" . $tagName;
             $params = array(
                 'verify' => false,
@@ -242,7 +242,7 @@ class HistorianService
                 $params['json'] = $properties;
             }
             $res = UtilService::client_post($url, $path, $params);
-            $rtn = $this->response($res);
+            $rtn = $this->response($factory, $res);
             return UtilService::format_data(self::AJAX_SUCCESS, "获取成功", $rtn);
         } else {
             return UtilService::format_data(self::AJAX_FAIL, "获取token失败", array());

@@ -23,7 +23,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('collect:iec104data')->everyTenMinutes();
+        $yestoday = date('Y-m-d', time() - 24 * 60 * 60);
+        $yestoday_cmd = 'collect:grabGarbageData --date=' . $yestoday;
+        //$schedule->command('collect:iec104data')->everyTenMinutes();
+        //$schedule->command('collect:grabGarbageData')->twiceDaily(12, 23);//当天的数据
+        //$schedule->command($yestoday_cmd)->twiceDaily(13, 16);//前一天的数据
     }
 
     /**

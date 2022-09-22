@@ -26,12 +26,7 @@ class HistorianTag extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->historian_tag_all = md5('historian_tag_all');
-    }
-
-    public function users()
-    {
-        return $this->belongsToMany('App\Models\User', 'tag_user', 'tag_id', 'user_id')->withTimestamps();
+        $this->historian_tag_all = md5('historian_tag_all' . $this->table);
     }
 
     public function findAll(){
@@ -64,7 +59,7 @@ class HistorianTag extends Model
     }
 
     public function findByID($id){
-        $key = md5('historian_tag_' . $id);
+        $key = md5('historian_tag_' . $id . $this->table);
         $data = $this->getCache($key);
         if (!$data) {
             //没有缓存
@@ -76,13 +71,13 @@ class HistorianTag extends Model
 
     public function updateCache($params){
         if(isset($params['id']) && $params['id']){
-            $key_single = md5('historian_tag_' . $params['id']);
+            $key_single = md5('historian_tag_' . $params['id'] . $this->table);
             $this->clearCache($key_single);
         }
         if(isset($params['ids']) && $params['ids']){
             $tagsIdList = explode(',', $params['ids']);
             foreach($tagsIdList as $id){
-                $key_single = md5('historian_tag_' . $id);
+                $key_single = md5('historian_tag_' . $id . $this->table);
                 $this->clearCache($key_single);
             }
         }

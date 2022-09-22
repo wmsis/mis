@@ -9,6 +9,8 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\SIS\HistorianTag;
+use App\Models\SIS\Orgnization;
+use App\Models\SIS\ConfigHistorianDB;
 use HistorianService;
 use Illuminate\Http\Request;
 use UtilService;
@@ -17,10 +19,13 @@ use Log;
 class HistorianDataController extends Controller
 {
 
-    private function getTagList($tagIds)
+    private function getTagList($factory, $tagIds)
     {
+        $tb = 'historian_tag_' . $factory;
+        $historianTag = (new HistorianTag())->setTable($tb);
+
         $tagsIdList = explode(',', $tagIds);
-        $tags = HistorianTag::whereIn('id', $tagsIdList)->get();
+        $tags = $historianTag->whereIn('id', $tagsIdList)->get();
         $tagsNameList = array();
         $tagsIdNameDict = array();
         $tagsMeasureNameDict = array();
@@ -80,6 +85,15 @@ class HistorianDataController extends Controller
      *         ),
      *     ),
      *     @OA\Parameter(
+     *         description="电厂英文名称  如永强二期：yongqiang2",
+     *         in="query",
+     *         name="factory",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
      *         description="historian tag ids string，使用','分隔，example: tagIds=1,2,3",
      *         in="query",
      *         name="tagIds",
@@ -96,11 +110,16 @@ class HistorianDataController extends Controller
      */
     public function currentData(Request $request)
     {
+        $factory = $request->input('factory');
+        if(!$this->validate_factory($factory)){
+            return UtilService::format_data(self::AJAX_FAIL, 'factory参数错误', '');
+        }
+
         $tagIds = $request->input('tagIds');
         if (!$tagIds) {
             return UtilService::format_data(self::AJAX_FAIL, '未提供tagIds', '');
         }
-        $_ = $this->getTagList($tagIds);
+        $_ = $this->getTagList($factory, $tagIds);
         $tagsNameList = $_['tagsNameList'];
         $tagsIdNameDict = $_['tagsIdNameDict'];
         $tagsDesc = $_['tagsDesc'];
@@ -112,7 +131,10 @@ class HistorianDataController extends Controller
         if (!$tagsNameList) {
             return response()->json(UtilService::format_data(self::AJAX_FAIL, 'tagIds 错误，找不到对应tag', ''));
         }
-        $datas = HistorianService::currentData($tagsNameString);
+
+        $org = Orgnization::where('code', $factory)->first()->toArray();
+        $cfg = ConfigHistorianDB::where('orgnization_id', $org['id'])->first()->toArray();
+        $datas = HistorianService::currentData($cfg, $tagsNameString);
 
         return $this->getReturnFromHistorianResponse($datas, $tagsIdNameDict, $tagsMeasureNameDict, $originUpperLimitDict, $originLowerLimitDict, $tagsDesc);
     }
@@ -132,6 +154,15 @@ class HistorianDataController extends Controller
      *         @OA\Schema(
      *             type="string"
      *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="电厂英文名称  如永强二期：yongqiang2",
+     *         in="query",
+     *         name="factory",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
      *     ),
      *     @OA\Parameter(
      *         description="historian tag ids string，使用','分隔，example: tagIds=1,2,3",
@@ -178,6 +209,11 @@ class HistorianDataController extends Controller
      */
     public function rawData(Request $request)
     {
+        $factory = $request->input('factory');
+        if(!$this->validate_factory($factory)){
+            return UtilService::format_data(self::AJAX_FAIL, 'factory参数错误', '');
+        }
+
         $tagIds = $request->input('tagIds');
         $start = $request->input('start');
         $end = $request->input('end');
@@ -193,7 +229,7 @@ class HistorianDataController extends Controller
             return response()->json(UtilService::format_data(self::AJAX_FAIL, '未提供end', ''));
         }
 
-        $_ = $this->getTagList($tagIds);
+        $_ = $this->getTagList($factory, $tagIds);
         $tagsNameList = $_['tagsNameList'];
         $tagsIdNameDict = $_['tagsIdNameDict'];
         $tagsDesc = $_['tagsDesc'];
@@ -204,7 +240,9 @@ class HistorianDataController extends Controller
         if (!$tagsNameList) {
             return response()->json(UtilService::format_data(self::AJAX_FAIL, 'tagIds 错误，找不到对应tag', ''));
         }
-        $datas = HistorianService::rawData($tagsNameString, $start, $end, $count);
+        $org = Orgnization::where('code', $factory)->first()->toArray();
+        $cfg = ConfigHistorianDB::where('orgnization_id', $org['id'])->first()->toArray();
+        $datas = HistorianService::rawData($cfg, $tagsNameString, $start, $end, $count);
 
         return $this->getReturnFromHistorianResponse($datas, $tagsIdNameDict, $tagsMeasureNameDict, $originUpperLimitDict, $originLowerLimitDict, $tagsDesc);
     }
@@ -224,6 +262,15 @@ class HistorianDataController extends Controller
      *         @OA\Schema(
      *             type="string"
      *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="电厂英文名称  如永强二期：yongqiang2",
+     *         in="query",
+     *         name="factory",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
      *     ),
      *     @OA\Parameter(
      *         description="historian tag ids string，使用','分隔，example: tagIds=1,2,3",
@@ -299,6 +346,11 @@ class HistorianDataController extends Controller
      */
     public function sampledData(Request $request)
     {
+        $factory = $request->input('factory');
+        if(!$this->validate_factory($factory)){
+            return UtilService::format_data(self::AJAX_FAIL, 'factory参数错误', '');
+        }
+
         $tagIds = $request->input('tagIds');
         $start = $request->input('start');
         $end = $request->input('end');
@@ -317,7 +369,7 @@ class HistorianDataController extends Controller
             return response()->json(UtilService::format_data(self::AJAX_FAIL, '未提供end', ''));
         }
 
-        $_ = $this->getTagList($tagIds);
+        $_ = $this->getTagList($factory, $tagIds);
         $tagsNameList = $_['tagsNameList'];
         $tagsIdNameDict = $_['tagsIdNameDict'];
         $tagsDesc = $_['tagsDesc'];
@@ -328,7 +380,10 @@ class HistorianDataController extends Controller
         if (!$tagsNameList) {
             return response()->json(UtilService::format_data(self::AJAX_FAIL, 'tagIds 错误，找不到对应tag', ''));
         }
-        $datas = HistorianService::SampledData($tagsNameString, $start, $end, $count, $samplingMode, $calculationMode, $intervalMS);
+
+        $org = Orgnization::where('code', $factory)->first()->toArray();
+        $cfg = ConfigHistorianDB::where('orgnization_id', $org['id'])->first()->toArray();
+        $datas = HistorianService::SampledData($cfg, $tagsNameString, $start, $end, $count, $samplingMode, $calculationMode, $intervalMS);
 
         return $this->getReturnFromHistorianResponse($datas, $tagsIdNameDict, $tagsMeasureNameDict, $originUpperLimitDict, $originLowerLimitDict, $tagsDesc);
     }
@@ -344,6 +399,15 @@ class HistorianDataController extends Controller
      *         description="token",
      *         in="query",
      *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="电厂英文名称  如永强二期：yongqiang2",
+     *         in="query",
+     *         name="factory",
      *         required=true,
      *         @OA\Schema(
      *             type="string"
@@ -375,12 +439,17 @@ class HistorianDataController extends Controller
      */
     public function watchData(Request $request)
     {
+        $factory = $request->input('factory');
+        if(!$this->validate_factory($factory)){
+            return UtilService::format_data(self::AJAX_FAIL, 'factory参数错误', '');
+        }
+
         $tagIds = $request->input('tagIds');
         $funcs = $request->input('funcs');
         if (!$tagIds) {
             return response()->json(UtilService::format_data(self::AJAX_FAIL, '未提供tagIds', ''));
         }
-        $_ = $this->getTagList($tagIds);
+        $_ = $this->getTagList($factory, $tagIds);
         $tagsNameList = $_['tagsNameList'];
         $tagsIdNameDict = $_['tagsIdNameDict'];
         $tagsMeasureNameDict = $_['tagsMeasureNameDict'];
@@ -391,7 +460,10 @@ class HistorianDataController extends Controller
         if (!$tagsNameList) {
             return response()->json(UtilService::format_data(self::AJAX_FAIL, 'tagIds 错误，找不到对应tag', ''));
         }
-        $datas = HistorianService::currentData($tagsNameString);
+
+        $org = Orgnization::where('code', $factory)->first()->toArray();
+        $cfg = ConfigHistorianDB::where('orgnization_id', $org['id'])->first()->toArray();
+        $datas = HistorianService::currentData($cfg, $tagsNameString);
         $tagsData = $this->returnFromHistorianResponse($datas, $tagsIdNameDict, $tagsMeasureNameDict, $originUpperLimitDict, $originLowerLimitDict);
         if($tagsData && count($tagsData) != 0) {
             foreach ($tagsData as $key => $tagsDatum) {
@@ -479,5 +551,19 @@ class HistorianDataController extends Controller
         }
 
         return $arr;
+    }
+
+    private function validate_factory($factory){
+        $tb_list = [];
+        $datalist = Orgnization::where('level', 3)->get();
+        foreach ($datalist as $key => $item) {
+            $tb_list[] = $item->code;
+        }
+        if(!$factory || ($factory && !in_array($factory, $tb_list))){
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 }

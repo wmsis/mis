@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Auth;
 use Swagger\Annotations as SWG;
 use UtilService;
 use App\Models\User;
+use App\Models\SIS\Orgnization;
+use App\Models\SIS\ConfigHistorianDB;
 use Log;
 
 class HistorianTagController extends Controller
@@ -24,7 +26,7 @@ class HistorianTagController extends Controller
 
     public function __construct()
     {
-        $this->HistorianTag = new HistorianTag();
+
     }
 
     /**
@@ -61,6 +63,15 @@ class HistorianTagController extends Controller
      *         @OA\Schema(
      *             type="integer",
      *             default=1,
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="电厂英文名称  如永强二期：yongqiang2",
+     *         in="query",
+     *         name="factory",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
      *         ),
      *     ),
      *     @OA\Parameter(
@@ -105,6 +116,12 @@ class HistorianTagController extends Controller
 
         $searchName = $request->input('searchAlias');
         $searchTagName = $request->input('searchTagName');
+        $factory = $request->input('factory');
+        if(!$this->validate_factory($factory)){
+            return UtilService::format_data(self::AJAX_FAIL, 'factory参数错误', '');
+        }
+        $tb = 'historian_tag_' . $factory;
+        $this->HistorianTag = (new HistorianTag())->setTable($tb);
 
         $params = [];
         if ($searchName) {
@@ -137,9 +154,9 @@ class HistorianTagController extends Controller
      *         ),
      *     ),
      *     @OA\Parameter(
-     *         description="电厂编码",
+     *         description="电厂英文名称  如永强二期：yongqiang2",
      *         in="query",
-     *         name="code",
+     *         name="factory",
      *         required=true,
      *         @OA\Schema(
      *             type="string"
@@ -162,7 +179,7 @@ class HistorianTagController extends Controller
      */
     public function all(Request $request)
     {
-        $code = $request->input('code');
+        $factory = $request->input('factory');
         $table = 'historian_tag_' . $code;
         $obj_historian_tag = (new HistorianTag())->setTable($table);
         $data = $obj_historian_tag->select(['id', 'tag_name', 'description', 'alias'])->get();
@@ -180,6 +197,15 @@ class HistorianTagController extends Controller
      *         description="token",
      *         in="query",
      *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="电厂英文名称  如永强二期：yongqiang2",
+     *         in="query",
+     *         name="factory",
      *         required=true,
      *         @OA\Schema(
      *             type="string"
@@ -246,6 +272,12 @@ class HistorianTagController extends Controller
 
         $searchName = $request->input('searchAlias');
         $searchTagName = $request->input('searchTagName');
+        $factory = $request->input('factory');
+        if(!$this->validate_factory($factory)){
+            return UtilService::format_data(self::AJAX_FAIL, 'factory参数错误', '');
+        }
+        $tb = 'historian_tag_' . $factory;
+        $this->HistorianTag = (new HistorianTag())->setTable($tb);
 
         $params = [];
         if ($searchName) {
@@ -267,7 +299,9 @@ class HistorianTagController extends Controller
                     $tagnames = $item->tag_name;
                 }
             }
-            $cd = HistorianService::currentData($tagnames);
+            $org = Orgnization::where('code', $factory)->first()->toArray();
+            $cfg = ConfigHistorianDB::where('orgnization_id', $org['id'])->first()->toArray();
+            $cd = HistorianService::currentData($cfg, $tagnames);
             $curr_data_list = array();
             if ($cd && $cd['code'] === self::AJAX_SUCCESS && $cd['data']['ErrorCode'] === 0) {
                 $curr_data_list = $cd['data']['Data'];
@@ -308,6 +342,15 @@ class HistorianTagController extends Controller
      *         ),
      *     ),
      *     @OA\Parameter(
+     *         description="电厂英文名称  如永强二期：yongqiang2",
+     *         in="query",
+     *         name="factory",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
      *         description="tag 主键",
      *         in="path",
      *         name="id",
@@ -333,6 +376,13 @@ class HistorianTagController extends Controller
      */
     public function show($id)
     {
+        $factory = $request->input('factory');
+        if(!$this->validate_factory($factory)){
+            return UtilService::format_data(self::AJAX_FAIL, 'factory参数错误', '');
+        }
+        $tb = 'historian_tag_' . $factory;
+        $this->HistorianTag = (new HistorianTag())->setTable($tb);
+
         $tag = $this->HistorianTag->findByID($id);
         if (!$tag) {
             return response()->json(UtilService::format_data(self::AJAX_NO_DATA, '该Tag不存在', ''));
@@ -351,6 +401,15 @@ class HistorianTagController extends Controller
      *         description="token",
      *         in="query",
      *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="电厂英文名称  如永强二期：yongqiang2",
+     *         in="query",
+     *         name="factory",
      *         required=true,
      *         @OA\Schema(
      *             type="string"
@@ -382,12 +441,19 @@ class HistorianTagController extends Controller
      */
     public function showMany(Request $request)
     {
+        $factory = $request->input('factory');
+        if(!$this->validate_factory($factory)){
+            return UtilService::format_data(self::AJAX_FAIL, 'factory参数错误', '');
+        }
+        $tb = 'historian_tag_' . $factory;
+        $this->HistorianTag = (new HistorianTag())->setTable($tb);
+
         $idsStr = $request->input('ids');
         if (!$idsStr) {
             return response()->json(UtilService::format_data(self::AJAX_FAIL, '未提供ids', ''));
         }
         $ids = explode(',', $idsStr);
-        $tags = HistorianTag::whereIn('id', $ids)->get();
+        $tags = $this->HistorianTag->whereIn('id', $ids)->get();
         return response()->json(UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $tags));
     }
 
@@ -407,6 +473,15 @@ class HistorianTagController extends Controller
      *             type="string"
      *         ),
      *     ),
+     *     @OA\Parameter(
+     *         description="电厂英文名称  如永强二期：yongqiang2",
+     *         in="query",
+     *         name="factory",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="succeed",
@@ -415,7 +490,16 @@ class HistorianTagController extends Controller
      */
     public function load()
     {
-        $tagslist = HistorianService::tags();
+        $factory = $request->input('factory');
+        if(!$this->validate_factory($factory)){
+            return UtilService::format_data(self::AJAX_FAIL, 'factory参数错误', '');
+        }
+        $tb = 'historian_tag_' . $factory;
+        $this->HistorianTag = (new HistorianTag())->setTable($tb);
+
+        $org = Orgnization::where('code', $factory)->first()->toArray();
+        $cfg = ConfigHistorianDB::where('orgnization_id', $org['id'])->first()->toArray();
+        $tagslist = HistorianService::tags($cfg);
         if ($tagslist['code'] === self::AJAX_SUCCESS) {
             $tagNames = $tagslist['data']['Tags'];
 
@@ -434,9 +518,11 @@ class HistorianTagController extends Controller
             });
 
             foreach ($tagNames as $tagName) {
-                $row = HistorianTag::where('tag_name', $tagName)->first();
+                $row = $this->HistorianTag->where('tag_name', $tagName)->first();
                 if(!$row) {
-                    $datas = HistorianService::properties($tagName, $properties)['data'];
+                    $org = Orgnization::where('code', $factory)->first()->toArray();
+                    $cfg = ConfigHistorianDB::where('orgnization_id', $org['id'])->first()->toArray();
+                    $datas = HistorianService::properties($cfg, $tagName, $properties)['data'];
                     $dataDict = [];
                     array_walk($propertyNames, function ($value, $key) use (&$dataDict, $datas) {
                         if ($key == 'tag_id') {
@@ -446,7 +532,7 @@ class HistorianTagController extends Controller
                         }
                     });
                     try {
-                        HistorianTag::updateOrCreate(['tag_id' => $dataDict['tag_id']], $dataDict);
+                        $this->HistorianTag->updateOrCreate(['tag_id' => $dataDict['tag_id']], $dataDict);
                         $updateOrCreateCount += 1;
                     } catch (QueryException $e) {
                         $errorCount += 1;
@@ -470,6 +556,15 @@ class HistorianTagController extends Controller
      *         description="token",
      *         in="query",
      *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="电厂英文名称  如永强二期：yongqiang2",
+     *         in="query",
+     *         name="factory",
      *         required=true,
      *         @OA\Schema(
      *             type="string"
@@ -546,6 +641,13 @@ class HistorianTagController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $factory = $request->input('factory');
+        if(!$this->validate_factory($factory)){
+            return UtilService::format_data(self::AJAX_FAIL, 'factory参数错误', '');
+        }
+        $tb = 'historian_tag_' . $factory;
+        $this->HistorianTag = (new HistorianTag())->setTable($tb);
+
         $tag = $this->HistorianTag->findByID($id);
         if (!$tag) {
             return response()->json(UtilService::format_data(self::AJAX_NO_DATA, '该Tag不存在', ''));
@@ -588,6 +690,15 @@ class HistorianTagController extends Controller
      *         ),
      *     ),
      *     @OA\Parameter(
+     *         description="电厂英文名称  如永强二期：yongqiang2",
+     *         in="query",
+     *         name="factory",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
      *         description="tag 主键",
      *         in="path",
      *         name="id",
@@ -604,6 +715,13 @@ class HistorianTagController extends Controller
      */
     public function destroy($id)
     {
+        $factory = $request->input('factory');
+        if(!$this->validate_factory($factory)){
+            return UtilService::format_data(self::AJAX_FAIL, 'factory参数错误', '');
+        }
+        $tb = 'historian_tag_' . $factory;
+        $this->HistorianTag = (new HistorianTag())->setTable($tb);
+
         $tag = $this->HistorianTag->findByID($id);
         if (!$tag) {
             return response()->json(UtilService::format_data(self::AJAX_NO_DATA, '该Tag不存在', ''));
@@ -616,6 +734,20 @@ class HistorianTagController extends Controller
             return response()->json(UtilService::format_data(self::AJAX_FAIL, '删除失败', ''));
         }
         return response()->json(UtilService::format_data(self::AJAX_SUCCESS, '删除成功', ''));
+    }
+
+    private function validate_factory($factory){
+        $tb_list = [];
+        $datalist = Orgnization::where('level', 3)->get();
+        foreach ($datalist as $key => $item) {
+            $tb_list[] = $item->code;
+        }
+        if(!$factory || ($factory && !in_array($factory, $tb_list))){
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 
 }

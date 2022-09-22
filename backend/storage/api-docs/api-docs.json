@@ -1988,6 +1988,15 @@
                         }
                     },
                     {
+                        "name": "factory",
+                        "in": "query",
+                        "description": "电厂英文名称  如永强二期：yongqiang2",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "tagIds",
                         "in": "query",
                         "description": "historian tag ids string，使用','分隔，example: tagIds=1,2,3",
@@ -2017,6 +2026,15 @@
                         "name": "token",
                         "in": "query",
                         "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "factory",
+                        "in": "query",
+                        "description": "电厂英文名称  如永强二期：yongqiang2",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -2080,6 +2098,15 @@
                         "name": "token",
                         "in": "query",
                         "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "factory",
+                        "in": "query",
+                        "description": "电厂英文名称  如永强二期：yongqiang2",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -2178,6 +2205,15 @@
                         }
                     },
                     {
+                        "name": "factory",
+                        "in": "query",
+                        "description": "电厂英文名称  如永强二期：yongqiang2",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "tagIds",
                         "in": "query",
                         "description": "historian tag ids string，使用','分隔，example: tagIds=1,2,3",
@@ -2242,6 +2278,15 @@
                         }
                     },
                     {
+                        "name": "factory",
+                        "in": "query",
+                        "description": "电厂英文名称  如永强二期：yongqiang2",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "searchAlias",
                         "in": "query",
                         "description": "alias 搜索",
@@ -2286,9 +2331,9 @@
                         }
                     },
                     {
-                        "name": "code",
+                        "name": "factory",
                         "in": "query",
-                        "description": "电厂编码",
+                        "description": "电厂英文名称  如永强二期：yongqiang2",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -2315,6 +2360,15 @@
                         "name": "token",
                         "in": "query",
                         "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "factory",
+                        "in": "query",
+                        "description": "电厂英文名称  如永强二期：yongqiang2",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -2384,6 +2438,15 @@
                         }
                     },
                     {
+                        "name": "factory",
+                        "in": "query",
+                        "description": "电厂英文名称  如永强二期：yongqiang2",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "id",
                         "in": "path",
                         "description": "tag 主键",
@@ -2413,6 +2476,15 @@
                         "name": "token",
                         "in": "query",
                         "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "factory",
+                        "in": "query",
+                        "description": "电厂英文名称  如永强二期：yongqiang2",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -2452,6 +2524,15 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "name": "factory",
+                        "in": "query",
+                        "description": "电厂英文名称  如永强二期：yongqiang2",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
@@ -2474,6 +2555,15 @@
                         "name": "token",
                         "in": "query",
                         "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "factory",
+                        "in": "query",
+                        "description": "电厂英文名称  如永强二期：yongqiang2",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -2554,6 +2644,15 @@
                         "name": "token",
                         "in": "query",
                         "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "factory",
+                        "in": "query",
+                        "description": "电厂英文名称  如永强二期：yongqiang2",
                         "required": true,
                         "schema": {
                             "type": "string"

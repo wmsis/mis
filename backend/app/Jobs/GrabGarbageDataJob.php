@@ -69,7 +69,7 @@ class GrabGarbageDataJob implements ShouldQueue
                         'code'=>$item['code'],
                         'lost'=>$item['lost'],
                         'hev'=>$item['hev'],
-                        'created_at' => date('Y-m-d H:i:s'),
+                        'created_at' => date('Y-m-d H:i:s', intval($item['time'])),
                         'updated_at' => date('Y-m-d H:i:s')
                     );
                 }
