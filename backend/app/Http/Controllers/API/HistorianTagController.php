@@ -182,7 +182,7 @@ class HistorianTagController extends Controller
         $factory = $request->input('factory');
         $table = 'historian_tag_' . $factory;
         $obj_historian_tag = (new HistorianTag())->setTable($table);
-        $data = $obj_historian_tag->select(['id', 'tag_name', 'description', 'alias'])->get();
+        $data = $obj_historian_tag->select(['id', 'tag_name'])->get();
         return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $data);
     }
 
