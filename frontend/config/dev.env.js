@@ -5,6 +5,6 @@ const prodEnv = require('./prod.env')
 //本地测试:http://api.yqsis.com/api
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
-  VUE_APP_BASE_URL: '"http://mis.com/api"',
-  VUE_APP_HOST: '"http://mis.com/"'
+  VUE_APP_BASE_URL: '"http://wmhb.mis.com/api"',
+  VUE_APP_HOST: '"http://wmhb.mis.com"'
 })
