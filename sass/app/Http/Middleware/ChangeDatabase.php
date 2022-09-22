@@ -28,7 +28,7 @@ class ChangeDatabase
         $domain = $server['HTTP_HOST'];
         $third = $this->third_domain($domain);
         Log::info('000000000000000');
-        if($third && !strpos($domain, '10.99.99.88')){
+        if($third && strpos($domain, '10.99.99.88') !== false){
             Log::info('1111111111111');
             $tenement = DB::connection('mysql_mis')->table('tenement')->where('code', $third)->first();
             if(!$tenement || !isset($tenement->code)){
