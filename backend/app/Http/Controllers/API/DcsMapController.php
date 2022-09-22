@@ -241,6 +241,15 @@ class DcsMapController extends Controller
         if (!$row) {
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
+
+        $org = Orgnization::find($row->orgnization_id)->toArray();
+        $dcs_standard = DcsStandard::find($row->dcs_standard_id)->toArray();
+        $tag_id_arr = explode(',', $row->tag_ids);
+        $tb = 'historian_tag_' . $org['code'];
+        $tags = (new HistorianTag())->setTable($tb)->whereIn('id', $tag_id_arr)->get()->toArray();
+        $row['orgnization'] = $org;
+        $row['dcs_standard'] = $dcs_standard;
+        $row['tags'] = $tags;
         return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $row);
     }
 
