@@ -27,7 +27,11 @@ class ChangeDatabase
         $server = $request->server();
         $domain = $server['HTTP_HOST'];
         $third = $this->third_domain($domain);
+        Log::info('000000000000000');
+        Log::info($domain);
         if($third){
+            Log::info('1111111111111111111');
+            Log::info($third);
             $tenement = DB::connection('mysql_mis')->table('tenement')->where('code', $third)->first();
             if(!$tenement || !isset($tenement->code)){
                 return response(UtilService::format_data(self::AJAX_FAIL, '商户不存在', ''), 200);
