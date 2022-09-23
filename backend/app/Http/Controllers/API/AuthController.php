@@ -108,7 +108,7 @@ class AuthController extends Controller
             $current_token = CacheService::getCache($key);
             if($current_token){
                 //将老token加入黑名单
-                JWTAuth::unsetToken();
+                JWTAuth::setToken($current_token)->invalidate();
             }
 
             if(!$user){

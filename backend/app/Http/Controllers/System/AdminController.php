@@ -14,6 +14,7 @@ use CacheService;
 use App\Models\System\Admin;
 use JWTAuth;
 use Hash;
+use Log;
 
 class AdminController extends Controller
 {
@@ -62,7 +63,7 @@ class AdminController extends Controller
             $current_token = CacheService::getCache($key);
             if($current_token){
                 //将老token加入黑名单
-                JWTAuth::unsetToken();
+                JWTAuth::setToken($current_token)->invalidate();
             }
         }
         else{
