@@ -60,7 +60,6 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:admin', 'jwt.auth
         Route::post('users/batchdelete', 'UserController@batchdelete');
         Route::post('users/chgpwd', 'UserController@chgpwd');
         Route::post('users/resetpwd', 'UserController@resetpwd');
-        Route::post('users/bind-member', 'UserController@bindMember');
         Route::get('users/{user}/orgnization', 'UserController@orgnization');  //用户组织页   路由模型绑定
         Route::post('users/{user}/orgnization', 'UserController@storeOrgnization'); //保存用户组织页   路由模型绑定
 
@@ -188,6 +187,8 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:admin', 'jwt.auth
 
         //如有补充路由应在 Route::apiResources 方法之前定义
         Route::get('dcs-standard/lists', 'DcsStandardController@lists');
+        Route::get('dcs-group/show-relation/{id}', 'DcsGroupController@showRelation');
+        Route::post('dcs-group/bind-relation', 'DcsGroupController@bindRelation');
         //API 资源路由  DCS映射关系 标准DCS 电表映射关系 抓斗数据库配置 电表数据库配置 历史数据库配置
         Route::apiResources([
             'dcs-standard' => DcsStandardController::class,
@@ -196,6 +197,7 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:admin', 'jwt.auth
             'garbage-db-config' => GarbageDbConfigController::class,
             'electricity-db-config' => ElectricityDbConfigController::class,
             'dcs-db-config' => DcsDbConfigController::class,
+            'dcs-group' => DcsGroupController::class,
         ]);
     });
 });

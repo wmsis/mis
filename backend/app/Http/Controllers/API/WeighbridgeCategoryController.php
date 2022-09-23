@@ -567,15 +567,17 @@ class WeighbridgeCategoryController extends Controller
             $old_small_names = $big->small_names;
 
             //解除旧的关联
-            foreach ($old_small_names as $key => $small) {
-                if(!in_array($small->id, $final_samll_arr)){
-                    //解除旧的关联
-                    $small->weighbridge_cate_big()->dissociate($big->id);  //解除时用belongsTo方使用dissociate方法
-                    $small->save();
-                }
-                else{
-                    //已经存在关联关系的小类列表
-                    $already_in_arr[] = $small->id;
+            if($old_small_names){
+                foreach ($old_small_names as $key => $small) {
+                    if(!in_array($small->id, $final_samll_arr)){
+                        //解除旧的关联
+                        $small->weighbridge_cate_big()->dissociate($big->id);  //解除时用belongsTo方使用dissociate方法
+                        $small->save();
+                    }
+                    else{
+                        //已经存在关联关系的小类列表
+                        $already_in_arr[] = $small->id;
+                    }
                 }
             }
 

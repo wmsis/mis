@@ -513,7 +513,7 @@ class UserController extends Controller
      * )
      */
     public function batchdelete(BatchDeleteRequest $request){
-        $userObj = auth('admin')->user();
+        $userObj = auth('api')->user();
         $idstring = $request->input('idstring');
         $password = $request->input('password');
 
@@ -578,7 +578,7 @@ class UserController extends Controller
         $oldpwd = $request->input('oldpwd');
         $newpwd = $request->input('newpwd');
 
-        $user = auth('admin')->user();
+        $user = auth('api')->user();
         $flag = Hash::check($oldpwd, $user->password);
         if($flag) {
             $user->password = bcrypt($newpwd);
@@ -672,7 +672,7 @@ class UserController extends Controller
      * )
      */
     public function bindMember(Request $request){
-        $user = auth()->user();
+        $user = auth('api')->user();
         $member_id = $request->input('member_id');
         $user->member_id = $member_id;
         $res = $user->save();

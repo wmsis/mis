@@ -138,7 +138,7 @@ class ElectricityDbConfigController extends Controller
     {
         $row = ConfigElectricityDB::where('orgnization_id', $id)->first();
         if (!$row) {
-            return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
+            return UtilService::format_data(self::AJAX_SUCCESS, '该数据不存在', []);
         }
         return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $row);
     }

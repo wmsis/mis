@@ -2,34 +2,35 @@
 
 namespace App\Models\SIS;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\SIS\DcsGroup;
+use App\Models\SIS\DcsStandard;
 
 /**
  * 创建数据模型
  * @OA\Schema(
- *     title="DcsStandard model",
- *     description="DcsStandard model",
+ *     title="DcsGroup model",
+ *     description="DcsGroup model",
  *     @OA\Property(
  *         property="id",
  *         type="integer"
  *     ),
  *     @OA\Property(
- *         property="en_name",
+ *         property="name",
  *         type="string"
  *     ),
  *     @OA\Property(
- *         property="cn_name",
+ *         property="description",
  *         type="string"
  *     ),
  * )
  */
-class DcsStandard extends Model
+class DcsGroup extends Model
 {
-    use softDeletes;
-    protected $table = 'dcs_standard';
-    protected $fillable = ['en_name', 'cn_name', 'dcs_group_id'];
+    use HasFactory, softDeletes;
+    protected $table = 'dcs_group';
+    protected $fillable = ['name', 'description'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',
@@ -37,10 +38,10 @@ class DcsStandard extends Model
     ];
 
     /**
-     * 获取拥有此标准DCS名称的分组
+     * 获取与分组相关的标准DCS名称记录
      */
-    public function dcsGroup()
+    public function dcsStandard()
     {
-        return $this->belongsTo(DcsGroup::class);
+        return $this->hasOne(DcsStandard::class);
     }
 }

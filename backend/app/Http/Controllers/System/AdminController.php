@@ -13,6 +13,7 @@ use UtilService;
 use CacheService;
 use App\Models\System\Admin;
 use JWTAuth;
+use Hash;
 
 class AdminController extends Controller
 {
@@ -185,5 +186,112 @@ class AdminController extends Controller
             'expires_in' => auth('admin')->factory()->getTTL() * 60
         ];
         return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $rtn);
+    }
+
+
+    /**
+     * @OA\Post(
+     *     path="/api/admin/chgpwd",
+     *     tags={"系统管理员admin"},
+     *     operationId="admin chgpwd",
+     *     summary="修改管理员密码",
+     *     description="使用说明：修改管理员密码",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="原始密码",
+     *         in="query",
+     *         name="oldpwd",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="新密码",
+     *         in="query",
+     *         name="newpwd",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation",
+     *     )
+     * )
+     */
+    public function chgpwd(Request $request){
+        $oldpwd = $request->input('oldpwd');
+        $newpwd = $request->input('newpwd');
+
+        $user = auth('admin')->user();
+        $flag = Hash::check($oldpwd, $user->password);
+        if($flag) {
+            $user->password = bcrypt($newpwd);
+            $res = $user->save();
+            if ($res) {
+                return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+            } else {
+                return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+            }
+        }
+        else{
+            return UtilService::format_data(self::AJAX_FAIL, '原密码错误', '');
+        }
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/admin/resetpwd",
+     *     tags={"系统管理员admin"},
+     *     operationId="admin resetpwd",
+     *     summary="重置密码",
+     *     description="使用说明：重置密码",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="用户ID列表",
+     *         in="query",
+     *         name="idstring",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation",
+     *     )
+     * )
+     */
+    public function resetpwd(Request $request){
+        $idstring = $request->input('idstring');
+        $idarray = explode(',', $idstring);
+        $password = bcrypt('123456');
+        $res = Admin::whereIn('id', $idarray)->update([
+            'password' => $password
+        ]);
+
+        if ($res) {
+            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+        } else {
+            return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+        }
     }
 }

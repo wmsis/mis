@@ -551,6 +551,15 @@ class UserController extends Controller
      *         ),
      *     ),
      *     @OA\Parameter(
+     *         description="用户ID",
+     *         in="query",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
      *         description="原始密码",
      *         in="query",
      *         name="oldpwd",
@@ -577,8 +586,9 @@ class UserController extends Controller
     public function chgpwd(ChgpwdRequest $request){
         $oldpwd = $request->input('oldpwd');
         $newpwd = $request->input('newpwd');
+        $id = $request->input('id');
 
-        $user = auth('admin')->user();
+        $user = User::find($id);
         $flag = Hash::check($oldpwd, $user->password);
         if($flag) {
             $user->password = bcrypt($newpwd);
@@ -632,50 +642,6 @@ class UserController extends Controller
         $res = User::whereIn('id', $idarray)->update([
             'password' => $password
         ]);
-
-        if ($res) {
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
-        } else {
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
-        }
-    }
-
-    /**
-     * @OA\Post(
-     *     path="/api/users/bind-member",
-     *     tags={"用户users"},
-     *     operationId="bind-member",
-     *     summary="綁定前端用戶(SASS端用户使用)",
-     *     description="使用说明：綁定前端用戶",
-     *     @OA\Parameter(
-     *         description="token",
-     *         in="query",
-     *         name="token",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="string"
-     *         ),
-     *     ),
-     *     @OA\Parameter(
-     *         description="member_id",
-     *         in="query",
-     *         name="member_id",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="string"
-     *         ),
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="successful operation",
-     *     )
-     * )
-     */
-    public function bindMember(Request $request){
-        $user = auth()->user();
-        $member_id = $request->input('member_id');
-        $user->member_id = $member_id;
-        $res = $user->save();
 
         if ($res) {
             return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);

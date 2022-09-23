@@ -477,6 +477,301 @@
                 }
             }
         },
+        "/api/dcs-group": {
+            "get": {
+                "tags": [
+                    "DCS分组dcs-group"
+                ],
+                "summary": "分页获取数据列表",
+                "description": "使用说明：分页获取数据列表",
+                "operationId": "dcs-group-index",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "num",
+                        "in": "query",
+                        "description": "每页数据量",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "页数",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "关键字中文名搜索",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "DCS分组dcs-group"
+                ],
+                "summary": "新增单条数据",
+                "description": "使用说明：新增单条数据",
+                "operationId": "dcs-group-store",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "名称",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "description",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "store succeed"
+                    }
+                }
+            }
+        },
+        "/api/dcs-group/{id}": {
+            "get": {
+                "tags": [
+                    "DCS分组dcs-group"
+                ],
+                "summary": "获取详细信息",
+                "description": "使用说明：获取详细信息",
+                "operationId": "dcs-group-show",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "DcsGroup主键",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "DCS分组dcs-group"
+                ],
+                "summary": "修改",
+                "description": "使用说明：修改单条数据",
+                "operationId": "dcs-group-update",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "DcsGroup主键",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "名称",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "描述",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "update succeed"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "DCS分组dcs-group"
+                ],
+                "summary": "删除单条数据",
+                "description": "使用说明：删除单条数据",
+                "operationId": "dcs-group-destroy",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "DcsGroup主键",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "detroy succeed"
+                    }
+                }
+            }
+        },
+        "/api/dcs-group/bind-relation": {
+            "post": {
+                "tags": [
+                    "DCS分组dcs-group"
+                ],
+                "summary": "绑定分组和DCS标准名称关系",
+                "description": "使用说明：绑定分组和DCS标准名称关系",
+                "operationId": "dcs-group-bind-relation",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "分组ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "dcs_standard_ids",
+                        "in": "query",
+                        "description": "标准DCS名称ID列表，英文逗号隔开",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "store succeed"
+                    }
+                }
+            }
+        },
+        "/api/dcs-group/show-relation/{id}": {
+            "get": {
+                "tags": [
+                    "DCS分组dcs-group"
+                ],
+                "summary": "获取详细DCS标准名称关联信息",
+                "description": "使用说明：获取详细DCS标准名称关联信息",
+                "operationId": "dcs-group-show-relation",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "分组ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
         "/api/dcs-map": {
             "get": {
                 "tags": [
@@ -4299,6 +4594,85 @@
                 }
             }
         },
+        "/api/admin/chgpwd": {
+            "post": {
+                "tags": [
+                    "系统管理员admin"
+                ],
+                "summary": "修改管理员密码",
+                "description": "使用说明：修改管理员密码",
+                "operationId": "admin chgpwd",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "oldpwd",
+                        "in": "query",
+                        "description": "原始密码",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "newpwd",
+                        "in": "query",
+                        "description": "新密码",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/admin/resetpwd": {
+            "post": {
+                "tags": [
+                    "系统管理员admin"
+                ],
+                "summary": "重置密码",
+                "description": "使用说明：重置密码",
+                "operationId": "admin resetpwd",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "idstring",
+                        "in": "query",
+                        "description": "用户ID列表",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
         "/api/tenements/lists": {
             "get": {
                 "tags": [
@@ -5019,6 +5393,15 @@
                         }
                     },
                     {
+                        "name": "id",
+                        "in": "query",
+                        "description": "用户ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
                         "name": "oldpwd",
                         "in": "query",
                         "description": "原始密码",
@@ -5066,41 +5449,6 @@
                         "name": "idstring",
                         "in": "query",
                         "description": "用户ID列表",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "successful operation"
-                    }
-                }
-            }
-        },
-        "/api/users/bind-member": {
-            "post": {
-                "tags": [
-                    "用户users"
-                ],
-                "summary": "綁定前端用戶(SASS端用户使用)",
-                "description": "使用说明：綁定前端用戶",
-                "operationId": "bind-member",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "description": "token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "member_id",
-                        "in": "query",
-                        "description": "member_id",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -6468,6 +6816,23 @@
                         "type": "string"
                     },
                     "time": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "DcsGroup": {
+                "title": "DcsGroup model",
+                "description": "DcsGroup model",
+                "properties": {
+                    "id": {
+                        "description": "创建数据模型",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
                         "type": "string"
                     }
                 },
