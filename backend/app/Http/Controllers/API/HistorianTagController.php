@@ -162,6 +162,15 @@ class HistorianTagController extends Controller
      *             type="string"
      *         ),
      *     ),
+     *     @OA\Parameter(
+     *         description="tag_name 搜索",
+     *         in="query",
+     *         name="tag_name",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="succeed",
@@ -179,10 +188,16 @@ class HistorianTagController extends Controller
      */
     public function all(Request $request)
     {
+        $tag_name = $request->input('tag_name');
         $factory = $request->input('factory');
         $table = 'historian_tag_' . $factory;
         $obj_historian_tag = (new HistorianTag())->setTable($table);
-        $data = $obj_historian_tag->select(['id', 'tag_name'])->get();
+        if($tag_name){
+            $data = $obj_historian_tag->select(['id', 'tag_name'])->where('tag_name', 'like', "%{$tag_name}%")->get();
+        }
+        else{
+            $data = $obj_historian_tag->select(['id', 'tag_name'])->get();
+        }
         return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $data);
     }
 
