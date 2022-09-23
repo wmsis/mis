@@ -15,6 +15,7 @@ use App\Models\SIS\DcsMap;
 use App\Models\SIS\Orgnization;
 use App\Models\SIS\DcsStandard;
 use App\Models\SIS\HistorianTag;
+use Illuminate\Support\Facades\DB;
 use UtilService;
 
 class DcsMapController extends Controller
@@ -98,9 +99,14 @@ class DcsMapController extends Controller
 
         $name = $request->input('cn_name');
 
-        $rows = DcsMap::select(['*'])->where('orgnization_id', $orgnization_id);
+        $rows = DB::table('dcs_map')
+            ->leftJoin('dcs_standard', 'dcs_map.dcs_standard_id', '=', 'dcs_standard.id')
+            ->select('dcs_map.*', 'dcs_standard.cn_name')
+            ->where('dcs_map.orgnization_id', $orgnization_id)
+            ->whereNull('dcs_map.deleted_at');
+
         if ($name) {
-            $rows = $rows->where('cn_name', 'like', "%{$name}%");
+            $rows = $rows->where('dcs_standard.cn_name', 'like', "%{$name}%");
         }
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
@@ -110,9 +116,9 @@ class DcsMapController extends Controller
             $tag_id_arr = explode(',', $item->tag_ids);
             $tb = 'historian_tag_' . $org['code'];
             $tags = (new HistorianTag())->setTable($tb)->whereIn('id', $tag_id_arr)->get()->toArray();
-            $rows[$key]['orgnization'] = $org;
-            $rows[$key]['dcs_standard'] = $dcs_standard;
-            $rows[$key]['tags'] = $tags;
+            $rows[$key]->orgnization = $org;
+            $rows[$key]->dcs_standard = $dcs_standard;
+            $rows[$key]->tags = $tags;
         }
         return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total]);
     }
