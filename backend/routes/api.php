@@ -34,6 +34,8 @@ Route::group(['namespace' => 'App\Http\Controllers\System', 'prefix' => 'admin',
     Route::get('logout', 'AdminController@logout');
     Route::get('refresh', 'AdminController@refresh');
     Route::get('me', 'AdminController@me')->middleware(['jwt.role:admin', 'jwt.auth']);
+    Route::post('chgpwd', 'AdminController@chgpwd');
+    Route::post('resetpwd', 'AdminController@resetpwd');
 });
 
 //系统租户和系统组织
