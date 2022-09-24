@@ -42,6 +42,6 @@ class DcsGroup extends Model
      */
     public function dcsStandard()
     {
-        return $this->hasOne(DcsStandard::class);
+        return $this->hasMany(DcsStandard::class);
     }
 }
