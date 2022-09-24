@@ -27,8 +27,9 @@ class Handler extends ExceptionHandler
     const AJAX_NOT_FOUND = 50001;
     const AJAX_METHOD_NOT_ALLOWED = 60001;
     const AJAX_TOKEN_BLACKLISTED = 70001;
-    const AJAX_TOKEN_INVALID = 80001;
-    const AJAX_TOKEN_NOT_PROVIDE = 90001;
+    const AJAX_TOKEN_EXPIRED = 80001;
+    const AJAX_TOKEN_INVALID = 90001;
+    const AJAX_TOKEN_NOT_PROVIDE = 90002;
     const AJAX_METHOD_ERROR = 20002;
     const AJAX_CONN_ERROR = 30002;
 
@@ -79,7 +80,7 @@ class Handler extends ExceptionHandler
             return response()->json($res);
         }
         elseif($exception instanceof TokenExpiredException){
-            $res = UtilService::format_data(self::AJAX_TOKEN_INVALID, 'token已失效', '');
+            $res = UtilService::format_data(self::AJAX_TOKEN_EXPIRED, 'token已过期', '');
             return response()->json($res);
         }
         elseif($exception instanceof JWTException){
