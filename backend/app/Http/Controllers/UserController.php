@@ -155,6 +155,22 @@ class UserController extends Controller
                     }
                 }
                 $users[$key]['orgnization_name'] = $orgnization_name;
+
+                if($item->type == 'admin'){
+                    $users[$key]['type_name'] = '超级管理员';
+                }
+                elseif($item->type == 'group'){
+                    $users[$key]['type_name'] = '集团用户';
+                }
+                elseif($item->type == 'webmaster'){
+                    $users[$key]['type_name'] = '电厂管理员';
+                }
+                elseif($item->type == 'instation'){
+                    $users[$key]['type_name'] = '电厂用户';
+                }
+                else{
+                    $users[$key]['type_name'] = '';
+                }
             }
 
             $res = array(

@@ -94,6 +94,20 @@ class RoleController extends Controller
             ->get();
 
         if($roles){
+            foreach ($roles as $key => $item) {
+                if($item->type == 'admin'){
+                    $roles[$key]['type_name'] = '管理员角色';
+                }
+                elseif($item->type == 'group'){
+                    $roles[$key]['type_name'] = '集团角色';
+                }
+                elseif($item->type == 'instation'){
+                    $roles[$key]['type_name'] = '电厂角色';
+                }
+                else{
+                    $roles[$key]['type_name'] = '';
+                }
+            }
             $res = array(
                 'data'=>$roles,
                 'total'=>$total
