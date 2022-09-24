@@ -16,7 +16,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use GuzzleHttp\Exception\ConnectException;
 use Illuminate\Auth\AuthenticationException;
-use Illuminate\\Database\\QueryException;
+use Illuminate\Database\QueryException;
 use UtilService;
 use Log;
 
