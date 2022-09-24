@@ -16,6 +16,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use GuzzleHttp\Exception\ConnectException;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\\Database\\QueryException;
 use UtilService;
 use Log;
 
@@ -23,15 +24,14 @@ class Handler extends ExceptionHandler
 {
     const AJAX_INVALID = 20001;   //认证错误
     const AJAX_UNAUTH = 30001;    //非法用户
-    const AJAX_MODEL_NOT_FOUND = 40001;
-    const AJAX_NOT_FOUND = 50001;
-    const AJAX_METHOD_NOT_ALLOWED = 60001;
-    const AJAX_TOKEN_BLACKLISTED = 70001;
+    const AJAX_METHOD_ERROR = 40001;
+    const AJAX_CONN_ERROR = 50001;
+    const AJAX_QUERY_ERROR = 60001;
     const AJAX_TOKEN_EXPIRED = 80001;
-    const AJAX_TOKEN_INVALID = 90001;
-    const AJAX_TOKEN_NOT_PROVIDE = 90002;
-    const AJAX_METHOD_ERROR = 20002;
-    const AJAX_CONN_ERROR = 30002;
+    const AJAX_TOKEN_BLACKLISTED = 80002;
+    const AJAX_TOKEN_INVALID = 80003;
+    const AJAX_TOKEN_NOT_PROVIDE = 80004;
+
 
     /**
      * A list of the exception types that are not reported.
@@ -99,6 +99,10 @@ class Handler extends ExceptionHandler
         }
         elseif($exception instanceof ModelNotFoundException){
 
+        }
+        elseif($exception instanceof QueryException){
+            $res = UtilService::format_data(self::AJAX_QUERY_ERROR, '查询错误，数据库或未配置', '');
+            return response()->json($res);
         }
         elseif($exception instanceof ValidationException){
             $msg = $exception->validator->errors()->first();
