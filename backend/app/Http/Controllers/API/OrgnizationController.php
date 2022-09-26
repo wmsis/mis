@@ -177,6 +177,7 @@ class OrgnizationController extends Controller
                     'id' => $item->id,
                     'name' => $item->name,
                     'title' => $item->name,
+                    'sub_title' => $item->sub_title,
                     'sort' => $item->sort,
                     'parent_id' => $item->parent_id,
                     'level' => $item->level,
@@ -206,6 +207,7 @@ class OrgnizationController extends Controller
                 'id' => $item->id,
                 'name' => $item->name,
                 'title' => $item->name,
+                'sub_title' => $item->sub_title,
                 'sort' => $item->sort,
                 'parent_id' => $item->parent_id,
                 'level' => $item->level,
@@ -247,6 +249,15 @@ class OrgnizationController extends Controller
      *         in="query",
      *         name="name",
      *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="副标题",
+     *         in="query",
+     *         name="sub_title",
+     *         required=false,
      *         @OA\Schema(
      *             type="string"
      *         ),
@@ -298,6 +309,7 @@ class OrgnizationController extends Controller
         $name = $request->input('name');
         $code = $request->input('code');
         $description = $request->input('description');
+        $sub_title = $request->input('sub_title');
         $level = 1;
         $parent_id = $request->input('parent_id');
         $sort = $request->input('sort');
@@ -309,12 +321,13 @@ class OrgnizationController extends Controller
                 $row->name = $name;
                 $row->code = $code;
                 $row->description = $description;
+                $row->sub_title = $sub_title;
                 $row->parent_id = $parent_id;
                 $row->sort = $sort;
                 $row->save();
             }
             else {
-                $params = request(['name', 'code', 'description', 'parent_id', 'sort']);
+                $params = request(['name', 'code', 'description', 'sub_title', 'parent_id', 'sort']);
                 if($parent_id){
                     $parent = Orgnization::find($parent_id);
                     $level = $parent && $parent->level ? $parent->level + 1 : 1;
