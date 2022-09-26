@@ -155,7 +155,7 @@ class OrgnizationController extends Controller
      *         description="最大层级",
      *         in="query",
      *         name="level",
-     *         required=true,
+     *         required=false,
      *         @OA\Schema(
      *             type="string"
      *         ),

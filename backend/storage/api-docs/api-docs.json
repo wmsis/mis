@@ -3132,6 +3132,15 @@
                         }
                     },
                     {
+                        "name": "sub_title",
+                        "in": "query",
+                        "description": "副标题",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "code",
                         "in": "query",
                         "description": "组织编码(电厂英文全拼+数字)",
