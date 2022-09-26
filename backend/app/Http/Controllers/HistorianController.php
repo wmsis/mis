@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Mongo\HistorianData;
 use App\Models\Factory\GrabGarbage;  //电厂数据模型
 use App\Models\SIS\WeighBridgeFormat;
+use App\Models\SIS\Orgnization;
+use App\Models\SIS\ConfigHistorianDB;
 
 class HistorianController extends Controller
 {
@@ -26,14 +28,19 @@ class HistorianController extends Controller
     public function tags()
     {
         $factory = 'yongqiang2';
-        $rtn = HistorianService::tags($factory);
+        $org = Orgnization::where('code', $factory)->first()->toArray();
+        $cfg = ConfigHistorianDB::where('orgnization_id', $org['id'])->first()->toArray();
+        $rtn = HistorianService::tags($cfg);
         dd($rtn);
     }
 
     public function tagslist()
     {
-        $list = GrabGarbage::first();
-        dd($list->che);
+        $factory = 'yongqiang2';
+        $org = Orgnization::where('code', $factory)->first()->toArray();
+        $cfg = ConfigHistorianDB::where('orgnization_id', $org['id'])->first()->toArray();
+        $rtn = HistorianService::tagslist($cfg);
+        dd($rtn);
         //$user = new UserRepository();
         //$lists = $user->all();
         //dd($user);

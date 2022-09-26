@@ -389,7 +389,7 @@ class HistorianTagController extends Controller
      *     ),
      * )
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $factory = $request->input('factory');
         if(!$this->validate_factory($factory)){
@@ -503,7 +503,7 @@ class HistorianTagController extends Controller
      *     ),
      * )
      */
-    public function load()
+    public function load(Request $request)
     {
         $factory = $request->input('factory');
         if(!$this->validate_factory($factory)){
@@ -728,7 +728,7 @@ class HistorianTagController extends Controller
      *     ),
      * )
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $factory = $request->input('factory');
         if(!$this->validate_factory($factory)){
