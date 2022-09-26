@@ -99,7 +99,7 @@ class DcsDbConfigController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->only(['user', 'password', 'ip', 'port', 'version', 'orgnization_id']);
+        $input = $request->only(['user', 'password', 'ip', 'port', 'version', 'orgnization_id', 'db_name']);
         $row = ConfigHistorianDB::where('orgnization_id', $input['orgnization_id'])->first();
         if ($row) {
             return UtilService::format_data(self::AJAX_FAIL, '该组织配置数据已存在', '');
@@ -254,7 +254,7 @@ class DcsDbConfigController extends Controller
             return response()->json(UtilService::format_data(self::AJAX_FAIL, '该数据不存在', ''));
         }
         $input = $request->input();
-        $allowField = ['user', 'password', 'ip', 'port', 'version'];
+        $allowField = ['user', 'password', 'ip', 'port', 'version', 'db_name'];
         foreach ($allowField as $field) {
             if (key_exists($field, $input)) {
                 $inputValue = $input[$field];

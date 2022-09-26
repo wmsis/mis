@@ -6774,6 +6774,28 @@
     },
     "components": {
         "schemas": {
+            "Historian": {
+                "title": "Historian Model",
+                "description": "Historian Model",
+                "properties": {
+                    "_id": {
+                        "type": "string"
+                    },
+                    "tag_name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "type": "string"
+                    },
+                    "datetime": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
             "ElectricityData": {
                 "title": "ElectrityData Model",
                 "description": "ElectrityData Model",
@@ -6812,10 +6834,7 @@
                     "_id": {
                         "type": "string"
                     },
-                    "cn_name": {
-                        "type": "string"
-                    },
-                    "en_name": {
+                    "description": {
                         "type": "string"
                     },
                     "tag_name": {
@@ -6824,7 +6843,7 @@
                     "value": {
                         "type": "string"
                     },
-                    "time": {
+                    "datetime": {
                         "type": "string"
                     }
                 },

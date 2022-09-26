@@ -17,8 +17,6 @@ class GrabGarbageData extends Command
      *
      * @var string
      * @param date 获取数据的日期
-     * @param connection 获取数据的远程数据库连接
-     * @param table 存储数据的本地数据库表
      */
     protected $signature = 'collect:grabGarbageData {--date=default}';
 
@@ -61,7 +59,7 @@ class GrabGarbageData extends Command
             $configGarbage = (new ConfigGarbageDB())->setConnection($tenement_conn); //连接特定租户下面的抓斗数据库配置表
             $orgObj = (new Orgnization())->setConnection($tenement_conn);
             //循环电厂
-            $factories = $orgObj->where('level', 3)->get();
+            $factories = $orgObj->where('level', 2)->get();
             foreach ($factories as $k2 => $factory) {
                 if($factory->code){
                     //具体电厂的抓斗数据库配置信息

@@ -49,7 +49,7 @@ class GrabGarbageDataJob implements ShouldQueue
             $obj_grab_garbage_local = (new GrabGarbageLocalModel())->setConnection($this->tenement_conn)->setTable($this->local_table); //连接特定租户下面的本地数据库表
         }
         catch(Exception $ex){
-            Log::info('连接电厂数据库异常');
+            Log::info('连接电厂抓斗数据库异常');
             Log::info(var_export($ex, true));
         }
 

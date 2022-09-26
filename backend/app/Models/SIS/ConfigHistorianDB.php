@@ -9,7 +9,7 @@ class ConfigHistorianDB extends Model
 {
     use softDeletes;
     protected $table = 'config_historian_db';
-    protected $fillable = ['user', 'password', 'ip', 'port', 'version', 'orgnization_id'];
+    protected $fillable = ['user', 'password', 'ip', 'port', 'version', 'orgnization_id', 'db_name'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',

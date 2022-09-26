@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Log;
 use Illuminate\Support\Facades\DB;
 use App\Models\SIS\ConfigGarbageDB;
+use App\Models\SIS\ConfigHistorianDB;
 
 class DatabaseServiceProvider extends ServiceProvider
 {
@@ -52,7 +53,19 @@ class DatabaseServiceProvider extends ServiceProvider
             $final = array_merge($conn, $base);
             $new[$item->code] = $final;
 
-            //抓斗数据库  因恩倍力mysql数据库版本太低  该方案终止
+            //本地MongoDB
+            $final_mongo = array (
+                'host' => $item->ip,
+                'database' => $item->db_name,
+                //'username' => $item->user,
+                //'password' => $item->password,
+                'port' => 27017,
+                'driver' => 'mongodb'
+            );
+            $conn_name_mongo = $item->code . '_mongo';
+            $new[$conn_name_mongo] = $final_mongo;
+
+            //抓斗数据库
             $obj_config_garbage_db = (new ConfigGarbageDB())->setConnection($item->code);
             $garbage_db_list = $obj_config_garbage_db->all();
             foreach ($garbage_db_list as $k9 => $db) {
@@ -72,6 +85,24 @@ class DatabaseServiceProvider extends ServiceProvider
                     );
                     $final = array_merge($base, $conn);
                     $conn_name = 'garbage_' . $item->id . '_' . $db->id;
+                    $new[$conn_name] = $final;
+                }
+            }
+
+            //historian 5.5数据库 转存于MongoDB
+            $obj_config_historian_db = (new ConfigHistorianDB())->setConnection($item->code);
+            $historian_db_list = $obj_config_historian_db->all();
+            foreach ($historian_db_list as $k9 => $db) {
+                if($db && $db->version && $db->version < 7){
+                    $final = array (
+                        'host' => $db->ip,
+                        'database' => $db->db_name,
+                        //'username' => $db->user,
+                        //'password' => $db->password,
+                        'port' => $db->port,
+                        'driver' => 'mongodb'
+                    );
+                    $conn_name = 'historian_' . $item->id . '_' . $db->id;
                     $new[$conn_name] = $final;
                 }
             }
