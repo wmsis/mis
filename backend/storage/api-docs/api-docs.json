@@ -3082,7 +3082,7 @@
                         "name": "level",
                         "in": "query",
                         "description": "最大层级",
-                        "required": true,
+                        "required": false,
                         "schema": {
                             "type": "string"
                         }
