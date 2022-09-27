@@ -19,7 +19,7 @@ class HistorianData extends Command
      * @var string
      * @param date 获取数据的日期
      */
-    protected $signature = 'collect:historianData {--date=default}';
+    protected $signature = 'collect:historianData {--datetime=default}';
 
     /**
      * The console command description.
@@ -45,12 +45,12 @@ class HistorianData extends Command
      */
     public function handle()
     {
-        $optionDate = $this->option('date');
+        $optionDate = $this->option('datetime');
         if($optionDate != 'default'){
-            $date = $optionDate;
+            $datetime = $optionDate;
         }
         else{
-            $date = date('Y-m-d');
+            $datetime = date('Y-m-d H:i:s', time() - 10 * 60);  ////取十分钟之前的数据
         }
 
         $tenements = DB::connection('mysql_mis')->table('tenement')->get();
@@ -79,7 +79,7 @@ class HistorianData extends Command
                         }
 
                         $params = array(
-                            'date' => $date,
+                            'datetime' => $datetime,
                             'tenement_conn' => $tenement_conn,
                             'tenement_mongo_conn' => $tenement_mongo_conn,
                             'remote_conn' => $remote_conn,

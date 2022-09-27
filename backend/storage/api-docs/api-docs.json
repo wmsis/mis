@@ -6784,9 +6784,6 @@
                     "tag_name": {
                         "type": "string"
                     },
-                    "description": {
-                        "type": "string"
-                    },
                     "value": {
                         "type": "string"
                     },
@@ -6832,9 +6829,6 @@
                 "description": "HistorianData Model",
                 "properties": {
                     "_id": {
-                        "type": "string"
-                    },
-                    "description": {
                         "type": "string"
                     },
                     "tag_name": {

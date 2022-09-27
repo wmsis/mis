@@ -43,9 +43,9 @@ class Historian extends Model
         'updatedAt' => 'datetime:Y-m-d H:i:s'
     ];
 
-    public function findByDate($date){
-        $begin = strtotime($date.' 00:00:00');
-        $end = strtotime($date.' 23:59:59');
+    public function findByDatetime($datetime){
+        $begin = date('Y-m-d H:i', strtotime($datetime)) . ':00';
+        $end = date('Y-m-d H:i', strtotime($datetime)) . ':59';
         $rows = self::where('datetime', '>=', $begin)
             ->where('datetime', '<=', $end)
             ->get();

@@ -18,7 +18,7 @@ use HistorianService;
 class HistorianDataJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    protected $date;
+    protected $datetime;
     protected $tenement_conn;
     protected $tenement_mongo_conn;
     protected $remote_conn;
@@ -29,7 +29,7 @@ class HistorianDataJob implements ShouldQueue
     public $tries = 3;
 
     /**
-    * @param date 获取数据的日期
+    * @param datetime 获取数据的日期时间
     * @param connection 获取数据的远程数据库连接
     * @param table 存储数据的本地数据库表
      *
@@ -37,7 +37,7 @@ class HistorianDataJob implements ShouldQueue
      */
     public function __construct($params=null)
     {
-        $this->date = $params && isset($params['date']) ? $params['date'] : '';
+        $this->datetime = $params && isset($params['datetime']) ? $params['datetime'] : '';
         $this->tenement_conn = $params && isset($params['tenement_conn']) ? $params['tenement_conn'] : '';
         $this->tenement_mongo_conn = $params && isset($params['tenement_mongo_conn']) ? $params['tenement_mongo_conn'] : '';
         $this->remote_conn = $params && isset($params['remote_conn']) ? $params['remote_conn'] : '';
@@ -55,10 +55,10 @@ class HistorianDataJob implements ShouldQueue
     public function handle()
     {
         if($this->db_type == 'historiandb'){
-            $this->historiandb_data();
+            $this->historiandb_data(); //读取historian7.0以上数据库的数据
         }
         else{
-            $this->mongodb_data();
+            $this->mongodb_data(); //若数据库historian为7.0以下，则从opcserver读取数据，OPC读取后转存到电厂本地MongoDB数据库
         }
     }
 
@@ -72,14 +72,22 @@ class HistorianDataJob implements ShouldQueue
             Log::info(var_export($ex, true));
         }
 
-        $obj_hitorian_factory->chunk(20, function ($tagslist) use ($obj_hitorian_local) {
+        $start = date('Y-m-d H:i', strtotime($this->datetime) - 60) . ':00';
+        $start = gmdate("Y-m-d\TH:i:s\Z", strtotime($start)); //国际时间
+        $end = date('Y-m-d H:i', strtotime($this->datetime)) . ':00';
+        $end = gmdate("Y-m-d\TH:i:s\Z", strtotime($end)); //国际时间
+        $obj_hitorian_factory->chunk(20, function ($tagslist) use ($obj_hitorian_local, $start, $end) {
             $params = [];
             $tagsNameList = [];
             foreach ($tagslist as $key => $tag) {
                 $tagsNameList[] = $tag->tag_name;
             }
             $tagsNameString = implode(';', $tagsNameList);
-            $res = HistorianService::currentData($this->orgnization, $tagsNameString);
+            $count = 1;
+            $samplingMode = 2;
+            $calculationMode = 1;
+            $intervalMS = null;
+            $res = HistorianService::SampledData($this->orgnization, $tagsNameString, $start, $end, $count, $samplingMode, $calculationMode, $intervalMS);
             if($res && $res['code'] === 0 && $res['data']['ErrorCode'] === 0){
                 $datalist = $res['data']['Data'];
                 foreach ($datalist as $key => $item) {
@@ -105,10 +113,10 @@ class HistorianDataJob implements ShouldQueue
 
             if($params && count($params) > 0){
                 $res = $obj_hitorian_local->insertMany($params);
-                Log::info($this->date . '历史数据库数据插入成功'.count($params).'条');
+                Log::info($this->datetime . '历史数据库数据插入成功'.count($params).'条');
             }
             else{
-                Log::info($this->date . '历史数据库没有数据插入');
+                Log::info($this->datetime . '历史数据库没有数据插入');
             }
         });
     }
@@ -124,10 +132,10 @@ class HistorianDataJob implements ShouldQueue
             Log::info(var_export($ex, true));
         }
 
-        $rows = $obj_hitorian_factory->findByDate($this->date);
+        $rows = $obj_hitorian_factory->findByDatetime($this->datetime);
         if($rows && count($rows) > 0){
             foreach ($rows as $key => $item) {
-                $local_row = $obj_hitorian_local->findRowBySn($item->sn);
+                $local_row = $obj_hitorian_local->findRowBySn($item->_id);
                 if(!$local_row){
                     //本地不存在则插入
                     $params[] = array(
@@ -145,10 +153,10 @@ class HistorianDataJob implements ShouldQueue
 
         if($params && count($params) > 0){
             $res = $obj_hitorian_local->insertMany($params);
-            Log::info($this->date . '历史数据库数据插入成功'.count($params).'条');
+            Log::info($this->datetime . '历史数据库数据插入成功'.count($params).'条');
         }
         else{
-            Log::info($this->date . '历史数据库没有数据插入');
+            Log::info($this->datetime . '历史数据库没有数据插入');
         }
     }
 }
