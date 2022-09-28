@@ -30,7 +30,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('collect:iec104data')->everyTenMinutes();
         $schedule->command('collect:grabGarbageData')->twiceDaily(12, 23);//当天的数据
         $schedule->command($yestoday_cmd)->twiceDaily(13, 22);//前一天的数据
-        $schedule->command('collect:historianData')->everyTenMinutes();
+        $schedule->command('collect:historianData')->everyFiveMinutes();
+        //$schedule->command('collect:historianData')->everyMinute();
     }
 
     /**

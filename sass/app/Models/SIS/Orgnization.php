@@ -9,7 +9,7 @@ class Orgnization extends Model
 {
     use softDeletes;
     protected $table = 'orgnization';
-    protected $fillable = ['name', 'description', 'parent_id', 'level', 'sort', 'code'];
+    protected $fillable = ['name', 'description', 'parent_id', 'level', 'sort', 'code', 'current_login_orgnization'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',

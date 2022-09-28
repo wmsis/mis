@@ -26,7 +26,7 @@ class ChangeDatabase
     {
         $server = $request->server();
         $domain = $server['HTTP_HOST'];
-        $third = $this->third_domain($domain);
+        $third = UtilService::third_domain($domain);
         if($third && strpos($domain, '10.99.99.88') === false){ //没查询到10.99.99.88  排除测试环境
             $tenement = DB::connection('mysql_mis')->table('tenement')->where('code', $third)->first();
             if(!$tenement || !isset($tenement->code)){
@@ -40,16 +40,5 @@ class ChangeDatabase
 
         Config::set('database.default', $default);
         return $next($request);
-    }
-
-    /**
-     * @notes 三级域名
-     * @author cat
-     * @date 2021/12/15 17:04
-     */
-    private function third_domain($domain = '')
-    {
-        $domainArr = explode('.', $domain);
-        return array_shift($domainArr);
     }
 }

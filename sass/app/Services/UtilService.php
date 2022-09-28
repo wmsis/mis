@@ -191,4 +191,15 @@ class UtilService
     public function getKey($key, $constant){
         return md5($key . 'MIS' . $constant);
     }
+
+    /**
+     * @notes 三级域名
+     * @author cat
+     * @date 2021/12/15 17:04
+     */
+    public function third_domain($domain = '')
+    {
+        $domainArr = explode('.', $domain);
+        return array_shift($domainArr);
+    }
 }

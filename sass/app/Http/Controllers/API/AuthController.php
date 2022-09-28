@@ -24,6 +24,7 @@ use UtilService;
 use CacheService;
 use App\Models\OperateLog;
 use App\Models\Permission;
+use App\Models\SIS\Orgnization;
 
 /**
  * @OA\Info(
@@ -112,13 +113,37 @@ class AuthController extends Controller
             }
 
             if(!$user){
-                $res = UtilService::format_data(self::AJAX_FAIL, '账号不存在', '');
-                return response()->json($res, 401);
+                return UtilService::format_data(self::AJAX_FAIL, '用户不存在', '');
             }
             // attempt to verify the credentials and create a token for the user
             elseif (!$token = auth('api')->attempt($credentials)) {
-                $res = UtilService::format_data(self::AJAX_FAIL, '用户名或密码错误', '');
-                return response()->json($res, 401);
+                return UtilService::format_data(self::AJAX_FAIL, '用户名或者密码错误', '');
+            }
+            else{
+                if($user->type == 'admin'){
+                    $user['type_name'] = '超级管理员';
+                }
+                elseif($user->type == 'group'){
+                    $user['type_name'] = '集团用户';
+                }
+                elseif($user->type == 'webmaster'){
+                    $user['type_name'] = '电厂管理员';
+                }
+                elseif($user->type == 'instation'){
+                    $user['type_name'] = '电厂用户';
+                }
+                else{
+                    $user['type_name'] = '';
+                }
+
+                //用户所在组织
+                if($user->type == 'admin'){
+                    $orgnizations = Orgnization::where('level', 2)->get();
+                }
+                else{
+                    $orgnizations = $user->orgnizations()->where('level', 2)->get();
+                }
+                $user->orgnizations = $orgnizations;
             }
             CacheService::setCache($key, $token, 3600);
         } catch (JWTException $e) {
@@ -274,13 +299,22 @@ class AuthController extends Controller
      *     )
      * )
      */
-    public function logout()
+    public function logout(Request $request)
     {
         try {
             $user = auth('api')->user();
             if($user && isset($user->mobile)) {
                 $key = UtilService::getKey($user->mobile, 'TOKEN');
                 CacheService::clearCache($key);
+
+                $server = $request->server();
+                $domain = $server['HTTP_HOST'];
+                $third = UtilService::third_domain($domain);
+                $key_orgnization = UtilService::getKey($user->id, 'ORGNIZATION' . $third);
+                CacheService::clearCache($key_orgnization);
+
+                $user->last_login_orgnization = NULL;
+                $user->save();
             }
 
             auth('api')->logout();
@@ -315,13 +349,23 @@ class AuthController extends Controller
      *     )
      * )
      */
-    public function refresh(){
+    public function refresh(Request $request){
         $user = auth('api')->user();
         $token = auth('api')->refresh();
 
         if($user) {
+            //token
+            $expire = auth('api')->factory()->getTTL() * 60;
             $key = UtilService::getKey($user->mobile, 'TOKEN');
-            CacheService::setCache($key, $token, 3600);
+            CacheService::setCache($key, $token, $expire);
+
+            //orgnization
+            $server = $request->server();
+            $domain = $server['HTTP_HOST'];
+            $third = UtilService::third_domain($domain);
+            $key_orgnization = UtilService::getKey($user->id, 'ORGNIZATION' . $third);
+            $data = Orgnization::find($user->last_login_orgnization)->toArray();
+            CacheService::setCache($key_orgnization, $data, $expire);
         }
 
         $res = UtilService::format_data(self::AJAX_SUCCESS, '刷新成功', compact('token'));

@@ -24,7 +24,6 @@ use App\Http\Requests\User\BatchDeleteRequest;
 use App\Http\Requests\User\ChgpwdRequest;
 use App\Http\Requests\User\ResetpwdRequest;
 use App\Notifications\TaskFlow;
-use App\Models\SIS\HistorianTag;
 use App\Http\Requests\User\StoreTagRequest;
 use Illuminate\Database\QueryException;
 use App\Models\SIS\Orgnization;
@@ -409,7 +408,7 @@ class UserController extends Controller
         $roles = $user->roles;
 
         //验证
-        $param_arr = explode(',', request('roles'));
+        $param_arr = request('roles');
         $roles = Role::whereIn('id', $param_arr)->get();
         $myRoles = $user->roles;
 
@@ -765,7 +764,7 @@ class UserController extends Controller
      */
     public function storeOrgnization(StoreOrgnizationRequest $request, User $user){
         //验证
-        $param_arr = explode(',', request('orgnizations'));
+        $param_arr = request('orgnizations');
         $orgnizations = Orgnization::whereIn('id', $param_arr)->get();
         $myOrgnizations = $user->orgnizations;
 

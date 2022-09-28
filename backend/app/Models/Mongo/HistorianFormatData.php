@@ -2,19 +2,21 @@
 
 namespace App\Models\Mongo;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Jenssegers\Mongodb\Eloquent\Model;
+
 
 /**
  * @OA\Schema(
- *     title="HistorianData Model",
- *     description="HistorianData Model",
+ *     title="HistorianFormatData Model",
+ *     description="HistorianFormatData Model",
  *     @OA\Property(
  *         property="_id",
  *         type="string"
  *     ),
  *     @OA\Property(
- *         property="tag_name",
- *         type="string"
+ *         property="dcs_standard_id",
+ *         type="integer"
  *     ),
  *     @OA\Property(
  *         property="value",
@@ -26,12 +28,11 @@ use Jenssegers\Mongodb\Eloquent\Model;
  *     ),
  * )
  */
-
-class HistorianData extends Model
+class HistorianFormatData extends Model
 {
-    protected $collection = 'historian_data_yongqiang2';     //文档名
+    protected $collection = 'historian_format_data_yongqiang2';     //文档名
     protected $primaryKey = '_id';    //设置id
-    protected $fillable = ['tag_name', 'value', 'datetime'];
+    protected $fillable = ['dcs_standard_id', 'value', 'datetime'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',
@@ -42,11 +43,7 @@ class HistorianData extends Model
         return self::insert($params);
     }
 
-    public function findRowBySn($sn){
-        return self::where('_id', $sn)->first();
-    }
-
-    public function findRowByTagAndTime($tag_name, $datetime){
-        return self::where('tag_name', $tag_name)->where('datetime', $datetime)->first();
+    public function findRowByIdAndTime($dcs_standard_id, $datetime){
+        return self::where('dcs_standard_id', $dcs_standard_id)->where('datetime', $datetime)->first();
     }
 }

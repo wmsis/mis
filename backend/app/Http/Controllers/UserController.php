@@ -425,7 +425,7 @@ class UserController extends Controller
         $roles = $user->roles;
 
         //验证
-        $param_arr = explode(',', request('roles'));
+        $param_arr = request('roles');
         $roles = Role::whereIn('id', $param_arr)->get();
         $myRoles = $user->roles;
 
@@ -747,7 +747,7 @@ class UserController extends Controller
      */
     public function storeOrgnization(StoreOrgnizationRequest $request, User $user){
         //验证
-        $param_arr = explode(',', request('orgnizations'));
+        $param_arr = request('orgnizations');
         $orgnizations = Orgnization::whereIn('id', $param_arr)->get();
         $myOrgnizations = $user->orgnizations;
 

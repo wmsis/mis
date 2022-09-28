@@ -71,7 +71,7 @@ class AdminController extends Controller
         }
 
         if (! $token = auth('admin')->attempt($credentials)) {
-            return response()->json(['error' => '用户名或者密码错误'], 401);
+            return UtilService::format_data(self::AJAX_FAIL, '用户名或者密码错误', '');
         }
         $expire = auth('admin')->factory()->getTTL() * 60;
         CacheService::setCache($key, $token, $expire);

@@ -11,11 +11,13 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use UtilService;
+use CacheService;
 use App\Models\SIS\Orgnization;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 use App\Http\Requests\User\StoreRoleRequest;
 use App\Models\Role;
+use App\Models\User;
 use Log;
 
 class OrgnizationController extends Controller
@@ -89,13 +91,73 @@ class OrgnizationController extends Controller
         $name = $request->input('name');
         $obj = new Orgnization();
 
-        $rows = $obj->select(['*'])->where('level', 3);
+        $rows = $obj->select(['*'])->where('level', 2);
         if ($name) {
             $rows = $rows->where('name', 'like', "%{$name}%");
         }
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
         return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total]);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/orgnizations/switch",
+     *     tags={"公司组织架构orgnizations"},
+     *     operationId="orgnizations-switch",
+     *     summary="切换组织",
+     *     description="使用说明：切换组织",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="组织ID",
+     *         in="query",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="succeed",
+     *     ),
+     * )
+     */
+    public function switch(Request $request)
+    {
+        $id = $request->input('id');
+        $user = auth('api')->user();
+        if($user->type != 'admin'){
+            $data = $user->orgnizations()->where('orgnization_id', $id)->first();
+        }
+        else{
+            $data = Orgnization::where('id', $id)->first();
+        }
+
+        if($data){
+            $server = $request->server();
+            $domain = $server['HTTP_HOST'];
+            $third = UtilService::third_domain($domain);
+            $data = $data->toArray();
+            $user = auth('api')->user();
+            if($user){
+                $user->last_login_orgnization = $id;
+                $user->save();
+                $key = UtilService::getKey($user->id, 'ORGNIZATION' . $third);
+                $expire = auth('api')->factory()->getTTL() * 60;
+                CacheService::setCache($key, $data, $expire);
+            }
+            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $data);
+        }
+        return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
     }
 
     /**
@@ -131,7 +193,7 @@ class OrgnizationController extends Controller
      */
     public function factories(Request $request)
     {
-        $data = Orgnization::where('level', 3)->get();
+        $data = Orgnization::where('level', 2)->get();
         return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $data);
     }
 
@@ -412,7 +474,7 @@ class OrgnizationController extends Controller
      */
     public function storeRole(StoreRoleRequest $request, Orgnization $orgnization){
         //验证
-        $param_arr = explode(',', request('roles'));
+        $param_arr = request('roles');
         $roles = Role::whereIn('id', $param_arr)->get();
         $myRoles = $orgnization->roles;
 

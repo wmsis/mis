@@ -11,6 +11,9 @@ use Illuminate\Queue\SerializesModels;
 use App\Models\Factory\Historian;   //电厂数据模型
 use App\Models\Mongo\HistorianData; //本地数据模型
 use App\Models\SIS\HistorianTag;    //本地数据标签模型
+use App\Models\Mongo\HistorianFormatData; //本地格式化数据模型
+use App\Models\SIS\DcsMap;
+use App\Models\SIS\DcsStandard;
 use Log;
 use Config;
 use HistorianService;
@@ -19,13 +22,14 @@ class HistorianDataJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     protected $datetime;
-    protected $tenement_conn;
-    protected $tenement_mongo_conn;
-    protected $remote_conn;
-    protected $local_tag_table;
-    protected $local_data_table;
-    protected $db_type;
-    protected $orgnization;
+    protected $tenement_conn; //租户连接
+    protected $tenement_mongo_conn; //本地mongo连接
+    protected $remote_conn; //电厂连接
+    protected $local_tag_table; //historian_tag
+    protected $local_data_table; //本地保存的MongoDB原始数据集合
+    protected $local_format_data_table; //本地保存的格式化后的数据集合
+    protected $db_type; //数据库类型mongo或者historian
+    protected $cfgdb;//数据库配置信息
     public $tries = 3;
 
     /**
@@ -43,8 +47,9 @@ class HistorianDataJob implements ShouldQueue
         $this->remote_conn = $params && isset($params['remote_conn']) ? $params['remote_conn'] : '';
         $this->local_tag_table = $params && isset($params['local_tag_table']) ? $params['local_tag_table'] : '';
         $this->local_data_table = $params && isset($params['local_data_table']) ? $params['local_data_table'] : '';
+        $this->local_format_data_table = $params && isset($params['local_format_data_table']) ? $params['local_format_data_table'] : '';
         $this->db_type = $params && isset($params['db_type']) ? $params['db_type'] : '';
-        $this->orgnization = $params && isset($params['orgnization']) ? $params['orgnization'] : '';
+        $this->cfgdb = $params && isset($params['cfgdb']) ? $params['cfgdb'] : '';
     }
 
     /**
@@ -62,6 +67,7 @@ class HistorianDataJob implements ShouldQueue
         }
     }
 
+    //从远程historian7.0获取数据
     private function historiandb_data(){
         try{
             $obj_hitorian_factory = (new HistorianTag())->setConnection($this->remote_conn)->setTable($this->local_tag_table);  //连接电厂数据库
@@ -87,7 +93,7 @@ class HistorianDataJob implements ShouldQueue
             $samplingMode = 2;
             $calculationMode = 1;
             $intervalMS = null;
-            $res = HistorianService::SampledData($this->orgnization, $tagsNameString, $start, $end, $count, $samplingMode, $calculationMode, $intervalMS);
+            $res = HistorianService::SampledData($this->cfgdb, $tagsNameString, $start, $end, $count, $samplingMode, $calculationMode, $intervalMS);
             if($res && $res['code'] === 0 && $res['data']['ErrorCode'] === 0){
                 $datalist = $res['data']['Data'];
                 foreach ($datalist as $key => $item) {
@@ -119,8 +125,11 @@ class HistorianDataJob implements ShouldQueue
                 Log::info($this->datetime . '历史数据库没有数据插入');
             }
         });
+
+        $this->historian_format_data();
     }
 
+    //从远程MongoDB获取数据（historian5.5读取不方便转为opc读取并转存到电厂本地MongoDB）
     private function mongodb_data(){
         $params = [];
         try{
@@ -157,6 +166,73 @@ class HistorianDataJob implements ShouldQueue
         }
         else{
             Log::info($this->datetime . '历史数据库没有数据插入');
+        }
+    }
+
+    //根据DCS标准名称格式化获取到的数据
+    private function historian_format_data(){
+        //获取映射关系
+        $datetime = date('Y-m-d H:i', strtotime($this->datetime)) . ':00';
+        //本租户下面某个电厂的DCS映射关系
+        $map_lists = (new DcsMap())->setConnection($this->tenement_conn)->where('orgnization_id', $this->cfgdb['orgnization_id'])->get();
+        foreach ($map_lists as $k1 => $item) {
+            //找到每个映射关系绑定的tagid
+            $ids = explode(',', $item->tag_ids);
+            $tag_key_values = [];
+            $obj_hitorian_factory = (new HistorianTag())->setConnection($this->remote_conn)->setTable($this->local_tag_table);
+            $taglists = $obj_hitorian_factory->whereIn('id', $ids)->get();
+            if($taglists &&  count($taglists) > 0){
+                $tagname_arr = [];  //所有tagname列表
+                foreach ($taglists as $key => $tag) {
+                    $tagname_arr[] = $tag->tag_name;
+                    //初始化键值对
+                    $tag_key_values[$tag->tag_name] = array(
+                        'value' => 0,
+                        'datetime' => $datetime
+                    );
+                }
+
+                //本地保存的数据库
+                $obj_hitorian_local = (new HistorianData())->setConnection($this->tenement_mongo_conn)->setTable($this->local_data_table);
+                $tags_data = $obj_hitorian_local->whereIn('tag_name', $tagname_arr)->where('datetime', $datetime)->get();
+                foreach ($tags_data as $key => $tag) {
+                    $tag_key_values[$tag->tag_name] = array(
+                        'value' => $tag->value,
+                        'datetime' => $tag->datetime
+                    );
+                }
+            }
+
+            //取值成功
+            if(!empty($tag_key_values)){
+                $val = 0;
+                if($item->func){
+                    //计算函数的值
+                    $str = $item->func;
+                    foreach ($tag_key_values as $tag_name => $tag) {
+                        $str = str_replace($tag_name, $tag['value'], $str);
+                    }
+                    $val = eval("return $str;");
+                }
+                else{
+                    foreach ($tag_key_values as $tag_name => $tag) {
+                        $val = $tag['value']; //取第一个tag的值
+                        break;
+                    }
+                }
+                //本地格式化数据
+                $obj_hitorian_format = (new HistorianFormatData())->setConnection($this->tenement_mongo_conn)->setTable($this->local_format_data_table);
+                $local_row = $obj_hitorian_format->findRowByIdAndTime($item->dcs_standard_id, $datetime);
+                if(!$local_row){
+                    //本地不存在则插入
+                    $obj_hitorian_format->dcs_standard_id = $item->dcs_standard_id;
+                    $obj_hitorian_format->value = $val;
+                    $obj_hitorian_format->datetime = $datetime;
+                    $obj_hitorian_format->created_at = $datetime;
+                    $obj_hitorian_format->updated_at = date('Y-m-d H:i:s');
+                    $obj_hitorian_format->save();
+                }
+            }
         }
     }
 }

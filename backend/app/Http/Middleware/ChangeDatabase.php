@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Config;
 use UtilService;
 use CacheService;
 use Log;
+use App\Models\System\Tenement;
 
 class ChangeDatabase
 {
@@ -25,7 +26,22 @@ class ChangeDatabase
             $key = UtilService::getKey($user->id, 'TENEMENT');
             $tenement = CacheService::getCache($key);
             //$default = $request->tenement ? $request->tenement : 'mysql';  //tenement为租户编号code
-            $default = $tenement && isset($tenement['code']) ? $tenement['code'] : 'mysql';
+            if($tenement && isset($tenement['code'])){
+                $default = $tenement['code'];
+            }
+            else{
+                $tenement = Tenement::first();
+                if($tenement && isset($tenement['code'])){
+                    //默认租户
+                    $tenement = $tenement->toArray();
+                    $default = $tenement['code'];
+                    $expire = auth('admin')->factory()->getTTL() * 60;
+                    CacheService::setCache($key, $tenement, $expire);
+                }
+                else{
+                    $default = 'mysql';
+                }
+            }
         }
 
         Config::set('database.default', $default);

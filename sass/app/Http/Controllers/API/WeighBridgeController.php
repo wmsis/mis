@@ -118,7 +118,7 @@ class WeighBridgeController extends Controller
 
     private function validate_factory($factory){
         $tb_list = [];
-        $datalist = Orgnization::where('level', 3)->get();
+        $datalist = Orgnization::where('level', 2)->get();
         foreach ($datalist as $key => $item) {
             $tb_list[] = $item->code;
         }

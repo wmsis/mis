@@ -98,27 +98,6 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
 
     //历史数据库  组织  接口权限 电表  地磅 地磅垃圾分类  DCS映射关系 标准DCS 电表映射关系 抓斗数据库配置 电表数据库配置 历史数据库配置
     Route::group(['namespace' => 'App\Http\Controllers\API'], function () {
-        //  Historian Tag
-        Route::prefix('historian-tag')->group(function () {
-            Route::get('index', 'HistorianTagController@index');
-            Route::get('all', 'HistorianTagController@all');
-            Route::get('listdata', 'HistorianTagController@listWithData');
-            Route::get('show/{id}', 'HistorianTagController@show');
-            Route::get('load', 'HistorianTagController@load');
-            Route::post('show-many', 'HistorianTagController@showMany');
-            Route::post('store', 'HistorianTagController@store');
-            Route::post('update/{id}', 'HistorianTagController@update');
-            Route::delete('destroy/{id}', 'HistorianTagController@destroy');
-        });
-
-        // Historian Data
-        Route::prefix('historian-data')->group(function () {
-            Route::post('current-data', 'HistorianDataController@currentData');
-            Route::post('raw-data', 'HistorianDataController@rawData');//原始数据
-            Route::post('sampled-data', 'HistorianDataController@sampledData');
-            Route::post('watch-data', 'HistorianDataController@watchData'); //监控数据
-        });
-
         //用户组织
         Route::prefix('orgnizations')->group(function () {
             Route::get('page', 'OrgnizationController@index');
@@ -128,6 +107,7 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
             Route::get('{orgnization}/role', 'OrgnizationController@role');  //用户组织角色页   路由模型绑定
             Route::post('{orgnization}/role', 'OrgnizationController@storeRole'); //保存用户组织角色页   路由模型绑定
             Route::post('delete', 'OrgnizationController@delete');
+            Route::post('switch', 'OrgnizationController@switch');
         });
 
         //接口权限
@@ -150,6 +130,12 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
         // 地磅上报数据接口
         Route::prefix('weighbridge')->group(function () {
             Route::get('index', 'WeighBridgeController@index');
+        });
+
+        // 标准dcs名称列表
+        Route::prefix('dcs-standard')->group(function () {
+            Route::get('lists', 'DcsStandardController@lists');
+            Route::get('datalists', 'DcsStandardController@datalists');
         });
     });
 });

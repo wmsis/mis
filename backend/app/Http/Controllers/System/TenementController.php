@@ -97,8 +97,9 @@ class TenementController extends Controller
     public function switch(Request $request)
     {
         $id = $request->input('id');
-        $data = Tenement::find($id)->toArray();
+        $data = Tenement::find($id);
         if($data){
+            $data = $data->toArray();
             $user = auth('admin')->user();
             if($user){
                 $key = UtilService::getKey($user->id, 'TENEMENT');

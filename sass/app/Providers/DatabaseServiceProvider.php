@@ -43,6 +43,7 @@ class DatabaseServiceProvider extends ServiceProvider
         //租户数据库
         $tenements = DB::connection('mysql_mis')->table('tenement')->get();
         foreach ($tenements as $key => $item) {
+            //本地mysql
             $conn = array (
                 'host' => $item->ip,
                 'database' => $item->db_name,
@@ -51,6 +52,18 @@ class DatabaseServiceProvider extends ServiceProvider
             );
             $final = array_merge($conn, $base);
             $new[$item->code] = $final;
+
+            //本地MongoDB
+            $final_mongo = array (
+                'host' => $item->ip,
+                'database' => $item->db_name,
+                //'username' => $item->user,
+                //'password' => $item->password,
+                'port' => 27017,
+                'driver' => 'mongodb'
+            );
+            $conn_name_mongo = $item->code . '_mongo';
+            $new[$conn_name_mongo] = $final_mongo;
         }
 
         $this->app['config']['database.connections'] = array_merge($this->app['config']['database.connections'], $new);

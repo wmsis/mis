@@ -17,7 +17,7 @@ class HistorianData extends Command
      * The name and signature of the console command.
      *
      * @var string
-     * @param date 获取数据的日期
+     * @param datetime 获取数据的日期
      */
     protected $signature = 'collect:historianData {--datetime=default}';
 
@@ -69,6 +69,7 @@ class HistorianData extends Command
                     if($cfg){
                         $local_tag_table = 'historian_tag_' . $factory->code; //本地存储数据库表名称
                         $local_data_table = 'historian_data_' . $factory->code; //本地存储数据库表名称
+                        $local_format_data_table = 'historian_format_data_' . $factory->code; //本地存储数据库表名称
                         if($cfg['version'] && $cfg['version'] < 7){
                             $remote_conn =  'historian_' . $tenement->id . '_' . $cfg['id'];       //5.5版本存储在电厂本地MongoDB数据库，电厂历史数据库连接名称
                             $db_type = 'mongodb';
@@ -85,8 +86,9 @@ class HistorianData extends Command
                             'remote_conn' => $remote_conn,
                             'local_tag_table' => $local_tag_table,
                             'local_data_table' => $local_data_table,
+                            'local_format_data_table' => $local_format_data_table,
                             'db_type' => $db_type,
-                            'orgnization' => $cfg->toArray()
+                            'cfgdb' => $cfg->toArray()
                         );
 
                         dispatch(new HistorianDataJob($params));
