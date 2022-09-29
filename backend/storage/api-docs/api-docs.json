@@ -2264,6 +2264,61 @@
                 }
             }
         },
+        "/api/historian-data/index": {
+            "get": {
+                "tags": [
+                    "历史数据库数据historian data"
+                ],
+                "summary": "获取DCS数据列表",
+                "description": "使用说明：获取DCS数据列表",
+                "operationId": "historian-data-page",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "factory",
+                        "in": "query",
+                        "description": "电厂英文名称  如永强二期：yongqiang2",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "num",
+                        "in": "query",
+                        "description": "每页数据量",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "页数",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
         "/api/historian-data/current-data": {
             "post": {
                 "tags": [

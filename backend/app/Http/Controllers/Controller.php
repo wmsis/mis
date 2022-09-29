@@ -6,6 +6,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use UtilService;
+use CacheService;
 
 class Controller extends BaseController
 {
@@ -14,4 +16,19 @@ class Controller extends BaseController
     const AJAX_SUCCESS = 0;
     const AJAX_FAIL = -1;
     const AJAX_NO_DATA = -2;
+    protected $mongo_conn;
+
+    public function __construct(){
+        $mongo_conn = 'wmhb_mongo';
+        $user = auth('admin')->user();
+        if($user){
+            $key = UtilService::getKey($user->id, 'TENEMENT');
+            $tenement = CacheService::getCache($key);
+            if($tenement && isset($tenement['code'])){
+                $mongo_conn = $tenement['code'] . '_mongo';
+            }
+        }
+
+        $this->mongo_conn = $mongo_conn;
+    }
 }

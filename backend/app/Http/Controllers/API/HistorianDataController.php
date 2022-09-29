@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Models\SIS\HistorianTag;
 use App\Models\SIS\Orgnization;
 use App\Models\SIS\ConfigHistorianDB;
+use App\Models\Mongo\HistorianData;
 use HistorianService;
 use Illuminate\Http\Request;
 use UtilService;
@@ -18,6 +19,77 @@ use Log;
 
 class HistorianDataController extends Controller
 {
+    /**
+     * @OA\Get(
+     *     path="/api/historian-data/index",
+     *     tags={"历史数据库数据historian data"},
+     *     operationId="historian-data-page",
+     *     summary="获取DCS数据列表",
+     *     description="使用说明：获取DCS数据列表",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="电厂英文名称  如永强二期：yongqiang2",
+     *         in="query",
+     *         name="factory",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="每页数据量",
+     *         in="query",
+     *         name="num",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="integer",
+     *             default=20,
+     *         ),
+     *     ),
+     *      @OA\Parameter(
+     *          description="页数",
+     *          in="query",
+     *          name="page",
+     *          required=false,
+     *          @OA\Schema(
+     *             type="integer",
+     *             default=1,
+     *         ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="succeed",
+     *      ),
+     * )
+     */
+    public function index(Request $request)
+    {
+        $factory = $request['factory'];
+        if(!$this->validate_factory($factory)){
+            return UtilService::format_data(self::AJAX_FAIL, 'factory参数错误', '');
+        }
+
+        $perPage = $request->input('num');
+        $perPage = $perPage ? $perPage : 20;
+        $page = $request->input('page');
+        $page = $page ? $page : 1;
+
+        $tb = 'historian_data_' . $factory;
+        $obj = (new HistorianData())->setConnection($this->mongo_conn)->setTable($tb);
+
+        $rows = $obj->select(['*']);
+        $total = $rows->count();
+        $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
+        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total]);
+    }
 
     private function getTagList($factory, $tagIds)
     {

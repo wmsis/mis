@@ -135,6 +135,7 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:admin', 'jwt.auth
 
         // Historian Data
         Route::prefix('historian-data')->group(function () {
+            Route::get('index', 'HistorianDataController@index');
             Route::post('current-data', 'HistorianDataController@currentData');
             Route::post('raw-data', 'HistorianDataController@rawData');//原始数据
             Route::post('sampled-data', 'HistorianDataController@sampledData');

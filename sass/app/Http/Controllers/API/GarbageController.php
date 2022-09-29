@@ -48,19 +48,28 @@ class GarbageController extends Controller
         $dou_list = $obj->select(['dou'])->groupBy('dou')->get();
         $liao_list = $obj->select(['liao'])->groupBy('liao')->get();
 
-        $che = [];
+        $che = array(
+            'name' => '行车号',
+            'values' => []
+        );
         foreach ($che_list as $key => $item) {
-            $che[] = $item->che;
+            $che['values'][] = $item->che;
         }
 
-        $dou = [];
+        $dou = array(
+            'name' => '抓斗号',
+            'values' => []
+        );
         foreach ($dou_list as $key => $item) {
-            $dou[] = $item->dou;
+            $dou['values'][] = $item->dou;
         }
 
-        $liao = [];
+        $liao = array(
+            'name' => '料口号',
+            'values' => []
+        );
         foreach ($liao_list as $key => $item) {
-            $liao[] = $item->liao;
+            $liao['values'][] = $item->liao;
         }
 
         return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', compact('che', 'dou', 'liao'));
