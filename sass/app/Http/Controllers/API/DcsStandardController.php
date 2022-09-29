@@ -114,7 +114,7 @@ class DcsStandardController extends Controller
      *         description="标准DCS名称ID列表，多个英文逗号隔开",
      *         in="query",
      *         name="ids",
-     *         required=false,
+     *         required=true,
      *         @OA\Schema(
      *             type="string"
      *         ),
@@ -140,25 +140,6 @@ class DcsStandardController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="succeed",
-     *         @OA\JsonContent(
-     *             @OA\Property(
-	 *              	property="code",
-	 *                  description="错误代码，0：为没有错误",
-	 *                  type="integer",
-	 *					default="0"
-	 *             ),
-     *             @OA\Property(
-	 *                  property="data",
-	 *                  description="返回数据",
-     *                  type="array",
-     *                  @OA\Items(ref="#/components/schemas/DcsStandard")
-     *             ),
-     *             @OA\Property(
-	 *              	property="message",
-	 *                  description="错误消息",
-	 *                  type="string"
-	 *             )
-     *         ),
      *     ),
      * )
      */
@@ -168,7 +149,6 @@ class DcsStandardController extends Controller
         $start = $request->input('start');
         $end = $request->input('end');
         $id_arr = explode(',', $ids);
-        $final = array();
         $lists = DcsStandard::whereIn('id', $id_arr)->get();
         if($lists && count($lists) > 0){
             $local_data_table = 'historian_format_data_' . $this->orgnization->code;
@@ -176,7 +156,7 @@ class DcsStandardController extends Controller
             foreach ($lists as $key => $item) {
                 $group = DcsGroup::find($item->dcs_group_id);
                 $lists[$key]['group_name'] = $group && $group->name ? $group->name : '';
-                
+
                 $datalist = $obj_hitorian_format_local->where('dcs_standard_id', $item->id)
                     ->where('datetime', '>', $start)
                     ->where('datetime', '<', $end)

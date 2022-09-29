@@ -13,9 +13,8 @@ use Illuminate\Http\Request;
 use App\Models\SIS\WeighBridge;
 use App\Models\SIS\WeighBridgeFormat;
 use App\Models\SIS\WeighbridgeCateSmall;
+use App\Models\SIS\WeighbridgeCateBig;
 use Illuminate\Support\Facades\DB;
-use App\Models\System\Tenement;
-use App\Models\SIS\Orgnization;
 use Illuminate\Database\QueryException;
 use UtilService;
 use Log;
@@ -24,9 +23,72 @@ class WeighBridgeController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/weighbridge/index",
+     *     path="/api/weighbridge/categories",
      *     tags={"地磅上报数据weighbridge"},
-     *     operationId="weighbridge-index",
+     *     operationId="weighbridge-categories",
+     *     summary="获取所有垃圾分类列表",
+     *     description="使用说明：获取所有垃圾分类列表",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="关键字搜索",
+     *         in="query",
+     *         name="name",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="succeed",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+	 *              	property="code",
+	 *                  description="错误代码，0：为没有错误",
+	 *                  type="integer",
+	 *					default="0"
+	 *             ),
+     *             @OA\Property(
+	 *                  property="data",
+	 *                  description="返回数据",
+     *                  type="array",
+     *                  @OA\Items(ref="#/components/schemas/WeighBridgeFormat")
+     *             ),
+     *             @OA\Property(
+	 *              	property="message",
+	 *                  description="错误消息",
+	 *                  type="string"
+	 *             )
+     *         ),
+     *     ),
+     * )
+     */
+    public function categories(Request $request)
+    {
+        $name = $request->input('name');
+        if($name){
+            $lists = WeighbridgeCateBig::where('name', 'like', "%{$name}%")->get();
+        }
+        else{
+            $lists = WeighbridgeCateBig::all();
+        }
+
+        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $lists);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/weighbridge/datalists",
+     *     tags={"地磅上报数据weighbridge"},
+     *     operationId="weighbridge-datalists",
      *     summary="获取地磅数据列表",
      *     description="使用说明：获取地磅数据列表",
      *     @OA\Parameter(
@@ -39,94 +101,70 @@ class WeighBridgeController extends Controller
      *         ),
      *     ),
      *     @OA\Parameter(
-     *         description="电厂英文名称  如永强二期：yongqiang2",
+     *         description="大类垃圾名称ID列表，多个英文逗号隔开",
      *         in="query",
-     *         name="factory",
+     *         name="ids",
      *         required=true,
      *         @OA\Schema(
      *             type="string"
      *         ),
      *     ),
      *     @OA\Parameter(
-     *         description="每页数据量",
+     *         description="开始时间",
      *         in="query",
-     *         name="num",
-     *         required=false,
+     *         name="start",
+     *         required=true,
      *         @OA\Schema(
-     *             type="integer",
-     *             default=20,
-     *         ),
-     *     ),
-     *      @OA\Parameter(
-     *          description="页数",
-     *          in="query",
-     *          name="page",
-     *          required=false,
-     *          @OA\Schema(
-     *             type="integer",
-     *             default=1,
-     *         ),
-     *      ),
-     *      @OA\Parameter(
-     *          description="中文名称搜索",
-     *          in="query",
-     *          name="product",
-     *          required=false,
-     *          @OA\Schema(
      *             type="string"
      *         ),
-     *      ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="结束时间",
+     *         in="query",
+     *         name="end",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
      *      @OA\Response(
      *          response=200,
      *          description="succeed",
-     *          @OA\Schema(
-     *               @OA\Property(
-     *                   property="WeighBridges",
-     *                   description="WeighBridges",
-     *                   allOf={
-     *                       @OA\Schema(ref="#/definitions/WeighBridge")
-     *                   }
-     *                )
-     *           )
      *      ),
      * )
      */
-    public function index(Request $request)
+    public function datalists(Request $request)
     {
-        $factory = $request['factory'];
-        if(!$this->validate_factory($factory)){
-            return UtilService::format_data(self::AJAX_FAIL, 'factory参数错误', '');
+        $ids = $request->input('ids');
+        $start = $request->input('start');
+        $end = $request->input('end');
+        $id_arr = explode(',', $ids);
+        $lists = WeighbridgeCateBig::whereIn('id', $id_arr)->get();
+        if($lists && count($lists) > 0){
+            $table = 'weighbridge_format_' . $this->orgnization->code;
+            $obj = (new WeighBridgeFormat())->setTable($table);
+            foreach ($lists as $k1 => $item) {
+                $small_ids = [];
+                $small_names = $item->small_names;
+                foreach ($small_names as $k2 => $small) {
+                    $small_ids[] = $small->id;
+                }
+
+                $datalist = $obj->whereIn('weighbridge_cate_small_id', $small_ids)
+                    ->where('grossdatetime', '>', $start)
+                    ->where('grossdatetime', '<', $end)
+                    ->get();
+
+                foreach ($datalist as $k3 => $data) {
+                    $small = WeighbridgeCateSmall::find($data->weighbridge_cate_small_id);
+                    $datalist[$k3]['product'] = $small->name;
+                }
+
+                $lists[$k1]['datalist'] = $datalist;
+            }
         }
 
-        $perPage = $request->input('num');
-        $perPage = $perPage ? $perPage : 20;
-        $page = $request->input('page');
-        $page = $page ? $page : 1;
-        $product = $request->input('product');
-
-        $tb = 'weighbridge_' . $factory;
-        $WeighBridgeObj = (new WeighBridge())->setTable($tb);
-
-        $rows = $WeighBridgeObj->select(['*']);
-        if ($product) {
-            $rows = $rows->where('product', 'like', "%{$product}%");
-        }
-        $total = $rows->count();
-        $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total]);
+        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $lists);
     }
 
-    private function validate_factory($factory){
-        $tb_list = [];
-        $datalist = Orgnization::where('level', 2)->get();
-        foreach ($datalist as $key => $item) {
-            $tb_list[] = $item->code;
-        }
-        if(!$factory || ($factory && !in_array($factory, $tb_list))){
-            return false;
-        }
-        else{
-            return true;
-        }
-    }
 }

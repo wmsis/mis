@@ -5,6 +5,37 @@ namespace App\Models\SIS;
 use Illuminate\Database\Eloquent\Model;
 use Log;
 
+/**
+ * 创建数据模型
+ * @OA\Schema(
+ *     title="WeighBridgeFormat model",
+ *     description="WeighBridgeFormat model",
+ *     @OA\Property(
+ *         property="id",
+ *         type="integer"
+ *     ),
+ *     @OA\Property(
+ *         property="grossdatetime",
+ *         type="string"
+ *     ),
+ *     @OA\Property(
+ *         property="taredatetime",
+ *         type="string"
+ *     ),
+ *     @OA\Property(
+ *         property="net",
+ *         type="integer"
+ *     ),
+ *     @OA\Property(
+ *         property="weighid",
+ *         type="integer"
+ *     ),
+ *     @OA\Property(
+ *         property="weighbridge_cate_small_id",
+ *         type="integer"
+ *     ),
+ * )
+ */
 class WeighBridgeFormat extends Model
 {
     protected $table = 'weighbridge_format_yongqiang2';

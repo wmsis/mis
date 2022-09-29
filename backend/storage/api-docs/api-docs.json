@@ -6843,6 +6843,25 @@
                 },
                 "type": "object"
             },
+            "HistorianFormatData": {
+                "title": "HistorianFormatData Model",
+                "description": "HistorianFormatData Model",
+                "properties": {
+                    "_id": {
+                        "type": "string"
+                    },
+                    "dcs_standard_id": {
+                        "type": "integer"
+                    },
+                    "value": {
+                        "type": "string"
+                    },
+                    "datetime": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
             "DcsGroup": {
                 "title": "DcsGroup model",
                 "description": "DcsGroup model",
@@ -6873,6 +6892,32 @@
                     },
                     "cn_name": {
                         "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "WeighBridgeFormat": {
+                "title": "WeighBridgeFormat model",
+                "description": "WeighBridgeFormat model",
+                "properties": {
+                    "id": {
+                        "description": "创建数据模型",
+                        "type": "integer"
+                    },
+                    "grossdatetime": {
+                        "type": "string"
+                    },
+                    "taredatetime": {
+                        "type": "string"
+                    },
+                    "net": {
+                        "type": "integer"
+                    },
+                    "weighid": {
+                        "type": "integer"
+                    },
+                    "weighbridge_cate_small_id": {
+                        "type": "integer"
                     }
                 },
                 "type": "object"

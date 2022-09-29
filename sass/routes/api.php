@@ -119,17 +119,20 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
 
         // IEC104取得的电表数据
         Route::prefix('electricity')->group(function () {
-            Route::get('index', 'ElectricityController@index');
+            Route::get('categories', 'ElectricityController@categories');
+            Route::get('datalists', 'ElectricityController@datalists');
         });
 
         // 获取抓斗数据列表
         Route::prefix('garbage')->group(function () {
-            Route::get('index', 'GarbageController@index');
+            Route::get('categories', 'GarbageController@categories');
+            Route::get('datalists', 'GarbageController@datalists');
         });
 
         // 地磅上报数据接口
         Route::prefix('weighbridge')->group(function () {
-            Route::get('index', 'WeighBridgeController@index');
+            Route::get('categories', 'WeighBridgeController@categories');
+            Route::get('datalists', 'WeighBridgeController@datalists');
         });
 
         // 标准dcs名称列表

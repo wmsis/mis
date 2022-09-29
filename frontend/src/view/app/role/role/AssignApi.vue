@@ -76,7 +76,12 @@
                     success: function (data) {
                         for(let item of data){
                             item.expand = true;
-                            item.title = item.name + '__' + item.url;
+                            if(item.url){
+                                item.title = item.name + '__' + item.url;
+                            }
+                            else{
+                                item.title = item.name;
+                            }
                         }
                         vm.selectIds(data);
                         vm.treeData = data;
@@ -91,7 +96,12 @@
             //选中我的接口
             selectIds(lists){
                 for(let i=0; i<lists.length; i++){
-                    lists[i].title = lists[i].name + '__' +  lists[i].url;
+                    if(lists[i].url){
+                        lists[i].title = lists[i].name + '__' +  lists[i].url;
+                    }
+                    else{
+                        lists[i].title = lists[i].name;
+                    }
                     for(let item of this.myApis){
                         if(item.id == lists[i].id){
                             lists[i].checked = true;

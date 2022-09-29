@@ -11,7 +11,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use UtilService;
 use App\Models\SIS\Electricity;
-use App\Models\SIS\Orgnization;
+use App\Models\SIS\ElectricityMap;
 use App\Http\Requests\API\StoreElectricityRequest;
 use Illuminate\Database\QueryException;
 use Log;
@@ -20,11 +20,11 @@ class ElectricityController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/electricity/index",
+     *     path="/api/electricity/categories",
      *     tags={"南瑞电表数据electricity"},
-     *     operationId="electricity-index",
-     *     summary="获取电表数据列表",
-     *     description="使用说明：获取电表数据列表",
+     *     operationId="electricity-categories",
+     *     summary="获取所有电表分类列表",
+     *     description="使用说明：获取所有电表分类列表",
      *     @OA\Parameter(
      *         description="token",
      *         in="query",
@@ -32,96 +32,105 @@ class ElectricityController extends Controller
      *         required=true,
      *         @OA\Schema(
      *             type="string"
-     *         )
+     *         ),
      *     ),
      *     @OA\Parameter(
-     *         description="电厂英文名称  如永强二期：yongqiang2",
+     *         description="关键字搜索",
      *         in="query",
-     *         name="factory",
+     *         name="name",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="succeed",
+     *     ),
+     * )
+     */
+    public function categories(Request $request)
+    {
+        $name = $request->input('name');
+        if($name){
+            $lists = ElectricityMap::where('cn_name', 'like', "%{$name}%")->where('orgnization_id', $this->orgnization->id)->get();
+        }
+        else{
+            $lists = ElectricityMap::where('orgnization_id', $this->orgnization->id)->get();
+        }
+
+        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $lists);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/electricity/datalists",
+     *     tags={"南瑞电表数据electricity"},
+     *     operationId="electricity-datalists",
+     *     summary="获取地磅数据列表",
+     *     description="使用说明：获取地磅数据列表",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
      *         required=true,
      *         @OA\Schema(
      *             type="string"
-     *         )
+     *         ),
      *     ),
      *     @OA\Parameter(
-     *         description="每页数据量",
+     *         description="电表名称ID列表，多个英文逗号隔开",
      *         in="query",
-     *         name="num",
-     *         required=false,
+     *         name="ids",
+     *         required=true,
      *         @OA\Schema(
-     *             type="integer",
-     *             default=20,
-     *         ),
-     *      ),
-     *      @OA\Parameter(
-     *          description="页数",
-     *          in="query",
-     *          name="page",
-     *          @OA\Schema(
-     *             type="integer",
-     *             default=1,
-     *          ),
-     *          required=false,
-     *      ),
-     *      @OA\Parameter(
-     *          description="中文名称搜索",
-     *          in="query",
-     *          name="cn_name",
-     *          required=false,
-     *          @OA\Schema(
      *             type="string"
-     *         )
-     *      ),
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="开始时间",
+     *         in="query",
+     *         name="start",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="结束时间",
+     *         in="query",
+     *         name="end",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
      *      @OA\Response(
      *          response=200,
      *          description="succeed",
-     *          @OA\Schema(
-     *               @OA\Property(
-     *                   property="Electricities",
-     *                   description="Electricities",
-     *                   allOf={
-     *                       @OA\Schema(ref="#/definitions/Electricity")
-     *                   }
-     *                )
-     *           )
      *      ),
      * )
      */
-    public function index(Request $request)
+    public function datalists(Request $request)
     {
-        $factory = $request['factory'];
-        if(!$this->validate_factory($factory)){
-            return UtilService::format_data(self::AJAX_FAIL, 'factory参数错误', '');
+        $ids = $request->input('ids');
+        $start = $request->input('start');
+        $end = $request->input('end');
+        $id_arr = explode(',', $ids);
+        $lists = ElectricityMap::whereIn('id', $id_arr)->get();
+        if($lists && count($lists) > 0){
+            $table = 'electricity_' . $this->orgnization->code;
+            $obj = (new Electricity())->setTable($table);
+            foreach ($lists as $key => $item) {
+                $datalist = $obj->where('address', $item->addr)
+                    ->where('created_at', '>', $start)
+                    ->where('created_at', '<', $end)
+                    ->get();
+
+                $lists[$key]['datalist'] = $datalist;
+            }
         }
 
-        $perPage = $request->input('num');
-        $perPage = $perPage ? $perPage : 20;
-        $page = $request->input('page');
-        $page = $page ? $page : 1;
-        $cn_name = $request->input('cn_name');
-        $tb = 'electricity_' . $factory;
-        $electricity = (new Electricity())->setTable($tb);
-
-        $rows = $electricity->select(['*']);
-        if ($cn_name) {
-            $rows = $rows->where('cn_name', 'like', "%{$cn_name}%");
-        }
-        $total = $rows->count();
-        $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total]);
-    }
-
-    private function validate_factory($factory){
-        $tb_list = [];
-        $datalist = Orgnization::where('level', 2)->get();
-        foreach ($datalist as $key => $item) {
-            $tb_list[] = $item->code;
-        }
-        if(!$factory || ($factory && !in_array($factory, $tb_list))){
-            return false;
-        }
-        else{
-            return true;
-        }
+        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $lists);
     }
 }
