@@ -583,7 +583,7 @@ class WeighbridgeCategoryController extends Controller
 
             //绑定新的关联
             foreach ($final_samll_arr as $key => $cate_small_id) {
-                if(!in_array($cate_small_id, $already_in_arr)){
+                if($cate_small_id && !in_array($cate_small_id, $already_in_arr)){
                     $small = WeighbridgeCateSmall::find($cate_small_id);
                     $big->small_names()->save($small);  //或在hasMany端使用attach()添加 $big->small_names()->attach($small->id);  $small->weighbridge_cate_big()->associate($big->id);
                     $big->save();

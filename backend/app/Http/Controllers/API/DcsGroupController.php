@@ -398,7 +398,7 @@ class DcsGroupController extends Controller
 
             //绑定新的关联
             foreach ($final_id_arr as $key => $dcs_standard_id) {
-                if(!in_array($dcs_standard_id, $already_in_arr)){
+                if($dcs_standard_id && !in_array($dcs_standard_id, $already_in_arr)){
                     $dcsStandard = DcsStandard::find($dcs_standard_id);
                     $dcsGroup->dcsStandard()->save($dcsStandard);
                     $dcsGroup->save();

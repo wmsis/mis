@@ -64,6 +64,15 @@ class HistorianDataController extends Controller
      *             default=1,
      *         ),
      *      ),
+     *     @OA\Parameter(
+     *         description="tag_name 搜索",
+     *         in="query",
+     *         name="searchTagName",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
      *      @OA\Response(
      *          response=200,
      *          description="succeed",
@@ -81,12 +90,19 @@ class HistorianDataController extends Controller
         $perPage = $perPage ? $perPage : 20;
         $page = $request->input('page');
         $page = $page ? $page : 1;
+        $searchTagName = $request->input('searchTagName');
 
         $tb = 'historian_data_' . $factory;
         $obj = (new HistorianData())->setConnection($this->mongo_conn)->setTable($tb);
 
-        $rows = $obj->select(['*']);
-        $total = $rows->count();
+        if($searchTagName){
+            $rows = $obj->select(['*'])->where('tag_name', 'like', "%{$searchTagName}%");
+            $total = $obj->where('tag_name', 'like', "%{$searchTagName}%")->count();
+        }
+        else{
+            $rows = $obj->select(['*']);
+            $total = $obj->count();
+        }
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
         return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total]);
     }
