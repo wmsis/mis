@@ -14,7 +14,10 @@ use Log;
 class IEC104DataJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    protected $factory;
+    protected $tenement_conn; //租户连接
+    protected $local_data_table; //本地保存的MongoDB原始数据集合
+    protected $map; //本地保存的格式化后的数据集合
+    protected $cfgdb;//数据库配置信息
     public $tries = 3;
     protected $sock = null;
     protected $Tx = 0;
@@ -27,9 +30,12 @@ class IEC104DataJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($factory=null)
+    public function __construct($params=null)
     {
-        $this->factory = $factory ? $factory : 'yongqiang2';
+        $this->tenement_conn = $params && isset($params['tenement_conn']) ? $params['tenement_conn'] : '';
+        $this->local_data_table = $params && isset($params['local_data_table']) ? $params['local_data_table'] : '';
+        $this->map = $params && isset($params['map']) ? $params['map'] : '';
+        $this->cfgdb = $params && isset($params['cfgdb']) ? $params['cfgdb'] : '';
     }
 
     /**
@@ -48,13 +54,11 @@ class IEC104DataJob implements ShouldQueue
 
     //开始发送和接收报文
     private function start($type='master'){
-        $cfg = 'iec104.' . $this->factory.'.ip';
-        $ips = config($cfg);
         if($type == 'master'){
-            $host = $ips['master'];
+            $host = $this->cfgdb['master_ip'];
         }
         else{
-            $host = $ips['slave'];
+            $host = $this->cfgdb['slave_ip'];
         }
         $port = 2404;
         if(($this->sock = socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) !== FALSE)
@@ -289,14 +293,13 @@ class IEC104DataJob implements ShouldQueue
     }
 
     private function submit(){
-        $cfg = 'iec104.' . $this->factory.'.TAGS';
-        $tags = config($cfg);
+        $tags = $this->map;
         $cn_names = [];
         foreach ($tags as $key => $item) {
-            $arr = explode('|', $item);
             $cn_names[] = array(
-                'name'=> $arr[0],
-                'factor'=> $arr[1]
+                'name'=> $item['cn_name'],
+                'electricity_map_id'=> $item['id'],
+                'factor'=> $item['func']
             );
         }
 
@@ -308,19 +311,15 @@ class IEC104DataJob implements ShouldQueue
             $i = 0;
             foreach ($sorted_values as $key => $item) {
                 $params[] = array(
-                    "cn_name" => $cn_names[$i]['name'],
-                    "address" => $item['addr'],
+                    "electricity_map_id" => $cn_names[$i]['electricity_map_id'],
                     "value" => $item['value'],
-                    "actual_value" => $item['value'] * $cn_names[$i]['factor'],
-                    "quality" => $item['quality'],
-                    "factor" => $cn_names[$i]['factor']
+                    "actual_value" => $item['value'] * $cn_names[$i]['factor']
                 );
                 $i++;
             }
 
             try {
-                $tb = 'electricity_' . $this->factory;
-                $electricity = (new Electricity())->setTable($tb);
+                $electricity = (new Electricity())->setConnection($this->tenement_conn)->setTable($this->local_data_table);
 
                 foreach ($params as $key => $value) {
                     $params[$key]['created_at'] = date('Y-m-d H:i:s');

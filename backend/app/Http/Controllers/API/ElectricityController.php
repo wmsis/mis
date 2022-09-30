@@ -14,6 +14,7 @@ use App\Models\SIS\Electricity;
 use App\Models\SIS\Orgnization;
 use App\Http\Requests\API\StoreElectricityRequest;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 use Log;
 
 class ElectricityController extends Controller
@@ -100,11 +101,13 @@ class ElectricityController extends Controller
         $page = $page ? $page : 1;
         $cn_name = $request->input('cn_name');
         $tb = 'electricity_' . $factory;
-        $electricity = (new Electricity())->setTable($tb);
 
-        $rows = $electricity->select(['*']);
+        $rows = DB::table($tb)
+            ->join('electricity_map', $tb.'.electricity_map_id', '=', 'electricity_map.id')
+            ->select($tb.'.*', 'electricity_map.cn_name', 'electricity_map.addr as address', 'electricity_map.func as factor');
+
         if ($cn_name) {
-            $rows = $rows->where('cn_name', 'like', "%{$cn_name}%");
+            $rows = $rows->where('electricity_map.cn_name', 'like', "%{$cn_name}%");
         }
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();

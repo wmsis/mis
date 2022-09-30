@@ -102,6 +102,12 @@ class HistorianDataJob implements ShouldQueue
                     if(isset($item['Samples']) && $item['Samples'] && count($item['Samples']) > 0) {
                         $timestamp = $item['Samples'][0]['TimeStamp'];
                         $value = $item['Samples'][0]['Value'];
+                        if(strtolower($value) == 'false'){
+                            $value = 0;
+                        }
+                        else if(strtolower($value) == 'true'){
+                            $value = 1;
+                        }
                     }
                     $local_row = $obj_hitorian_local->findRowByTagAndTime($item['TagName'], $timestamp);
                     if(!$local_row){
