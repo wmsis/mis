@@ -321,7 +321,7 @@ class RoleController extends Controller
     public function storePermission(StorePermissionRequest $request, Role $role){
         //验证
         //获取权限参数
-        $param_arr = request('permissions');
+        $param_arr = explode(',', request('permissions'));
         $permissions = Permission::whereIn('id', $param_arr)->get();
         //当前角色权限
         $myPermissions = $role->permissions;
@@ -545,7 +545,7 @@ class RoleController extends Controller
     public function storeApi(StoreApiRequest $request, Role $role){
         //验证
         //获取权限参数
-        $param_arr = request('apis');
+        $param_arr = explode(',', request('apis'));
         $apis = API::whereIn('id', $param_arr)->get();
         //当前角色权限
         $myApis = $role->apis;

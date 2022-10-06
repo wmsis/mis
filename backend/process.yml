@@ -1,5 +1,5 @@
 apps:
-  - name:           "laravel:queue:work"
+  - name:           "misdata:queue:work"
     script:         artisan
     watch:          false
     interpreter:    php

@@ -425,7 +425,7 @@ class UserController extends Controller
         $roles = $user->roles;
 
         //验证
-        $param_arr = request('roles');
+        $param_arr = explode(',', request('roles'));
         $roles = Role::whereIn('id', $param_arr)->get();
         $myRoles = $user->roles;
 
