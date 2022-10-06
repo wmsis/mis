@@ -4403,7 +4403,7 @@
                         "name": "permissions",
                         "in": "query",
                         "description": "权限ID列表",
-                        "required": true,
+                        "required": false,
                         "schema": {
                             "type": "string"
                         }
@@ -4541,7 +4541,7 @@
                         "name": "apis",
                         "in": "query",
                         "description": "接口权限ID列表",
-                        "required": true,
+                        "required": false,
                         "schema": {
                             "type": "string"
                         }

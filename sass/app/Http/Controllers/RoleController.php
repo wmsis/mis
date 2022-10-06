@@ -293,7 +293,7 @@ class RoleController extends Controller
      *         description="权限ID列表",
      *         in="query",
      *         name="permissions",
-     *         required=true,
+     *         required=false,
      *         @OA\Schema(
      *             type="string"
      *         ),
@@ -304,7 +304,7 @@ class RoleController extends Controller
      *     )
      * )
      */
-    public function storePermission(StorePermissionRequest $request, Role $role){
+    public function storePermission(Request $request, Role $role){
         //验证
         //获取权限参数
         $param_arr = explode(',', request('permissions'));
@@ -517,7 +517,7 @@ class RoleController extends Controller
      *         description="接口权限ID列表",
      *         in="query",
      *         name="apis",
-     *         required=true,
+     *         required=false,
      *         @OA\Schema(
      *             type="string"
      *         ),
@@ -528,7 +528,7 @@ class RoleController extends Controller
      *     )
      * )
      */
-    public function storeApi(StoreApiRequest $request, Role $role){
+    public function storeApi(Request $request, Role $role){
         //验证
         //获取权限参数
         $param_arr = explode(',', request('apis'));
