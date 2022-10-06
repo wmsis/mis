@@ -474,7 +474,7 @@ class OrgnizationController extends Controller
      */
     public function storeRole(StoreRoleRequest $request, Orgnization $orgnization){
         //验证
-        $param_arr = request('roles');
+        $param_arr = explode(',', request('roles'));
         $roles = Role::whereIn('id', $param_arr)->get();
         $myRoles = $orgnization->roles;
 
