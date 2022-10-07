@@ -1050,6 +1050,15 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "类型 值为dcs或electricity",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
@@ -1098,6 +1107,15 @@
                         "in": "query",
                         "description": "token",
                         "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "类型 值为dcs或electricity",
+                        "required": false,
                         "schema": {
                             "type": "string"
                         }
@@ -1193,7 +1211,7 @@
                         "name": "en_name",
                         "in": "query",
                         "description": "英文名字",
-                        "required": false,
+                        "required": true,
                         "schema": {
                             "type": "string"
                         }

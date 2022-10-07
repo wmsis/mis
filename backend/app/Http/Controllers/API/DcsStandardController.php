@@ -32,6 +32,15 @@ class DcsStandardController extends Controller
      *             type="string"
      *         ),
      *     ),
+     *     @OA\Parameter(
+     *         description="类型 值为dcs或electricity",
+     *         in="query",
+     *         name="type",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string",
+     *         ),
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="succeed",
@@ -59,7 +68,13 @@ class DcsStandardController extends Controller
      */
     public function lists(Request $request)
     {
-        $data = DcsStandard::all();
+        $type = $request->input('type');
+        if ($type) {
+            $data = DcsStandard::where('type', $type)->get();
+        }
+        else{
+            $data = DcsStandard::all();
+        }
         return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $data);
     }
 
@@ -78,6 +93,15 @@ class DcsStandardController extends Controller
      *         @OA\Schema(
      *             type="string"
      *        )
+     *     ),
+     *     @OA\Parameter(
+     *         description="类型 值为dcs或electricity",
+     *         in="query",
+     *         name="type",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string",
+     *         ),
      *     ),
      *     @OA\Parameter(
      *         description="每页数据量",
@@ -141,8 +165,14 @@ class DcsStandardController extends Controller
         $page = $page ? $page : 1;
 
         $name = $request->input('cn_name');
+        $type = $request->input('type');
 
         $rows = DcsStandard::select(['*']);
+
+        if ($type) {
+            $rows = $rows->where('type', $type);
+        }
+
         if ($name) {
             $rows = $rows->where('cn_name', 'like', "%{$name}%");
         }

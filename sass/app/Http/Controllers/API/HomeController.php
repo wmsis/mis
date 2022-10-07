@@ -17,11 +17,17 @@ class HomeController extends Controller
     public function total(Request $request)
     {
         //1、今日0点到现在累计值
-        
+        $start = date('Y-m-d') . ' 00:00:00';
+        $end = date('Y-m-d H:i:s');
 
         //2、昨日累计值
+        $start = date('Y-m-d', time() - 24 * 60 * 60) . ' 00:00:00';
+        $end = date('Y-m-d', time() - 24 * 60 * 60) . ' 23:59:59';
 
         //3、近30天（截止到今天凌晨0点）累计值
+        $start = date('Y-m-d', time() - 30 * 24 * 60 * 60) . ' 00:00:00';
+        $end = date('Y-m-d', time() - 24 * 60 * 60) . ' 23:59:59';
+
         return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', '');
     }
 
