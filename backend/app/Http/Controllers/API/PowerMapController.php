@@ -103,9 +103,11 @@ class PowerMapController extends Controller
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
         foreach ($rows as $key => $item) {
             $org = Orgnization::find($item->orgnization_id);
+            $dcs_standard = DcsStandard::find($item->dcs_standard_id);
             $id_arr = explode(',', $item->electricity_map_ids);
             $maps = (new ElectricityMap())->whereIn('id', $id_arr)->get();
             $rows[$key]->orgnization = $org;
+            $rows[$key]->dcs_standard = $dcs_standard;
             $rows[$key]->electricity_map = $maps;
         }
         return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total]);
@@ -220,8 +222,10 @@ class PowerMapController extends Controller
 
         $org = Orgnization::find($row->orgnization_id);
         $id_arr = explode(',', $row->electricity_map_ids);
+        $dcs_standard = DcsStandard::find($row->dcs_standard_id);
         $maps = (new ElectricityMap())->whereIn('id', $id_arr)->get();
         $row['orgnization'] = $org;
+        $row['dcs_standard'] = $dcs_standard;
         $row['electricity_map'] = $maps;
         return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $row);
     }
@@ -316,8 +320,10 @@ class PowerMapController extends Controller
 
         $org = Orgnization::find($row->orgnization_id);
         $id_arr = explode(',', $row->electricity_map_ids);
+        $dcs_standard = DcsStandard::find($row->dcs_standard_id);
         $maps = (new ElectricityMap())->whereIn('id', $id_arr)->get();
         $row['orgnization'] = $org;
+        $row['dcs_standard'] = $dcs_standard;
         $row['electricity_map'] = $maps;
         return UtilService::format_data(self::AJAX_SUCCESS, '修改成功', $row);
     }
