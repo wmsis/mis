@@ -111,8 +111,8 @@ class DcsMapController extends Controller
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
         foreach ($rows as $key => $item) {
-            $org = Orgnization::find($item->orgnization_id)->toArray();
-            $dcs_standard = DcsStandard::find($item->dcs_standard_id)->toArray();
+            $org = Orgnization::find($item->orgnization_id);
+            $dcs_standard = DcsStandard::find($item->dcs_standard_id);
             $tag_id_arr = explode(',', $item->tag_ids);
             $tb = 'historian_tag_' . $org['code'];
             $tags = (new HistorianTag())->setTable($tb)->whereIn('id', $tag_id_arr)->get()->toArray();
@@ -248,8 +248,8 @@ class DcsMapController extends Controller
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
 
-        $org = Orgnization::find($row->orgnization_id)->toArray();
-        $dcs_standard = DcsStandard::find($row->dcs_standard_id)->toArray();
+        $org = Orgnization::find($row->orgnization_id);
+        $dcs_standard = DcsStandard::find($row->dcs_standard_id);
         $tag_id_arr = explode(',', $row->tag_ids);
         $tb = 'historian_tag_' . $org['code'];
         $tags = (new HistorianTag())->setTable($tb)->whereIn('id', $tag_id_arr)->get()->toArray();

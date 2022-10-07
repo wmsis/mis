@@ -180,7 +180,16 @@ class DcsStandardController extends Controller
      *         description="英文名字",
      *         in="query",
      *         name="en_name",
-     *         required=false,
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="类型",
+     *         in="query",
+     *         name="type",
+     *         required=true,
      *         @OA\Schema(
      *             type="string"
      *         )
@@ -214,7 +223,7 @@ class DcsStandardController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->only(['cn_name', 'en_name']);
+        $input = $request->only(['cn_name', 'en_name', 'type']);
         try {
             $res = DcsStandard::create($input);
         } catch (QueryException $e) {
@@ -327,6 +336,15 @@ class DcsStandardController extends Controller
      *             type="string"
      *         )
      *     ),
+     *     @OA\Parameter(
+     *         description="类型",
+     *         in="query",
+     *         name="type",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="update succeed",
@@ -361,7 +379,7 @@ class DcsStandardController extends Controller
             return response()->json(UtilService::format_data(self::AJAX_FAIL, '该数据不存在', ''));
         }
         $input = $request->input();
-        $allowField = ['cn_name', 'en_name'];
+        $allowField = ['cn_name', 'en_name', 'type'];
         foreach ($allowField as $field) {
             if (key_exists($field, $input)) {
                 $inputValue = $input[$field];

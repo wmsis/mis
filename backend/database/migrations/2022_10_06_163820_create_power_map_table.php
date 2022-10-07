@@ -16,7 +16,7 @@ class CreatePowerMapTable extends Migration
         Schema::create('power_map', function (Blueprint $table) {
             $table->id();
             $table->string('electricity_map_ids', 150)->nullable()->comment('electricity_map主键列表');
-            $table->string('name', 50)->nullable()->comment('中文名');
+            $table->string('dcs_standard_id')->nullable()->comment('标准名称表主键');
             $table->text('func')->nullable()->comment('值');
             $table->integer('orgnization_id')->nullable()->comment('所属组织');
 

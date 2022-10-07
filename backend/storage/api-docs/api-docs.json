@@ -1197,6 +1197,15 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "类型",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
@@ -1333,6 +1342,15 @@
                         "name": "model",
                         "in": "query",
                         "description": "英文名字",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "类型",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -1718,6 +1736,15 @@
                         "in": "query",
                         "description": "token",
                         "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "orgnization_id",
+                        "in": "query",
+                        "description": "组织ID",
+                        "required": false,
                         "schema": {
                             "type": "string"
                         }
@@ -3476,10 +3503,10 @@
                         }
                     },
                     {
-                        "name": "name",
+                        "name": "dcs_standard_id",
                         "in": "query",
-                        "description": "名称",
-                        "required": false,
+                        "description": "标准名称表主键",
+                        "required": true,
                         "schema": {
                             "type": "string"
                         }
@@ -3580,10 +3607,10 @@
                         }
                     },
                     {
-                        "name": "name",
+                        "name": "dcs_standard_id",
                         "in": "query",
-                        "description": "名称",
-                        "required": false,
+                        "description": "标准名称表主键",
+                        "required": true,
                         "schema": {
                             "type": "string"
                         }
@@ -7242,6 +7269,12 @@
                         "type": "string"
                     },
                     "cn_name": {
+                        "type": "string"
+                    },
+                    "dcs_group_id": {
+                        "type": "integer"
+                    },
+                    "type": {
                         "type": "string"
                     }
                 },

@@ -33,6 +33,15 @@ class ElectricityMapController extends Controller
      *             type="string"
      *         ),
      *     ),
+     *     @OA\Parameter(
+     *         description="组织ID",
+     *         in="query",
+     *         name="orgnization_id",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="succeed",
@@ -41,7 +50,13 @@ class ElectricityMapController extends Controller
      */
     public function lists(Request $request)
     {
-        $rows = ElectricityMap::all();
+        $orgnization_id = $request->input('orgnization_id');
+        if($orgnization_id){
+            $rows = ElectricityMap::where('orgnization_id', $orgnization_id)->get();
+        }
+        else{
+            $rows = ElectricityMap::all();
+        }
         foreach ($rows as $key => $item) {
             $org = Orgnization::find($item->orgnization_id);
             $rows[$key]->orgnization = $org;

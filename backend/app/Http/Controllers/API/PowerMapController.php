@@ -13,6 +13,7 @@ use Illuminate\Database\QueryException;
 use App\Models\SIS\PowerMap;
 use App\Models\SIS\ElectricityMap;
 use App\Models\SIS\Orgnization;
+use App\Models\SIS\DcsStandard;
 use Illuminate\Support\Facades\DB;
 use UtilService;
 
@@ -88,10 +89,16 @@ class PowerMapController extends Controller
 
         $name = $request->input('name');
 
-        $rows = PowerMap::where('orgnization_id', $orgnization_id);
+        $rows = DB::table('power_map')
+            ->join('dcs_standard', 'power_map.dcs_standard_id', '=', 'dcs_standard.id')
+            ->select('power_map.*', 'dcs_standard.cn_name')
+            ->where('power_map.orgnization_id', $orgnization_id)
+            ->whereNull('power_map.deleted_at');
+
         if ($name) {
-            $rows = $rows->where('name', 'like', "%{$name}%");
+            $rows = $rows->where('dcs_standard.cn_name', 'like', "%{$name}%");
         }
+
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
         foreach ($rows as $key => $item) {
@@ -130,10 +137,10 @@ class PowerMapController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="名称",
+     *         description="标准名称表主键",
      *         in="query",
-     *         name="name",
-     *         required=false,
+     *         name="dcs_standard_id",
+     *         required=true,
      *         @OA\Schema(
      *             type="string"
      *         )
@@ -164,7 +171,7 @@ class PowerMapController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->only(['electricity_map_ids', 'name', 'func', 'orgnization_id']);
+        $input = $request->only(['electricity_map_ids', 'dcs_standard_id', 'func', 'orgnization_id']);
         try {
             $res = PowerMap::create($input);
         } catch (QueryException $e) {
@@ -254,10 +261,10 @@ class PowerMapController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="名称",
+     *         description="标准名称表主键",
      *         in="query",
-     *         name="name",
-     *         required=false,
+     *         name="dcs_standard_id",
+     *         required=true,
      *         @OA\Schema(
      *             type="string"
      *         )
@@ -293,7 +300,7 @@ class PowerMapController extends Controller
             return response()->json(UtilService::format_data(self::AJAX_FAIL, '该数据不存在', ''));
         }
         $input = $request->input();
-        $allowField = ['electricity_map_ids', 'name', 'func', 'orgnization_id'];
+        $allowField = ['electricity_map_ids', 'dcs_standard_id', 'func', 'orgnization_id'];
         foreach ($allowField as $field) {
             if (key_exists($field, $input)) {
                 $inputValue = $input[$field];
