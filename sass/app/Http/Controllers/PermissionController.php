@@ -59,6 +59,7 @@ class PermissionController extends Controller
                     'page_url' => $item->page_url,
                     'api_name' => $item->api_name,
                     'type' => $item->type,
+                    'icon' => $item->icon,
                     'children' => $this->children($item->id)
                 );
             }
@@ -86,6 +87,7 @@ class PermissionController extends Controller
                 'page_url' => $item->page_url,
                 'api_name' => $item->api_name,
                 'type' => $item->type,
+                'icon' => $item->icon,
                 'children' => $this->children($item->id)
             );
         }

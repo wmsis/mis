@@ -16,6 +16,7 @@ class CountDayDcsDataJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     protected $date;
     protected $tenement_conn; //租户连接
+    protected $tenement_mongo_conn; //租户连接
     protected $historian_day_data_table; //本地日累计数据表
     protected $historian_format_data_table; //本地保存的格式化后的数据集合
     public $tries = 3;
@@ -30,6 +31,7 @@ class CountDayDcsDataJob implements ShouldQueue
         $this->date = $params && isset($params['date']) ? $params['date'] : '';
         $this->tenement_conn = $params && isset($params['tenement_conn']) ? $params['tenement_conn'] : '';
         $this->tenement_mongo_conn = $params && isset($params['tenement_mongo_conn']) ? $params['tenement_mongo_conn'] : '';
+        $this->historian_day_data_table = $params && isset($params['historian_day_data_table']) ? $params['historian_day_data_table'] : '';
         $this->historian_format_data_table = $params && isset($params['historian_format_data_table']) ? $params['historian_format_data_table'] : '';
     }
 

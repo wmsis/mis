@@ -1704,6 +1704,32 @@
                 }
             }
         },
+        "/api/electricity-map/lists": {
+            "get": {
+                "tags": [
+                    "电表地址映射关系electricity-map"
+                ],
+                "summary": "获取所有数据列表",
+                "description": "使用说明：获取所有数据列表",
+                "operationId": "electricity-map-lists",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
         "/api/electricity-map": {
             "get": {
                 "tags": [
@@ -3356,6 +3382,267 @@
                 "responses": {
                     "200": {
                         "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/power-map": {
+            "get": {
+                "tags": [
+                    "计算电量映射关系power-map"
+                ],
+                "summary": "分页获取数据列表",
+                "description": "使用说明：分页获取数据列表",
+                "operationId": "power-map-index",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "num",
+                        "in": "query",
+                        "description": "每页数据量",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "页数",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "关键字中文名搜索",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "orgnization_id",
+                        "in": "query",
+                        "description": "组织ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "计算电量映射关系power-map"
+                ],
+                "summary": "新增单条数据",
+                "description": "使用说明：新增单条数据",
+                "operationId": "power-map-store",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "electricity_map_ids",
+                        "in": "query",
+                        "description": "electricity_map id列表",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "名称",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "func",
+                        "in": "query",
+                        "description": "函数",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "orgnization_id",
+                        "in": "query",
+                        "description": "组织ID",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "store succeed"
+                    }
+                }
+            }
+        },
+        "/api/power-map/{id}": {
+            "get": {
+                "tags": [
+                    "计算电量映射关系power-map"
+                ],
+                "summary": "获取详细信息",
+                "description": "使用说明：获取详细信息",
+                "operationId": "power-map-show",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "PowerMap主键",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "计算电量映射关系power-map"
+                ],
+                "summary": "修改",
+                "description": "使用说明：修改单条数据",
+                "operationId": "power-map-update",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "PowerMap主键",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "electricity_map_ids",
+                        "in": "query",
+                        "description": "electricity_map id列表",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "名称",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "func",
+                        "in": "query",
+                        "description": "函数",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "orgnization_id",
+                        "in": "query",
+                        "description": "组织ID",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "update succeed"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "计算电量映射关系power-map"
+                ],
+                "summary": "删除单条数据",
+                "description": "使用说明：删除单条数据",
+                "operationId": "power-map-destroy",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "PowerMap主键",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "detroy succeed"
                     }
                 }
             }

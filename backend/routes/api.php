@@ -192,10 +192,12 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:admin', 'jwt.auth
         Route::get('dcs-standard/lists', 'DcsStandardController@lists');
         Route::get('dcs-group/show-relation/{id}', 'DcsGroupController@showRelation');
         Route::post('dcs-group/bind-relation', 'DcsGroupController@bindRelation');
+        Route::get('electricity-map/lists', 'ElectricityMapController@lists');
         //API 资源路由  DCS映射关系 标准DCS 电表映射关系 抓斗数据库配置 电表数据库配置 历史数据库配置
         Route::apiResources([
             'dcs-standard' => DcsStandardController::class,
             'dcs-map' => DcsMapController::class,
+            'power-map' => PowerMapController::class,
             'electricity-map' => ElectricityMapController::class,
             'garbage-db-config' => GarbageDbConfigController::class,
             'electricity-db-config' => ElectricityDbConfigController::class,

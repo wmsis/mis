@@ -10,6 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Models\SIS\Electricity;
 use App\Models\SIS\ElectricityDayData;
+use Log;
 
 class CountDayElectricityDataJob implements ShouldQueue
 {
@@ -54,27 +55,47 @@ class CountDayElectricityDataJob implements ShouldQueue
 
             $electricity = (new Electricity())->setConnection($this->tenement_conn)->setTable($this->electricity_table); //连接特定租户下面的标准DCS名称表
             $electricity_day_data = (new ElectricityDayData())->setConnection($this->tenement_conn)->setTable($this->electricity_day_data_table);//连接特定租户下面的格式化后的历史数据表
-            $electricity_sum = $electricity->where('created_at', '>', $start)
+            $electricity_max = $electricity->where('created_at', '>', $start)
                 ->where('created_at', '<', $end)
-                ->selectRaw('SUM(actual_value) as total, electricity_map_id')
+                ->selectRaw('MAX(actual_value) as val, electricity_map_id')
                 ->groupBy('electricity_map_id')
                 ->get();
 
+            $electricity_min = $electricity->where('created_at', '>', $start)
+                ->where('created_at', '<', $end)
+                ->selectRaw('MIN(actual_value) as val, electricity_map_id')
+                ->groupBy('electricity_map_id')
+                ->get();
+
+            //当日最大值
+            $max_key_val = array();
+            foreach ($electricity_max as $key => $item) {
+                $max_key_val[$item->electricity_map_id] = $item->val;
+            }
+
+            //当日最小值
+            $min_key_val = array();
+            foreach ($electricity_min as $key => $item) {
+                $min_key_val[$item->electricity_map_id] = $item->val;
+            }
+
             //保存累计值
-            foreach ($electricity_sum as $key => $item) {
-                $row = $electricity_day_data->where('date', $this->date)->where('electricity_map_id', $item['electricity_map_id'])->first();
-                if($row && $row->id){
-                    $row->electricity_map_id = $item['electricity_map_id'];
-                    $row->date = $this->date;
-                    $row->value = $item['total'];
-                    $row->save();
-                }
-                else{
-                    $electricity_day_data->create([
-                        'electricity_map_id' => $item['electricity_map_id'],
-                        'date' => $this->date,
-                        'value' => $item['total']
-                    ]);
+            foreach ($max_key_val as $key => $val) {
+                if(isset($min_key_val[$key])){
+                    $row = $electricity_day_data->where('date', $this->date)->where('electricity_map_id', $key)->first();
+                    if($row && $row->id){
+                        $row->electricity_map_id = $key;
+                        $row->date = $this->date;
+                        $row->value = $max_key_val[$key] - $min_key_val[$key];
+                        $row->save();
+                    }
+                    else{
+                        $electricity_day_data->create([
+                            'electricity_map_id' => $key,
+                            'date' => $this->date,
+                            'value' => $max_key_val[$key] - $min_key_val[$key]
+                        ]);
+                    }
                 }
             }
         }

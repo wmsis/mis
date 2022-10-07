@@ -212,6 +212,8 @@ class AuthController extends Controller
                     'parent_id' => $item->parent_id,
                     'level' => $item->level,
                     'target' => '/' . $item->page_url,
+                    'type' => $item->type,
+                    'title' => $item->name,
                     'children' => $this->children($item, $privileges)
                 );
             }
@@ -241,6 +243,8 @@ class AuthController extends Controller
                 'parent_id' => $item->parent_id,
                 'level' => $item->level,
                 'target' => '/' . $item->page_url,
+                'type' => $item->type,
+                'title' => $item->name,
                 'children' => $this->children($item, $privileges)
             );
         }

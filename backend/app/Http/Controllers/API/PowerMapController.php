@@ -1,59 +1,28 @@
 <?php
 /**
-* 南瑞电表映射关系控制器
+* 电量映射关系控制器
 *
 * @author      cat 叶文华
 * @version     1.0 版本号
 */
-
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\SIS\ElectricityMap;
 use Illuminate\Database\QueryException;
+use App\Models\SIS\PowerMap;
+use App\Models\SIS\ElectricityMap;
 use App\Models\SIS\Orgnization;
+use Illuminate\Support\Facades\DB;
 use UtilService;
 
-class ElectricityMapController extends Controller
+class PowerMapController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/electricity-map/lists",
-     *     tags={"电表地址映射关系electricity-map"},
-     *     operationId="electricity-map-lists",
-     *     summary="获取所有数据列表",
-     *     description="使用说明：获取所有数据列表",
-     *     @OA\Parameter(
-     *         description="token",
-     *         in="query",
-     *         name="token",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="string"
-     *         ),
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="succeed",
-     *     ),
-     * )
-     */
-    public function lists(Request $request)
-    {
-        $rows = ElectricityMap::all();
-        foreach ($rows as $key => $item) {
-            $org = Orgnization::find($item->orgnization_id);
-            $rows[$key]->orgnization = $org;
-        }
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $rows);
-    }
-
-    /**
-     * @OA\Get(
-     *     path="/api/electricity-map",
-     *     tags={"电表地址映射关系electricity-map"},
-     *     operationId="electricity-map-index",
+     *     path="/api/power-map",
+     *     tags={"计算电量映射关系power-map"},
+     *     operationId="power-map-index",
      *     summary="分页获取数据列表",
      *     description="使用说明：分页获取数据列表",
      *     @OA\Parameter(
@@ -88,7 +57,7 @@ class ElectricityMapController extends Controller
      *     @OA\Parameter(
      *         description="关键字中文名搜索",
      *         in="query",
-     *         name="cn_name",
+     *         name="name",
      *         required=false,
      *         @OA\Schema(
      *             type="string"
@@ -98,23 +67,14 @@ class ElectricityMapController extends Controller
      *         description="组织ID",
      *         in="query",
      *         name="orgnization_id",
-     *         required=false,
+     *         required=true,
      *         @OA\Schema(
-     *             type="string"
+     *             type="integer"
      *         )
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="succeed",
-     *         @OA\Schema(
-     *              @OA\Property(
-     *                  property="ElectricityMaps",
-     *                  description="ElectricityMaps",
-     *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/ElectricityMaps")
-     *                  }
-     *             )
-     *         )
      *     ),
      * )
      */
@@ -126,22 +86,29 @@ class ElectricityMapController extends Controller
         $page = $request->input('page');
         $page = $page ? $page : 1;
 
-        $name = $request->input('cn_name');
+        $name = $request->input('name');
 
-        $rows = ElectricityMap::select(['*'])->where('orgnization_id', $orgnization_id);
+        $rows = PowerMap::where('orgnization_id', $orgnization_id);
         if ($name) {
-            $rows = $rows->where('cn_name', 'like', "%{$name}%");
+            $rows = $rows->where('name', 'like', "%{$name}%");
         }
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
+        foreach ($rows as $key => $item) {
+            $org = Orgnization::find($item->orgnization_id);
+            $id_arr = explode(',', $item->electricity_map_ids);
+            $maps = (new ElectricityMap())->whereIn('id', $id_arr)->get();
+            $rows[$key]->orgnization = $org;
+            $rows[$key]->electricity_map = $maps;
+        }
         return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total]);
     }
 
     /**
      * @OA\Post(
-     *     path="/api/electricity-map",
-     *     tags={"电表地址映射关系electricity-map"},
-     *     operationId="electricity-map-store",
+     *     path="/api/power-map",
+     *     tags={"计算电量映射关系power-map"},
+     *     operationId="power-map-store",
      *     summary="新增单条数据",
      *     description="使用说明：新增单条数据",
      *     @OA\Parameter(
@@ -154,18 +121,18 @@ class ElectricityMapController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="中文名字",
+     *         description="electricity_map id列表",
      *         in="query",
-     *         name="cn_name",
+     *         name="electricity_map_ids",
      *         required=true,
      *         @OA\Schema(
      *             type="string"
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="点位地址",
+     *         description="名称",
      *         in="query",
-     *         name="addr",
+     *         name="name",
      *         required=false,
      *         @OA\Schema(
      *             type="string"
@@ -175,40 +142,31 @@ class ElectricityMapController extends Controller
      *         description="函数",
      *         in="query",
      *         name="func",
-     *         required=true,
+     *         required=false,
      *         @OA\Schema(
-     *             type="integer"
+     *             type="string"
      *         )
      *     ),
      *     @OA\Parameter(
      *         description="组织ID",
      *         in="query",
      *         name="orgnization_id",
-     *         required=true,
+     *         required=false,
      *         @OA\Schema(
-     *             type="integer"
+     *             type="string"
      *         )
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="store succeed",
-     *         @OA\Schema(
-     *              @OA\Property(
-     *                  property="ElectricityMap",
-     *                  description="ElectricityMap",
-     *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/ElectricityMap")
-     *                  }
-     *               )
-     *          )
      *     ),
      * )
      */
     public function store(Request $request)
     {
-        $input = $request->only(['addr', 'cn_name', 'func', 'orgnization_id']);
+        $input = $request->only(['electricity_map_ids', 'name', 'func', 'orgnization_id']);
         try {
-            $res = ElectricityMap::create($input);
+            $res = PowerMap::create($input);
         } catch (QueryException $e) {
             return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
         }
@@ -217,9 +175,9 @@ class ElectricityMapController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/electricity-map/{id}",
-     *     tags={"电表地址映射关系electricity-map"},
-     *     operationId="electricity-map-show",
+     *     path="/api/power-map/{id}",
+     *     tags={"计算电量映射关系power-map"},
+     *     operationId="power-map-show",
      *     summary="获取详细信息",
      *     description="使用说明：获取详细信息",
      *     @OA\Parameter(
@@ -232,7 +190,7 @@ class ElectricityMapController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="ElectricityMap主键",
+     *         description="PowerMap主键",
      *         in="path",
      *         name="id",
      *         required=true,
@@ -243,32 +201,29 @@ class ElectricityMapController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="succeed",
-     *         @OA\Schema(
-     *              @OA\Property(
-     *                  property="ElectricityMap",
-     *                  description="ElectricityMap",
-     *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/ElectricityMap")
-     *                  }
-     *             )
-     *         )
      *     ),
      * )
      */
     public function show($id)
     {
-        $row = ElectricityMap::find($id);
+        $row = PowerMap::find($id);
         if (!$row) {
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
+
+        $org = Orgnization::find($row->orgnization_id);
+        $id_arr = explode(',', $row->electricity_map_ids);
+        $maps = (new ElectricityMap())->whereIn('id', $id_arr)->get();
+        $row['orgnization'] = $org;
+        $row['electricity_map'] = $maps;
         return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $row);
     }
 
     /**
      * @OA\Put(
-     *     path="/api/electricity-map/{id}",
-     *     tags={"电表地址映射关系electricity-map"},
-     *     operationId="electricity-map-update",
+     *     path="/api/power-map/{id}",
+     *     tags={"计算电量映射关系power-map"},
+     *     operationId="power-map-update",
      *     summary="修改",
      *     description="使用说明：修改单条数据",
      *     @OA\Parameter(
@@ -281,7 +236,7 @@ class ElectricityMapController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="ElectricityMap主键",
+     *         description="PowerMap主键",
      *         in="path",
      *         name="id",
      *         required=true,
@@ -290,18 +245,18 @@ class ElectricityMapController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="中文名字",
+     *         description="electricity_map id列表",
      *         in="query",
-     *         name="cn_name",
+     *         name="electricity_map_ids",
      *         required=true,
      *         @OA\Schema(
      *             type="string"
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="点位地址",
+     *         description="名称",
      *         in="query",
-     *         name="addr",
+     *         name="name",
      *         required=false,
      *         @OA\Schema(
      *             type="string"
@@ -311,43 +266,34 @@ class ElectricityMapController extends Controller
      *         description="函数",
      *         in="query",
      *         name="func",
-     *         required=true,
+     *         required=false,
      *         @OA\Schema(
-     *             type="integer"
+     *             type="string"
      *         )
      *     ),
      *     @OA\Parameter(
      *         description="组织ID",
      *         in="query",
      *         name="orgnization_id",
-     *         required=true,
+     *         required=false,
      *         @OA\Schema(
-     *             type="integer"
+     *             type="string"
      *         )
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="update succeed",
-     *         @OA\Schema(
-     *              @OA\Property(
-     *                  property="ElectricityMap",
-     *                  description="ElectricityMap",
-     *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/ElectricityMap")
-     *                  }
-     *             )
-     *         )
      *     ),
      * )
      */
     public function update(Request $request, $id)
     {
-        $row = ElectricityMap::find($id);
+        $row = PowerMap::find($id);
         if (!$row) {
             return response()->json(UtilService::format_data(self::AJAX_FAIL, '该数据不存在', ''));
         }
         $input = $request->input();
-        $allowField = ['addr', 'cn_name', 'func', 'orgnization_id'];
+        $allowField = ['electricity_map_ids', 'name', 'func', 'orgnization_id'];
         foreach ($allowField as $field) {
             if (key_exists($field, $input)) {
                 $inputValue = $input[$field];
@@ -360,14 +306,20 @@ class ElectricityMapController extends Controller
         } catch (Exception $ex) {
             return UtilService::format_data(self::AJAX_FAIL, '修改失败', $ex->getMessage());
         }
+
+        $org = Orgnization::find($row->orgnization_id);
+        $id_arr = explode(',', $row->electricity_map_ids);
+        $maps = (new ElectricityMap())->whereIn('id', $id_arr)->get();
+        $row['orgnization'] = $org;
+        $row['electricity_map'] = $maps;
         return UtilService::format_data(self::AJAX_SUCCESS, '修改成功', $row);
     }
 
     /**
      * @OA\Delete(
-     *     path="/api/electricity-map/{id}",
-     *     tags={"电表地址映射关系electricity-map"},
-     *     operationId="electricity-map-destroy",
+     *     path="/api/power-map/{id}",
+     *     tags={"计算电量映射关系power-map"},
+     *     operationId="power-map-destroy",
      *     summary="删除单条数据",
      *     description="使用说明：删除单条数据",
      *     @OA\Parameter(
@@ -380,7 +332,7 @@ class ElectricityMapController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="ElectricityMap主键",
+     *         description="PowerMap主键",
      *         in="path",
      *         name="id",
      *         required=true,
@@ -396,7 +348,7 @@ class ElectricityMapController extends Controller
      */
     public function destroy($id)
     {
-        $row = ElectricityMap::find($id);
+        $row = PowerMap::find($id);
         if (!$row) {
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
@@ -412,8 +364,8 @@ class ElectricityMapController extends Controller
 
 /**
  * @OA\Definition(
- *     definition="ElectricityMaps",
+ *     definition="PowerMaps",
  *     type="array",
- *     @OA\Items(ref="#/definitions/ElectricityMap")
+ *     @OA\Items(ref="#/definitions/PowerMap")
  * )
  */
