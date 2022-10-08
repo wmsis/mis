@@ -8,6 +8,7 @@ use App\Console\Commands\CountDayDcsData;
 use App\Console\Commands\CountDayElectricityData;
 use App\Console\Commands\CountDayGrabGarbageData;
 use App\Console\Commands\CountDayWeighBridgeData;
+use App\Console\Commands\CountDayPowerData;
 
 class Kernel extends ConsoleKernel
 {
@@ -17,6 +18,7 @@ class Kernel extends ConsoleKernel
         CountDayElectricityData::class,
         CountDayGrabGarbageData::class,
         CountDayWeighBridgeData::class,
+        CountDayPowerData::class,
     ];
 
     /**
@@ -31,6 +33,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('count:dayDcsData')->everyMinute();
         // $schedule->command('count:dayGrabGarbageData')->everyMinute();
         // $schedule->command('count:dayWeighBridgeData')->everyMinute();
+        // $schedule->command('count:dayPowerData')->everyMinute();
     }
 
     /**

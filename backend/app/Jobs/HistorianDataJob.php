@@ -216,7 +216,7 @@ class HistorianDataJob implements ShouldQueue
                     //计算函数的值
                     $str = $item->func;
                     foreach ($tag_key_values as $tag_name => $tag) {
-                        $str = str_replace($tag_name, $tag['value'], $str);
+                        $str = str_replace('[' . $tag_name . ']', $tag['value'], $str);
                     }
                     $val = eval("return $str;");
                 }

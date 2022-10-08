@@ -188,7 +188,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        //self service
+        //self service 自定义一个服务提供者
         App\Providers\WxpayServiceProvider::class,
         App\Providers\WechatServiceProvider::class,
         App\Providers\UtilServiceProvider::class,

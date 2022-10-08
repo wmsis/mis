@@ -558,6 +558,58 @@
                 }
             }
         },
+        "/api/home/total": {
+            "get": {
+                "tags": [
+                    "首页home"
+                ],
+                "summary": "首页上网电量 厂用电量  垃圾入库量  垃圾入炉量等指标",
+                "description": "使用说明：首页发电量 上网电量 厂用电量  垃圾入库量  垃圾入炉量等指标",
+                "operationId": "home-total",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/home/chart": {
+            "get": {
+                "tags": [
+                    "首页home"
+                ],
+                "summary": "首页上网电量 厂用电量  垃圾入库量  垃圾入炉量等指标趋势图",
+                "description": "使用说明：首页发电量 上网电量 厂用电量  垃圾入库量  垃圾入炉量等指标趋势图",
+                "operationId": "home-chart",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
         "/api/orgnizations/page": {
             "get": {
                 "tags": [
@@ -1523,7 +1575,7 @@
                         "name": "permissions",
                         "in": "query",
                         "description": "权限ID列表",
-                        "required": true,
+                        "required": false,
                         "schema": {
                             "type": "string"
                         }
@@ -1661,7 +1713,7 @@
                         "name": "apis",
                         "in": "query",
                         "description": "接口权限ID列表",
-                        "required": true,
+                        "required": false,
                         "schema": {
                             "type": "string"
                         }

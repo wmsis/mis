@@ -140,6 +140,11 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
             Route::get('lists', 'DcsStandardController@lists');
             Route::get('datalists', 'DcsStandardController@datalists');
         });
+
+        Route::prefix('home')->group(function () {
+            Route::get('total', 'HomeController@total');
+            Route::get('chart', 'HomeController@chart');
+        });
     });
 });
 
