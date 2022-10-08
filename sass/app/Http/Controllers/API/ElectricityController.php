@@ -67,8 +67,8 @@ class ElectricityController extends Controller
      *     path="/api/electricity/datalists",
      *     tags={"南瑞电表数据electricity"},
      *     operationId="electricity-datalists",
-     *     summary="获取地磅数据列表",
-     *     description="使用说明：获取地磅数据列表",
+     *     summary="获取电表数据列表",
+     *     description="使用说明：获取电表数据列表",
      *     @OA\Parameter(
      *         description="token",
      *         in="query",

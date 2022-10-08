@@ -68,7 +68,6 @@
                     data: data,
                     success(response) {
                         that.loading = false;
-                        let goto_url = '/home';
                         that.$store.dispatch('login', {
                             access_token: response.token,
                             refresh_token: '',
@@ -78,7 +77,24 @@
                         that.$store.dispatch('userInfo', {
                             userInfo: response.user
                         });
-
+                        that.me();
+                    },
+                    fail(err){
+                        that.loading = false;
+                        that.showMessage(err.message,'error')
+                    }
+                });
+            },
+            me(){
+                let that = this;
+                that.loading = true;
+                that.ajax({
+                    method: 'GET',
+                    url: that.$request.auth.me,
+                    data: {},
+                    success(response) {
+                        that.loading = false;
+                        let goto_url = '/home';
                         that.$store.dispatch('privileges', {
                             privileges: response.privileges
                         });
