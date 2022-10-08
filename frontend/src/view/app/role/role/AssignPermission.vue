@@ -131,7 +131,7 @@
                     url: url,
                     method: 'POST',
                     data: {
-                        permissions: ids
+                        permissions: ids.join(',')
                     },
                     success: function (data) {
                         vm.$emit("listenChildClose");

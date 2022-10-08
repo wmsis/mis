@@ -152,7 +152,7 @@ class AuthController extends Controller
             return response()->json($res, 500);
         }
 
-        $privileges = $this->get_permission($user); //获取用户菜单权限
+        //$privileges = $this->get_permission($user); //获取用户菜单权限
 
         OperateLog::create([
             "user_id" => $user->id,
@@ -160,7 +160,7 @@ class AuthController extends Controller
         ]);
         $key = md5($token);
         event( new UserLoginEvent($user, $key)); //触发登录事件并广播
-        return UtilService::format_data(self::AJAX_SUCCESS, '登录成功', compact('token', 'user', 'privileges'));
+        return UtilService::format_data(self::AJAX_SUCCESS, '登录成功', compact('token', 'user'));
     }
 
     private function get_permission($user){
@@ -402,7 +402,24 @@ class AuthController extends Controller
     {
         try {
             $user = auth('api')->user();
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', array('user'=>$user));
+            if($user->type == 'admin'){
+                $user['type_name'] = '超级管理员';
+            }
+            elseif($user->type == 'group'){
+                $user['type_name'] = '集团用户';
+            }
+            elseif($user->type == 'webmaster'){
+                $user['type_name'] = '电厂管理员';
+            }
+            elseif($user->type == 'instation'){
+                $user['type_name'] = '电厂用户';
+            }
+            else{
+                $user['type_name'] = '';
+            }
+
+            $privileges = $this->get_permission($user); //获取用户菜单权限
+            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', compact('user', 'privileges'));
         } catch (Exception $e) {
             return UtilService::format_data(self::AJAX_FAIL, '操作异常', '');
         }

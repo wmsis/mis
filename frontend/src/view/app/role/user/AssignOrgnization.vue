@@ -141,7 +141,7 @@
                     url: url,
                     method: 'POST',
                     data: {
-                        orgnizations: ids
+                        orgnizations: ids.join(',')
                     },
                     success: function (data) {
                         vm.$emit("listenChildClose");

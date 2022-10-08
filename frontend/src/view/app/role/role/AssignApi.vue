@@ -147,7 +147,7 @@
                     url: url,
                     method: 'POST',
                     data: {
-                        apis: ids
+                        apis: ids.join(',')
                     },
                     success: function (data) {
                         vm.$emit("listenChildClose");
