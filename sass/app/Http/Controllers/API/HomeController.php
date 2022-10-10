@@ -144,15 +144,23 @@ class HomeController extends Controller
                 'messure' => $itemlist['messure'],
                 'datalist' => [],
             );
-            foreach ($itemlist['datalist'] as $k2 => $item) {
+            if($itemlist['datalist'] && count($itemlist['datalist']) > 0){
+                foreach ($itemlist['datalist'] as $k2 => $item) {
+                    for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
+                        $date = date('Y-m-d', $i);
+                        if($item->date == $date){
+                            $temp['datalist'][$date] = (float)$item->val;
+                        }
+                        else{
+                            $temp['datalist'][$date] = 0; //初始值
+                        }
+                    }
+                }
+            }
+            else{
                 for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
                     $date = date('Y-m-d', $i);
-                    if($item->date == $date){
-                        $temp['datalist'][$date] = (float)$item->val;
-                    }
-                    else{
-                        $temp['datalist'][$date] = 0; //初始值
-                    }
+                    $temp['datalist'][$date] = 0; //初始值
                 }
             }
             $final[] = $temp;
@@ -160,15 +168,23 @@ class HomeController extends Controller
 
         //垃圾入炉量
         $temp_grab_garbage_datalist = [];
-        foreach ($month_grab_garbage['datalist'] as $k2 => $item) {
+        if($month_grab_garbage['datalist'] && count($month_grab_garbage['datalist']) > 0){
+            foreach ($month_grab_garbage['datalist'] as $k2 => $item) {
+                for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
+                    $date = date('Y-m-d', $i);
+                    if($item->date == $date){
+                        $temp_grab_garbage_datalist[$date] = (float)$item->val;
+                    }
+                    else{
+                        $temp_grab_garbage_datalist[$date] = 0; //初始值
+                    }
+                }
+            }
+        }
+        else{
             for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
                 $date = date('Y-m-d', $i);
-                if($item->date == $date){
-                    $temp_grab_garbage_datalist[$date] = (float)$item->val;
-                }
-                else{
-                    $temp_grab_garbage_datalist[$date] = 0; //初始值
-                }
+                $temp_grab_garbage_datalist[$date] = 0; //初始值
             }
         }
         $final[] = array(
@@ -180,15 +196,23 @@ class HomeController extends Controller
 
         //垃圾入库量
         $temp_weigh_bridge_datalist = [];
-        foreach ($month_weigh_bridge['datalist'] as $k2 => $item) {
+        if($month_weigh_bridge['datalist'] && count($month_weigh_bridge['datalist']) > 0){
+            foreach ($month_weigh_bridge['datalist'] as $k2 => $item) {
+                for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
+                    $date = date('Y-m-d', $i);
+                    if($item->date == $date){
+                        $temp_weigh_bridge_datalist[$date] = (float)$item->val;
+                    }
+                    else{
+                        $temp_weigh_bridge_datalist[$date] = 0; //初始值
+                    }
+                }
+            }
+        }
+        else{
             for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
                 $date = date('Y-m-d', $i);
-                if($item->date == $date){
-                    $temp_weigh_bridge_datalist[$date] = (float)$item->val;
-                }
-                else{
-                    $temp_weigh_bridge_datalist[$date] = 0; //初始值
-                }
+                $temp_weigh_bridge_datalist[$date] = 0; //初始值
             }
         }
         $final[] = array(

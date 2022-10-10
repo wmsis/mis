@@ -140,15 +140,24 @@ class DataAnalysisController extends Controller
                 'messure' => $itemlist['messure'],
                 'datalist' => [],
             );
-            foreach ($itemlist['datalist'] as $k2 => $item) {
+
+            if($itemlist['datalist'] && count($itemlist['datalist']) > 0){
+                foreach ($itemlist['datalist'] as $k2 => $item) {
+                    for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
+                        $date = date('Y-m-d', $i);
+                        if($item->date == $date){
+                            $temp['datalist'][$date] = (float)$item->val;
+                        }
+                        else{
+                            $temp['datalist'][$date] = 0; //初始值
+                        }
+                    }
+                }
+            }
+            else{
                 for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
                     $date = date('Y-m-d', $i);
-                    if($item->date == $date){
-                        $temp['datalist'][$date] = (float)$item->val;
-                    }
-                    else{
-                        $temp['datalist'][$date] = 0; //初始值
-                    }
+                    $temp['datalist'][$date] = 0; //初始值
                 }
             }
             $final[] = $temp;
