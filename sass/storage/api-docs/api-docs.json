@@ -251,6 +251,58 @@
                 }
             }
         },
+        "/api/data-analysis/total": {
+            "get": {
+                "tags": [
+                    "数据分析data-analysis"
+                ],
+                "summary": "首页上网电量 厂用电量  垃圾入库量  垃圾入炉量等指标同比环比",
+                "description": "使用说明：首页发电量 上网电量 厂用电量  垃圾入库量  垃圾入炉量等指标同比环比",
+                "operationId": "data-analysis-total",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/data-analysis/chart": {
+            "get": {
+                "tags": [
+                    "数据分析data-analysis"
+                ],
+                "summary": "首页上网电量 厂用电量  垃圾入库量  垃圾入炉量等指标趋势图",
+                "description": "使用说明：首页发电量 上网电量 厂用电量  垃圾入库量  垃圾入炉量等指标趋势图",
+                "operationId": "data-analysis-chart",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
         "/api/dcs-standard/lists": {
             "get": {
                 "tags": [
@@ -413,8 +465,8 @@
                 "tags": [
                     "南瑞电表数据electricity"
                 ],
-                "summary": "获取地磅数据列表",
-                "description": "使用说明：获取地磅数据列表",
+                "summary": "获取电表数据列表",
+                "description": "使用说明：获取电表数据列表",
                 "operationId": "electricity-datalists",
                 "parameters": [
                     {

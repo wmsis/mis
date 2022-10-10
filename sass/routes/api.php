@@ -141,9 +141,16 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
             Route::get('datalists', 'DcsStandardController@datalists');
         });
 
+        //首页统计
         Route::prefix('home')->group(function () {
             Route::get('total', 'HomeController@total');
             Route::get('chart', 'HomeController@chart');
+        });
+
+        //大数据分析
+        Route::prefix('data-analysis')->group(function () {
+            Route::get('total', 'DataAnalysisController@total');
+            Route::get('chart', 'DataAnalysisController@chart');
         });
     });
 });

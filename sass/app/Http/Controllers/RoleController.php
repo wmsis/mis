@@ -80,14 +80,13 @@ class RoleController extends Controller
         $search = $request->input('search');
         $offset = ($page - 1) * $limit;
         $like = '%'.$search.'%';
-        $type_array = array('group', 'admin');
 
         $total = Role::where('name', 'like', $like)
-            ->whereIn('type', $type_array)
+            ->where('type', 'instation')
             ->count();
 
         $roles = Role::where('name', 'like', $like)
-            ->whereIn('type', $type_array)
+            ->where('type', 'instation')
             ->orderBy('id', 'desc')
             ->offset($offset)
             ->limit($limit)
@@ -161,13 +160,13 @@ class RoleController extends Controller
         if($id){
             $role = Role::find($id);
             $role->name = $name;
-            $role->type = 'group';
+            $role->type = 'instation';
             $role->desc = $desc;
             $res = $role->save();
         }
         else{
             $params = request(['name', 'desc']);
-            $params['type'] = 'group';
+            $params['type'] = 'instation';
             $res = Role::create($params); //save 和 create 的不同之处在于 save 接收整个 Eloquent 模型实例而 create 接收原生 PHP 数组
         }
 
@@ -401,8 +400,7 @@ class RoleController extends Controller
      * )
      */
     public function lists(){
-        $type_array = array('group');
-        $lists = Role::whereNull('deleted_at')->whereIn('type', $type_array)->get();
+        $lists = Role::whereNull('deleted_at')->where('type', 'instation')->get();
         if($lists){
             return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $lists);
         }
