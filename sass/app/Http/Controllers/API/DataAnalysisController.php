@@ -68,8 +68,8 @@ class DataAnalysisController extends Controller
             $temp['yestoday_value'] = (float)$item['yestoday']['value'];  //当前值
             $temp['day_before_yestoday_value'] = (float)$item['day_before_yestoday']['value'];//上期值
             $temp['year_before_value'] = (float)$item['year_before']['value'];//同期值
-            $temp['year_over_year'] = $item['yestoday']['value'] ? number_format(($temp['yestoday_value'] - $temp['year_before_value']) * 100 / $temp['yestoday_value'], 2) . '%' : 0; //同比
-            $temp['month_over_month'] = $item['yestoday']['value'] ? number_format(($temp['yestoday_value'] - $temp['day_before_yestoday_value']) * 100 / $temp['yestoday_value'], 2) . '%' : 0;//环比
+            $temp['year_over_year'] = $item['yestoday']['value'] ? number_format(($temp['yestoday_value'] - $temp['year_before_value']) * 100 / $temp['yestoday_value'], 2) . '%' : '0%'; //同比
+            $temp['month_over_month'] = $item['yestoday']['value'] ? number_format(($temp['yestoday_value'] - $temp['day_before_yestoday_value']) * 100 / $temp['yestoday_value'], 2) . '%' : '0%';//环比
             $final[] = $temp;
         }
 
