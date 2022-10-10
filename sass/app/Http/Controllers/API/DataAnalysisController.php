@@ -64,7 +64,7 @@ class DataAnalysisController extends Controller
             $final['en_name'] = $item['yestoday']['en_name'];
             $final['cn_name'] = $item['yestoday']['cn_name'];
             $final['messure'] = $item['yestoday']['messure'];
-            $final['yestoday_value'] = $item['yestoday']['messure']
+            $final['yestoday_value'] = $item['yestoday']['messure'];
         }
 
         $final = array(
