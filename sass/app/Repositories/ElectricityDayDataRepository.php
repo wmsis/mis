@@ -55,6 +55,7 @@ class ElectricityDayDataRepository extends BaseRepository
         $final = [];
         $standard_lists = DcsStandard::where('type', 'electricity')->get();
         foreach ($standard_lists as $key => $item) {
+            $temp = [];
             $datalist = DB::table('power_map')
                 ->join('power_day_data_' . $factory, 'power_day_data_' . $factory . '.power_map_id', '=', 'power_map.id')
                 ->where('power_map.dcs_standard_id', $item->id)
@@ -64,7 +65,11 @@ class ElectricityDayDataRepository extends BaseRepository
                 ->groupBy('power_day_data_' . $factory . '.date')
                 ->get();
 
-            $final[$item->en_name] = $datalist;
+            $temp['datalist'] = $datalist;
+            $temp['en_name'] = $item->en_name;
+            $temp['cn_name'] = $item->cn_name;
+            $temp['messure'] = 'KWH';
+            $final[] = $temp;
         }
 
         return $final;

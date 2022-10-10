@@ -135,55 +135,81 @@ class HomeController extends Controller
         $month_electricity = $electricityObj->chartData($start, $end, $this->orgnization->code);  //垃圾入库量
         $month_weigh_bridge = $weighBridgeObj->chartData($start, $end, $this->orgnization->code);  //垃圾入炉量
 
-        //初始值
-        for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
-            $date = date('Y-m-d', $i);
-            $final['grab_garbage'][$date] = 0;
-            $final['weigh_bridge'][$date] = 0;
-            foreach ($month_electricity as $key => $item) {
-                $final[$key][$date] = 0;
+        //上网电量和厂用电量
+        foreach ($month_electricity as $k1 => $itemlist) {
+            //遍历其中一个
+            $temp = array(
+                'en_name' => $itemlist['en_name'],
+                'cn_name' => $itemlist['cn_name'],
+                'messure' => $itemlist['messure'],
+                'datalist' => [],
+            );
+            foreach ($itemlist['datalist'] as $k2 => $item) {
+                for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
+                    $date = date('Y-m-d', $i);
+                    if($item->date == $date){
+                        $temp['datalist'][$date] = (float)$item->val;
+                    }
+                    else{
+                        $temp['datalist'][$date] = 0; //初始值
+                    }
+                }
             }
+            $final[] = $temp;
         }
 
-        //赋值
-        foreach ($final as $k1 => $typelist) {
-            foreach ($typelist as $date => $value) {
-                //抓斗
-                if($k1 == 'grab_garbage'){
-                    foreach ($month_grab_garbage as $key => $item) {
-                        if($item['date'] == $date){
-                            $final['grab_garbage'][$date] = (float)$item->val;
-                            break;
-                        }
-                    }
+        //垃圾入炉量
+        $temp_grab_garbage_datalist = [];
+        foreach ($month_grab_garbage['datalist'] as $k2 => $item) {
+            for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
+                $date = date('Y-m-d', $i);
+                if($item->date == $date){
+                    $temp_grab_garbage_datalist[$date] = (float)$item->val;
                 }
-                //地磅
-                elseif($k1 == 'weigh_bridge'){
-                    foreach ($month_weigh_bridge as $key => $item) {
-                        if($item['date'] == $date){
-                            $final['weigh_bridge'][$date] = (float)$item->val;
-                            break;
-                        }
-                    }
-                }
-                //发电量和上网电量
                 else{
-                    //循环发电量和上网电量  month_electricity包含发电量和上网电量
-                    foreach ($month_electricity as $k2 => $itemlist) {
-                        if($k1 == $k2){
-                            //遍历其中一个
-                            foreach ($itemlist as $k3 => $item) {
-                                if($item->date == $date){
-                                    $final[$k1][$date] = (float)$item->val;
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                    }
+                    $temp_grab_garbage_datalist[$date] = 0; //初始值
                 }
             }
         }
+        $final[] = array(
+            'en_name' => $month_grab_garbage['en_name'],
+            'cn_name' => $month_grab_garbage['cn_name'],
+            'messure' => $month_grab_garbage['messure'],
+            'datalist' => $temp_grab_garbage_datalist,
+        );
+
+        //垃圾入库量
+        $temp_weigh_bridge_datalist = [];
+        foreach ($month_weigh_bridge['datalist'] as $k2 => $item) {
+            for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
+                $date = date('Y-m-d', $i);
+                if($item->date == $date){
+                    $temp_weigh_bridge_datalist[$date] = (float)$item->val;
+                }
+                else{
+                    $temp_weigh_bridge_datalist[$date] = 0; //初始值
+                }
+            }
+        }
+        $final[] = array(
+            'en_name' => $month_weigh_bridge['en_name'],
+            'cn_name' => $month_weigh_bridge['cn_name'],
+            'messure' => $month_weigh_bridge['messure'],
+            'datalist' => $temp_weigh_bridge_datalist,
+        );
+
+        //渗沥液处理量
+        $handle_leachate_datalist = [];
+        for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
+            $date = date('Y-m-d', $i);
+            $handle_leachate_datalist[$date] = mt_rand(50,100);
+        }
+        $final[] = array(
+            'en_name' => 'slycll',
+            'cn_name' => '渗沥液处理量',
+            'messure' => '吨',
+            'datalist' => $handle_leachate_datalist,
+        );
 
         return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $final);
     }

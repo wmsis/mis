@@ -61,19 +61,19 @@ class DataAnalysisController extends Controller
 
         $final = [];
         foreach ($key_values as $key => $item) {
-            $final['en_name'] = $item['yestoday']['en_name'];
-            $final['cn_name'] = $item['yestoday']['cn_name'];
-            $final['messure'] = $item['yestoday']['messure'];
-            $final['yestoday_value'] = $item['yestoday']['messure'];
+            $temp = array();
+            $temp['en_name'] = $item['yestoday']['en_name'];
+            $temp['cn_name'] = $item['yestoday']['cn_name'];
+            $temp['messure'] = $item['yestoday']['messure'];
+            $temp['yestoday_value'] = (float)$item['yestoday']['value'];  //当前值
+            $temp['day_before_yestoday_value'] = (float)$item['day_before_yestoday']['value'];//上期值
+            $temp['year_before_value'] = (float)$item['year_before']['value'];//同期值
+            $temp['year_over_year'] = $item['yestoday']['value'] ? number_format(($temp['yestoday_value'] - $temp['year_before_value']) * 100 / $temp['yestoday_value'], 2) . '%' : 0; //同比
+            $temp['month_over_month'] = $item['yestoday']['value'] ? number_format(($temp['yestoday_value'] - $temp['day_before_yestoday_value']) * 100 / $temp['yestoday_value'], 2) . '%' : 0;//环比
+            $final[] = $temp;
         }
 
-        $final = array(
-            'yestoday' => $yestoday_electricity,
-            'day_before_yestoday' => $day_before_yestoday_electricity,
-            'year_before' => $year_before_electricity
-        );
-
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $key_values);
+        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $final);
     }
 
     /**
@@ -92,6 +92,24 @@ class DataAnalysisController extends Controller
      *             type="string"
      *         ),
      *     ),
+     *     @OA\Parameter(
+     *         description="开始时间",
+     *         in="query",
+     *         name="start",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="结束时间",
+     *         in="query",
+     *         name="end",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="succeed",
@@ -100,5 +118,42 @@ class DataAnalysisController extends Controller
      */
     public function chart(Request $request)
     {
+        $start = $request->input('start');
+        $end = $request->input('end');
+        $final = [];
+        $electricityObj = new ElectricityDayDataRepository();
+
+        //曲线图
+        $begin_timestamp = $start ? strtotime($start) : time() - 30 * 24 * 60 * 60;
+        $end_timestamp = $end ? strtotime($end) : time() - 24 * 60 * 60;
+        $start_date = date('Y-m-d', $begin_timestamp);
+        $end_date = date('Y-m-d', $end_timestamp);
+        $month_electricity = $electricityObj->chartData($start_date, $end_date, $this->orgnization->code);  //垃圾入库量
+
+        //赋值
+        //循环发电量和上网电量  month_electricity包含发电量和上网电量
+        foreach ($month_electricity as $k1 => $itemlist) {
+            //遍历其中一个
+            $temp = array(
+                'en_name' => $itemlist['en_name'],
+                'cn_name' => $itemlist['cn_name'],
+                'messure' => $itemlist['messure'],
+                'datalist' => [],
+            );
+            foreach ($itemlist['datalist'] as $k2 => $item) {
+                for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
+                    $date = date('Y-m-d', $i);
+                    if($item->date == $date){
+                        $temp['datalist'][$date] = (float)$item->val;
+                    }
+                    else{
+                        $temp['datalist'][$date] = 0; //初始值
+                    }
+                }
+            }
+            $final[] = $temp;
+        }
+
+        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $final);
     }
 }

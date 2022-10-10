@@ -53,6 +53,11 @@ class WeighBridgeDayDataReposotory extends BaseRepository
             ->groupBy('date')
             ->get();
 
-        return $datalist;
+        $final['datalist'] = $datalist;
+        $final['en_name'] = 'ljrkl';
+        $final['cn_name'] = '垃圾入库量';
+        $final['messure'] = 'KG';
+
+        return $final;
     }
 }

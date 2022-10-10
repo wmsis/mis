@@ -32,7 +32,7 @@ class GrabGarbageDayDataReposotory extends BaseRepository
 
         $final[] = array(
             'cn_name' => '垃圾入炉量',
-            'en_name' => 'ljrkl',
+            'en_name' => 'ljrll',
             'value' => $sum_value,
             'messure' => 'KG'
         );
@@ -53,6 +53,11 @@ class GrabGarbageDayDataReposotory extends BaseRepository
             ->groupBy('date')
             ->get();
 
-        return $datalist;
+        $final['datalist'] = $datalist;
+        $final['en_name'] = 'ljrll';
+        $final['cn_name'] = '垃圾入炉量';
+        $final['messure'] = 'KG';
+
+        return $final;
     }
 }
