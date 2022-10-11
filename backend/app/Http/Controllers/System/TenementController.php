@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\System\Tenement;
 use Illuminate\Database\QueryException;
 use UtilService;
-use CacheService;
+use MyCacheService;
 
 class TenementController extends Controller
 {
@@ -46,7 +46,7 @@ class TenementController extends Controller
     {
         $user = auth('admin')->user();
         $key = UtilService::getKey($user->id, 'TENEMENT');
-        $current_tenement = CacheService::getCache($key);
+        $current_tenement = MyCacheService::getCache($key);
         $datalist = Tenement::all();
         foreach ($datalist as $key => $item) {
             if($current_tenement && $current_tenement['code'] == $item->code){
@@ -104,7 +104,7 @@ class TenementController extends Controller
             if($user){
                 $key = UtilService::getKey($user->id, 'TENEMENT');
                 $expire = auth('admin')->factory()->getTTL() * 60;
-                CacheService::setCache($key, $data, $expire);
+                MyCacheService::setCache($key, $data, $expire);
             }
             return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $data);
         }

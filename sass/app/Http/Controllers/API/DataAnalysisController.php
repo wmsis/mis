@@ -14,8 +14,8 @@ class DataAnalysisController extends Controller
      *     path="/api/data-analysis/total",
      *     tags={"数据分析data-analysis"},
      *     operationId="data-analysis-total",
-     *     summary="首页上网电量 厂用电量  垃圾入库量  垃圾入炉量等指标同比环比",
-     *     description="使用说明：首页发电量 上网电量 厂用电量  垃圾入库量  垃圾入炉量等指标同比环比",
+     *     summary="上网电量 厂用电量等指标同比环比",
+     *     description="使用说明：上网电量 厂用电量等指标同比环比",
      *     @OA\Parameter(
      *         description="token",
      *         in="query",
@@ -81,8 +81,8 @@ class DataAnalysisController extends Controller
      *     path="/api/data-analysis/chart",
      *     tags={"数据分析data-analysis"},
      *     operationId="data-analysis-chart",
-     *     summary="首页上网电量 厂用电量  垃圾入库量  垃圾入炉量等指标趋势图",
-     *     description="使用说明：首页发电量 上网电量 厂用电量  垃圾入库量  垃圾入炉量等指标趋势图",
+     *     summary="上网电量 厂用电量等指标趋势图",
+     *     description="使用说明：上网电量 厂用电量等指标趋势图",
      *     @OA\Parameter(
      *         description="token",
      *         in="query",
@@ -164,5 +164,41 @@ class DataAnalysisController extends Controller
         }
 
         return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $final);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/data-analysis/economy-daily",
+     *     tags={"数据分析data-analysis"},
+     *     operationId="data-analysis-economy-daily",
+     *     summary="经济日报表",
+     *     description="使用说明：经济日报表",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="时间",
+     *         in="query",
+     *         name="date",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="succeed",
+     *     ),
+     * )
+     */
+    public function economyDaily(Request $request)
+    {
+        $date = $request->input('date');
     }
 }

@@ -80,8 +80,9 @@ class DcsStandardController extends Controller
         $cn_name = $request->input('cn_name');
         $group_name = $request->input('group_name');
         $lists = DB::table('dcs_standard')
-            ->join('dcs_group', 'dcs_standard.dcs_group_id', '=', 'dcs_group.id')
-            ->select('dcs_standard.*', 'dcs_group.name AS group_name');
+            ->leftJoin('dcs_group', 'dcs_standard.dcs_group_id', '=', 'dcs_group.id')
+            ->select('dcs_standard.*', 'dcs_group.name AS group_name')
+            ->where('dcs_standard.type',  'dcs');
 
         if($cn_name){
             $lists = $lists->where('dcs_standard.cn_name', 'like', "%{$cn_name}%");
@@ -91,7 +92,30 @@ class DcsStandardController extends Controller
             $lists = $lists->where('dcs_group.name', 'like', "%{$group_name}%");
         }
         $lists = $lists->whereNull('dcs_standard.deleted_at')->get();
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $lists);
+
+        //格式化数据
+        $key_values = [];
+        $other = [];
+        $other['name'] = '未分组';
+        $other['datalist'] = [];
+        foreach ($lists as $key => $item) {
+            if($item->dcs_group_id){
+                $key_values[$item->dcs_group_id]['name'] = $item->group_name;
+                //$key_values[$item->dcs_group_id]['dcs_group_id'] = $item->dcs_group_id;
+                $key_values[$item->dcs_group_id]['datalist'][] = $item;
+            }
+            else{
+                $other['datalist'][] = $item;
+            }
+        }
+
+        $final = [];
+        $final[] = $other;
+        foreach ($key_values as $key => $item) {
+            $final[] = $item;
+        }
+
+        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $final);
     }
 
     /**

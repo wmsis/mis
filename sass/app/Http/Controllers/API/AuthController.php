@@ -21,7 +21,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Hash;
 use App\Models\User;
 use UtilService;
-use CacheService;
+use MyCacheService;
 use App\Models\OperateLog;
 use App\Models\Permission;
 use App\Models\SIS\Orgnization;
@@ -106,7 +106,7 @@ class AuthController extends Controller
         $user = User::where('mobile', $credentials['mobile'])->first();
         try {
             $key = UtilService::getKey($params['mobile'], 'TOKEN');
-            $current_token = CacheService::getCache($key);
+            $current_token = MyCacheService::getCache($key);
             if($current_token){
                 //将老token加入黑名单
                 JWTAuth::setToken($current_token)->invalidate();
@@ -145,7 +145,7 @@ class AuthController extends Controller
                 }
                 $user->orgnizations = $orgnizations;
             }
-            CacheService::setCache($key, $token, 3600);
+            MyCacheService::setCache($key, $token, 3600);
         } catch (JWTException $e) {
             Log::error($e);
             $res = UtilService::format_data(self::AJAX_FAIL, '登录异常', '');
@@ -309,13 +309,13 @@ class AuthController extends Controller
             $user = auth('api')->user();
             if($user && isset($user->mobile)) {
                 $key = UtilService::getKey($user->mobile, 'TOKEN');
-                CacheService::clearCache($key);
+                MyCacheService::clearCache($key);
 
                 $server = $request->server();
                 $domain = $server['HTTP_HOST'];
                 $third = UtilService::third_domain($domain);
                 $key_orgnization = UtilService::getKey($user->id, 'ORGNIZATION' . $third);
-                CacheService::clearCache($key_orgnization);
+                MyCacheService::clearCache($key_orgnization);
 
                 $user->last_login_orgnization = NULL;
                 $user->save();
@@ -361,7 +361,7 @@ class AuthController extends Controller
             //token
             $expire = auth('api')->factory()->getTTL() * 60;
             $key = UtilService::getKey($user->mobile, 'TOKEN');
-            CacheService::setCache($key, $token, $expire);
+            MyCacheService::setCache($key, $token, $expire);
 
             //orgnization
             $server = $request->server();
@@ -369,7 +369,7 @@ class AuthController extends Controller
             $third = UtilService::third_domain($domain);
             $key_orgnization = UtilService::getKey($user->id, 'ORGNIZATION' . $third);
             $data = Orgnization::find($user->last_login_orgnization)->toArray();
-            CacheService::setCache($key_orgnization, $data, $expire);
+            MyCacheService::setCache($key_orgnization, $data, $expire);
         }
 
         $res = UtilService::format_data(self::AJAX_SUCCESS, '刷新成功', compact('token'));

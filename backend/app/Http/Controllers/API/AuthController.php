@@ -21,7 +21,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Hash;
 use App\Models\User;
 use UtilService;
-use CacheService;
+use MyCacheService;
 use App\Models\OperateLog;
 use App\Models\Permission;
 
@@ -105,7 +105,7 @@ class AuthController extends Controller
         $user = User::where('mobile', $credentials['mobile'])->first();
         try {
             $key = UtilService::getKey($params['mobile'], 'TOKEN');
-            $current_token = CacheService::getCache($key);
+            $current_token = MyCacheService::getCache($key);
             if($current_token){
                 //将老token加入黑名单
                 JWTAuth::setToken($current_token)->invalidate();
@@ -120,7 +120,7 @@ class AuthController extends Controller
                 $res = UtilService::format_data(self::AJAX_FAIL, '用户名或密码错误', '');
                 return response()->json($res, 401);
             }
-            CacheService::setCache($key, $token, 3600);
+            MyCacheService::setCache($key, $token, 3600);
         } catch (JWTException $e) {
             Log::error($e);
             $res = UtilService::format_data(self::AJAX_FAIL, '登录异常', '');
@@ -284,7 +284,7 @@ class AuthController extends Controller
             $user = auth('api')->user();
             if($user && isset($user->mobile)) {
                 $key = UtilService::getKey($user->mobile, 'TOKEN');
-                CacheService::clearCache($key);
+                MyCacheService::clearCache($key);
             }
 
             auth('api')->logout();
@@ -325,7 +325,7 @@ class AuthController extends Controller
 
         if($user) {
             $key = UtilService::getKey($user->mobile, 'TOKEN');
-            CacheService::setCache($key, $token, 3600);
+            MyCacheService::setCache($key, $token, 3600);
         }
 
         $res = UtilService::format_data(self::AJAX_SUCCESS, '刷新成功', compact('token'));

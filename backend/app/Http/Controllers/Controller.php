@@ -7,7 +7,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use UtilService;
-use CacheService;
+use MyCacheService;
 
 class Controller extends BaseController
 {
@@ -23,7 +23,7 @@ class Controller extends BaseController
         $user = auth('admin')->user();
         if($user){
             $key = UtilService::getKey($user->id, 'TENEMENT');
-            $tenement = CacheService::getCache($key);
+            $tenement = MyCacheService::getCache($key);
             if($tenement && isset($tenement['code'])){
                 $mongo_conn = $tenement['code'] . '_mongo';
             }

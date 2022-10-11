@@ -10,7 +10,7 @@ namespace App\Http\Controllers\System;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use UtilService;
-use CacheService;
+use MyCacheService;
 use App\Models\System\Admin;
 use JWTAuth;
 use Hash;
@@ -60,7 +60,7 @@ class AdminController extends Controller
         $key = UtilService::getKey($credentials['username'], 'SYSTEM_TOKEN');
         $admin = Admin::where('username', $credentials['username'])->first();
         if($admin){
-            $current_token = CacheService::getCache($key);
+            $current_token = MyCacheService::getCache($key);
             if($current_token){
                 //将老token加入黑名单
                 JWTAuth::setToken($current_token)->invalidate();
@@ -74,7 +74,7 @@ class AdminController extends Controller
             return UtilService::format_data(self::AJAX_FAIL, '用户名或者密码错误', '');
         }
         $expire = auth('admin')->factory()->getTTL() * 60;
-        CacheService::setCache($key, $token, $expire);
+        MyCacheService::setCache($key, $token, $expire);
 
         return $this->respondWithToken($token);
     }
@@ -134,7 +134,7 @@ class AdminController extends Controller
         $admin = auth('admin')->user();
         if($admin && isset($admin->username)) {
             $key = UtilService::getKey($admin->username, 'SYSTEM_TOKEN');
-            CacheService::clearCache($key);
+            MyCacheService::clearCache($key);
         }
 
         auth('admin')->logout();
@@ -169,7 +169,7 @@ class AdminController extends Controller
         $token = auth('admin')->refresh();
         if($admin) {
             $key = UtilService::getKey($admin->username, 'SYSTEM_TOKEN');
-            CacheService::setCache($key, $token, 3600);
+            MyCacheService::setCache($key, $token, 3600);
         }
 
         return $this->respondWithToken($token);

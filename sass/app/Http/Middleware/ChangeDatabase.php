@@ -6,7 +6,6 @@ use Closure;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use UtilService;
-use CacheService;
 use Log;
 
 class ChangeDatabase

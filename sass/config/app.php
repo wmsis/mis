@@ -5,13 +5,15 @@ use App\Facades\MiniServiceFacade;
 use App\Facades\UtilServiceFacade;
 use App\Facades\WechatServiceFacade;
 use App\Facades\WxpayServiceFacade;
-use App\Facades\CacheServiceFacade;
+use App\Facades\MyCacheServiceFacade;
+use App\Facades\EconomyDailyServiceFacade;
 use App\Providers\HistorianServiceProvider;
 use App\Providers\MiniServiceProvider;
 use App\Providers\UtilServiceProvider;
 use App\Providers\WechatServiceProvider;
 use App\Providers\WxpayServiceProvider;
-use App\Providers\CacheServiceProvider;
+use App\Providers\MyCacheServiceProvider;
+use App\Providers\EconomyDailyServiceProvider;
 
 return [
 
@@ -194,12 +196,14 @@ return [
         App\Providers\UtilServiceProvider::class,
         App\Providers\MiniServiceProvider::class,
         App\Providers\HistorianServiceProvider::class,
-        App\Providers\CacheServiceProvider::class,
+        App\Providers\MyCacheServiceProvider::class,
+        App\Providers\EconomyDailyServiceProvider::class,
         Jenssegers\Mongodb\MongodbServiceProvider::class,
         Fruitcake\Cors\CorsServiceProvider::class,
         App\Providers\DatabaseServiceProvider::class,
         L5Swagger\L5SwaggerServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
     ],
 
@@ -262,10 +266,13 @@ return [
         'UtilService' => App\Facades\UtilServiceFacade::class,
         'MiniService' => App\Facades\MiniServiceFacade::class,
         'HistorianService' => App\Facades\HistorianServiceFacade::class,
-        'CacheService' => App\Facades\CacheServiceFacade::class,
+        'MyCacheService' => App\Facades\MyCacheServiceFacade::class,
+        'EconomyDailyService' => App\Facades\EconomyDailyServiceFacade::class,
         //jwt add
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
+
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 

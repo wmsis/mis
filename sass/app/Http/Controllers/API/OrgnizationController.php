@@ -11,7 +11,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use UtilService;
-use CacheService;
+use MyCacheService;
 use App\Models\SIS\Orgnization;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
@@ -153,7 +153,7 @@ class OrgnizationController extends Controller
                 $user->save();
                 $key = UtilService::getKey($user->id, 'ORGNIZATION' . $third);
                 $expire = auth('api')->factory()->getTTL() * 60;
-                CacheService::setCache($key, $data, $expire);
+                MyCacheService::setCache($key, $data, $expire);
             }
             return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $data);
         }

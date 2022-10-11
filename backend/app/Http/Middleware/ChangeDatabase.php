@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Config;
 use UtilService;
-use CacheService;
+use MyCacheService;
 use Log;
 use App\Models\System\Tenement;
 
@@ -24,7 +24,7 @@ class ChangeDatabase
         $user = auth('admin')->user();
         if($user){
             $key = UtilService::getKey($user->id, 'TENEMENT');
-            $tenement = CacheService::getCache($key);
+            $tenement = MyCacheService::getCache($key);
             //$default = $request->tenement ? $request->tenement : 'mysql';  //tenement为租户编号code
             if($tenement && isset($tenement['code'])){
                 $default = $tenement['code'];
@@ -36,7 +36,7 @@ class ChangeDatabase
                     $tenement = $tenement->toArray();
                     $default = $tenement['code'];
                     $expire = auth('admin')->factory()->getTTL() * 60;
-                    CacheService::setCache($key, $tenement, $expire);
+                    MyCacheService::setCache($key, $tenement, $expire);
                 }
                 else{
                     $default = 'mysql';

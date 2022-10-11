@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Cache;
 use Log;
-use CacheService;
+use MyCacheService;
 
 class HistorianTag extends Model
 {
@@ -92,15 +92,15 @@ class HistorianTag extends Model
     }
 
     private function getCache($key){
-        return CacheService::getCache($key);
+        return MyCacheService::getCache($key);
     }
 
     private function setCache($key, $data, $expire){
-        CacheService::setCache($key, $data, $expire);
+        MyCacheService::setCache($key, $data, $expire);
     }
 
     private function clearCache($key){
-        CacheService::clearCache($key);
+        MyCacheService::clearCache($key);
     }
 }
 

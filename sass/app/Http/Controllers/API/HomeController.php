@@ -22,7 +22,7 @@ class HomeController extends Controller
      *     tags={"首页home"},
      *     operationId="home-total",
      *     summary="首页上网电量 厂用电量  垃圾入库量  垃圾入炉量等指标",
-     *     description="使用说明：首页发电量 上网电量 厂用电量  垃圾入库量  垃圾入炉量等指标",
+     *     description="使用说明：首页上网电量 厂用电量  垃圾入库量  垃圾入炉量等指标",
      *     @OA\Parameter(
      *         description="token",
      *         in="query",
@@ -102,7 +102,7 @@ class HomeController extends Controller
      *     tags={"首页home"},
      *     operationId="home-chart",
      *     summary="首页上网电量 厂用电量  垃圾入库量  垃圾入炉量等指标趋势图",
-     *     description="使用说明：首页发电量 上网电量 厂用电量  垃圾入库量  垃圾入炉量等指标趋势图",
+     *     description="使用说明：首页上网电量 厂用电量  垃圾入库量  垃圾入炉量等指标趋势图",
      *     @OA\Parameter(
      *         description="token",
      *         in="query",
