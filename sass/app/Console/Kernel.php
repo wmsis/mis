@@ -29,11 +29,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('count:dayElectricityData')->everyMinute();
-        // $schedule->command('count:dayDcsData')->everyMinute();
-        // $schedule->command('count:dayGrabGarbageData')->everyMinute();
-        // $schedule->command('count:dayWeighBridgeData')->everyMinute();
-        // $schedule->command('count:dayPowerData')->everyMinute();
+        $schedule->command('count:dayElectricityData')->everyMinute();
+        $schedule->command('count:dayDcsData')->everyMinute();
+        $schedule->command('count:dayGrabGarbageData')->everyMinute();
+        $schedule->command('count:dayWeighBridgeData')->everyMinute();
+        $schedule->command('count:dayPowerData')->everyMinute();
     }
 
     /**
