@@ -266,10 +266,10 @@ class DcsStandardController extends Controller
         //判断是否有其他相同的名称
         $data = DcsStandard::where('en_name', $input['en_name'])->orWhere('cn_name', $input['cn_name'])->first();
         if($data && $data->cn_name == $input['cn_name']){
-            return UtilService::format_data(self::AJAX_FAIL, '中文名称重复', '');
+            return UtilService::format_data(self::AJAX_FAIL, '中文名称已存在', '');
         }
         elseif($data && $data->en_name == $input['en_name']){
-            return UtilService::format_data(self::AJAX_FAIL, '英文名称重复', '');
+            return UtilService::format_data(self::AJAX_FAIL, '英文名称已存在', '');
         }
 
         try {
@@ -440,10 +440,10 @@ class DcsStandardController extends Controller
         //判断是否有其他相同的名称
         $data = DcsStandard::where('en_name', $input['en_name'])->orWhere('cn_name', $input['cn_name'])->first();
         if($data && $data->cn_name == $input['cn_name'] && $data->id != $id){
-            return UtilService::format_data(self::AJAX_FAIL, '中文名称重复', '');
+            return UtilService::format_data(self::AJAX_FAIL, '中文名称已存在', '');
         }
         elseif($data && $data->en_name == $input['en_name'] && $data->id != $id){
-            return UtilService::format_data(self::AJAX_FAIL, '英文名称重复', '');
+            return UtilService::format_data(self::AJAX_FAIL, '英文名称已存在', '');
         }
 
         $allowField = ['cn_name', 'en_name', 'type', 'messure'];
