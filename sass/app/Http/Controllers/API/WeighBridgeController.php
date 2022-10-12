@@ -150,9 +150,10 @@ class WeighBridgeController extends Controller
                     $small_ids[] = $small->id;
                 }
 
-                $datalist = $obj->whereIn('weighbridge_cate_small_id', $small_ids)
-                    ->where('grossdatetime', '>', $start)
-                    ->where('grossdatetime', '<', $end)
+                $datalist = $obj->select(['net as value', 'taredatetime as datetime', 'weighbridge_cate_small_id'])
+                    ->whereIn('weighbridge_cate_small_id', $small_ids)
+                    ->where('taredatetime', '>', $start)
+                    ->where('taredatetime', '<', $end)
                     ->get();
 
                 foreach ($datalist as $k3 => $data) {

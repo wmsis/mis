@@ -181,7 +181,8 @@ class DcsStandardController extends Controller
                 $group = DcsGroup::find($item->dcs_group_id);
                 $lists[$key]['group_name'] = $group && $group->name ? $group->name : '';
 
-                $datalist = $obj_hitorian_format_local->where('dcs_standard_id', $item->id)
+                $datalist = $obj_hitorian_format_local->select(['value', 'datetime', ])
+                    ->where('dcs_standard_id', $item->id)
                     ->where('datetime', '>', $start)
                     ->where('datetime', '<', $end)
                     ->get();

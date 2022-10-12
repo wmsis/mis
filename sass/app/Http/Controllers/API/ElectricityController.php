@@ -122,7 +122,8 @@ class ElectricityController extends Controller
             $table = 'electricity_' . $this->orgnization->code;
             $obj = (new Electricity())->setTable($table);
             foreach ($lists as $key => $item) {
-                $datalist = $obj->where('address', $item->addr)
+                $datalist = $obj->select(['actual_value as value', 'created_at as datetime'])
+                    ->where('electricity_map_id', $item->id)
                     ->where('created_at', '>', $start)
                     ->where('created_at', '<', $end)
                     ->get();
