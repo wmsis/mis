@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use App\Models\SIS\DcsStandard;
 use Illuminate\Database\QueryException;
 use UtilService;
+use Log;
 
 class DcsStandardController extends Controller
 {
@@ -422,25 +423,33 @@ class DcsStandardController extends Controller
      */
     public function update(Request $request, $id)
     {
+        Log::info('00000000000000000');
         $row = DcsStandard::find($id);
         if (!$row) {
             return response()->json(UtilService::format_data(self::AJAX_FAIL, '该数据不存在', ''));
         }
         $input = $request->input();
+        Log::info('1111111111111');
+        Log::info(var_export($input, true));
         $allowField = ['cn_name', 'en_name', 'type', 'messure'];
         foreach ($allowField as $field) {
             if (key_exists($field, $input)) {
+                Log::info('2222222222222222');
+                Log::info(var_export($field, true));
                 $inputValue = $input[$field];
                 $row[$field] = $inputValue;
             }
         }
         try {
             if(isset($input['en_name'])){
+                Log::info('333333333333333333333');
                 $row = DcsStandard::where('en_name', $input['en_name'])->first();
                 if($row && $row->id != $id){
+                    Log::info('55555555555555555555');
                     return UtilService::format_data(self::AJAX_FAIL, '中文名称重复', '');
                 }
             }
+            Log::info('666666666666666666');
             $row->save();
             $row->refresh();
         } catch (Exception $ex) {

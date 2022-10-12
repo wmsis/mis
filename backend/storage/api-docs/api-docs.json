@@ -1224,6 +1224,15 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "name": "messure",
+                        "in": "query",
+                        "description": "单位",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
@@ -1357,7 +1366,7 @@
                         }
                     },
                     {
-                        "name": "model",
+                        "name": "en_name",
                         "in": "query",
                         "description": "英文名字",
                         "required": false,
@@ -1370,6 +1379,15 @@
                         "in": "query",
                         "description": "类型",
                         "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "messure",
+                        "in": "query",
+                        "description": "单位",
+                        "required": true,
                         "schema": {
                             "type": "string"
                         }
@@ -7293,6 +7311,9 @@
                         "type": "integer"
                     },
                     "type": {
+                        "type": "string"
+                    },
+                    "messure": {
                         "type": "string"
                     }
                 },
