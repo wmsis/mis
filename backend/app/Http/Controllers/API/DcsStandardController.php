@@ -224,6 +224,15 @@ class DcsStandardController extends Controller
      *             type="string"
      *         )
      *     ),
+     *     @OA\Parameter(
+     *         description="单位",
+     *         in="query",
+     *         name="messure",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="store succeed",
@@ -253,7 +262,7 @@ class DcsStandardController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->only(['cn_name', 'en_name', 'type']);
+        $input = $request->only(['cn_name', 'en_name', 'type', 'messure']);
         try {
             $res = DcsStandard::create($input);
         } catch (QueryException $e) {
@@ -360,7 +369,7 @@ class DcsStandardController extends Controller
      *     @OA\Parameter(
      *         description="英文名字",
      *         in="query",
-     *         name="model",
+     *         name="en_name",
      *         required=false,
      *         @OA\Schema(
      *             type="string"
@@ -371,6 +380,15 @@ class DcsStandardController extends Controller
      *         in="query",
      *         name="type",
      *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="单位",
+     *         in="query",
+     *         name="messure",
+     *         required=true,
      *         @OA\Schema(
      *             type="string"
      *         )
@@ -409,7 +427,7 @@ class DcsStandardController extends Controller
             return response()->json(UtilService::format_data(self::AJAX_FAIL, '该数据不存在', ''));
         }
         $input = $request->input();
-        $allowField = ['cn_name', 'en_name', 'type'];
+        $allowField = ['cn_name', 'en_name', 'type', 'messure'];
         foreach ($allowField as $field) {
             if (key_exists($field, $input)) {
                 $inputValue = $input[$field];

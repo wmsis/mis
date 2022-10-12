@@ -31,13 +31,17 @@ use App\Models\SIS\DcsGroup;
  *         property="type",
  *         type="string"
  *     ),
+ *     @OA\Property(
+ *         property="messure",
+ *         type="string"
+ *     ),
  * )
  */
 class DcsStandard extends Model
 {
     use softDeletes;
     protected $table = 'dcs_standard';
-    protected $fillable = ['en_name', 'cn_name', 'dcs_group_id', 'type'];
+    protected $fillable = ['en_name', 'cn_name', 'dcs_group_id', 'type', 'messure'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',
