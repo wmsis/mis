@@ -1,11 +1,21 @@
 <?php
 
 namespace App\Services;
+use App\Repositories\ElectricityDayDataRepository;
+use App\Repositories\GrabGarbageDayDataReposotory;
+use App\Repositories\WeighBridgeDayDataReposotory;
 
 class EconomyDailyService{
-    public function daydata($date)
+    public function daydata($date, $tenement_conn, $factory)
     {
         $final = [];
+        $date_start = $date;
+        $date_end = $date;
+        $month_start = date('Y-m', strtotime($date)) . '-01';
+        $month_end = $date;
+        $electricityObj = new ElectricityDayDataRepository();
+        $weighBridgeObj = new WeighBridgeDayDataReposotory();
+        $grabGarbageObj = new GrabGarbageDayDataReposotory();
         $sign_name = "林贵";
         $data = array(
             //发电指标
@@ -281,7 +291,8 @@ class EconomyDailyService{
             "sign" => "生技科签字 " . $sign_name . "  ".date('Y年m月d日', strtotime($date))
         );
 
-
-        return $final;
+        $date_electricity = $electricityObj->countData($date_start, $date_end, $factory, $tenement_conn);
+        $month_electricity = $electricityObj->countData($month_start, $month_end, $factory, $tenement_conn);
+        return $month_electricity;
     }
 }

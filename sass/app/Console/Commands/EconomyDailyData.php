@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Jobs\EconomyDailyDataJob;
+use App\Models\SIS\Orgnization;
+use Illuminate\Support\Facades\DB;
 
 class EconomyDailyData extends Command
 {
@@ -46,7 +48,25 @@ class EconomyDailyData extends Command
             $date = date('Y-m-d');
         }
 
-        dispatch(new EconomyDailyDataJob($date));
+        $tenements = DB::connection('mysql_mis')->table('tenement')->get();
+        //循环租户
+        foreach ($tenements as $k1 => $tenement) {
+            $tenement_conn = $tenement->code; //租户数据库连接名称
+            $orgnization = (new Orgnization())->setConnection($tenement_conn);//连接特定租户下面的组织表
+            //循环电厂
+            $factories = $orgnization->where('level', 2)->get();
+            foreach ($factories as $k2 => $factory) {
+                if($factory->code){
+                    $params = array(
+                        'date' => $date,
+                        'tenement_conn' => $tenement_conn,
+                        'factory' => $factory->code
+                    );
+
+                    dispatch(new EconomyDailyDataJob($params));
+                }
+            }
+        }
         return 0;
     }
 }

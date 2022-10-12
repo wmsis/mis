@@ -78,7 +78,7 @@ class CountDayPowerDataJob implements ShouldQueue
                 }
 
                 $val = 0;
-                if($func){
+                if($func && count($key_values) > 0){
                     //计算函数的值
                     foreach ($key_values as $key => $value) {
                         $func = str_replace('[' . $key . ']', $value, $func);

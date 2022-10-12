@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Jobs\ExportEconomyDailyJob;
+use App\Models\SIS\Orgnization;
+use Illuminate\Support\Facades\DB;
 
 class ExportEconomyDaily extends Command
 {

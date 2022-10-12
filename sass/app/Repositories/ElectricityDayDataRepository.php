@@ -25,18 +25,28 @@ class ElectricityDayDataRepository extends BaseRepository
         return ElectricityDayData::class;
     }
 
-    public function countData($start, $end, $factory)
+    public function countData($start, $end, $factory, $tenement_conn=null)
     {
         $final = [];
         $standard_lists = DcsStandard::where('type', 'electricity')->get();
         foreach ($standard_lists as $key => $item) {
             //获取厂用电量 上网电量
-            $sum_value = DB::table('power_map')
-                ->join('power_day_data_' . $factory, 'power_day_data_' . $factory . '.power_map_id', '=', 'power_map.id')
-                ->where('power_map.dcs_standard_id', $item->id)
-                ->where('power_day_data_' . $factory . '.date', '>=', $start)
-                ->where('power_day_data_' . $factory . '.date', '<=', $end)
-                ->sum('power_day_data_' . $factory . '.value');
+            if(!$tenement_conn){
+                $sum_value = DB::table('power_map')
+                    ->join('power_day_data_' . $factory, 'power_day_data_' . $factory . '.power_map_id', '=', 'power_map.id')
+                    ->where('power_map.dcs_standard_id', $item->id)
+                    ->where('power_day_data_' . $factory . '.date', '>=', $start)
+                    ->where('power_day_data_' . $factory . '.date', '<=', $end)
+                    ->sum('power_day_data_' . $factory . '.value');
+            }
+            else{
+                $sum_value = DB::connection($tenement_conn)->table('power_map')
+                    ->join('power_day_data_' . $factory, 'power_day_data_' . $factory . '.power_map_id', '=', 'power_map.id')
+                    ->where('power_map.dcs_standard_id', $item->id)
+                    ->where('power_day_data_' . $factory . '.date', '>=', $start)
+                    ->where('power_day_data_' . $factory . '.date', '<=', $end)
+                    ->sum('power_day_data_' . $factory . '.value');
+            }
 
             $final[] = array(
                 'cn_name' => $item->cn_name,
