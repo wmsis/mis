@@ -129,7 +129,8 @@ class ElectricityController extends Controller
                     ->where('date', '<=', $end)
                     ->get();
 
-                $lists[$key]['dcs_standard_name'] = $dcs_standard ? $dcs_standard->cn_name : '';
+                $lists[$key]['name'] = $dcs_standard ? $dcs_standard->cn_name : '';
+                $lists[$key]['messure'] = $dcs_standard ? $dcs_standard->messure : '';
                 $lists[$key]['datalist'] = $datalist;
             }
         }
