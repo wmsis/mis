@@ -122,12 +122,14 @@ class ElectricityController extends Controller
             $table = 'power_day_data_' . $this->orgnization->code;
             $obj = (new PowerDayData())->setTable($table);
             foreach ($lists as $key => $item) {
+                $dcs_standard = DcsStandard::find($item->dcs_standard_id);
                 $datalist = $obj->select(['value', 'date'])
                     ->where('power_map_id', $item->id)
                     ->where('date', '>=', $start)
                     ->where('date', '<=', $end)
                     ->get();
 
+                $lists[$key]['dcs_standard_name'] = $dcs_standard ? $dcs_standard->cn_name : '';
                 $lists[$key]['datalist'] = $datalist;
             }
         }
