@@ -161,7 +161,12 @@ class WeighBridgeController extends Controller
                     $datalist[$k3]['product'] = $small->name;
                 }
 
-                $lists[$k1]['datalist'] = $datalist;
+                $key_values = [];
+                foreach ($datalist as $k9 => $data) {
+                    $key_values[$data->datetime] = $data->value;
+                }
+
+                $lists[$k1]['datalist'] = $key_values;
             }
         }
 

@@ -183,11 +183,16 @@ class DcsStandardController extends Controller
 
                 $datalist = $obj_hitorian_format_local->select(['value', 'datetime', ])
                     ->where('dcs_standard_id', $item->id)
-                    ->where('datetime', '>', $start)
-                    ->where('datetime', '<', $end)
+                    ->where('datetime', '>=', $start)
+                    ->where('datetime', '<=', $end)
                     ->get();
 
-                $lists[$key]['datalist'] = $datalist;
+                $key_values = [];
+                foreach ($datalist as $k9 => $data) {
+                    $key_values[$data->datetime] = $data->value;
+                }
+
+                $lists[$key]['datalist'] = $key_values;
             }
         }
 

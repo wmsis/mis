@@ -117,7 +117,7 @@ class ElectricityController extends Controller
         $start = $request->input('start');
         $end = $request->input('end');
         $id_arr = explode(',', $ids);
-        $lists = PowerMap::whereIn('dcs_standard_id', $id_arr)->get();
+        $lists = PowerMap::select(['dcs_standard_id', 'id'])->whereIn('dcs_standard_id', $id_arr)->get();
         if($lists && count($lists) > 0){
             $table = 'power_day_data_' . $this->orgnization->code;
             $obj = (new PowerDayData())->setTable($table);
@@ -131,7 +131,14 @@ class ElectricityController extends Controller
 
                 $lists[$key]['name'] = $dcs_standard ? $dcs_standard->cn_name : '';
                 $lists[$key]['messure'] = $dcs_standard ? $dcs_standard->messure : '';
-                $lists[$key]['datalist'] = $datalist;
+
+                $key_values = [];
+                foreach ($datalist as $k9 => $data) {
+                    $key_values[$data->date] = (float)$data->value;
+                }
+                $lists[$key]['datalist'] = $key_values;
+                unset($lists[$key]->id);
+                unset($lists[$key]->dcs_standard_id);
             }
         }
 

@@ -169,7 +169,11 @@ class GarbageController extends Controller
         }
 
         $datalist = $datalist->get();
+        $key_values = [];
+        foreach ($datalist as $k9 => $data) {
+            $key_values[$data->datetime] = $data->value;
+        }
 
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $datalist);
+        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $key_values);
     }
 }
