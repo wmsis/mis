@@ -13,7 +13,6 @@ use UtilService;
 use App\Models\SIS\DcsStandard;
 use App\Models\SIS\PowerDayData;
 use App\Models\SIS\PowerMap;
-use App\Http\Requests\API\StoreElectricityRequest;
 use Illuminate\Database\QueryException;
 use Log;
 
