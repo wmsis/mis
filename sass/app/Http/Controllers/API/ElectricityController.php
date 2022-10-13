@@ -10,8 +10,9 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use UtilService;
-use App\Models\SIS\Electricity;
-use App\Models\SIS\ElectricityMap;
+use App\Models\SIS\DcsStandard;
+use App\Models\SIS\PowerDayData;
+use App\Models\SIS\PowerMap;
 use App\Http\Requests\API\StoreElectricityRequest;
 use Illuminate\Database\QueryException;
 use Log;
@@ -53,10 +54,10 @@ class ElectricityController extends Controller
     {
         $name = $request->input('name');
         if($name){
-            $lists = ElectricityMap::where('cn_name', 'like', "%{$name}%")->where('orgnization_id', $this->orgnization->id)->get();
+            $lists = DcsStandard::where('cn_name', 'like', "%{$name}%")->where('type', 'electricity')->get();
         }
         else{
-            $lists = ElectricityMap::where('orgnization_id', $this->orgnization->id)->get();
+            $lists = DcsStandard::where('type', 'electricity')->get();
         }
 
         return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $lists);
@@ -88,7 +89,7 @@ class ElectricityController extends Controller
      *         ),
      *     ),
      *     @OA\Parameter(
-     *         description="开始时间",
+     *         description="开始日期",
      *         in="query",
      *         name="start",
      *         required=true,
@@ -97,7 +98,7 @@ class ElectricityController extends Controller
      *         ),
      *     ),
      *     @OA\Parameter(
-     *         description="结束时间",
+     *         description="结束日期",
      *         in="query",
      *         name="end",
      *         required=true,
@@ -117,15 +118,15 @@ class ElectricityController extends Controller
         $start = $request->input('start');
         $end = $request->input('end');
         $id_arr = explode(',', $ids);
-        $lists = ElectricityMap::whereIn('id', $id_arr)->get();
+        $lists = PowerMap::whereIn('dcs_standard_id', $id_arr)->get();
         if($lists && count($lists) > 0){
-            $table = 'electricity_' . $this->orgnization->code;
-            $obj = (new Electricity())->setTable($table);
+            $table = 'power_day_data_' . $this->orgnization->code;
+            $obj = (new PowerDayData())->setTable($table);
             foreach ($lists as $key => $item) {
-                $datalist = $obj->select(['actual_value as value', 'created_at as datetime'])
-                    ->where('electricity_map_id', $item->id)
-                    ->where('created_at', '>', $start)
-                    ->where('created_at', '<', $end)
+                $datalist = $obj->select(['value', 'date'])
+                    ->where('power_map_id', $item->id)
+                    ->where('date', '>=', $start)
+                    ->where('date', '<=', $end)
                     ->get();
 
                 $lists[$key]['datalist'] = $datalist;
