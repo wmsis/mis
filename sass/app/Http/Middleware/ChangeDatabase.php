@@ -27,6 +27,9 @@ class ChangeDatabase
         $domain = $server['HTTP_HOST'];
         $third = UtilService::third_domain($domain);
         if($third && strpos($domain, '10.99.99.88') === false && strpos($domain, '10.99.99.99') === false){ //没查询到10.99.99.88  排除测试环境
+            if($third && strpos($domain, 'api') !== false){
+                $third = str_replace('api', '', $third);
+            }
             $tenement = DB::connection('mysql_mis')->table('tenement')->where('code', $third)->first();
             if(!$tenement || !isset($tenement->code)){
                 return response(UtilService::format_data(self::AJAX_FAIL, '商户不存在', ''), 200);
