@@ -68,13 +68,13 @@ class CountDayPowerDataJob implements ShouldQueue
                 $electricityMapObj = (new ElectricityMap())->setConnection($this->tenement_conn);
                 foreach ($datalist as $k2 => $data) {
                     $map = $electricityMapObj->find($data->electricity_map_id);
-                    $datalist[$k2]['addr'] = $map && $map->addr ? $map->addr : '';
+                    $datalist[$k2]['cn_name'] = $map && $map->cn_name ? $map->cn_name : '';
                 }
 
                 //地址键值对
                 $key_values = [];
                 foreach ($datalist as $k3 => $data) {
-                    $key_values[$data->addr] = $data->val;
+                    $key_values[$data->cn_name] = $data->val;
                 }
 
                 $val = 0;
