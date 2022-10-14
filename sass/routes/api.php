@@ -151,6 +151,7 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
         Route::prefix('data-analysis')->group(function () {
             Route::get('total', 'DataAnalysisController@total');
             Route::get('chart', 'DataAnalysisController@chart');
+            Route::get('economy-daily', 'DataAnalysisController@economyDaily');
         });
     });
 });

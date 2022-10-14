@@ -3582,6 +3582,31 @@
     },
     "components": {
         "schemas": {
+            "EconomyDailyData": {
+                "title": "EconomyDailyData Model",
+                "description": "EconomyDailyData Model",
+                "properties": {
+                    "_id": {
+                        "type": "string"
+                    },
+                    "dcs_standard_id": {
+                        "type": "integer"
+                    },
+                    "avg_value": {
+                        "type": "string"
+                    },
+                    "min_value": {
+                        "type": "string"
+                    },
+                    "max_value": {
+                        "type": "string"
+                    },
+                    "date": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
             "ElectricityData": {
                 "title": "ElectrityData Model",
                 "description": "ElectrityData Model",
