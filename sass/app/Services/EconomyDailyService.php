@@ -4,11 +4,12 @@ namespace App\Services;
 use App\Repositories\ElectricityDayDataRepository;
 use App\Repositories\GrabGarbageDayDataReposotory;
 use App\Repositories\WeighBridgeDayDataReposotory;
+use App\Models\Mongo\EconomyDailyData;
+use Log;
 
 class EconomyDailyService{
     public function daydata($date, $tenement_conn, $factory)
     {
-        $final = [];
         $date_start = $date;
         $date_end = $date;
         $month_start = date('Y-m', strtotime($date)) . '-01';
@@ -16,8 +17,38 @@ class EconomyDailyService{
         $electricityObj = new ElectricityDayDataRepository();
         $weighBridgeObj = new WeighBridgeDayDataReposotory();
         $grabGarbageObj = new GrabGarbageDayDataReposotory();
-        $sign_name = "林贵";
-        $data = array(
+
+        //获取数据
+        $date_electricity = $electricityObj->countData($date_start, $date_end, $factory->code, $tenement_conn);
+        $month_electricity = $electricityObj->countData($month_start, $month_end, $factory->code, $tenement_conn);
+
+        $date_weigh_bridge = $weighBridgeObj->countData($date_start, $date_end, $factory->code, $tenement_conn);
+        $month_weigh_bridge = $weighBridgeObj->countData($month_start, $month_end, $factory->code, $tenement_conn);
+
+        $date_grab_garbage = $grabGarbageObj->countData($date_start, $date_end, $factory->code, $tenement_conn);
+        $month_grab_garbage = $grabGarbageObj->countData($month_start, $month_end, $factory->code, $tenement_conn);
+
+        $params = array(
+            'date' => array(
+                'electricity' => $date_electricity,
+                'weigh_bridge' => $date_weigh_bridge,
+                'grab_garbage' => $date_grab_garbage,
+            ),
+            'month' => array(
+                'electricity' => $month_electricity,
+                'weigh_bridge' => $month_weigh_bridge,
+                'grab_garbage' => $month_grab_garbage,
+            )
+        );
+
+        //赋值
+        $final = $this->three_boiler_two_tubine_data($params);
+        return $final;
+    }
+
+    private function three_boiler_two_tubine_data($params=null){
+        //初始值
+        $three_boiler_two_tubine_data = array(
             //发电指标
             "electricity"=>array(
                 //发电量
@@ -284,15 +315,105 @@ class EconomyDailyService{
                     "no3boiler"=>0,
                     "standard"=>'~'
                 )
-            ),
-            //其他
-            "production_about"=>array(),
-            //签字
-            "sign" => "生技科签字 " . $sign_name . "  ".date('Y年m月d日', strtotime($date))
+            )
         );
 
-        $date_electricity = $electricityObj->countData($date_start, $date_end, $factory, $tenement_conn);
-        $month_electricity = $electricityObj->countData($month_start, $month_end, $factory, $tenement_conn);
-        return $month_electricity;
+        //日赋值
+        foreach ($params['date'] as $k1 => $datalist) {
+            if($k1 == 'electricity'){
+                foreach ($datalist as $k3 => $item) {
+                    if($item['en_name'] == config('standard.not_dcs.cydl.en_name')){
+                        $three_boiler_two_tubine_data['electricity']['factory_use_electricity']['today'] = $item['value']; //厂用电量
+                    }
+                    elseif($item['en_name'] == config('standard.not_dcs.fdl.en_name')){
+                        $three_boiler_two_tubine_data['electricity']['power']['total']['today'] = $item['value']; //发电量
+                    }
+                    elseif($item['en_name'] == config('standard.not_dcs.no1_fdl.en_name')){
+                        $three_boiler_two_tubine_data['electricity']['power']['no1turbine']['today'] = $item['value']; //一号发电量
+                    }
+                    elseif($item['en_name'] == config('standard.not_dcs.no2_fdl.en_name')){
+                        $three_boiler_two_tubine_data['electricity']['power']['no2turbine']['today'] = $item['value']; //二号发电量
+                    }
+                    elseif($item['en_name'] == config('standard.not_dcs.no1_swdl.en_name')){
+                        $three_boiler_two_tubine_data['electricity']['no1turbine_online_electricity']['today'] = $item['value']; //一号上网电量
+                    }
+                    elseif($item['en_name'] == config('standard.not_dcs.no2_swdl.en_name')){
+                        $three_boiler_two_tubine_data['electricity']['no2turbine_online_electricity']['today'] = $item['value']; //二号上网电量
+                    }
+                    elseif($item['en_name'] == config('standard.not_dcs.swdl.en_name')){
+                        $three_boiler_two_tubine_data['electricity']['total_online_electricity']['today'] = $item['value']; //上网电量
+                    }
+                }
+                $three_boiler_two_tubine_data['electricity']['factory_use_electricity_rate']['today'] = number_format(100 * $three_boiler_two_tubine_data['electricity']['factory_use_electricity']['today']/$three_boiler_two_tubine_data['electricity']['power']['total']['today'], 2) . '%';  //厂用电率
+
+            }
+            elseif($k1 == 'weigh_bridge'){
+                foreach ($datalist as $k3 => $item) {
+                    if($item['en_name'] == config('standard.not_dcs.ljrkl.en_name')){
+                        $three_boiler_two_tubine_data['incineration']['life_rubbish_entry']['today'] = $item['value']/1000;
+                    }
+                }
+            }
+            elseif($k1 == 'grab_garbage'){
+                foreach ($datalist as $k3 => $item) {
+                    if($item['en_name'] == config('standard.not_dcs.ljrll.en_name')){
+                        $three_boiler_two_tubine_data['incineration']['incineration_rubbish']['today'] = $item['value']/1000;
+                    }
+                }
+            }
+        }
+
+        //根据基础值计算得出的值
+        $three_boiler_two_tubine_data['electricity']['ton_rubbish_produce_electricity']['today'] = $three_boiler_two_tubine_data['incineration']['incineration_rubbish']['today'] ? (float)number_format($three_boiler_two_tubine_data['electricity']['power']['total']['today']/$three_boiler_two_tubine_data['incineration']['incineration_rubbish']['today'], 4) : 0; //吨垃圾发电量
+        $three_boiler_two_tubine_data['electricity']['ton_rubbish_online_electricity']['today'] = $three_boiler_two_tubine_data['incineration']['incineration_rubbish']['today'] ? (float)number_format($three_boiler_two_tubine_data['electricity']['total_online_electricity']['today']/$three_boiler_two_tubine_data['incineration']['incineration_rubbish']['today'], 4) : 0; //吨垃圾上网电量
+
+        //月赋值
+        foreach ($params['month'] as $k1 => $datalist) {
+            if($k1 == 'electricity'){
+                foreach ($datalist as $k3 => $item) {
+                    if($item['en_name'] == config('standard.not_dcs.cydl.en_name')){
+                        $three_boiler_two_tubine_data['electricity']['factory_use_electricity']['month'] = $item['value']; //厂用电量
+                    }
+                    elseif($item['en_name'] == config('standard.not_dcs.fdl.en_name')){
+                        $three_boiler_two_tubine_data['electricity']['power']['total']['month'] = $item['value']; //发电量
+                    }
+                    elseif($item['en_name'] == config('standard.not_dcs.no1_fdl.en_name')){
+                        $three_boiler_two_tubine_data['electricity']['power']['no1turbine']['month'] = $item['value']; //一号发电量
+                    }
+                    elseif($item['en_name'] == config('standard.not_dcs.no2_fdl.en_name')){
+                        $three_boiler_two_tubine_data['electricity']['power']['no2turbine']['month'] = $item['value']; //二号发电量
+                    }
+                    elseif($item['en_name'] == config('standard.not_dcs.no1_swdl.en_name')){
+                        $three_boiler_two_tubine_data['electricity']['no1turbine_online_electricity']['month'] = $item['value']; //一号上网电量
+                    }
+                    elseif($item['en_name'] == config('standard.not_dcs.no2_swdl.en_name')){
+                        $three_boiler_two_tubine_data['electricity']['no2turbine_online_electricity']['month'] = $item['value']; //二号上网电量
+                    }
+                    elseif($item['en_name'] == config('standard.not_dcs.swdl.en_name')){
+                        $three_boiler_two_tubine_data['electricity']['total_online_electricity']['month'] = $item['value']; //上网电量
+                    }
+                }
+                $three_boiler_two_tubine_data['electricity']['factory_use_electricity_rate']['month'] = number_format(100 * $three_boiler_two_tubine_data['electricity']['factory_use_electricity']['month']/$three_boiler_two_tubine_data['electricity']['power']['total']['month'], 2) . '%';  //厂用电率
+            }
+            elseif($k1 == 'weigh_bridge'){
+                foreach ($datalist as $k3 => $item) {
+                    if($item['en_name'] == config('standard.not_dcs.ljrkl.en_name')){
+                        $three_boiler_two_tubine_data['incineration']['life_rubbish_entry']['month'] = $item['value'];
+                    }
+                }
+            }
+            elseif($k1 == 'grab_garbage'){
+                foreach ($datalist as $k3 => $item) {
+                    if($item['en_name'] == config('standard.not_dcs.ljrll.en_name')){
+                        $three_boiler_two_tubine_data['incineration']['incineration_rubbish']['month'] = $item['value'];
+                    }
+                }
+            }
+        }
+        //根据基础值计算得出的值
+        $three_boiler_two_tubine_data['electricity']['ton_rubbish_produce_electricity']['month'] = $three_boiler_two_tubine_data['incineration']['incineration_rubbish']['month'] ? (float)number_format($three_boiler_two_tubine_data['electricity']['power']['total']['month']/$three_boiler_two_tubine_data['incineration']['incineration_rubbish']['month'], 4) : 0; //吨垃圾发电量
+        $three_boiler_two_tubine_data['electricity']['ton_rubbish_online_electricity']['month'] = $three_boiler_two_tubine_data['incineration']['incineration_rubbish']['month'] ? (float)number_format($three_boiler_two_tubine_data['electricity']['total_online_electricity']['month']/$three_boiler_two_tubine_data['incineration']['incineration_rubbish']['month'], 4) : 0; //吨垃圾上网电量
+
+        return $three_boiler_two_tubine_data;
     }
 }

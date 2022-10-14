@@ -48,7 +48,28 @@ class ExportEconomyDaily extends Command
             $date = date('Y-m-d');
         }
 
-        dispatch(new ExportEconomyDailyJob($date));
+        //今天及今天以前才会有数据
+        if(strtotime($date . ' 00:00:00') < time()){
+            $tenements = DB::connection('mysql_mis')->table('tenement')->get();
+            //循环租户
+            foreach ($tenements as $k1 => $tenement) {
+                $tenement_conn = $tenement->code; //租户数据库连接名称
+                $orgnization = (new Orgnization())->setConnection($tenement_conn);//连接特定租户下面的组织表
+                //循环电厂
+                $factories = $orgnization->where('level', 2)->get();
+                foreach ($factories as $k2 => $factory) {
+                    if($factory->code){
+                        $params = array(
+                            'date' => $date,
+                            'tenement_conn' => $tenement_conn,
+                            'factory' => $factory
+                        );
+
+                        dispatch(new ExportEconomyDailyJob($params));
+                    }
+                }
+            }
+        }
         return 0;
     }
 }

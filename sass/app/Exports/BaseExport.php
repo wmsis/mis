@@ -25,6 +25,8 @@ class BaseExport implements FromCollection, WithEvents, WithStrictNullComparison
     protected $background = []; //设置背景颜色    key：A1:K8  value:#F0F0F0F
     protected $vertical = [];   //设置定位       key：A1:K8  value:center
     protected $borders = []; //设置边框颜色  key：A1:K8  value:#000000
+    protected $wrapCells = []; //换行单元格    value:A1:K8
+    protected $rightCells = []; //居右单元格    value:A1:K8
 
     public function __construct($data, $author='猫小鱼', $sheetname='记录报表')
     {
@@ -81,6 +83,7 @@ class BaseExport implements FromCollection, WithEvents, WithStrictNullComparison
                         ->getStyle($region)
                         ->getFont()->setName($value);
                 }
+
                 //设置区域单元格字体大小
                 foreach ($this->fontSize as $region => $value) {
                     $event->sheet->getDelegate()
@@ -97,7 +100,6 @@ class BaseExport implements FromCollection, WithEvents, WithStrictNullComparison
                         ->setBold($bool);
                 }
 
-
                 //设置区域单元格背景颜色
                 foreach ($this->background as $region => $item) {
                     $event->sheet->getDelegate()->getStyle($region)->applyFromArray([
@@ -113,6 +115,7 @@ class BaseExport implements FromCollection, WithEvents, WithStrictNullComparison
                         ]
                     ]);
                 }
+
                 //设置边框颜色
                 foreach ($this->borders as $region => $item) {
                     $event->sheet->getDelegate()->getStyle($region)->applyFromArray([
@@ -128,10 +131,21 @@ class BaseExport implements FromCollection, WithEvents, WithStrictNullComparison
                         ],
                     ]);
                 }
+
                 //合并单元格
                 $event->sheet->getDelegate()->setMergeCells($this->mergeCells);
                 if(!empty($this->sheetName)){
                     $event->sheet->getDelegate()->setTitle($this->sheetName);
+                }
+
+                //居右单元格
+                foreach ($this->rightCells as $region) {
+                    $event->sheet->getDelegate()->getStyle($region)->getAlignment()->setHorizontal('right');
+                }
+
+                //换行
+                foreach ($this->wrapCells as $region) {
+                    $event->sheet->getDelegate()->getStyle($region)->getAlignment()->setWrapText(TRUE);
                 }
             }
         ];
@@ -233,5 +247,27 @@ class BaseExport implements FromCollection, WithEvents, WithStrictNullComparison
     public function setBorders (array $borders)
     {
         $this->borders = array_change_key_case($borders, CASE_UPPER);
+    }
+
+    /**
+     * @return array
+     * [
+     *    A1:K7
+     * ]
+     */
+    public function setWrapText (array $wrapCells)
+    {
+        $this->wrapCells = array_change_key_case($wrapCells, CASE_UPPER);
+    }
+
+    /**
+     * @return array
+     * [
+     *    A1:K7
+     * ]
+     */
+    public function setRightCells (array $rightCells)
+    {
+        $this->rightCells = array_change_key_case($rightCells, CASE_UPPER);
     }
 }

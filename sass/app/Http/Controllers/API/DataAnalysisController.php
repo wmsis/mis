@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repositories\ElectricityDayDataRepository;
 use UtilService;
+use EconomyDailyService;
 
 class DataAnalysisController extends Controller
 {
@@ -200,5 +201,14 @@ class DataAnalysisController extends Controller
     public function economyDaily(Request $request)
     {
         $date = $request->input('date');
+        if(!$date){
+            return UtilService::format_data(self::AJAX_FAIL, '日期不能为空', '');
+        }
+        elseif(strtotime($date . ' 00:00:00') > time()){
+            return UtilService::format_data(self::AJAX_FAIL, '日期不能大于今天', '');
+        }
+        
+        $final = EconomyDailyService::daydata($date);
+        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $final);
     }
 }

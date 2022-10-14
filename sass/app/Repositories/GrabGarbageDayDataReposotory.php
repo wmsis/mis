@@ -19,20 +19,25 @@ class GrabGarbageDayDataReposotory extends BaseRepository
         return GrabGarbageDayData::class;
     }
 
-    public function countData($start, $end, $factory)
+    public function countData($start, $end, $factory, $tenement_conn=null)
     {
         $final = [];
         $table = 'grab_garbage_day_data_' . $factory;
-        $grabGarbageObj = (new GrabGarbageDayData())->setTable($table);
 
         //获取日期范围内用电量 上网电量具体数据
+        if(!$tenement_conn){
+            $grabGarbageObj = (new GrabGarbageDayData())->setTable($table);
+        }
+        else{
+            $grabGarbageObj = (new GrabGarbageDayData())->setConnection($tenement_conn)->setTable($table);
+        }
         $sum_value = $grabGarbageObj->where('date', '>=', $start)
             ->where('date', '<=', $end)
             ->sum('value');
 
         $final[] = array(
-            'cn_name' => '垃圾入炉量',
-            'en_name' => 'ljrll',
+            'cn_name' => config('standard.not_dcs.ljrll.cn_name'),
+            'en_name' => config('standard.not_dcs.ljrll.en_name'),
             'value' => $sum_value,
             'messure' => 'KG'
         );
@@ -54,8 +59,8 @@ class GrabGarbageDayDataReposotory extends BaseRepository
             ->get();
 
         $final['datalist'] = $datalist;
-        $final['en_name'] = 'ljrll';
-        $final['cn_name'] = '垃圾入炉量';
+        $final['en_name'] = config('standard.not_dcs.ljrll.en_name');
+        $final['cn_name'] = config('standard.not_dcs.ljrll.cn_name');
         $final['messure'] = 'KG';
 
         return $final;
