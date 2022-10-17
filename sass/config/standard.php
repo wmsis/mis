@@ -11,6 +11,10 @@ return [
             'cn_name' => '垃圾入库量', //数据库中定义的中文名
             'en_name' => 'ljrkl' //数据库中定义的英文名，如需修改，必须与数据库中一致
         ),
+        'ljrll' => array(
+            'cn_name' => '垃圾入炉量', //数据库中定义的中文名
+            'en_name' => 'ljrll' //数据库中定义的英文名，如需修改，必须与数据库中一致
+        ),
         'cydl' => array(
             'cn_name' => '厂用电量',
             'en_name' => 'cydl'
