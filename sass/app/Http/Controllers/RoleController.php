@@ -84,10 +84,12 @@ class RoleController extends Controller
 
         $total = Role::where('name', 'like', $like)
             ->whereIn('type', $type_array)
+            ->where('orgnization_id',  $this->orgnization->id)
             ->count();
 
         $roles = Role::where('name', 'like', $like)
             ->whereIn('type', $type_array)
+            ->where('orgnization_id',  $this->orgnization->id)
             ->orderBy('id', 'desc')
             ->offset($offset)
             ->limit($limit)
@@ -417,7 +419,7 @@ class RoleController extends Controller
      * )
      */
     public function lists(){
-        $lists = Role::whereNull('deleted_at')->where('type', 'instation')->get();
+        $lists = Role::whereNull('deleted_at')->where('type', 'instation')->where('orgnization_id',  $this->orgnization->id)->get();
         if($lists){
             foreach ($lists as $key=>$item) {
                 if($item->type == 'instation'){
