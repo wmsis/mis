@@ -182,6 +182,7 @@ class RoleController extends Controller
         else{
             $params = request(['name', 'desc']);
             $params['type'] = 'instation';//只保存站内角色
+            $params['orgnization_id'] = $this->orgnization->id;//只保存站内角色
             $res = Role::create($params); //save 和 create 的不同之处在于 save 接收整个 Eloquent 模型实例而 create 接收原生 PHP 数组
         }
 
