@@ -169,12 +169,12 @@ class AuthController extends Controller
         if($roles && count($roles) > 0){
             //所有权限
             foreach($roles as $role){
-                if($role->type == 'admin'){
+                if($role->type == 'admin' || $role->type == 'group'){
                     //管理员，返回所有权限
                     $permissions = Permission::orderBy('sort', 'ASC')->get();
                 }
                 else {
-                    $permissions = $role->permissions;
+                    $permissions = $role->permissions()->orderBy('sort', 'ASC')->get();
                 }
 
                 if($permissions && count($permissions) > 0) {
@@ -214,6 +214,7 @@ class AuthController extends Controller
                     'target' => '/' . $item->page_url,
                     'type' => $item->type,
                     'title' => $item->name,
+                    'sort' => $item->sort,
                     'children' => $this->children($item, $privileges)
                 );
             }
@@ -245,6 +246,7 @@ class AuthController extends Controller
                 'target' => '/' . $item->page_url,
                 'type' => $item->type,
                 'title' => $item->name,
+                'sort' => $item->sort,
                 'children' => $this->children($item, $privileges)
             );
         }
