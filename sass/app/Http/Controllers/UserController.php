@@ -136,29 +136,31 @@ class UserController extends Controller
             foreach ($users as $key=>$item) {
                 $user = User::find($item->id);
                 //用户角色
-                $roles = $user->roles;
                 $role_name = '';
-                foreach ($roles as $role){
-                    if($role_name){
-                        $role_name = $role_name . '，'. $role->name;
+                //用户组织
+                $orgnization_name = '';
+                if($user){
+                    $roles = $user->roles;
+                    foreach ($roles as $role){
+                        if($role_name){
+                            $role_name = $role_name . '，'. $role->name;
+                        }
+                        else {
+                            $role_name = $role->name;
+                        }
                     }
-                    else {
-                        $role_name = $role->name;
+
+                    $orgnizations = $user->orgnizations;
+                    foreach ($orgnizations as $orgnization){
+                        if($orgnization_name){
+                            $orgnization_name = $orgnization_name . '，'. $orgnization->name;
+                        }
+                        else {
+                            $orgnization_name = $orgnization->name;
+                        }
                     }
                 }
                 $users[$key]->role_name = $role_name;
-
-                //用户组织
-                $orgnizations = $user->orgnizations;
-                $orgnization_name = '';
-                foreach ($orgnizations as $orgnization){
-                    if($orgnization_name){
-                        $orgnization_name = $orgnization_name . '，'. $orgnization->name;
-                    }
-                    else {
-                        $orgnization_name = $orgnization->name;
-                    }
-                }
                 $users[$key]->orgnization_name = $orgnization_name;
 
                 if($item->type == 'instation'){
