@@ -80,19 +80,32 @@ class RoleController extends Controller
         $search = $request->input('search');
         $offset = ($page - 1) * $limit;
         $like = '%'.$search.'%';
+        $type_array = array('instation', 'group');//显示集团用户和站内角色
 
         $total = Role::where('name', 'like', $like)
-            ->where('type', 'instation')
+            ->whereIn('type', $type_array)
             ->count();
 
         $roles = Role::where('name', 'like', $like)
-            ->where('type', 'instation')
+            ->whereIn('type', $type_array)
             ->orderBy('id', 'desc')
             ->offset($offset)
             ->limit($limit)
             ->get();
 
         if($roles){
+            foreach ($roles as $key=>$item) {
+                if($item->type == 'instation'){
+                    $roles[$key]->type_name = config('standard.role.instation');
+                }
+                elseif($item->type == 'group'){
+                    $roles[$key]->type_name = config('standard.role.group');
+                }
+                else{
+                    $roles[$key]->type_name = '';
+                }
+            }
+
             $res = array(
                 'data'=>$roles,
                 'total'=>$total
@@ -160,13 +173,13 @@ class RoleController extends Controller
         if($id){
             $role = Role::find($id);
             $role->name = $name;
-            $role->type = 'instation';
+            $role->type = 'instation';//只保存站内角色
             $role->desc = $desc;
             $res = $role->save();
         }
         else{
             $params = request(['name', 'desc']);
-            $params['type'] = 'instation';
+            $params['type'] = 'instation';//只保存站内角色
             $res = Role::create($params); //save 和 create 的不同之处在于 save 接收整个 Eloquent 模型实例而 create 接收原生 PHP 数组
         }
 
@@ -305,6 +318,10 @@ class RoleController extends Controller
      */
     public function storePermission(Request $request, Role $role){
         //验证
+        if($role->type != 'instation'){
+            return UtilService::format_data(self::AJAX_FAIL, '集团角色不能编辑', '');
+        }
+
         //获取权限参数
         $param_arr = explode(',', request('permissions'));
         $permissions = Permission::whereIn('id', $param_arr)->get();
@@ -402,6 +419,17 @@ class RoleController extends Controller
     public function lists(){
         $lists = Role::whereNull('deleted_at')->where('type', 'instation')->get();
         if($lists){
+            foreach ($lists as $key=>$item) {
+                if($item->type == 'instation'){
+                    $lists[$key]->type_name = config('standard.role.instation');
+                }
+                elseif($item->type == 'group'){
+                    $lists[$key]->type_name = config('standard.role.group');
+                }
+                else{
+                    $lists[$key]->type_name = '';
+                }
+            }
             return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $lists);
         }
         else{

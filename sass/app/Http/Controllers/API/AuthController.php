@@ -121,16 +121,16 @@ class AuthController extends Controller
             }
             else{
                 if($user->type == 'admin'){
-                    $user['type_name'] = '超级管理员';
+                    $user['type_name'] = config('standard.user.admin');
                 }
                 elseif($user->type == 'group'){
-                    $user['type_name'] = '集团用户';
+                    $user['type_name'] = config('standard.user.group');
                 }
                 elseif($user->type == 'webmaster'){
-                    $user['type_name'] = '电厂管理员';
+                    $user['type_name'] = config('standard.user.webmaster');
                 }
                 elseif($user->type == 'instation'){
-                    $user['type_name'] = '电厂用户';
+                    $user['type_name'] = config('standard.user.instation');
                 }
                 else{
                     $user['type_name'] = '';
@@ -403,16 +403,16 @@ class AuthController extends Controller
         try {
             $user = auth('api')->user();
             if($user->type == 'admin'){
-                $user['type_name'] = '超级管理员';
+                $user['type_name'] = config('standard.user.admin');
             }
             elseif($user->type == 'group'){
-                $user['type_name'] = '集团用户';
+                $user['type_name'] = config('standard.user.group');
             }
             elseif($user->type == 'webmaster'){
-                $user['type_name'] = '电厂管理员';
+                $user['type_name'] = config('standard.user.webmaster');
             }
             elseif($user->type == 'instation'){
-                $user['type_name'] = '电厂用户';
+                $user['type_name'] = config('standard.user.instation');
             }
             else{
                 $user['type_name'] = '';

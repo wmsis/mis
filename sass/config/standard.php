@@ -59,5 +59,16 @@ return [
         //     'cn_name' => '3#锅炉给水温度',
         //     'en_name' => 'gl3_gswd'
         // ),
+    ),
+    'user' => array(
+        'instation'=>'电厂用户',
+        'webmaster'=>'电厂管理员',
+        'group'=>'集团用户',
+        'admin'=>'超级管理员',
+    ),
+    'role' => array(
+        'instation'=>'电厂角色',
+        'group'=>'集团角色',
+        'admin'=>'超级管理员',
     )
 ];

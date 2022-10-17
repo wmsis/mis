@@ -318,6 +318,11 @@ class OrgnizationController extends Controller
 
         DB::beginTransaction();
         try {
+            $parent = null;
+            if($parent_id){
+                $parent = Orgnization::find($parent_id);
+            }
+
             if ($id) {
                 $row = Orgnization::find($id);
                 $row->name = $name;
@@ -326,6 +331,18 @@ class OrgnizationController extends Controller
                 $row->sub_title = $sub_title;
                 $row->parent_id = $parent_id;
                 $row->sort = $sort;
+                if($parent){
+                    if($parent->level == 1){
+                        //如果父组织是一级组织，祖先ID就为该组织ID
+                        $ancestor_id = $id;
+                    }
+                    else{
+                        //如果父组织是大于等于二级组织，则祖先ID和父组织的祖先ID相同
+                        $ancestor_id = $parent->ancestor_id;
+                    }
+
+                    $row->ancestor_id = $ancestor_id;
+                }
                 $row->save();
             }
             else {
@@ -335,6 +352,17 @@ class OrgnizationController extends Controller
                     $level = $parent && $parent->level ? $parent->level + 1 : 1;
                 }
                 $params['level'] = $level;
+                if(!$parent){
+                    if($parent->level == 1){
+                        //如果父组织是一级组织，祖先ID就为该组织ID
+                        $ancestor_id = $id;
+                    }
+                    else{
+                        //如果父组织是大于等于二级组织，则祖先ID和父组织的祖先ID相同
+                        $ancestor_id = $parent->ancestor_id;
+                    }
+                    $params['ancestor_id'] = $ancestor_id;
+                }
                 Orgnization::create($params); //save 和 create 的不同之处在于 save 接收整个 Eloquent 模型实例而 create 接收原生 PHP 数组
             }
             DB::commit();
@@ -377,7 +405,8 @@ class OrgnizationController extends Controller
      * )
      */
     public function role(Orgnization $orgnization){
-        $roles = Role::all(); // all roles
+        $arr = ['group', 'admin'];
+        $roles = Role::whereIn('type', $arr)->get(); // 所有集团角色和管理员角色
         $myRoles = $orgnization->roles; //带括号的是返回关联对象实例，不带括号是返回动态属性
 
         //compact 创建一个包含变量名和它们的值的数组

@@ -97,6 +97,15 @@ class OrgnizationController extends Controller
         }
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
+        foreach ($rows as $key=>$item) {
+            if($item->ancestor_id){
+                $ancestor = Orgnization::find($item->ancestor_id);
+                $lists[$key]->ancestor_name = $ancestor ? $ancestor->name : '';
+            }
+            else{
+                $lists[$key]->ancestor_name = '';
+            }
+        }
         return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total]);
     }
 
@@ -239,6 +248,8 @@ class OrgnizationController extends Controller
                     'id' => $item->id,
                     'name' => $item->name,
                     'title' => $item->name,
+                    'sub_title' => $item->sub_title,
+                    'code' => $item->code,
                     'sort' => $item->sort,
                     'parent_id' => $item->parent_id,
                     'level' => $item->level,
@@ -268,6 +279,8 @@ class OrgnizationController extends Controller
                 'id' => $item->id,
                 'name' => $item->name,
                 'title' => $item->name,
+                'sub_title' => $item->sub_title,
+                'code' => $item->code,
                 'sort' => $item->sort,
                 'parent_id' => $item->parent_id,
                 'level' => $item->level,
@@ -359,6 +372,7 @@ class OrgnizationController extends Controller
         $id = $request->input('id');
         $name = $request->input('name');
         $code = $request->input('code');
+        $sub_title = $request->input('sub_title');
         $description = $request->input('description');
         $level = 1;
         $parent_id = $request->input('parent_id');
@@ -366,23 +380,49 @@ class OrgnizationController extends Controller
 
         DB::beginTransaction();
         try {
+            $parent = null;
+            if($parent_id){
+                $parent = Orgnization::find($parent_id);
+            }
+
             if ($id) {
                 $row = Orgnization::find($id);
                 $row->name = $name;
                 $row->code = $code;
                 $row->description = $description;
+                $row->sub_title = $sub_title;
                 $row->parent_id = $parent_id;
                 $row->sort = $sort;
+                if($parent){
+                    if($parent->level == 1){
+                        //如果父组织是一级组织，祖先ID就为该组织ID
+                        $ancestor_id = $id;
+                    }
+                    else{
+                        //如果父组织是大于等于二级组织，则祖先ID和父组织的祖先ID相同
+                        $ancestor_id = $parent->ancestor_id;
+                    }
+
+                    $row->ancestor_id = $ancestor_id;
+                }
                 $row->save();
             }
             else {
-                $params = request(['name', 'code', 'description', 'parent_id', 'sort']);
-                if($parent_id){
-                    $parent = Orgnization::find($parent_id);
-                    $level = $parent && $parent->level ? $parent->level + 1 : 1;
-                }
+                $params = request(['name', 'code', 'description', 'sub_title', 'parent_id', 'sort']);
+                $level = $parent && $parent->level ? $parent->level + 1 : 1;
                 $params['level'] = $level;
-                Orgnization::create($params); //save 和 create 的不同之处在于 save 接收整个 Eloquent 模型实例而 create 接收原生 PHP 数组
+                if(!$parent){
+                    if($parent->level == 1){
+                        //如果父组织是一级组织，祖先ID就为该组织ID
+                        $ancestor_id = $id;
+                    }
+                    else{
+                        //如果父组织是大于等于二级组织，则祖先ID和父组织的祖先ID相同
+                        $ancestor_id = $parent->ancestor_id;
+                    }
+                    $params['ancestor_id'] = $ancestor_id;
+                }
+                $row = Orgnization::create($params); //save 和 create 的不同之处在于 save 接收整个 Eloquent 模型实例而 create 接收原生 PHP 数组
             }
             DB::commit();
             return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', '');
@@ -424,7 +464,7 @@ class OrgnizationController extends Controller
      * )
      */
     public function role(Orgnization $orgnization){
-        $roles = Role::all(); // all roles
+        $roles = Role::where('orgnization_id', $this->orgnization->id)->get(); // all roles
         $myRoles = $orgnization->roles; //带括号的是返回关联对象实例，不带括号是返回动态属性
 
         //compact 创建一个包含变量名和它们的值的数组
@@ -473,6 +513,10 @@ class OrgnizationController extends Controller
      * )
      */
     public function storeRole(StoreRoleRequest $request, Orgnization $orgnization){
+        if($orgnization->id != $this->orgnization->id){
+            return UtilService::format_data(self::AJAX_FAIL, '非法操作', '');
+        }
+
         //验证
         $param_arr = explode(',', request('roles'));
         $roles = Role::whereIn('id', $param_arr)->get();

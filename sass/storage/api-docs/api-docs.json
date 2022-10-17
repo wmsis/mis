@@ -1837,7 +1837,7 @@
                     "用户users"
                 ],
                 "summary": "用户列表",
-                "description": "使用说明：获取用户列表",
+                "description": "使用说明：获取用户列表  只获取sass端角色  type=instation",
                 "operationId": "users",
                 "parameters": [
                     {
@@ -1915,7 +1915,7 @@
                         "name": "id",
                         "in": "query",
                         "description": "id",
-                        "required": true,
+                        "required": false,
                         "schema": {
                             "type": "integer"
                         }
@@ -1992,9 +1992,6 @@
                             "items": {
                                 "type": "string",
                                 "enum": [
-                                    "admin",
-                                    "group",
-                                    "webmaster",
                                     "instation"
                                 ]
                             },

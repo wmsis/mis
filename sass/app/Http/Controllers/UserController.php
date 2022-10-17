@@ -39,7 +39,7 @@ class UserController extends Controller
      *     tags={"用户users"},
      *     operationId="users",
      *     summary="用户列表",
-     *     description="使用说明：获取用户列表",
+     *     description="使用说明：获取用户列表  只获取sass端角色  type=instation",
      *     @OA\Parameter(
      *         description="token",
      *         in="query",
@@ -99,14 +99,19 @@ class UserController extends Controller
         $roleid = $request->input('roleid');
         $offset = ($page - 1) * $num;
         $like = '%' . $search . '%';
-        $type_array = array('admin', 'group', 'webmaster');
+        $type_array = array('instation', 'group', 'webmaster'); //显示集团用户电厂用户及电厂管理员  超级管理员不显示  集团用户不可编辑角色权限
 
-        $total = User::select(['id'])->whereIn('type', $type_array);
-        $users = User::select(['*'])->whereIn('type', $type_array);
+        $obj = DB::table('users')
+            ->join('user_orgnization', 'users.id', '=', 'user_orgnization.user_id')
+            ->select('users.*')
+            ->where('user_orgnization.orgnization_id',  $this->orgnization->id);
+
+        $total = $obj->whereIn('users.type', $type_array);
+        $users = $obj->whereIn('users.type', $type_array);
 
         if($search){
-            $total = $total->where('name', 'like', $like);
-            $users = $users->where('name', 'like', $like);
+            $total = $total->where('users.name', 'like', $like);
+            $users = $users->where('users.name', 'like', $like);
         }
 
         if($roleid != 'all' && $roleid) {
@@ -117,21 +122,21 @@ class UserController extends Controller
                 $idarray[] = $member->id;
             }
 
-            $total = $total->whereIn('id', $idarray);
-            $users = $users->whereIn('id', $idarray);
+            $total = $total->whereIn('users.id', $idarray);
+            $users = $users->whereIn('users.id', $idarray);
         }
 
-        $total = $total->orderBy('id', 'desc')
-            ->count();
-
-        $users = $users->orderBy('id', 'desc')
+        $total = $total->count();
+        $users = $users->orderBy('users.id', 'desc')
             ->offset($offset)
             ->limit($num)
             ->get();
 
         if ($users) {
             foreach ($users as $key=>$item) {
-                $roles = $item->roles;
+                $user = User::find($item->id);
+                //用户角色
+                $roles = $user->roles;
                 $role_name = '';
                 foreach ($roles as $role){
                     if($role_name){
@@ -141,9 +146,10 @@ class UserController extends Controller
                         $role_name = $role->name;
                     }
                 }
-                $users[$key]['role_name'] = $role_name;
+                $users[$key]->role_name = $role_name;
 
-                $orgnizations = $item->orgnizations;
+                //用户组织
+                $orgnizations = $user->orgnizations;
                 $orgnization_name = '';
                 foreach ($orgnizations as $orgnization){
                     if($orgnization_name){
@@ -153,7 +159,20 @@ class UserController extends Controller
                         $orgnization_name = $orgnization->name;
                     }
                 }
-                $users[$key]['orgnization_name'] = $orgnization_name;
+                $users[$key]->orgnization_name = $orgnization_name;
+
+                if($item->type == 'instation'){
+                    $users[$key]->type_name = config('standard.user.instation');
+                }
+                elseif($item->type == 'webmaster'){
+                    $users[$key]->type_name = config('standard.user.webmaster');
+                }
+                elseif($item->type == 'group'){
+                    $users[$key]->type_name = config('standard.user.group');
+                }
+                else{
+                    $users[$key]->type_name = '';
+                }
             }
 
             $res = array(
@@ -186,7 +205,7 @@ class UserController extends Controller
      *         description="id",
      *         in="query",
      *         name="id",
-     *         required=true,
+     *         required=false,
      *         @OA\Schema(
      *             type="integer"
      *         ),
@@ -263,7 +282,7 @@ class UserController extends Controller
      *             default="instation",
      *             @OA\Items(
      *                 type="string",
-     *                 enum = {"admin", "group", "webmaster", "instation"},
+     *                 enum = {"instation"},
      *             )
      *         ),
      *     ),
@@ -282,7 +301,7 @@ class UserController extends Controller
         $area = $request->input('area');
         $address = $request->input('address');
         $isopen = $request->input('isopen');
-        $type = $request->input('type');
+        //$type = $request->input('type');
 
         $obj = new User();
         $row = $obj->isMobileExist($mobile);
@@ -301,13 +320,15 @@ class UserController extends Controller
                     $user->area = $area;
                     $user->address = $address;
                     $user->isopen = $isopen;
-                    $user->type = $type;
+                    //$user->type = $type;
                     $user->save();
                 }
                 else {
                     $params = request(['name', 'desc', 'email', 'type', 'mobile', 'area', 'address', 'isopen']);
                     $params['password'] = bcrypt('123456');
-                    User::create($params); //save 和 create 的不同之处在于 save 接收整个 Eloquent 模型实例而 create 接收原生 PHP 数组
+                    $params['type'] = 'instation'; //只能创建组织内部用户
+                    $user = User::create($params); //save 和 create 的不同之处在于 save 接收整个 Eloquent 模型实例而 create 接收原生 PHP 数组
+                    $user->orgnizations()->save($this->orgnization); //保存当前二级组织（电厂）
                 }
                 DB::commit();
                 return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', '');
@@ -350,11 +371,17 @@ class UserController extends Controller
      * )
      */
     public function role(User $user){
-        if($user->type == 'type'){
-            $roles = Role::all(); // all roles
+        if($user->type == 'admin'){
+            $roles = Role::where('type', 'group')
+                ->orWhere(function($query) {
+                    $query->where('type', 'instation')
+                          ->where('orgnization_id', $this->orgnization->id);
+                })
+                ->get(); // 管理员显示集团角色和站内角色
         }
         else{
-            $roles = Role::where('type', '<>', 'admin')->get();
+            //非管理员只显示该组织的站内角色
+            $roles = Role::where('orgnization_id', $this->orgnization->id)->where('type', 'instation')->get();
         }
 
         $myRoles = $user->roles; //带括号的是返回关联对象实例，不带括号是返回动态属性
@@ -405,6 +432,9 @@ class UserController extends Controller
      * )
      */
     public function storeRole(StoreRoleRequest $request, User $user){
+        if($user->type != 'instation'){
+            return UtilService::format_data(self::AJAX_FAIL, '集团角色不能编辑', '');
+        }
         $roles = $user->roles;
 
         //验证
@@ -462,6 +492,10 @@ class UserController extends Controller
         $id = $request->input('id');
 
         $user = User::find($id);
+        $org = $user->orgnizations()->where('orgnization_id', $this->orgnization->id)->first();
+        if(!$org || !$org->id){
+            return UtilService::format_data(self::AJAX_FAIL, '非法操作', '');
+        }
         $res = $user->delete();
         if($user && $res){
             return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
@@ -714,7 +748,7 @@ class UserController extends Controller
      * )
      */
     public function orgnization(User $user){
-        $orgnizations = Orgnization::all(); // all
+        $orgnizations = Orgnization::where('ancestor_id', $this->orgnization->id)->get(); // all
         $myOrgnizations = $user->orgnizations; //带括号的是返回关联对象实例，不带括号是返回动态属性
 
         //compact 创建一个包含变量名和它们的值的数组
