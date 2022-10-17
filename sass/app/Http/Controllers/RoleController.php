@@ -174,6 +174,9 @@ class RoleController extends Controller
         $desc = $request->input('desc');
         if($id){
             $role = Role::find($id);
+            if($role && $role->type == 'group'){
+                return UtilService::format_data(self::AJAX_FAIL, '不能编辑集团角色', '');
+            }
             $role->name = $name;
             $role->type = 'instation';//只保存站内角色
             $role->desc = $desc;

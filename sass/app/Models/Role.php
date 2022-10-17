@@ -11,7 +11,7 @@ class Role extends Model
 {
     use SoftDeletes;
     protected  $table = 'roles';
-    protected  $fillable = ['name', 'desc', 'type']; //批量赋值
+    protected  $fillable = ['name', 'desc', 'type', 'orgnization_id']; //批量赋值
     protected  $dates = ['deleted_at'];  //添加软删除
     protected  $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',
