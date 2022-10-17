@@ -100,10 +100,10 @@ class OrgnizationController extends Controller
         foreach ($rows as $key=>$item) {
             if($item->ancestor_id){
                 $ancestor = Orgnization::find($item->ancestor_id);
-                $lists[$key]->ancestor_name = $ancestor ? $ancestor->name : '';
+                $rows[$key]->ancestor_name = $ancestor ? $ancestor->name : '';
             }
             else{
-                $lists[$key]->ancestor_name = '';
+                $rows[$key]->ancestor_name = '';
             }
         }
         return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total]);
