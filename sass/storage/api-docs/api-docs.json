@@ -1171,6 +1171,1974 @@
                 }
             }
         },
+        "/api/alarm/page": {
+            "get": {
+                "tags": [
+                    "报警alarm"
+                ],
+                "summary": "分页获取数据列表",
+                "description": "使用说明：分页获取数据列表",
+                "operationId": "alarm-index",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "num",
+                        "in": "query",
+                        "description": "每页数据量",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "页数",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "content",
+                        "in": "query",
+                        "description": "内容",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/alarm-grade": {
+            "get": {
+                "tags": [
+                    "报警等级alarm-grade"
+                ],
+                "summary": "分页获取数据列表",
+                "description": "使用说明：分页获取数据列表",
+                "operationId": "alarm-grade-index",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "num",
+                        "in": "query",
+                        "description": "每页数据量",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "页数",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "关键字中文名搜索",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "错误代码，0：为没有错误",
+                                            "type": "integer",
+                                            "default": "0"
+                                        },
+                                        "data": {
+                                            "description": "返回数据",
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/AlarmGrade"
+                                            }
+                                        },
+                                        "message": {
+                                            "description": "错误消息",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "报警等级alarm-grade"
+                ],
+                "summary": "新增单条数据",
+                "description": "使用说明：新增单条数据",
+                "operationId": "alarm-grade-store",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "中文名字",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "描述",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "min_value",
+                        "in": "query",
+                        "description": "最小值",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "max_value",
+                        "in": "query",
+                        "description": "最大值",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "store succeed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "错误代码，0：为没有错误",
+                                            "type": "integer",
+                                            "default": "0"
+                                        },
+                                        "data": {
+                                            "description": "返回数据",
+                                            "type": "object",
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/components/schemas/AlarmGrade"
+                                                }
+                                            ]
+                                        },
+                                        "message": {
+                                            "description": "错误消息",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/alarm-grade/{id}": {
+            "get": {
+                "tags": [
+                    "报警等级alarm-grade"
+                ],
+                "summary": "获取详细信息",
+                "description": "使用说明：获取详细信息",
+                "operationId": "alarm-grade-show",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "AlarmGrade主键",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "错误代码，0：为没有错误",
+                                            "type": "integer",
+                                            "default": "0"
+                                        },
+                                        "data": {
+                                            "description": "返回数据",
+                                            "type": "object",
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/components/schemas/AlarmGrade"
+                                                }
+                                            ]
+                                        },
+                                        "message": {
+                                            "description": "错误消息",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "报警等级alarm-grade"
+                ],
+                "summary": "修改",
+                "description": "使用说明：修改单条数据",
+                "operationId": "alarm-grade-update",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "AlarmGrade主键",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "中文名字",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "描述",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "min_value",
+                        "in": "query",
+                        "description": "最小值",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "max_value",
+                        "in": "query",
+                        "description": "最大值",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "update succeed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "错误代码，0：为没有错误",
+                                            "type": "integer",
+                                            "default": "0"
+                                        },
+                                        "data": {
+                                            "description": "返回数据",
+                                            "type": "object",
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/components/schemas/AlarmGrade"
+                                                }
+                                            ]
+                                        },
+                                        "message": {
+                                            "description": "错误消息",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "报警等级alarm-grade"
+                ],
+                "summary": "删除单条数据",
+                "description": "使用说明：删除单条数据",
+                "operationId": "alarm-grade-destroy",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "AlarmGrade主键",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "detroy succeed"
+                    }
+                }
+            }
+        },
+        "/api/alarm-rule": {
+            "get": {
+                "tags": [
+                    "报警规则alarm-rule"
+                ],
+                "summary": "分页获取数据列表",
+                "description": "使用说明：分页获取数据列表",
+                "operationId": "alarm-rule-index",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "num",
+                        "in": "query",
+                        "description": "每页数据量",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "页数",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "关键字中文名搜索",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "报警类型",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "报警规则alarm-rule"
+                ],
+                "summary": "新增单条数据",
+                "description": "使用说明：新增单条数据",
+                "operationId": "alarm-rule-store",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "中文名字",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "device_id",
+                        "in": "query",
+                        "description": "设备ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "dcs_standard_id",
+                        "in": "query",
+                        "description": "标准名称ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "报警类型 communication通信, scene现场",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "communication",
+                                    "scene"
+                                ]
+                            },
+                            "default": "instation"
+                        }
+                    },
+                    {
+                        "name": "period",
+                        "in": "query",
+                        "description": "周期时间（秒数）",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sustain",
+                        "in": "query",
+                        "description": "持续周期数",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "min_value",
+                        "in": "query",
+                        "description": "最小值",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "max_value",
+                        "in": "query",
+                        "description": "最大值",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "alarm_grade_id",
+                        "in": "query",
+                        "description": "报警等级",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "notify_user_ids",
+                        "in": "query",
+                        "description": "通知用户ID列表，英文逗号隔开",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "store succeed"
+                    }
+                }
+            }
+        },
+        "/api/alarm-rule/{id}": {
+            "get": {
+                "tags": [
+                    "报警规则alarm-rule"
+                ],
+                "summary": "获取详细信息",
+                "description": "使用说明：获取详细信息",
+                "operationId": "alarm-rule-show",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "主键",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "报警规则alarm-rule"
+                ],
+                "summary": "修改",
+                "description": "使用说明：修改单条数据",
+                "operationId": "alarm-rule-update",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "主键",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "中文名字",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "device_id",
+                        "in": "query",
+                        "description": "设备ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "报警类型",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "period",
+                        "in": "query",
+                        "description": "周期时间（秒数）",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sustain",
+                        "in": "query",
+                        "description": "持续周期数",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "min_value",
+                        "in": "query",
+                        "description": "最小值",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "max_value",
+                        "in": "query",
+                        "description": "最大值",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "alarm_grade_id",
+                        "in": "query",
+                        "description": "报警等级",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "notify_user_ids",
+                        "in": "query",
+                        "description": "通知用户ID列表，英文逗号隔开",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "update succeed"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "报警规则alarm-rule"
+                ],
+                "summary": "删除单条数据",
+                "description": "使用说明：删除单条数据",
+                "operationId": "alarm-rule-destroy",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "主键",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "detroy succeed"
+                    }
+                }
+            }
+        },
+        "/api/announcement": {
+            "get": {
+                "tags": [
+                    "公告announcement"
+                ],
+                "summary": "分页获取数据列表",
+                "description": "使用说明：分页获取数据列表",
+                "operationId": "announcement-index",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "num",
+                        "in": "query",
+                        "description": "每页数据量",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "页数",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "description": "关键字标题",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "错误代码，0：为没有错误",
+                                            "type": "integer",
+                                            "default": "0"
+                                        },
+                                        "data": {
+                                            "description": "返回数据",
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Announcement"
+                                            }
+                                        },
+                                        "message": {
+                                            "description": "错误消息",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "公告announcement"
+                ],
+                "summary": "新增单条数据",
+                "description": "使用说明：新增单条数据",
+                "operationId": "announcement-store",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "description": "标题",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "content",
+                        "in": "query",
+                        "description": "内容",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "notify_user_ids",
+                        "in": "query",
+                        "description": "通知用户ID列表，英文逗号隔开",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "store succeed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "错误代码，0：为没有错误",
+                                            "type": "integer",
+                                            "default": "0"
+                                        },
+                                        "data": {
+                                            "description": "返回数据",
+                                            "type": "object",
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/components/schemas/Announcement"
+                                                }
+                                            ]
+                                        },
+                                        "message": {
+                                            "description": "错误消息",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/announcement/{id}": {
+            "get": {
+                "tags": [
+                    "公告announcement"
+                ],
+                "summary": "获取详细信息",
+                "description": "使用说明：获取详细信息",
+                "operationId": "announcement-show",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Announcement主键",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "错误代码，0：为没有错误",
+                                            "type": "integer",
+                                            "default": "0"
+                                        },
+                                        "data": {
+                                            "description": "返回数据",
+                                            "type": "object",
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/components/schemas/Announcement"
+                                                }
+                                            ]
+                                        },
+                                        "message": {
+                                            "description": "错误消息",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "公告announcement"
+                ],
+                "summary": "修改",
+                "description": "使用说明：修改单条数据",
+                "operationId": "announcement-update",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Announcement主键",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "description": "标题",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "content",
+                        "in": "query",
+                        "description": "内容",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "notify_user_ids",
+                        "in": "query",
+                        "description": "通知用户ID列表，英文逗号隔开",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "update succeed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "错误代码，0：为没有错误",
+                                            "type": "integer",
+                                            "default": "0"
+                                        },
+                                        "data": {
+                                            "description": "返回数据",
+                                            "type": "object",
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/components/schemas/Announcement"
+                                                }
+                                            ]
+                                        },
+                                        "message": {
+                                            "description": "错误消息",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "公告announcement"
+                ],
+                "summary": "删除单条数据",
+                "description": "使用说明：删除单条数据",
+                "operationId": "announcement-destroy",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Announcement主键",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "detroy succeed"
+                    }
+                }
+            }
+        },
+        "/api/device/page": {
+            "get": {
+                "tags": [
+                    "设备档案device"
+                ],
+                "summary": "分页获取数据列表",
+                "description": "使用说明：分页获取数据列表",
+                "operationId": "device-index",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "num",
+                        "in": "query",
+                        "description": "每页数据量",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "页数",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "关键字中文名搜索",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "错误代码，0：为没有错误",
+                                            "type": "integer",
+                                            "default": "0"
+                                        },
+                                        "data": {
+                                            "description": "返回数据",
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Device"
+                                            }
+                                        },
+                                        "message": {
+                                            "description": "错误消息",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/device/tree": {
+            "get": {
+                "tags": [
+                    "设备档案device"
+                ],
+                "summary": "设备树",
+                "description": "使用说明：获取设备树",
+                "operationId": "device tree",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "level",
+                        "in": "query",
+                        "description": "最大层级",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/device/store": {
+            "post": {
+                "tags": [
+                    "设备档案device"
+                ],
+                "summary": "保存设备",
+                "description": "使用说明：保存设备",
+                "operationId": "storeDevice",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "设备id",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "设备名称",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "code",
+                        "in": "query",
+                        "description": "设备编码",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "quality_date",
+                        "in": "query",
+                        "description": "质检日期",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "factory_date",
+                        "in": "query",
+                        "description": "出厂日期",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "parent_id",
+                        "in": "query",
+                        "description": "父主键ID",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "排序号",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "img",
+                        "in": "query",
+                        "description": "图片",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "is_inspect",
+                        "in": "query",
+                        "description": "是否巡检",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/device/{id}": {
+            "get": {
+                "tags": [
+                    "设备档案device"
+                ],
+                "summary": "获取详细信息",
+                "description": "使用说明：获取详细信息",
+                "operationId": "device-show",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "设备主键",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "错误代码，0：为没有错误",
+                                            "type": "integer",
+                                            "default": "0"
+                                        },
+                                        "data": {
+                                            "description": "返回数据",
+                                            "type": "object",
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/components/schemas/Device"
+                                                }
+                                            ]
+                                        },
+                                        "message": {
+                                            "description": "错误消息",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "设备档案device"
+                ],
+                "summary": "删除单条数据",
+                "description": "使用说明：删除单条数据",
+                "operationId": "device-destroy",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "设备主键",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "detroy succeed"
+                    }
+                }
+            }
+        },
+        "/api/notice/page": {
+            "get": {
+                "tags": [
+                    "通知notice"
+                ],
+                "summary": "分页获取数据列表",
+                "description": "使用说明：分页获取数据列表",
+                "operationId": "notice-index",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "num",
+                        "in": "query",
+                        "description": "每页数据量",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "页数",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "content",
+                        "in": "query",
+                        "description": "内容",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/task": {
+            "get": {
+                "tags": [
+                    "任务task"
+                ],
+                "summary": "分页获取数据列表",
+                "description": "使用说明：分页获取数据列表",
+                "operationId": "task-index",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "类型",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "num",
+                        "in": "query",
+                        "description": "每页数据量",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "页数",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "关键字中文名搜索",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "错误代码，0：为没有错误",
+                                            "type": "integer",
+                                            "default": "0"
+                                        },
+                                        "data": {
+                                            "description": "返回数据",
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Task"
+                                            }
+                                        },
+                                        "message": {
+                                            "description": "错误消息",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "任务task"
+                ],
+                "summary": "新增单条数据",
+                "description": "使用说明：新增单条数据",
+                "operationId": "task-store",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "中文名字",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "content",
+                        "in": "query",
+                        "description": "内容",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "任务类型 inspect巡检, recondition检修, fix_defect消缺",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "begin",
+                        "in": "query",
+                        "description": "开始时间",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "结束时间",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "用户ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "device_id",
+                        "in": "query",
+                        "description": "设备ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "confirm_time",
+                        "in": "query",
+                        "description": "确认时间",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "任务状态 init发布状态  complete完成状态",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "remark",
+                        "in": "query",
+                        "description": "备注",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "store succeed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "错误代码，0：为没有错误",
+                                            "type": "integer",
+                                            "default": "0"
+                                        },
+                                        "data": {
+                                            "description": "返回数据",
+                                            "type": "object",
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/components/schemas/Task"
+                                                }
+                                            ]
+                                        },
+                                        "message": {
+                                            "description": "错误消息",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/task/{id}": {
+            "get": {
+                "tags": [
+                    "任务task"
+                ],
+                "summary": "获取详细信息",
+                "description": "使用说明：获取详细信息",
+                "operationId": "task-show",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Task主键",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "错误代码，0：为没有错误",
+                                            "type": "integer",
+                                            "default": "0"
+                                        },
+                                        "data": {
+                                            "description": "返回数据",
+                                            "type": "object",
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/components/schemas/Task"
+                                                }
+                                            ]
+                                        },
+                                        "message": {
+                                            "description": "错误消息",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "任务task"
+                ],
+                "summary": "修改",
+                "description": "使用说明：修改单条数据",
+                "operationId": "task-update",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Task主键",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "中文名字",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "content",
+                        "in": "query",
+                        "description": "内容",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "任务类型 inspect巡检, recondition检修, fix_defect消缺",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "begin",
+                        "in": "query",
+                        "description": "开始时间",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "结束时间",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "用户ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "device_id",
+                        "in": "query",
+                        "description": "设备ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "confirm_time",
+                        "in": "query",
+                        "description": "确认时间",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "任务状态 init发布状态  complete完成状态",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "remark",
+                        "in": "query",
+                        "description": "备注",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "update succeed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "错误代码，0：为没有错误",
+                                            "type": "integer",
+                                            "default": "0"
+                                        },
+                                        "data": {
+                                            "description": "返回数据",
+                                            "type": "object",
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/components/schemas/Task"
+                                                }
+                                            ]
+                                        },
+                                        "message": {
+                                            "description": "错误消息",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "任务task"
+                ],
+                "summary": "删除单条数据",
+                "description": "使用说明：删除单条数据",
+                "operationId": "task-destroy",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Task主键",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "detroy succeed"
+                    }
+                }
+            }
+        },
         "/api/member/lists": {
             "get": {
                 "tags": [
@@ -3579,6 +5547,157 @@
     },
     "components": {
         "schemas": {
+            "AlarmGrade": {
+                "title": "AlarmGrade model",
+                "description": "AlarmGrade model",
+                "properties": {
+                    "id": {
+                        "description": "创建数据模型",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "min_value": {
+                        "type": "string"
+                    },
+                    "max_value": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Announcement": {
+                "title": "Announcement model",
+                "description": "Announcement model",
+                "properties": {
+                    "id": {
+                        "description": "创建数据模型",
+                        "type": "integer"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "content": {
+                        "type": "string"
+                    },
+                    "notify_user_ids": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Device": {
+                "title": "Device model",
+                "description": "Device model",
+                "properties": {
+                    "id": {
+                        "description": "创建数据模型",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "parent_id": {
+                        "type": "integer"
+                    },
+                    "ancestor_id": {
+                        "type": "integer"
+                    },
+                    "orgnization_id": {
+                        "type": "integer"
+                    },
+                    "quality_date": {
+                        "type": "string"
+                    },
+                    "factory_date": {
+                        "type": "string"
+                    },
+                    "code": {
+                        "type": "string"
+                    },
+                    "img": {
+                        "type": "string"
+                    },
+                    "level": {
+                        "type": "integer"
+                    },
+                    "sort": {
+                        "type": "integer"
+                    },
+                    "is_inspect": {
+                        "type": "integer"
+                    },
+                    "is_group": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "DeviceProperty": {
+                "title": "DeviceProperty model",
+                "description": "DeviceProperty model",
+                "properties": {
+                    "id": {
+                        "description": "创建数据模型",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "type": "string"
+                    },
+                    "device_id": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "Task": {
+                "title": "Task model",
+                "description": "Task model",
+                "properties": {
+                    "id": {
+                        "description": "创建数据模型",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "begin": {
+                        "type": "string"
+                    },
+                    "end": {
+                        "type": "string"
+                    },
+                    "user_id": {
+                        "type": "integer"
+                    },
+                    "device_id": {
+                        "type": "integer"
+                    },
+                    "content": {
+                        "type": "string"
+                    },
+                    "confirm_time": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "remark": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
             "EconomyDailyData": {
                 "title": "EconomyDailyData Model",
                 "description": "EconomyDailyData Model",

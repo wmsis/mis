@@ -154,6 +154,36 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
             Route::get('economy-daily', 'DataAnalysisController@economyDaily');
         });
     });
+
+    Route::group(['namespace' => 'App\Http\Controllers\MIS'], function () {
+        //设备
+        Route::prefix('device')->group(function () {
+            Route::get('page', 'DeviceController@index');
+            Route::get('tree', 'DeviceController@tree');
+            Route::get('show/{id}', 'DeviceController@show');
+            Route::post('store', 'DeviceController@store'); //创建用户组织保存
+            Route::post('destroy/{id}', 'DeviceController@destroy');
+        });
+
+        //报警
+        Route::prefix('alarm')->group(function () {
+            Route::get('page', 'AlarmController@index');
+        });
+
+        //通知
+        Route::prefix('notice')->group(function () {
+            Route::get('page', 'NoticeController@index');
+        });
+
+
+        //API 资源路由  DCS映射关系 标准DCS 电表映射关系 抓斗数据库配置 电表数据库配置 历史数据库配置
+        Route::apiResources([
+            'alarm-grade' => AlarmGradeController::class,
+            'alarm-rule' => AlarmRuleController::class,
+            'announcement' => AnnouncementController::class,
+            'task' => TaskController::class,
+        ]);
+    });
 });
 
 //微信会员

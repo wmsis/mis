@@ -411,18 +411,19 @@ class OrgnizationController extends Controller
                 $params = request(['name', 'code', 'description', 'sub_title', 'parent_id', 'sort']);
                 $level = $parent && $parent->level ? $parent->level + 1 : 1;
                 $params['level'] = $level;
-                if(!$parent){
+                $row = Orgnization::create($params); //save 和 create 的不同之处在于 save 接收整个 Eloquent 模型实例而 create 接收原生 PHP 数组
+                if($parent){
                     if($parent->level == 1){
-                        //如果父组织是一级组织，祖先ID就为该组织ID
-                        $ancestor_id = $id;
+                        //如果父组织是一级组织，祖先ID就为该组织（二级）ID 一级组织没有ancestor_id 二级组织的祖先ID为自己的ID
+                        $ancestor_id = $row->id;
                     }
                     else{
                         //如果父组织是大于等于二级组织，则祖先ID和父组织的祖先ID相同
                         $ancestor_id = $parent->ancestor_id;
                     }
-                    $params['ancestor_id'] = $ancestor_id;
+                    $row->ancestor_id = $ancestor_id;
+                    $row->save();
                 }
-                $row = Orgnization::create($params); //save 和 create 的不同之处在于 save 接收整个 Eloquent 模型实例而 create 接收原生 PHP 数组
             }
             DB::commit();
             return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', '');

@@ -10,6 +10,8 @@ use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\SoftDeletes;  //添加软删除
 use App\Models\SIS\HistorianTag;
+use App\Models\MIS\Notice;
+use App\Models\MIS\Task;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -119,6 +121,16 @@ class User extends Authenticatable implements JWTSubject
 
     public function member(){
         return $this->belongsTo('App\Models\Member\Member');
+    }
+
+    public function notices()
+    {
+        return $this->hasMany(Notice::class);
+    }
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
     }
 
     /**
