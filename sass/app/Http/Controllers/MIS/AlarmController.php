@@ -5,7 +5,7 @@ namespace App\Http\Controllers\MIS;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use UtilService;
-use App\Models\Mis\Alarm;
+use App\Models\MIS\Alarm;
 use App\Models\MIS\AlarmRule;
 
 class AlarmController extends Controller

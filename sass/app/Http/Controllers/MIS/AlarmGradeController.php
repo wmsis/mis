@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use UtilService;
-use App\Models\Mis\AlarmGrade;
+use App\Models\MIS\AlarmGrade;
 
 class AlarmGradeController extends Controller
 {

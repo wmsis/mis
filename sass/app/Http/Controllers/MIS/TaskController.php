@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use UtilService;
-use App\Models\Mis\Device;
-use App\Models\Mis\Task;
+use App\Models\MIS\Device;
+use App\Models\MIS\Task;
 
 class TaskController extends Controller
 {

@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use UtilService;
 use App\Models\SIS\DcsStandard;
-use App\Models\Mis\Device;
-use App\Models\Mis\AlarmRule;
+use App\Models\MIS\Device;
+use App\Models\MIS\AlarmRule;
 
 class AlarmRuleController extends Controller
 {

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use UtilService;
-use App\Models\Mis\Announcement;
+use App\Models\MIS\Announcement;
 use App\Models\User;
 
 class AnnouncementController extends Controller

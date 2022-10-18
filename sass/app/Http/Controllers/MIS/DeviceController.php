@@ -5,8 +5,8 @@ namespace App\Http\Controllers\MIS;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use UtilService;
-use App\Models\Mis\Device;
-use App\Models\Mis\DeviceProperty;
+use App\Models\MIS\Device;
+use App\Models\MIS\DeviceProperty;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 

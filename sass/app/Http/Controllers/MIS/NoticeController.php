@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use UtilService;
 use App\Models\User;
-use App\Models\Mis\Notice;
+use App\Models\MIS\Notice;
 
 class NoticeController extends Controller
 {
