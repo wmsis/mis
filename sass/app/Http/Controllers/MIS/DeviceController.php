@@ -284,6 +284,15 @@ class DeviceController extends Controller
      *         ),
      *     ),
      *     @OA\Parameter(
+     *         description="是否文件夹",
+     *         in="query",
+     *         name="is_group",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
      *         description="自定义属性json格式  [{'name': '属性名', 'value': '属性值'}]",
      *         in="query",
      *         name="properties",
@@ -308,6 +317,7 @@ class DeviceController extends Controller
         $parent_id = $request->input('parent_id');
         $sort = $request->input('sort');
         $img = $request->input('img');
+        $is_group = $request->input('is_group');
         $properties = $request->input('properties');
         $properties = json_decode($properties, true);
 
@@ -327,6 +337,7 @@ class DeviceController extends Controller
                 $row->parent_id = $parent_id;
                 $row->img = $img;
                 $row->sort = $sort;
+                $row->is_group = $is_group;
                 if($parent){
                     $row->ancestor_id = $parent->ancestor_id;
                 }
@@ -347,7 +358,7 @@ class DeviceController extends Controller
                 }
             }
             else {
-                $params = request(['name', 'code', 'factory_date', 'quality_date', 'parent_id', 'sort', 'img']);
+                $params = request(['name', 'code', 'factory_date', 'quality_date', 'parent_id', 'sort', 'img', 'is_group']);
                 $level = $parent && $parent->level ? $parent->level + 1 : 1;
                 $params['level'] = $level;
                 $params['orgnization_id'] = $this->orgnization->id;

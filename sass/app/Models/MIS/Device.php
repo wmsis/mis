@@ -59,10 +59,6 @@ use App\Models\MIS\AlarmRule;
  *         type="integer"
  *     ),
  *     @OA\Property(
- *         property="is_inspect",
- *         type="integer"
- *     ),
- *     @OA\Property(
  *         property="is_group",
  *         type="integer"
  *     ),
@@ -72,7 +68,7 @@ class Device extends Model
 {
     use HasFactory, softDeletes;
     protected $table = 'device';
-    protected $fillable = ['name', 'parent_id', 'ancestor_id', 'orgnization_id', 'level', 'sort', 'quality_date', 'factory_date', 'code', 'img', 'is_inspect', 'is_group'];
+    protected $fillable = ['name', 'parent_id', 'ancestor_id', 'orgnization_id', 'level', 'sort', 'quality_date', 'factory_date', 'code', 'img', 'is_group'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',
