@@ -222,7 +222,7 @@ class DevicePropertyTemplateController extends Controller
      *         ),
      *     ),
      *     @OA\Parameter(
-     *         description="模板类型 text文本, integer数字, image图片, date日期, radio单选, checkbox多选",
+     *         description="模板类型 text文本, integer数字, image图片, date日期, radio单选框, checkbox复选框, select下拉列表, switch开关",
      *         in="query",
      *         name="type",
      *         required=false,
@@ -231,7 +231,7 @@ class DevicePropertyTemplateController extends Controller
      *             default="text",
      *             @OA\Items(
      *                 type="string",
-     *                 enum = {"text", "integer", "image", "date", "radio", "checkbox"},
+     *                 enum = {"text", "integer", "image", "date", "radio", "checkbox", "select", "switch"},
      *             )
      *         ),
      *     ),

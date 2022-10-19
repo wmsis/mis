@@ -21,13 +21,14 @@ class CreateInspectRuleTable extends Migration
             $table->text('content')->nullable()->comment('规则内容');
             $table->text('standard')->nullable()->comment('巡检标准');
             $table->timestamps();
+            $table->softDeletes();
         });
 
         //设备自定义属性模板
         Schema::create('device_property_template', function (Blueprint $table) {
             $table->id();
             $table->string('name', 50)->nullable()->comment('属性名');
-            $table->enum('type', ['text', 'integer', 'image', 'date', 'radio', 'checkbox'])->nullable()->comment('模板类型 text文本, integer数字, image图片, date日期, radio单选, checkbox多选');
+            $table->enum('type', ['text', 'integer', 'image', 'date', 'radio', 'checkbox', 'select', 'switch'])->nullable()->comment('模板类型 text文本, integer数字, image图片, date日期, radio单选, checkbox多选, select下拉列表, switch开关');
             $table->integer('parent_id')->nullable()->comment('父节点ID');
             $table->integer('ancestor_id')->nullable()->comment('祖先节点ID');
             $table->integer('level')->nullable()->comment('所属层级');

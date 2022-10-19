@@ -2772,7 +2772,7 @@
                     {
                         "name": "type",
                         "in": "query",
-                        "description": "模板类型 text文本, integer数字, image图片, date日期, radio单选, checkbox多选",
+                        "description": "模板类型 text文本, integer数字, image图片, date日期, radio单选框, checkbox复选框, select下拉列表, switch开关",
                         "required": false,
                         "schema": {
                             "type": "array",
@@ -2784,7 +2784,9 @@
                                     "image",
                                     "date",
                                     "radio",
-                                    "checkbox"
+                                    "checkbox",
+                                    "select",
+                                    "switch"
                                 ]
                             },
                             "default": "text"
@@ -3047,7 +3049,7 @@
                         "name": "device_property_id",
                         "in": "query",
                         "description": "设备属性ID",
-                        "required": false,
+                        "required": true,
                         "schema": {
                             "type": "string"
                         }

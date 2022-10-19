@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 use UtilService;
 use App\Models\MIS\InspectRule;
+use App\Models\MIS\Device;
+use App\Models\MIS\DevicePropertyTemplate;
+use App\Models\MIS\DeviceProperty;
 
 class InspectRuleController extends Controller
 {
@@ -96,6 +99,18 @@ class InspectRuleController extends Controller
         }
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
+        foreach ($rows as $key => $item) {
+            $property = $item->device_property;
+            if($property){
+                $device_obj = Device::find($property->device_id);
+                $rows[$key]['device_name'] = $device_obj && $device_obj->name ? $device_obj->name : '';
+                $property_tpl_obj = DevicePropertyTemplate::find($property->device_property_template_id);
+                $rows[$key]['property_name'] = $property_tpl_obj && $property_tpl_obj->name ? $property_tpl_obj->name : '';
+                $rows[$key]['property_value'] = $property->value;
+                unset($rows[$key]['device_property']);
+            }
+            $item->tasks;
+        }
         return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total]);
     }
 
@@ -128,7 +143,7 @@ class InspectRuleController extends Controller
      *         description="设备属性ID",
      *         in="query",
      *         name="device_property_id",
-     *         required=false,
+     *         required=true,
      *         @OA\Schema(
      *             type="string"
      *         )
