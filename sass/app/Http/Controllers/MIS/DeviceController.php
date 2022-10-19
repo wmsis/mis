@@ -69,10 +69,10 @@ class DeviceController extends Controller
     {
         $name = $request->input('name');
         if ($name) {
-            $data = Device::where('name', 'like', "%{$name}%")->get();
+            $data = Device::where('name', 'like', "%{$name}%")->where('orgnization_id', $this->orgnization->id)->get();
         }
         else{
-            $data = Device::all();
+            $data = Device::where('orgnization_id', $this->orgnization->id)->get();
         }
         return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $data);
     }
@@ -155,7 +155,7 @@ class DeviceController extends Controller
         $page = $page ? $page : 1;
 
         $name = $request->input('name');
-        $rows = Device::select(['*']);
+        $rows = Device::select(['*'])->where('orgnization_id', $this->orgnization->id);
 
         if ($name) {
             $rows = $rows->where('name', 'like', "%{$name}%");
@@ -202,7 +202,7 @@ class DeviceController extends Controller
     public function tree(Request $request){
         $level = $request->input('level');
         $obj = new Device();
-        $rows = $obj->roots();
+        $rows = $obj->roots($this->orgnization->id);
         if($rows){
             $arr = [];
             foreach ($rows as $key => $item) {

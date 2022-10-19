@@ -88,7 +88,7 @@ class AlarmGradeController extends Controller
         $page = $page ? $page : 1;
 
         $name = $request->input('name');
-        $rows = AlarmGrade::select(['*']);
+        $rows = AlarmGrade::select(['*'])->where('orgnization_id', $this->orgnization->id);
 
         if ($name) {
             $rows = $rows->where('name', 'like', "%{$name}%");
@@ -349,6 +349,9 @@ class AlarmGradeController extends Controller
         $row = AlarmGrade::find($id);
         if (!$row) {
             return response()->json(UtilService::format_data(self::AJAX_FAIL, '该数据不存在', ''));
+        }
+        elseif($row && $row->orgnization_id != $this->orgnization->id){
+            return response()->json(UtilService::format_data(self::AJAX_FAIL, '非法操作', ''));
         }
         $input = $request->input();
 

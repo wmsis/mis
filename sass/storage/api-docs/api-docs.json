@@ -2292,6 +2292,66 @@
                 }
             }
         },
+        "/api/device/lists": {
+            "get": {
+                "tags": [
+                    "设备档案device"
+                ],
+                "summary": "获取所有数据列表",
+                "description": "使用说明：获取所有数据列表",
+                "operationId": "device-lists",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "名称",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "错误代码，0：为没有错误",
+                                            "type": "integer",
+                                            "default": "0"
+                                        },
+                                        "data": {
+                                            "description": "返回数据",
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Device"
+                                            }
+                                        },
+                                        "message": {
+                                            "description": "错误消息",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/device/page": {
             "get": {
                 "tags": [
@@ -6255,6 +6315,9 @@
                     },
                     "max_value": {
                         "type": "string"
+                    },
+                    "orgnization_id": {
+                        "type": "integer"
                     }
                 },
                 "type": "object"
@@ -6275,6 +6338,9 @@
                     },
                     "notify_user_ids": {
                         "type": "string"
+                    },
+                    "orgnization_id": {
+                        "type": "integer"
                     }
                 },
                 "type": "object"
@@ -6377,6 +6443,9 @@
                     },
                     "default_value": {
                         "type": "string"
+                    },
+                    "orgnization_id": {
+                        "type": "integer"
                     }
                 },
                 "type": "object"
@@ -6400,6 +6469,9 @@
                     },
                     "standard": {
                         "type": "string"
+                    },
+                    "orgnization_id": {
+                        "type": "integer"
                     }
                 },
                 "type": "object"
@@ -6441,6 +6513,9 @@
                     },
                     "remark": {
                         "type": "string"
+                    },
+                    "orgnization_id": {
+                        "type": "integer"
                     }
                 },
                 "type": "object"

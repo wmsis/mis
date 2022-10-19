@@ -68,9 +68,10 @@ class DevicePropertyTemplate extends Model
         'updated_at' => 'datetime:Y-m-d H:i:s'
     ];
 
-    public function roots()
+    public function roots($orgnization_id)
     {
         return $this->whereNull('deleted_at')
+            ->where('orgnization_id', $orgnization_id)
             ->where('level', 1)
             ->orderBy('sort', 'asc')
             ->get();

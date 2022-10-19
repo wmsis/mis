@@ -89,7 +89,7 @@ class DevicePropertyTemplateController extends Controller
         $page = $page ? $page : 1;
 
         $name = $request->input('name');
-        $rows = DevicePropertyTemplate::select(['*']);
+        $rows = DevicePropertyTemplate::select(['*'])->where('orgnization_id', $this->orgnization->id);
 
         if ($name) {
             $rows = $rows->where('name', 'like', "%{$name}%");
@@ -133,7 +133,7 @@ class DevicePropertyTemplateController extends Controller
     public function tree(Request $request){
         $level = $request->input('level');
         $obj = new DevicePropertyTemplate();
-        $rows = $obj->roots();
+        $rows = $obj->roots($this->orgnization->id);
         if($rows){
             $arr = [];
             foreach ($rows as $key => $item) {

@@ -92,7 +92,7 @@ class InspectRuleController extends Controller
         $page = $page ? $page : 1;
 
         $name = $request->input('name');
-        $rows = InspectRule::select(['*']);
+        $rows = InspectRule::select(['*'])->where('orgnization_id', $this->orgnization->id);
 
         if ($name) {
             $rows = $rows->where('name', 'like', "%{$name}%");
@@ -366,6 +366,10 @@ class InspectRuleController extends Controller
         if (!$row) {
             return response()->json(UtilService::format_data(self::AJAX_FAIL, '该数据不存在', ''));
         }
+        elseif($row && $row->orgnization_id != $this->orgnization->id){
+            return response()->json(UtilService::format_data(self::AJAX_FAIL, '非法操作', ''));
+        }
+        
         $input = $request->input();
 
         //判断是否有其他相同的名称

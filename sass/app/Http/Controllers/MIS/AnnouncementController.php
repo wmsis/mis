@@ -88,7 +88,7 @@ class AnnouncementController extends Controller
         $page = $request->input('page');
         $page = $page ? $page : 1;
         $title = $request->input('title');
-        $rows = Announcement::select(['*']);
+        $rows = Announcement::select(['*'])->where('orgnization_id', $this->orgnization->id);
 
         if ($title) {
             $rows = $rows->where('title', 'like', "%{$title}%");
@@ -344,6 +344,9 @@ class AnnouncementController extends Controller
         $row = Announcement::find($id);
         if (!$row) {
             return response()->json(UtilService::format_data(self::AJAX_FAIL, '该数据不存在', ''));
+        }
+        elseif($row && $row->orgnization_id != $this->orgnization->id){
+            return response()->json(UtilService::format_data(self::AJAX_FAIL, '非法操作', ''));
         }
         $input = $request->input();
         $allowField = ['title', 'content', 'notify_user_ids'];

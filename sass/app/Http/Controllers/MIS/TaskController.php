@@ -100,7 +100,7 @@ class TaskController extends Controller
         $name = $request->input('name');
         $type = $request->input('type');
 
-        $rows = Task::select(['*']);
+        $rows = Task::select(['*'])->where('orgnization_id', $this->orgnization->id);
 
         if ($type) {
             $rows = $rows->where('type', $type);
@@ -473,6 +473,9 @@ class TaskController extends Controller
         $row = Task::find($id);
         if (!$row) {
             return response()->json(UtilService::format_data(self::AJAX_FAIL, '该数据不存在', ''));
+        }
+        elseif($row && $row->orgnization_id != $this->orgnization->id){
+            return response()->json(UtilService::format_data(self::AJAX_FAIL, '非法操作', ''));
         }
         $input = $request->input();
 

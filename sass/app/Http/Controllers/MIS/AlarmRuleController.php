@@ -81,7 +81,7 @@ class AlarmRuleController extends Controller
         $name = $request->input('name');
         $type = $request->input('type');
 
-        $rows = AlarmRule::select(['*']);
+        $rows = AlarmRule::select(['*'])->where('orgnization_id', $this->orgnization->id);
 
         if ($type) {
             $rows = $rows->where('type', $type);
@@ -389,6 +389,9 @@ class AlarmRuleController extends Controller
         $row = AlarmRule::find($id);
         if (!$row) {
             return response()->json(UtilService::format_data(self::AJAX_FAIL, '该数据不存在', ''));
+        }
+        elseif($row && $row->orgnization_id != $this->orgnization->id){
+            return response()->json(UtilService::format_data(self::AJAX_FAIL, '非法操作', ''));
         }
         $input = $request->input();
         $allowField = ['name', 'device_id', 'dcs_standard_id', 'period', 'sustain', 'min_value', 'max_value', 'alarm_grade_id', 'type', 'notify_user_ids'];

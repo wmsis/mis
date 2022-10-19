@@ -68,7 +68,7 @@ class AlarmController extends Controller
         $page = $request->input('page');
         $page = $page ? $page : 1;
         $content = $request->input('content');
-        $rows = Alarm::select(['*']);
+        $rows = Alarm::select(['*'])->where('orgnization_id', $this->orgnization->id);
 
         if ($content) {
             $rows = $rows->where('content', 'like', "%{$content}%");

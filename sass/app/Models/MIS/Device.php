@@ -93,9 +93,10 @@ class Device extends Model
         return $this->hasMany(AlarmRule::class);
     }
 
-    public function roots()
+    public function roots($orgnization_id)
     {
         return $this->whereNull('deleted_at')
+            ->where('orgnization_id', $orgnization_id)
             ->where('level', 1)
             ->orderBy('sort', 'asc')
             ->get();
