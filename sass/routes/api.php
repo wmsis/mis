@@ -165,6 +165,15 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
             Route::post('destroy/{id}', 'DeviceController@destroy');
         });
 
+        //设备属性模板
+        Route::prefix('device-property-template')->group(function () {
+            Route::get('page', 'DevicePropertyTemplateController@index');
+            Route::get('tree', 'DevicePropertyTemplateController@tree');
+            Route::get('show/{id}', 'DevicePropertyTemplateController@show');
+            Route::post('store', 'DevicePropertyTemplateController@store'); //创建用户组织保存
+            Route::post('destroy/{id}', 'DevicePropertyTemplateController@destroy');
+        });
+
         //报警
         Route::prefix('alarm')->group(function () {
             Route::get('page', 'AlarmController@index');
@@ -182,6 +191,7 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
             'alarm-rule' => AlarmRuleController::class,
             'announcement' => AnnouncementController::class,
             'task' => TaskController::class,
+            'inspect-rule' => InspectRuleController::class,
         ]);
     });
 });

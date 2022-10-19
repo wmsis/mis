@@ -9,6 +9,7 @@ use App\Models\MIS\Device;
 use App\Models\MIS\DeviceProperty;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
+use App\Models\MIS\InspectRule;
 
 class DeviceController extends Controller
 {
@@ -451,6 +452,9 @@ class DeviceController extends Controller
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
         $properties = $row->device_properties;
+        foreach ($properties as $key => $item) {
+            $inspect_rule = $item->inspect_rule;
+        }
         return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $row);
     }
 

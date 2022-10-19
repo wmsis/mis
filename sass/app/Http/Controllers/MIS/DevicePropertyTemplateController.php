@@ -142,6 +142,8 @@ class DevicePropertyTemplateController extends Controller
                     'name' => $item->name,
                     'title' => $item->name,
                     'type' => $item->type,
+                    'value' => $item->value,
+                    'default_value' => $item->default_value,
                     'sort' => $item->sort,
                     'parent_id' => $item->parent_id,
                     'level' => $item->level,
@@ -172,6 +174,8 @@ class DevicePropertyTemplateController extends Controller
                 'name' => $item->name,
                 'title' => $item->name,
                 'type' => $item->type,
+                'value' => $item->value,
+                'default_value' => $item->default_value,
                 'sort' => $item->sort,
                 'parent_id' => $item->parent_id,
                 'level' => $item->level,
@@ -258,6 +262,24 @@ class DevicePropertyTemplateController extends Controller
      *             type="string"
      *         ),
      *     ),
+     *     @OA\Parameter(
+     *         description="值 文本框为单个值，列表为多个值，英文逗号隔开",
+     *         in="query",
+     *         name="value",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="默认值",
+     *         in="query",
+     *         name="default_value",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="successful operation",
@@ -272,6 +294,8 @@ class DevicePropertyTemplateController extends Controller
         $parent_id = $request->input('parent_id');
         $sort = $request->input('sort');
         $is_group = $request->input('is_group');
+        $default_value = $request->input('default_value');
+        $value = $request->input('value');
 
         DB::beginTransaction();
         try {
@@ -287,13 +311,15 @@ class DevicePropertyTemplateController extends Controller
                 $row->parent_id = $parent_id;
                 $row->sort = $sort;
                 $row->is_group = $is_group;
+                $row->default_value = $default_value;
+                $row->value = $value;
                 if($parent){
                     $row->ancestor_id = $parent->ancestor_id;
                 }
                 $row->save();
             }
             else {
-                $params = request(['name', 'type', 'parent_id', 'sort', 'is_group']);
+                $params = request(['name', 'type', 'parent_id', 'sort', 'is_group', 'value', 'default_value']);
                 $level = $parent && $parent->level ? $parent->level + 1 : 1;
                 $params['level'] = $level;
                 if($parent){

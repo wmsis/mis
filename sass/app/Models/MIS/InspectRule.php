@@ -29,13 +29,17 @@ use App\Models\MIS\Task;
  *         property="content",
  *         type="string"
  *     ),
+ *     @OA\Property(
+ *         property="standard",
+ *         type="string"
+ *     ),
  * )
  */
 class InspectRule extends Model
 {
     use HasFactory, softDeletes;
     protected $table = 'inspect_rule';
-    protected $fillable = ['name', 'device_property_id', 'content'];
+    protected $fillable = ['name', 'device_property_id', 'content', 'standard'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',

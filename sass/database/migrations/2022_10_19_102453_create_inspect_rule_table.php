@@ -19,6 +19,7 @@ class CreateInspectRuleTable extends Migration
             $table->string('name', 50)->nullable()->comment('规则名');
             $table->integer('device_property_id')->nullable()->comment('设备属性ID');
             $table->text('content')->nullable()->comment('规则内容');
+            $table->text('standard')->nullable()->comment('巡检标准');
             $table->timestamps();
         });
 
@@ -32,6 +33,8 @@ class CreateInspectRuleTable extends Migration
             $table->integer('level')->nullable()->comment('所属层级');
             $table->integer('sort')->nullable()->comment('排序号');
             $table->integer('is_group')->nullable()->comment('是否分组');
+            $table->string('value', 50)->nullable()->comment('文本框为单个值，列表为多个值，英文逗号隔开');
+            $table->string('default_value', 50)->nullable()->comment('默认值');
 
             $table->timestamps();
             $table->softDeletes();
