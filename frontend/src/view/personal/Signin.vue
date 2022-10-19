@@ -78,6 +78,7 @@
                             userInfo: response.user
                         });
                         that.me();
+                        that.test();
                     },
                     fail(err){
                         that.loading = false;
@@ -105,6 +106,33 @@
                     },
                     fail(err){
                         that.loading = false;
+                        that.showMessage(err.message,'error')
+                    }
+                });
+            },
+            test(){
+                let that = this;
+                that.ajax({
+                    method: 'POST',
+                    url: '/device/store',
+                    data: {
+                        name: '除臭风机',
+                        properties: JSON.stringify([
+                            {
+                                name: '属性名1',
+                                value: '属性值1'
+                            },
+                            {
+                                name: '属性名2',
+                                value: '属性值2'
+                            }
+                        ])
+                    },
+                    success(response) {
+                        console.log('0000000000000');
+                        console.log(response);
+                    },
+                    fail(err){
                         that.showMessage(err.message,'error')
                     }
                 });

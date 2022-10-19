@@ -16,3 +16,8 @@ use Illuminate\Support\Facades\Broadcast;
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+
+//通配符参数作为其后续参数，{userId}占位符
+Broadcast::channel('user.{userId}', function($user, $userId){
+    return (int) $user->id === (int) $userId;
+});

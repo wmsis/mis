@@ -37,7 +37,7 @@ class CreateDeviceTable extends Migration
         Schema::create('device_property', function (Blueprint $table) {
             $table->id();
             $table->string('name', 150)->nullable()->comment('属性名');
-            $table->integer('value')->nullable()->comment('属性值');
+            $table->string('value', 50)->nullable()->comment('属性值');
             $table->integer('device_id')->nullable()->comment('设备ID');
 
             $table->timestamps();

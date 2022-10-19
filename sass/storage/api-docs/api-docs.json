@@ -2498,12 +2498,12 @@
                         }
                     },
                     {
-                        "name": "is_inspect",
+                        "name": "properties",
                         "in": "query",
-                        "description": "是否巡检",
+                        "description": "自定义属性json格式  [{'name': '属性名', 'value': '属性值'}]",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "string"
                         }
                     }
                 ],

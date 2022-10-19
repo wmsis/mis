@@ -284,12 +284,12 @@ class DeviceController extends Controller
      *         ),
      *     ),
      *     @OA\Parameter(
-     *         description="是否巡检",
+     *         description="自定义属性json格式  [{'name': '属性名', 'value': '属性值'}]",
      *         in="query",
-     *         name="is_inspect",
+     *         name="properties",
      *         required=true,
      *         @OA\Schema(
-     *             type="integer"
+     *             type="string"
      *         ),
      *     ),
      *     @OA\Response(
@@ -308,8 +308,8 @@ class DeviceController extends Controller
         $parent_id = $request->input('parent_id');
         $sort = $request->input('sort');
         $img = $request->input('img');
-        $is_inspect = $request->input('is_inspect');
-        $is_group = $request->input('is_group');
+        $properties = $request->input('properties');
+        $properties = json_decode($properties, true);
 
         DB::beginTransaction();
         try {
@@ -326,15 +326,28 @@ class DeviceController extends Controller
                 $row->quality_date = $quality_date;
                 $row->parent_id = $parent_id;
                 $row->img = $img;
-                $row->is_inspect = $is_inspect;
                 $row->sort = $sort;
                 if($parent){
                     $row->ancestor_id = $parent->ancestor_id;
                 }
                 $row->save();
+
+                //自定义属性
+                $row->device_properties()->forceDelete();  //先删除以前的属性
+                if($properties && !empty($properties) && count($properties) > 0){
+                    foreach ($properties as $key => $property) {
+                        if(isset($property['name']) && isset($property['value'])){
+                            DeviceProperty::create([
+                                'device_id' => $id,
+                                'name' => $property['name'],
+                                'value' => $property['value']
+                            ]);
+                        }
+                    }
+                }
             }
             else {
-                $params = request(['name', 'code', 'factory_date', 'quality_date', 'parent_id', 'sort', 'img', 'is_inspect']);
+                $params = request(['name', 'code', 'factory_date', 'quality_date', 'parent_id', 'sort', 'img']);
                 $level = $parent && $parent->level ? $parent->level + 1 : 1;
                 $params['level'] = $level;
                 $params['orgnization_id'] = $this->orgnization->id;
@@ -346,6 +359,18 @@ class DeviceController extends Controller
                     //没有父设备  祖先ID为自己的ID
                     $row->ancestor_id = $row->id;
                     $row->save();
+                }
+
+                if($properties && !empty($properties) && count($properties) > 0){
+                    foreach ($properties as $key => $property) {
+                        if(isset($property['name']) && isset($property['value'])){
+                            DeviceProperty::create([
+                                'device_id' => $row->id,
+                                'name' => $property['name'],
+                                'value' => $property['value']
+                            ]);
+                        }
+                    }
                 }
             }
             DB::commit();
