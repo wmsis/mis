@@ -26,7 +26,6 @@ class CreateDeviceTable extends Migration
             $table->date('factory_date')->nullable()->comment('出厂日期');
             $table->string('code', 50)->nullable()->comment('编码型号');
             $table->text('img')->nullable()->comment('图片');
-            $table->integer('is_inspect')->nullable()->comment('是否巡检');
             $table->integer('is_group')->nullable()->comment('是否分组');
 
             $table->timestamps();
@@ -36,9 +35,9 @@ class CreateDeviceTable extends Migration
         //设备自定义属性
         Schema::create('device_property', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 150)->nullable()->comment('属性名');
             $table->string('value', 50)->nullable()->comment('属性值');
             $table->integer('device_id')->nullable()->comment('设备ID');
+            $table->integer('device_property_template_id')->nullable()->comment('设备属性模板ID');
 
             $table->timestamps();
             $table->softDeletes();

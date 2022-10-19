@@ -150,7 +150,7 @@ class AlarmRuleController extends Controller
      *         required=true,
      *         @OA\Schema(
      *             type="array",
-     *             default="instation",
+     *             default="communication",
      *             @OA\Items(
      *                 type="string",
      *                 enum = {"communication", "scene"},

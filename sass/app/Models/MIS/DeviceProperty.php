@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\MIS\Device;
+use App\Models\MIS\DevicePropertyTemplate;
+use App\Models\MIS\InspectRule;
 
 /**
  * 创建数据模型
@@ -17,8 +19,8 @@ use App\Models\MIS\Device;
  *         type="integer"
  *     ),
  *     @OA\Property(
- *         property="name",
- *         type="string"
+ *         property="device_property_template_id",
+ *         type="integer"
  *     ),
  *     @OA\Property(
  *         property="value",
@@ -34,7 +36,7 @@ class DeviceProperty extends Model
 {
     use HasFactory, softDeletes;
     protected $table = 'device_property';
-    protected $fillable = ['name', 'value', 'device_id'];
+    protected $fillable = ['device_property_template_id', 'value', 'device_id'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',
@@ -47,5 +49,14 @@ class DeviceProperty extends Model
     public function device()
     {
         return $this->belongsTo(Device::class);
+    }
+
+    public function device_property_template(){
+        return $this->belongsTo(DevicePropertyTemplate::class);
+    }
+
+    public function inspect_rule()
+    {
+        return $this->hasOne(InspectRule::class);
     }
 }

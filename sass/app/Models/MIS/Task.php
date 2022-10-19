@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\MIS\Device;
 use App\Models\Users;
+use App\Models\MIS\InspectRule;
 
 /**
  * 创建数据模型
@@ -78,5 +79,9 @@ class Task extends Model
     public function user()
     {
         return $this->belongsTo(Users::class);
+    }
+
+    public function inspect_rules(){
+        return $this->belongsToMany(InspectRule::class, 'task_inspect_rule', 'task_id', 'inspect_rule_id')->withTimestamps();
     }
 }

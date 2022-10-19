@@ -1705,7 +1705,7 @@
                                     "scene"
                                 ]
                             },
-                            "default": "instation"
+                            "default": "communication"
                         }
                     },
                     {
@@ -2498,9 +2498,18 @@
                         }
                     },
                     {
+                        "name": "is_group",
+                        "in": "query",
+                        "description": "是否文件夹",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "properties",
                         "in": "query",
-                        "description": "自定义属性json格式  [{'name': '属性名', 'value': '属性值'}]",
+                        "description": "自定义属性json格式  [{'device_property_template_id': '属性模板ID', 'value': '属性值'}]",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -2596,6 +2605,308 @@
                         "name": "id",
                         "in": "path",
                         "description": "设备主键",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "detroy succeed"
+                    }
+                }
+            }
+        },
+        "/api/device-property-template/page": {
+            "get": {
+                "tags": [
+                    "设备属性模板device-property-template"
+                ],
+                "summary": "分页获取数据列表",
+                "description": "使用说明：分页获取数据列表",
+                "operationId": "device-property-template-index",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "num",
+                        "in": "query",
+                        "description": "每页数据量",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "页数",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "关键字中文名搜索",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "错误代码，0：为没有错误",
+                                            "type": "integer",
+                                            "default": "0"
+                                        },
+                                        "data": {
+                                            "description": "返回数据",
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/DevicePropertyTemplate"
+                                            }
+                                        },
+                                        "message": {
+                                            "description": "错误消息",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/device-property-template/tree": {
+            "get": {
+                "tags": [
+                    "设备属性模板device-property-template"
+                ],
+                "summary": "设备属性模板树",
+                "description": "使用说明：设备属性模板树",
+                "operationId": "device-property-template tree",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "level",
+                        "in": "query",
+                        "description": "最大层级",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/device-property-template/store": {
+            "post": {
+                "tags": [
+                    "设备属性模板device-property-template"
+                ],
+                "summary": "保存设备属性模板",
+                "description": "使用说明：保存设备属性模板",
+                "operationId": "storeDevicePropertyTemplate",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "设备属性模板id",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "属性名称",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "模板类型 text文本, integer数字, image图片, date日期, radio单选, checkbox多选",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "text",
+                                    "integer",
+                                    "image",
+                                    "date",
+                                    "radio",
+                                    "checkbox"
+                                ]
+                            },
+                            "default": "text"
+                        }
+                    },
+                    {
+                        "name": "parent_id",
+                        "in": "query",
+                        "description": "父主键ID",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "排序号",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "is_group",
+                        "in": "query",
+                        "description": "是否文件夹",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/device-property-template/{id}": {
+            "get": {
+                "tags": [
+                    "设备属性模板device-property-template"
+                ],
+                "summary": "获取详细信息",
+                "description": "使用说明：获取详细信息",
+                "operationId": "device-property-template-show",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "DevicePropertyTemplate主键",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "错误代码，0：为没有错误",
+                                            "type": "integer",
+                                            "default": "0"
+                                        },
+                                        "data": {
+                                            "description": "返回数据",
+                                            "type": "object",
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/components/schemas/DevicePropertyTemplate"
+                                                }
+                                            ]
+                                        },
+                                        "message": {
+                                            "description": "错误消息",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "设备属性模板device-property-template"
+                ],
+                "summary": "删除单条数据",
+                "description": "使用说明：删除单条数据",
+                "operationId": "device-property-template-destroy",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "DevicePropertyTemplate主键",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -5628,9 +5939,6 @@
                     "sort": {
                         "type": "integer"
                     },
-                    "is_inspect": {
-                        "type": "integer"
-                    },
                     "is_group": {
                         "type": "integer"
                     }
@@ -5645,14 +5953,66 @@
                         "description": "创建数据模型",
                         "type": "integer"
                     },
-                    "name": {
-                        "type": "string"
+                    "device_property_template_id": {
+                        "type": "integer"
                     },
                     "value": {
                         "type": "string"
                     },
                     "device_id": {
                         "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "DevicePropertyTemplate": {
+                "title": "DevicePropertyTemplate model",
+                "description": "DevicePropertyTemplate model",
+                "properties": {
+                    "id": {
+                        "description": "创建数据模型",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "parent_id": {
+                        "type": "integer"
+                    },
+                    "ancestor_id": {
+                        "type": "integer"
+                    },
+                    "level": {
+                        "type": "integer"
+                    },
+                    "sort": {
+                        "type": "integer"
+                    },
+                    "is_group": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "InspectRule": {
+                "title": "InspectRule model",
+                "description": "InspectRule model",
+                "properties": {
+                    "id": {
+                        "description": "创建数据模型",
+                        "type": "integer"
+                    },
+                    "device_property_id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "content": {
+                        "type": "string"
                     }
                 },
                 "type": "object"
