@@ -31,13 +31,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *         property="max_value",
  *         type="string"
  *     ),
+ *     @OA\Property(
+ *         property="orgnization_id",
+ *         type="integer"
+ *     ),
  * )
  */
 class AlarmGrade extends Model
 {
     use HasFactory, softDeletes;
     protected $table = 'alarm_grade';
-    protected $fillable = ['name', 'min_value', 'max_value', 'description'];
+    protected $fillable = ['name', 'min_value', 'max_value', 'description', 'orgnization_id'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',

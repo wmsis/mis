@@ -51,13 +51,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *         property="default_value",
  *         type="string"
  *     ),
+ *     @OA\Property(
+ *         property="orgnization_id",
+ *         type="integer"
+ *     ),
  * )
  */
 class DevicePropertyTemplate extends Model
 {
     use HasFactory, softDeletes;
     protected $table = 'device_property_template';
-    protected $fillable = ['name', 'type', 'parent_id', 'ancestor_id', 'level', 'sort',  'is_group', 'value', 'default_value'];
+    protected $fillable = ['name', 'type', 'parent_id', 'ancestor_id', 'level', 'sort',  'is_group', 'value', 'default_value', 'orgnization_id'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',

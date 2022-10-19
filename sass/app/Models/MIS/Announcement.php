@@ -27,13 +27,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *         property="notify_user_ids",
  *         type="string"
  *     ),
+ *     @OA\Property(
+ *         property="orgnization_id",
+ *         type="integer"
+ *     ),
  * )
  */
 class Announcement extends Model
 {
     use HasFactory, softDeletes;
     protected $table = 'announcement';
-    protected $fillable = ['title', 'content', 'notify_user_ids'];
+    protected $fillable = ['title', 'content', 'notify_user_ids', 'orgnization_id'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',

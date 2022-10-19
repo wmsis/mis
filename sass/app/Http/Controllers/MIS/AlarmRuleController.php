@@ -221,6 +221,7 @@ class AlarmRuleController extends Controller
     {
         $input = $request->only(['name', 'device_id', 'dcs_standard_id', 'period', 'sustain', 'min_value', 'max_value', 'alarm_grade_id', 'type', 'notify_user_ids']);
         try {
+            $input['orgnization_id'] = $this->orgnization->id;
             $res = AlarmRule::create($input);
         } catch (QueryException $e) {
             return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');

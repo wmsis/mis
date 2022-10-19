@@ -13,7 +13,7 @@ class AlarmRule extends Model
 {
     use HasFactory, softDeletes;
     protected $table = 'alarm_rule';
-    protected $fillable = ['name', 'device_id', 'dcs_standard_id', 'period', 'sustain', 'min_value', 'max_value', 'alarm_grade_id', 'type', 'notify_user_ids'];
+    protected $fillable = ['name', 'device_id', 'dcs_standard_id', 'period', 'sustain', 'min_value', 'max_value', 'alarm_grade_id', 'type', 'notify_user_ids', 'orgnization_id'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',

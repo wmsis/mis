@@ -13,7 +13,7 @@ class Notice extends Model
 {
     use HasFactory, softDeletes;
     protected $table = 'notice';
-    protected $fillable = ['user_id', 'status', 'confirm_time', 'type', 'foreign_id'];
+    protected $fillable = ['user_id', 'status', 'confirm_time', 'type', 'foreign_id', 'orgnization_id'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',

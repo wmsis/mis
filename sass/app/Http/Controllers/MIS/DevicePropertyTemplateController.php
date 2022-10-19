@@ -322,6 +322,7 @@ class DevicePropertyTemplateController extends Controller
                 $params = request(['name', 'type', 'parent_id', 'sort', 'is_group', 'value', 'default_value']);
                 $level = $parent && $parent->level ? $parent->level + 1 : 1;
                 $params['level'] = $level;
+                $params['orgnization_id'] = $this->orgnization->id;
                 if($parent){
                     $params['ancestor_id'] = $parent->ancestor_id;
                 }

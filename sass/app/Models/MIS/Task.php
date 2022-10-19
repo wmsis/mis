@@ -58,13 +58,17 @@ use App\Models\MIS\InspectRule;
  *         property="remark",
  *         type="string"
  *     ),
+ *     @OA\Property(
+ *         property="orgnization_id",
+ *         type="integer"
+ *     ),
  * )
  */
 class Task extends Model
 {
     use HasFactory, softDeletes;
     protected $table = 'task';
-    protected $fillable = ['name', 'type', 'begin', 'end', 'user_id', 'device_id', 'content', 'confirm_time', 'status', 'remark'];
+    protected $fillable = ['name', 'type', 'begin', 'end', 'user_id', 'device_id', 'content', 'confirm_time', 'status', 'remark', 'orgnization_id'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',

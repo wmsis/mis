@@ -158,6 +158,7 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
     Route::group(['namespace' => 'App\Http\Controllers\MIS'], function () {
         //设备
         Route::prefix('device')->group(function () {
+            Route::get('lists', 'DeviceController@lists');
             Route::get('page', 'DeviceController@index');
             Route::get('tree', 'DeviceController@tree');
             Route::get('show/{id}', 'DeviceController@show');

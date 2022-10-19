@@ -17,6 +17,68 @@ class DeviceController extends Controller
 {
     /**
      * @OA\Get(
+     *     path="/api/device/lists",
+     *     tags={"设备档案device"},
+     *     operationId="device-lists",
+     *     summary="获取所有数据列表",
+     *     description="使用说明：获取所有数据列表",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="名称",
+     *         in="query",
+     *         name="name",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string",
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="succeed",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+	 *              	property="code",
+	 *                  description="错误代码，0：为没有错误",
+	 *                  type="integer",
+	 *					default="0"
+	 *             ),
+     *             @OA\Property(
+	 *                  property="data",
+	 *                  description="返回数据",
+     *                  type="array",
+     *                  @OA\Items(ref="#/components/schemas/Device")
+     *             ),
+     *             @OA\Property(
+	 *              	property="message",
+	 *                  description="错误消息",
+	 *                  type="string"
+	 *             )
+     *         ),
+     *     ),
+     * )
+     */
+    public function lists(Request $request)
+    {
+        $name = $request->input('name');
+        if ($name) {
+            $data = Device::where('name', 'like', "%{$name}%")->get();
+        }
+        else{
+            $data = Device::all();
+        }
+        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $data);
+    }
+
+    /**
+     * @OA\Get(
      *     path="/api/device/page",
      *     tags={"设备档案device"},
      *     operationId="device-index",

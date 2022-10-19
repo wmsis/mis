@@ -187,6 +187,7 @@ class AlarmGradeController extends Controller
         }
 
         try {
+            $input['orgnization_id'] = $this->orgnization->id;
             $res = AlarmGrade::create($input);
         } catch (QueryException $e) {
             return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');

@@ -255,6 +255,7 @@ class TaskController extends Controller
     {
         $input = $request->only(['name', 'type', 'begin', 'end', 'user_id', 'device_id', 'content', 'confirm_time', 'status', 'remark']);
         try {
+            $input['orgnization_id'] = $this->orgnization->id;
             $res = Task::create($input);
         } catch (QueryException $e) {
             return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');

@@ -182,6 +182,7 @@ class AnnouncementController extends Controller
     {
         $input = $request->only(['title', 'content', 'notify_user_ids']);
         try {
+            $input['orgnization_id'] = $this->orgnization->id;
             $res = Announcement::create($input);
         } catch (QueryException $e) {
             return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
