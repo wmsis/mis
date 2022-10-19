@@ -7,9 +7,11 @@ use Illuminate\Http\Request;
 use UtilService;
 use App\Models\MIS\Device;
 use App\Models\MIS\DeviceProperty;
+use App\Models\MIS\DevicePropertyTemplate;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 use App\Models\MIS\InspectRule;
+use Log;
 
 class DeviceController extends Controller
 {
@@ -142,6 +144,14 @@ class DeviceController extends Controller
         if($rows){
             $arr = [];
             foreach ($rows as $key => $item) {
+                $properties = $item->device_properties;
+                foreach ($properties as $k2 => $property) {
+                    $property_tpl_obj = DevicePropertyTemplate::find($property->device_property_template_id);
+                    $properties[$k2]['property_name'] = $property_tpl_obj && $property_tpl_obj->name ? $property_tpl_obj->name : '';
+                    $properties[$k2]['property_value'] = $property->value;
+                    unset($properties[$k2]['device_property_template_id']);
+                    $inspect_rule = $property->inspect_rule;
+                }
                 $arr[] = array(
                     'id' => $item->id,
                     'name' => $item->name,
@@ -153,11 +163,12 @@ class DeviceController extends Controller
                     'quality_date' => $item->quality_date,
                     'factory_date' => $item->factory_date,
                     'img' => $item->img,
-                    'is_inspect' => $item->is_inspect,
+                    'properties' => $properties,
                     'is_group' => $item->is_group,
                     'children' => $this->children($item->id, $level)
                 );
             }
+
             return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $arr);
         }
         else{
@@ -170,6 +181,15 @@ class DeviceController extends Controller
         $rows = $obj->children($parent_id);
         $arr = [];
         foreach ($rows as $key => $item) {
+            $properties = $item->device_properties;
+            foreach ($properties as $k2 => $property) {
+                $property_tpl_obj = DevicePropertyTemplate::find($property->device_property_template_id);
+                $properties[$k2]['property_name'] = $property_tpl_obj && $property_tpl_obj->name ? $property_tpl_obj->name : '';
+                $properties[$k2]['property_value'] = $property->value;
+                unset($properties[$k2]['device_property_template_id']);
+                $inspect_rule = $property->inspect_rule;
+            }
+
             if(!$level || $item->level < $level){
                 $children =  $this->children($item->id, $level);
             }
@@ -187,7 +207,7 @@ class DeviceController extends Controller
                 'quality_date' => $item->quality_date,
                 'factory_date' => $item->factory_date,
                 'img' => $item->img,
-                'is_inspect' => $item->is_inspect,
+                'properties' => $properties,
                 'is_group' => $item->is_group,
                 'children' => $children
             );
@@ -452,8 +472,12 @@ class DeviceController extends Controller
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
         $properties = $row->device_properties;
-        foreach ($properties as $key => $item) {
-            $inspect_rule = $item->inspect_rule;
+        foreach ($properties as $key => $property) {
+            $property_tpl_obj = DevicePropertyTemplate::find($property->device_property_template_id);
+            $properties[$key]['property_name'] = $property_tpl_obj && $property_tpl_obj->name ? $property_tpl_obj->name : '';
+            $properties[$key]['property_value'] = $property->value;
+            unset($properties[$key]['device_property_template_id']);
+            $inspect_rule = $property->inspect_rule;
         }
         return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $row);
     }
