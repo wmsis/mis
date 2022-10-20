@@ -36,6 +36,15 @@ class TaskEvent
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('channel-name');
+        return new PrivateChannel('task.' . $this->user->id);
+    }
+
+    //广播内容
+    public function broadcastWith()
+    {
+        return [
+            'user_id' => $this->user->id,
+            'task' => $this->task
+        ];
     }
 }

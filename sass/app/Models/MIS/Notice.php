@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\MIS\Alarm;
 use App\Models\MIS\Announcement;
-use App\Models\Users;
+use App\Models\User;
 
 class Notice extends Model
 {
@@ -22,6 +22,6 @@ class Notice extends Model
 
     public function user()
     {
-        return $this->belongsTo(Users::class);
+        return $this->belongsTo(User::class);
     }
 }

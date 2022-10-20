@@ -6,6 +6,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Events\AnnouncementEvent;
 use App\Events\TaskEvent; //事件
+use App\Events\AlarmEvent;
 use App\Models\MIS\Notice;
 
 class NoticeSubscriber
@@ -35,6 +36,7 @@ class NoticeSubscriber
         return [
             AnnouncementEvent::class => 'handleAnnouncement',
             TaskEvent::class => 'handleTask',
+            AlarmEvent::class => 'handleAlarm',
         ];
     }
 
@@ -47,6 +49,10 @@ class NoticeSubscriber
 
     public function handleTask($event) {
         $this->saveTaskNoticeData($event);
+    }
+
+    public function handleAlarm($event) {
+        $this->saveAlarmNoticeData($event);
     }
 
     private function saveAnnounceNoticeData($event){
@@ -66,6 +72,16 @@ class NoticeSubscriber
             'type' => 'task',
             'foreign_id' => $event->task->id,
             'orgnization_id' => $event->task->orgnization_id
+        ]);
+    }
+
+    private function saveAlarmNoticeData($event){
+        Notice::create([
+            'user_id' => $event->user->id,
+            'status' => 'init',
+            'type' => 'alarm',
+            'foreign_id' => $event->alarm->id,
+            'orgnization_id' => $event->alarm->orgnization_id
         ]);
     }
 }
