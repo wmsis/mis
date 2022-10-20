@@ -341,12 +341,7 @@ class DevicePropertyTemplateController extends Controller
         $sort = $request->input('sort');
         $is_group = $request->input('is_group');
         $properties = $request->input('properties');
-        Log::info('111111111111111111');
-        Log::info(var_export($properties, true));
         $properties = json_decode($properties, true);
-
-        Log::info('22222222222222');
-        Log::info(var_export($properties, true));
 
         DB::beginTransaction();
         try {
@@ -363,7 +358,6 @@ class DevicePropertyTemplateController extends Controller
                 elseif($row){
                     $row->device_property_templates()->forceDelete();
                 }
-                Log::info('3333333333333333');
 
                 $row->name = $name;
                 $row->parent_id = $parent_id;
@@ -376,11 +370,8 @@ class DevicePropertyTemplateController extends Controller
 
                 //保存设备属性模板
                 if($properties && !empty($properties) && count($properties) > 0){
-                    Log::info('55555555555555555');
                     foreach ($properties as $key => $property) {
-                        Log::info('6666666666666666666');
                         if(isset($property['name']) && isset($property['type']) && isset($property['value']) && isset($property['default_value'])){
-                            Log::info('7777777777777777777777');
                             DevicePropertyTemplate::create([
                                 'device_template_id' => $id,
                                 'type' => $property['type'],
