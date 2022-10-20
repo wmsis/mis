@@ -321,7 +321,7 @@ class DevicePropertyTemplateController extends Controller
      *         description="自定义属性json格式  [{'name': '属性名', 'type': '属性类型', 'value': '属性值', 'default_value': '默认属性'}]  类型text文本, integer数字, image图片, date日期, radio单选框, checkbox复选框, select下拉列表, switch开关",
      *         in="query",
      *         name="properties",
-     *         required=false,
+     *         required=true,
      *         @OA\Schema(
      *             type="string"
      *         ),
@@ -339,7 +339,7 @@ class DevicePropertyTemplateController extends Controller
         $parent_id = $request->input('parent_id');
         $sort = $request->input('sort');
         $is_group = $request->input('is_group');
-        $properties = json_decode($properties, true);
+        $properties = $request->input('properties');
         $properties = json_decode($properties, true);
 
         DB::beginTransaction();
