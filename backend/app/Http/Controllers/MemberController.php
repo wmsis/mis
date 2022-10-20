@@ -122,9 +122,9 @@ class MemberController extends Controller
                 'data' => $users,
                 'total' => $total
             );
-            return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $res);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
         } else {
-            return UtilService::format_data(self::AJAX_FAIL, '获取失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 
@@ -177,10 +177,10 @@ class MemberController extends Controller
 
             $member->wechats;
             $member->minis;
-            return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $member);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $member);
         }
         else{
-            return UtilService::format_data(self::AJAX_FAIL, '获取失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 }

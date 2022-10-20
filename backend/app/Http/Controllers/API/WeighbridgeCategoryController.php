@@ -54,7 +54,7 @@ class WeighbridgeCategoryController extends Controller
     public function listsBig(Request $request)
     {
         $data = WeighbridgeCateBig::all();
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $data);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $data);
     }
 
     /**
@@ -132,7 +132,7 @@ class WeighbridgeCategoryController extends Controller
         }
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total]);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total]);
     }
 
     /**
@@ -190,9 +190,9 @@ class WeighbridgeCategoryController extends Controller
         try {
             $res = WeighbridgeCateBig::create($input);
         } catch (QueryException $e) {
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
     }
 
     /**
@@ -241,7 +241,7 @@ class WeighbridgeCategoryController extends Controller
         if (!$row) {
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $row);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $row);
     }
 
     /**
@@ -432,9 +432,9 @@ class WeighbridgeCategoryController extends Controller
                 DB::commit();
             } catch (QueryException $e) {
                 DB::rollback();
-                return UtilService::format_data(self::AJAX_FAIL, '操作失败', $e->getMessage());
+                return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, $e->getMessage());
             }
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', '');
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
         }
     }
 
@@ -513,7 +513,7 @@ class WeighbridgeCategoryController extends Controller
         }
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total]);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total]);
     }
 
     /**
@@ -592,9 +592,9 @@ class WeighbridgeCategoryController extends Controller
             DB::commit();
         } catch (QueryException $e) {
             DB::rollback();
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', '');
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
     }
 
     /**
@@ -635,7 +635,7 @@ class WeighbridgeCategoryController extends Controller
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
         $row->small_names;
-        return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $row);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $row);
     }
 }
 

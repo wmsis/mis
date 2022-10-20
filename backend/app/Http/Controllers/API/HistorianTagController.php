@@ -134,7 +134,7 @@ class HistorianTagController extends Controller
         $params['limit'] = $perPage;
         $data = $this->HistorianTag->findByPage($params);
 
-        return response()->json(UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $data));
+        return response()->json(UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $data));
     }
 
     /**
@@ -198,7 +198,7 @@ class HistorianTagController extends Controller
         else{
             $data = $obj_historian_tag->select(['id', 'tag_name'])->get();
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $data);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $data);
     }
 
     /**
@@ -337,7 +337,7 @@ class HistorianTagController extends Controller
             }
         }
 
-        return response()->json(UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $data));
+        return response()->json(UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $data));
     }
 
     /**
@@ -402,7 +402,7 @@ class HistorianTagController extends Controller
         if (!$tag) {
             return response()->json(UtilService::format_data(self::AJAX_NO_DATA, '该Tag不存在', ''));
         }
-        return response()->json(UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $tag));
+        return response()->json(UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $tag));
     }
 
     /**
@@ -469,7 +469,7 @@ class HistorianTagController extends Controller
         }
         $ids = explode(',', $idsStr);
         $tags = $this->HistorianTag->whereIn('id', $ids)->get();
-        return response()->json(UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $tags));
+        return response()->json(UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $tags));
     }
 
     /**
@@ -554,7 +554,7 @@ class HistorianTagController extends Controller
                     }
                 }
             }
-            return response()->json(UtilService::format_data(self::AJAX_SUCCESS, '操作成功', ['updateOrCreateCount' => $updateOrCreateCount, 'errorCount' => $errorCount]));
+            return response()->json(UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['updateOrCreateCount' => $updateOrCreateCount, 'errorCount' => $errorCount]));
         } else {
             return $tagslist;
         }

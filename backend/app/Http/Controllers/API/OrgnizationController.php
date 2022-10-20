@@ -95,7 +95,7 @@ class OrgnizationController extends Controller
         }
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total]);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total]);
     }
 
     /**
@@ -132,7 +132,7 @@ class OrgnizationController extends Controller
     public function factories(Request $request)
     {
         $data = Orgnization::where('level', 2)->get();
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $data);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $data);
     }
 
     /**
@@ -186,10 +186,10 @@ class OrgnizationController extends Controller
                     'children' => $this->children($item->id, $level)
                 );
             }
-            return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $arr);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $arr);
         }
         else{
-            return UtilService::format_data(self::AJAX_FAIL, '获取失败', []);
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, []);
         }
     }
 
@@ -367,10 +367,10 @@ class OrgnizationController extends Controller
                 }
             }
             DB::commit();
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', '');
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
         } catch (QueryException $ex) {
             DB::rollback();
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', $ex->getMessage());
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, $ex->getMessage());
         }
     }
 
@@ -412,7 +412,7 @@ class OrgnizationController extends Controller
 
         //compact 创建一个包含变量名和它们的值的数组
         $data = compact('roles', 'myRoles');
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $data);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $data);
     }
 
     /**
@@ -513,10 +513,10 @@ class OrgnizationController extends Controller
         $row = Orgnization::find($id);
         $res = $row->delete();
         if($row && $res){
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
         }
         else{
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 }

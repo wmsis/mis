@@ -16,6 +16,8 @@ class Controller extends BaseController
     const AJAX_SUCCESS = 0;
     const AJAX_FAIL = -1;
     const AJAX_NO_DATA = -2;
+    const AJAX_SUCCESS_MSG = '操作成功';
+    const AJAX_FAIL_MSG = '操作失败';
     protected $mongo_conn;
 
     public function __construct(){

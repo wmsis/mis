@@ -120,7 +120,7 @@ class DcsMapController extends Controller
             $rows[$key]->dcs_standard = $dcs_standard;
             $rows[$key]->tags = $tags;
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total]);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total]);
     }
 
     /**
@@ -196,9 +196,9 @@ class DcsMapController extends Controller
         try {
             $res = DcsMap::create($input);
         } catch (QueryException $e) {
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
     }
 
     /**
@@ -256,7 +256,7 @@ class DcsMapController extends Controller
         $row['orgnization'] = $org;
         $row['dcs_standard'] = $dcs_standard;
         $row['tags'] = $tags;
-        return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $row);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $row);
     }
 
     /**

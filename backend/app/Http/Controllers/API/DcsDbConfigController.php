@@ -108,9 +108,9 @@ class DcsDbConfigController extends Controller
         try {
             $res = ConfigHistorianDB::create($input);
         } catch (QueryException $e) {
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
     }
 
     /**
@@ -159,7 +159,7 @@ class DcsDbConfigController extends Controller
         if (!$row) {
             return UtilService::format_data(self::AJAX_SUCCESS, '该数据不存在', []);
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $row);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $row);
     }
 
     /**

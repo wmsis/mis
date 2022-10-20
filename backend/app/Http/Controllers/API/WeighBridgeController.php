@@ -113,7 +113,7 @@ class WeighBridgeController extends Controller
         }
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total]);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total]);
     }
 
     /**
@@ -255,10 +255,10 @@ class WeighBridgeController extends Controller
                     DB::commit();
                 } catch (QueryException $e) {
                     DB::rollback();
-                    return UtilService::format_data(self::AJAX_FAIL, '操作失败', $e->getMessage());
+                    return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, $e->getMessage());
                 }
             }
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', '');
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
         }
     }
 

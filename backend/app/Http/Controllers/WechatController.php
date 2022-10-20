@@ -634,10 +634,10 @@ class WechatController extends Controller
                 'data'=>$lists,
                 'total'=>$total
             );
-            return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $res);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
         }
         else{
-            return UtilService::format_data(self::AJAX_FAIL, '获取失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 
@@ -667,7 +667,7 @@ class WechatController extends Controller
         $lists = PicTxt::select(['*']);
         $lists = $lists->orderBy('id', 'desc') ->get();
 
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $lists ? $lists : []);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $lists ? $lists : []);
     }
 
     /**
@@ -704,10 +704,10 @@ class WechatController extends Controller
     public function picTxtMaterialList(PicTxt $pictxt){
         if($pictxt) {
             $materials = $pictxt->materials;
-            return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $materials);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $materials);
         }
         else{
-            return UtilService::format_data(self::AJAX_FAIL, '获取失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 
@@ -1005,10 +1005,10 @@ class WechatController extends Controller
      */
     public function materialDetail(Material $material){
         if($material) {
-            return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $material);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $material);
         }
         else{
-            return UtilService::format_data(self::AJAX_FAIL, '获取失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 
@@ -1142,7 +1142,7 @@ class WechatController extends Controller
      */
     public function materialMember(Material $material){
         $members = $material->members; //带括号的是返回关联对象实例，不带括号是返回动态属性
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $members);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $members);
     }
 
     /**
@@ -1338,10 +1338,10 @@ class WechatController extends Controller
                 'data'=>$lists,
                 'total'=>$total
             );
-            return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $res);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
         }
         else{
-            return UtilService::format_data(self::AJAX_FAIL, '获取失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 
@@ -1729,10 +1729,10 @@ class WechatController extends Controller
                 'data'=>$lists,
                 'total'=>$total
             );
-            return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $res);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
         }
         else{
-            return UtilService::format_data(self::AJAX_FAIL, '获取失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 
@@ -1762,7 +1762,7 @@ class WechatController extends Controller
         $lists = AutoReply::where('category', 'keyword')
                  ->orderBy('id', 'desc')->get();
 
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $lists && count($lists) > 0 ? $lists : []);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $lists && count($lists) > 0 ? $lists : []);
     }
 
     /**
@@ -1791,10 +1791,10 @@ class WechatController extends Controller
         $obj = new Menu();
         $data = $obj->lists();
         if ($data) {
-            return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $data);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $data);
         }
         else{
-            return UtilService::format_data(self::AJAX_FAIL, '获取失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 
@@ -2218,10 +2218,10 @@ class WechatController extends Controller
         $obj = new Menu();
         $lists = $obj->childmenu($path);
         if($lists){
-            return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $lists);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $lists);
         }
         else{
-            return UtilService::format_data(self::AJAX_FAIL, '获取失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 
@@ -2305,7 +2305,7 @@ class WechatController extends Controller
             return $rtn;
         }
         else {
-            return UtilService::format_data(self::AJAX_FAIL, '获取失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 
@@ -2361,9 +2361,9 @@ class WechatController extends Controller
                     "channel" => $scene_str,
                     "wechat" => $wechat
                 );
-                return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $data);
+                return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $data);
             } else {
-                return UtilService::format_data(self::AJAX_FAIL, '获取失败', '');
+                return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
             }
         }
         else{

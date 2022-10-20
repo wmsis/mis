@@ -177,9 +177,9 @@ class UserController extends Controller
                 'data' => $users,
                 'total' => $total
             );
-            return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $res);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
         } else {
-            return UtilService::format_data(self::AJAX_FAIL, '获取失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 
@@ -378,7 +378,7 @@ class UserController extends Controller
 
         //compact 创建一个包含变量名和它们的值的数组
         $data = compact('roles', 'myRoles');
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $data);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $data);
     }
 
     /**
@@ -702,7 +702,7 @@ class UserController extends Controller
 
         //compact 创建一个包含变量名和它们的值的数组
         $data = compact('orgnizations', 'myOrgnizations');
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $data);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $data);
     }
 
     /**

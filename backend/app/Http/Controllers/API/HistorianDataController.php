@@ -104,7 +104,7 @@ class HistorianDataController extends Controller
             $total = $obj->count();
         }
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total]);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total]);
     }
 
     private function getTagList($factory, $tagIds)
@@ -150,9 +150,9 @@ class HistorianDataController extends Controller
                 $data['origin_lower_limit'] = round($originLowerLimitDict[$data['TagName']], 0);
                 $data['description'] = $tagsDesc[$data['TagName']];
             });
-            return response()->json(UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $datas));
+            return response()->json(UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $datas));
         } else {
-            return response()->json(UtilService::format_data(self::AJAX_FAIL, '获取失败', ['errorMessage' => $datas['data']['ErrorMessage']]));
+            return response()->json(UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, ['errorMessage' => $datas['data']['ErrorMessage']]));
         }
     }
 
@@ -601,10 +601,10 @@ class HistorianDataController extends Controller
             }
 
             $final = array_merge($tagsData, $data_funcs);
-            return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $final);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $final);
         }
         else{
-            return UtilService::format_data(self::AJAX_FAIL, '获取失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 

@@ -358,7 +358,7 @@ class AuthController extends Controller
     {
         try {
             $user = auth('api')->user();
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', array('user'=>$user));
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, array('user'=>$user));
         } catch (Exception $e) {
             return UtilService::format_data(self::AJAX_FAIL, '操作异常', '');
         }
