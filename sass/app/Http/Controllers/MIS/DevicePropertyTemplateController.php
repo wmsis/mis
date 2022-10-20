@@ -318,7 +318,7 @@ class DevicePropertyTemplateController extends Controller
      *         ),
      *     ),
      *     @OA\Parameter(
-     *         description="自定义属性json格式  [{'type': '属性类型', 'value': '属性值', 'default_value': '默认属性'}]  类型text文本, integer数字, image图片, date日期, radio单选框, checkbox复选框, select下拉列表, switch开关",
+     *         description="自定义属性json格式  [{'name': '属性名', 'type': '属性类型', 'value': '属性值', 'default_value': '默认属性'}]  类型text文本, integer数字, image图片, date日期, radio单选框, checkbox复选框, select下拉列表, switch开关",
      *         in="query",
      *         name="properties",
      *         required=false,

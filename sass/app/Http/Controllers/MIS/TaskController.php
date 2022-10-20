@@ -8,6 +8,8 @@ use Illuminate\Database\QueryException;
 use UtilService;
 use App\Models\MIS\Device;
 use App\Models\MIS\Task;
+use App\Events\TaskEvent;
+use App\Models\User;
 
 class TaskController extends Controller
 {
@@ -198,27 +200,9 @@ class TaskController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="确认时间",
-     *         in="query",
-     *         name="confirm_time",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="string"
-     *         )
-     *     ),
-     *     @OA\Parameter(
      *         description="任务状态 init发布状态  complete完成状态",
      *         in="query",
      *         name="status",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="string"
-     *         )
-     *     ),
-     *     @OA\Parameter(
-     *         description="备注",
-     *         in="query",
-     *         name="remark",
      *         required=true,
      *         @OA\Schema(
      *             type="string"
@@ -253,14 +237,18 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->only(['name', 'type', 'begin', 'end', 'user_id', 'device_id', 'content', 'confirm_time', 'status', 'remark']);
+        $input = $request->only(['name', 'type', 'begin', 'end', 'user_id', 'device_id', 'content', 'status']);
         try {
             $input['orgnization_id'] = $this->orgnization->id;
-            $res = Task::create($input);
+            $task = Task::create($input);
+
+            //事件发生调度
+            $user = User::find($input['user_id']);
+            TaskEvent::dispatch($user, $task);
         } catch (QueryException $e) {
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $task);
     }
 
     /**

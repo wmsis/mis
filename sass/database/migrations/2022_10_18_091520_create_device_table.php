@@ -55,7 +55,7 @@ class CreateDeviceTable extends Migration
             $table->integer('device_id')->nullable()->comment('设备ID');
             $table->string('content', 50)->nullable()->comment('任务内容');
             $table->dateTime('confirm_time')->nullable()->comment('确认时间');
-            $table->enum('status', ['init', 'complete'])->nullable()->comment('任务状态 init发布状态  complete完成状态');
+            $table->enum('status', ['init', 'complete'])->nullable()->comment('任务状态 init发布状态  complete完成状态')->default('init');
             $table->string('remark', 50)->nullable()->comment('备注');
             $table->integer('orgnization_id')->nullable()->comment('组织ID');
 
@@ -69,7 +69,7 @@ class CreateDeviceTable extends Migration
             $table->integer('alarm_rule_id')->nullable()->comment('设备报警规则ID');
             $table->string('content', 50)->nullable()->comment('报警内容');
             $table->dateTime('confirm_time')->nullable()->comment('确认时间');
-            $table->enum('status', ['init', 'complete'])->nullable()->comment('任务状态 init初始状态  complete解决完成状态');
+            $table->enum('status', ['init', 'complete'])->nullable()->comment('任务状态 init初始状态  complete解决完成状态')->default('init');
             $table->integer('orgnization_id')->nullable()->comment('组织ID');
 
             $table->timestamps();
@@ -112,10 +112,10 @@ class CreateDeviceTable extends Migration
         Schema::create('notice', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id')->nullable()->comment('用户ID');
-            $table->enum('status', ['init', 'complete'])->nullable()->comment('任务状态 init初始状态  complete已读状态');
+            $table->enum('status', ['init', 'complete'])->nullable()->comment('任务状态 init初始状态  complete已读状态')->default('init');
             $table->dateTime('confirm_time')->nullable()->comment('确认时间');
-            $table->enum('type', ['alarm', 'announce'])->nullable()->comment('通知类型 alarm报警, announce通告');
-            $table->integer('foreign_id')->nullable()->comment('外键ID值，type=alarm时为alarm的ID，type=announce时为announcement的ID');
+            $table->enum('type', ['alarm', 'announce', 'task'])->nullable()->comment('通知类型 alarm报警, announce通告');
+            $table->integer('foreign_id')->nullable()->comment('外键ID值，type=alarm时为alarm的ID，type=announce时为announcement的ID，type=task时为task的ID');
             $table->integer('orgnization_id')->nullable()->comment('组织ID');
 
             $table->timestamps();

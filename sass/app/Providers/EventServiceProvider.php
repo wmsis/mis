@@ -22,7 +22,7 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
 
-        //手动注册事件
+        //手动注册事件监听器
         AnnouncementEvent::class => [
             AnnouncementNotification::class,
         ],

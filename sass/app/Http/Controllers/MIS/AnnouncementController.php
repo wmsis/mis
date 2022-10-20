@@ -8,6 +8,7 @@ use Illuminate\Database\QueryException;
 use UtilService;
 use App\Models\MIS\Announcement;
 use App\Models\User;
+use App\Events\AnnouncementEvent;
 
 class AnnouncementController extends Controller
 {
@@ -183,11 +184,18 @@ class AnnouncementController extends Controller
         $input = $request->only(['title', 'content', 'notify_user_ids']);
         try {
             $input['orgnization_id'] = $this->orgnization->id;
-            $res = Announcement::create($input);
+            $announcement = Announcement::create($input);
+
+            //事件发生调度
+            $id_arr = explode(',', $input['notify_user_ids']);
+            $users = User::whereIn('id', $id_arr)->get();
+            foreach ($users as $key => $user) {
+                AnnouncementEvent::dispatch($user, $announcement);
+            }
         } catch (QueryException $e) {
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $announcement);
     }
 
     /**

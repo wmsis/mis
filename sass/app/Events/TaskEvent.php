@@ -9,12 +9,12 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use App\Models\MIS\Announcement;
+use App\Models\MIS\Task;
 use App\Models\User;
 
-class AnnouncementEvent implements ShouldBroadcast
+class TaskEvent
 {
-    public $announcement;
+    public $task;
     public $user;
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -23,29 +23,19 @@ class AnnouncementEvent implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(User $user, Announcement $announcement)
+    public function __construct(User $user, Task $task)
     {
         $this->user = $user;
-        unset($announcement->notify_user_ids);
-        $this->announcement = $announcement;
+        $this->task = $task;
     }
 
     /**
-     * 发布事件广播到前端用户
+     * Get the channels the event should broadcast on.
      *
      * @return \Illuminate\Broadcasting\Channel|array
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('user.' . $this->user->id);
-    }
-
-    //广播内容
-    public function broadcastWith()
-    {
-        return [
-            'user_id' => $this->user->id,
-            'announcement' => $this->announcement
-        ];
+        return new PrivateChannel('channel-name');
     }
 }
