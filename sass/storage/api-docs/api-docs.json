@@ -2583,7 +2583,7 @@
                 }
             }
         },
-        "/api/device/{id}": {
+        "/api/device/show/{id}": {
             "get": {
                 "tags": [
                     "设备档案device"
@@ -2643,8 +2643,10 @@
                         }
                     }
                 }
-            },
-            "delete": {
+            }
+        },
+        "/api/device/destroy/{id}": {
+            "post": {
                 "tags": [
                     "设备档案device"
                 ],
@@ -2905,7 +2907,7 @@
                 }
             }
         },
-        "/api/device-property-template/{id}": {
+        "/api/device-property-template/show/{id}": {
             "get": {
                 "tags": [
                     "设备属性模板device-property-template"
@@ -2965,8 +2967,10 @@
                         }
                     }
                 }
-            },
-            "delete": {
+            }
+        },
+        "/api/device-property-template/destroy/{id}": {
+            "post": {
                 "tags": [
                     "设备属性模板device-property-template"
                 ],
@@ -3884,6 +3888,59 @@
                 "responses": {
                     "200": {
                         "description": "detroy succeed"
+                    }
+                }
+            }
+        },
+        "/api/task/confirm": {
+            "post": {
+                "tags": [
+                    "任务task"
+                ],
+                "summary": "任务回执",
+                "description": "使用说明：任务回执",
+                "operationId": "task-confirm",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "Task主键",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "remark",
+                        "in": "query",
+                        "description": "回执内容",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "confirm_time",
+                        "in": "query",
+                        "description": "确认时间 格式如2022-10-01 12:56:56",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "update succeed"
                     }
                 }
             }

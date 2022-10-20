@@ -69,12 +69,23 @@ class DeviceController extends Controller
     {
         $name = $request->input('name');
         if ($name) {
-            $data = Device::where('name', 'like', "%{$name}%")->where('orgnization_id', $this->orgnization->id)->get();
+            $rows = Device::where('name', 'like', "%{$name}%")->where('orgnization_id', $this->orgnization->id)->get();
         }
         else{
-            $data = Device::where('orgnization_id', $this->orgnization->id)->get();
+            $rows = Device::where('orgnization_id', $this->orgnization->id)->get();
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $data);
+
+        foreach ($rows as $key => $item) {
+            $properties = $item->device_properties;
+            foreach ($properties as $k2 => $property) {
+                $property_tpl_obj = DevicePropertyTemplate::find($property->device_property_template_id);
+                $properties[$k2]['property_name'] = $property_tpl_obj && $property_tpl_obj->name ? $property_tpl_obj->name : '';
+                $properties[$k2]['property_value'] = $property->value;
+                unset($properties[$k2]['device_property_template_id']);
+                $inspect_rule = $property->inspect_rule;
+            }
+        }
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $rows);
     }
 
     /**
@@ -164,6 +175,13 @@ class DeviceController extends Controller
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
         foreach ($rows as $key => $item) {
             $properties = $item->device_properties;
+            foreach ($properties as $k2 => $property) {
+                $property_tpl_obj = DevicePropertyTemplate::find($property->device_property_template_id);
+                $properties[$k2]['property_name'] = $property_tpl_obj && $property_tpl_obj->name ? $property_tpl_obj->name : '';
+                $properties[$k2]['property_value'] = $property->value;
+                unset($properties[$k2]['device_property_template_id']);
+                $inspect_rule = $property->inspect_rule;
+            }
         }
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total]);
     }
@@ -481,7 +499,7 @@ class DeviceController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/device/{id}",
+     *     path="/api/device/show/{id}",
      *     tags={"设备档案device"},
      *     operationId="device-show",
      *     summary="获取详细信息",
@@ -553,8 +571,8 @@ class DeviceController extends Controller
     }
 
     /**
-     * @OA\Delete(
-     *     path="/api/device/{id}",
+     * @OA\Post(
+     *     path="/api/device/destroy/{id}",
      *     tags={"设备档案device"},
      *     operationId="device-destroy",
      *     summary="删除单条数据",

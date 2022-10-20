@@ -185,7 +185,7 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
             Route::get('page', 'NoticeController@index');
         });
 
-
+        Route::post('task/confirm', 'TaskController@confirm');
         //API 资源路由  DCS映射关系 标准DCS 电表映射关系 抓斗数据库配置 电表数据库配置 历史数据库配置
         Route::apiResources([
             'alarm-grade' => AlarmGradeController::class,

@@ -324,7 +324,7 @@ class TaskController extends Controller
         elseif($row && $row->orgnization_id != $this->orgnization->id){
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
         }
-        
+
         $device = $row->device;
         $user = $row->user;
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $row);
@@ -546,5 +546,83 @@ class TaskController extends Controller
             return UtilService::format_data(self::AJAX_FAIL, '删除失败', '');
         }
         return UtilService::format_data(self::AJAX_SUCCESS, '删除成功', '');
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/task/confirm",
+     *     tags={"任务task"},
+     *     operationId="task-confirm",
+     *     summary="任务回执",
+     *     description="使用说明：任务回执",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="Task主键",
+     *         in="query",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="回执内容",
+     *         in="query",
+     *         name="remark",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="确认时间 格式如2022-10-01 12:56:56",
+     *         in="query",
+     *         name="confirm_time",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="update succeed",
+     *     ),
+     * )
+     */
+    public function confirm(Request $request)
+    {
+        $id = $request->input('id');
+        $remark = $request->input('remark');
+        $confirm_time = $request->input('confirm_time');
+        $row = Task::find($id);
+        if (!$row) {
+            return response()->json(UtilService::format_data(self::AJAX_FAIL, '该数据不存在', ''));
+        }
+        elseif($row && $row->orgnization_id != $this->orgnization->id){
+            return response()->json(UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, ''));
+        }
+
+        try {
+            $row->status = 'complete';
+            if($confirm_time){
+                $row->confirm_time = $confirm_time;
+            }
+            if($remark){
+                $row->remark = $remark;
+            }
+
+            $row->save();
+        } catch (Exception $ex) {
+            return UtilService::format_data(self::AJAX_FAIL, '修改失败', $row);
+        }
+        return UtilService::format_data(self::AJAX_SUCCESS, '修改成功', $row);
     }
 }

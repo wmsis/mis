@@ -33,7 +33,7 @@ class Controller extends BaseController
 
             $domain = $_SERVER['HTTP_HOST'];
             $third = UtilService::third_domain($domain);
-            if($third && strpos($domain, '10.99.99.88') === false){ //没查询到10.99.99.88  排除测试环境
+            if($third && strpos($domain, '10.99.99.88') === false && strpos($domain, '10.99.99.99') === false){ //没查询到10.99.99.88  排除测试环境
                 $tenement = DB::connection('mysql_mis')->table('tenement')->where('code', $third)->first();
                 $this->mongo_conn = $tenement && isset($tenement->code) ? $tenement->code . '_mongo': 'wmhb_mongo';
             }

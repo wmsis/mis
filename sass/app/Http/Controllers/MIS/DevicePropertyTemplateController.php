@@ -347,7 +347,7 @@ class DevicePropertyTemplateController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/device-property-template/{id}",
+     *     path="/api/device-property-template/show/{id}",
      *     tags={"设备属性模板device-property-template"},
      *     operationId="device-property-template-show",
      *     summary="获取详细信息",
@@ -411,8 +411,8 @@ class DevicePropertyTemplateController extends Controller
     }
 
     /**
-     * @OA\Delete(
-     *     path="/api/device-property-template/{id}",
+     * @OA\Post(
+     *     path="/api/device-property-template/destroy/{id}",
      *     tags={"设备属性模板device-property-template"},
      *     operationId="device-property-template-destroy",
      *     summary="删除单条数据",
@@ -450,7 +450,7 @@ class DevicePropertyTemplateController extends Controller
         elseif($row && $row->orgnization_id != $this->orgnization->id){
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
         }
-        
+
         try {
             $row->delete();
         } catch (Exception $e) {
