@@ -116,8 +116,13 @@
                     method: 'POST',
                     url: '/device-property-template/store',
                     data: {
-                        id: 5,
-                        name: '除臭风机',
+                        id: 4,
+                        is_group: 0,
+                        level: 2,
+                        parent_id: 3,
+                        sort: 10,
+                        name: '锅炉1',
+                        title: '锅炉1',
                         properties: JSON.stringify([
                             {
                                 name: ' 设备名称',
