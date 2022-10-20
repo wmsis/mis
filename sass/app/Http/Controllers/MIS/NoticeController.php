@@ -78,6 +78,6 @@ class NoticeController extends Controller
         foreach ($rows as $key => $item) {
             $item->user;
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total]);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total]);
     }
 }

@@ -74,7 +74,7 @@ class DeviceController extends Controller
         else{
             $data = Device::where('orgnization_id', $this->orgnization->id)->get();
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $data);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $data);
     }
 
     /**
@@ -165,7 +165,7 @@ class DeviceController extends Controller
         foreach ($rows as $key => $item) {
             $properties = $item->device_properties;
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total]);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total]);
     }
 
     /**
@@ -231,7 +231,7 @@ class DeviceController extends Controller
                 );
             }
 
-            return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $arr);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $arr);
         }
         else{
             return UtilService::format_data(self::AJAX_FAIL, '获取失败', []);
@@ -413,6 +413,10 @@ class DeviceController extends Controller
 
             if ($id) {
                 $row = Device::find($id);
+                if($row && $row->orgnization_id != $this->orgnization->id){
+                    return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
+                }
+
                 $row->name = $name;
                 $row->code = $code;
                 $row->factory_date = $factory_date;
@@ -468,10 +472,10 @@ class DeviceController extends Controller
                 }
             }
             DB::commit();
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', '');
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
         } catch (QueryException $ex) {
             DB::rollback();
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', $ex->getMessage());
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, $ex->getMessage());
         }
     }
 
@@ -533,6 +537,10 @@ class DeviceController extends Controller
         if (!$row) {
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
+        elseif($row && $row->orgnization_id != $this->orgnization->id){
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
+        }
+
         $properties = $row->device_properties;
         foreach ($properties as $key => $property) {
             $property_tpl_obj = DevicePropertyTemplate::find($property->device_property_template_id);
@@ -541,7 +549,7 @@ class DeviceController extends Controller
             unset($properties[$key]['device_property_template_id']);
             $inspect_rule = $property->inspect_rule;
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $row);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $row);
     }
 
     /**
@@ -581,6 +589,10 @@ class DeviceController extends Controller
         if (!$row) {
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
+        elseif($row && $row->orgnization_id != $this->orgnization->id){
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
+        }
+
         try {
             $row->delete();
         } catch (Exception $e) {

@@ -74,7 +74,7 @@ class DataAnalysisController extends Controller
             $final[] = $temp;
         }
 
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $final);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $final);
     }
 
     /**
@@ -164,7 +164,7 @@ class DataAnalysisController extends Controller
             $final[] = $temp;
         }
 
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $final);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $final);
     }
 
     /**
@@ -209,6 +209,6 @@ class DataAnalysisController extends Controller
         }
         
         $final = EconomyDailyService::daydata($date);
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $final);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $final);
     }
 }

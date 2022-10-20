@@ -148,7 +148,7 @@ class AuthController extends Controller
             MyCacheService::setCache($key, $token, 3600);
         } catch (JWTException $e) {
             Log::error($e);
-            $res = UtilService::format_data(self::AJAX_FAIL, '登录异常', '');
+            $res = UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
             return response()->json($res, 500);
         }
 
@@ -160,7 +160,7 @@ class AuthController extends Controller
         ]);
         $key = md5($token);
         event( new UserLoginEvent($user, $key)); //触发登录事件并广播
-        return UtilService::format_data(self::AJAX_SUCCESS, '登录成功', compact('token', 'user'));
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, compact('token', 'user'));
     }
 
     private function get_permission($user){
@@ -324,11 +324,11 @@ class AuthController extends Controller
             }
 
             auth('api')->logout();
-            $res = UtilService::format_data(self::AJAX_SUCCESS, '退出成功', '');
+            $res = UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
             return response()->json($res);
         } catch (Exception $e) {
             Log::error($e);
-            $res = UtilService::format_data(self::AJAX_FAIL, '退出异常', '');
+            $res = UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
             return response()->json($res);
         }
     }
@@ -374,7 +374,7 @@ class AuthController extends Controller
             MyCacheService::setCache($key_orgnization, $data, $expire);
         }
 
-        $res = UtilService::format_data(self::AJAX_SUCCESS, '刷新成功', compact('token'));
+        $res = UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, compact('token'));
         return response()->json($res);
     }
 
@@ -421,9 +421,9 @@ class AuthController extends Controller
             }
 
             $privileges = $this->get_permission($user); //获取用户菜单权限
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', compact('user', 'privileges'));
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, compact('user', 'privileges'));
         } catch (Exception $e) {
-            return UtilService::format_data(self::AJAX_FAIL, '操作异常', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 }

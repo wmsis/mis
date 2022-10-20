@@ -105,7 +105,7 @@ class AnnouncementController extends Controller
                 $rows[$key]['users'] = [];
             }
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total]);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total]);
     }
 
     /**
@@ -185,9 +185,9 @@ class AnnouncementController extends Controller
             $input['orgnization_id'] = $this->orgnization->id;
             $res = Announcement::create($input);
         } catch (QueryException $e) {
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
     }
 
     /**
@@ -248,6 +248,9 @@ class AnnouncementController extends Controller
         if (!$row) {
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
+        elseif($row && $row->orgnization_id != $this->orgnization->id){
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
+        }
 
         if($row->notify_user_ids){
             $id_arr = explode(',', $row->notify_user_ids);
@@ -257,7 +260,7 @@ class AnnouncementController extends Controller
         else{
             $row['users'] = [];
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $row);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $row);
     }
 
     /**
@@ -346,8 +349,9 @@ class AnnouncementController extends Controller
             return response()->json(UtilService::format_data(self::AJAX_FAIL, '该数据不存在', ''));
         }
         elseif($row && $row->orgnization_id != $this->orgnization->id){
-            return response()->json(UtilService::format_data(self::AJAX_FAIL, '非法操作', ''));
+            return response()->json(UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, ''));
         }
+
         $input = $request->input();
         $allowField = ['title', 'content', 'notify_user_ids'];
         foreach ($allowField as $field) {
@@ -402,6 +406,10 @@ class AnnouncementController extends Controller
         if (!$row) {
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
+        elseif($row && $row->orgnization_id != $this->orgnization->id){
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
+        }
+
         try {
             $row->delete();
         } catch (Exception $e) {

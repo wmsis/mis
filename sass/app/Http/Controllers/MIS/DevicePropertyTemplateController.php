@@ -96,7 +96,7 @@ class DevicePropertyTemplateController extends Controller
         }
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total]);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total]);
     }
 
     /**
@@ -151,7 +151,7 @@ class DevicePropertyTemplateController extends Controller
                     'children' => $this->children($item->id, $level)
                 );
             }
-            return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $arr);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $arr);
         }
         else{
             return UtilService::format_data(self::AJAX_FAIL, '获取失败', []);
@@ -306,6 +306,10 @@ class DevicePropertyTemplateController extends Controller
 
             if ($id) {
                 $row = DevicePropertyTemplate::find($id);
+                if($row && $row->orgnization_id != $this->orgnization->id){
+                    return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
+                }
+
                 $row->name = $name;
                 $row->type = $type;
                 $row->parent_id = $parent_id;
@@ -334,10 +338,10 @@ class DevicePropertyTemplateController extends Controller
                 }
             }
             DB::commit();
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', '');
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
         } catch (QueryException $ex) {
             DB::rollback();
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', $ex->getMessage());
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, $ex->getMessage());
         }
     }
 
@@ -399,7 +403,11 @@ class DevicePropertyTemplateController extends Controller
         if (!$row) {
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $row);
+        elseif($row && $row->orgnization_id != $this->orgnization->id){
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
+        }
+
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $row);
     }
 
     /**
@@ -439,6 +447,10 @@ class DevicePropertyTemplateController extends Controller
         if (!$row) {
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
+        elseif($row && $row->orgnization_id != $this->orgnization->id){
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
+        }
+        
         try {
             $row->delete();
         } catch (Exception $e) {

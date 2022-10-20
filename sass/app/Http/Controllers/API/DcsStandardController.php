@@ -115,7 +115,7 @@ class DcsStandardController extends Controller
             $final[] = $item;
         }
 
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $final);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $final);
     }
 
     /**
@@ -196,6 +196,6 @@ class DcsStandardController extends Controller
             }
         }
 
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $lists);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $lists);
     }
 }

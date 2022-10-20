@@ -106,7 +106,7 @@ class OrgnizationController extends Controller
                 $rows[$key]->ancestor_name = '';
             }
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total]);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total]);
     }
 
     /**
@@ -164,9 +164,9 @@ class OrgnizationController extends Controller
                 $expire = auth('api')->factory()->getTTL() * 60;
                 MyCacheService::setCache($key, $data, $expire);
             }
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $data);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $data);
         }
-        return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+        return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
     }
 
     /**
@@ -203,7 +203,7 @@ class OrgnizationController extends Controller
     public function factories(Request $request)
     {
         $data = Orgnization::where('level', 2)->get();
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $data);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $data);
     }
 
     /**
@@ -257,7 +257,7 @@ class OrgnizationController extends Controller
                     'children' => $this->children($item->id, $level)
                 );
             }
-            return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $arr);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $arr);
         }
         else{
             return UtilService::format_data(self::AJAX_FAIL, '获取失败', []);
@@ -387,6 +387,10 @@ class OrgnizationController extends Controller
 
             if ($id) {
                 $row = Orgnization::find($id);
+                if($row && $row->ancestor_id != $this->orgnization->id){
+                    return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
+                }
+
                 $row->name = $name;
                 $row->code = $code;
                 $row->description = $description;
@@ -426,10 +430,10 @@ class OrgnizationController extends Controller
                 }
             }
             DB::commit();
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', '');
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
         } catch (QueryException $ex) {
             DB::rollback();
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', $ex->getMessage());
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, $ex->getMessage());
         }
     }
 
@@ -470,7 +474,7 @@ class OrgnizationController extends Controller
 
         //compact 创建一个包含变量名和它们的值的数组
         $data = compact('roles', 'myRoles');
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $data);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $data);
     }
 
     /**
@@ -514,8 +518,8 @@ class OrgnizationController extends Controller
      * )
      */
     public function storeRole(StoreRoleRequest $request, Orgnization $orgnization){
-        if($orgnization->id != $this->orgnization->id){
-            return UtilService::format_data(self::AJAX_FAIL, '非法操作', '');
+        if($orgnization->ancestor_id != $this->orgnization->id){
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
         }
 
         //验证
@@ -575,10 +579,13 @@ class OrgnizationController extends Controller
         $row = Orgnization::find($id);
         $res = $row->delete();
         if($row && $res){
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+            if($row->ancestor_id != $this->orgnization->id){
+                return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
+            }
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
         }
         else{
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 }

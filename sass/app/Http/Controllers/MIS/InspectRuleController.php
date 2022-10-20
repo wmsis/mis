@@ -111,7 +111,7 @@ class InspectRuleController extends Controller
             }
             $item->tasks;
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total]);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total]);
     }
 
     /**
@@ -206,9 +206,9 @@ class InspectRuleController extends Controller
             $input['orgnization_id'] = $this->orgnization->id;
             $res = InspectRule::create($input);
         } catch (QueryException $e) {
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
     }
 
     /**
@@ -269,7 +269,11 @@ class InspectRuleController extends Controller
         if (!$row) {
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $row);
+        elseif($row && $row->orgnization_id != $this->orgnization->id){
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
+        }
+        
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $row);
     }
 
     /**
@@ -367,9 +371,9 @@ class InspectRuleController extends Controller
             return response()->json(UtilService::format_data(self::AJAX_FAIL, '该数据不存在', ''));
         }
         elseif($row && $row->orgnization_id != $this->orgnization->id){
-            return response()->json(UtilService::format_data(self::AJAX_FAIL, '非法操作', ''));
+            return response()->json(UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, ''));
         }
-        
+
         $input = $request->input();
 
         //判断是否有其他相同的名称
@@ -431,6 +435,10 @@ class InspectRuleController extends Controller
         if (!$row) {
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
+        elseif($row && $row->orgnization_id != $this->orgnization->id){
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
+        }
+
         try {
             $row->delete();
         } catch (Exception $e) {

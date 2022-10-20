@@ -17,6 +17,11 @@ class Controller extends BaseController
     const AJAX_SUCCESS = 0;
     const AJAX_FAIL = -1;
     const AJAX_NO_DATA = -2;
+    const AJAX_SUCCESS_MSG = '操作成功';
+    const AJAX_FAIL_MSG = '操作失败';
+    const AJAX_NO_DATA_MSG = '没有数据';
+    const AJAX_ILLEGAL_MSG = '非法操作';
+    const AJAX_GROUP_ROLE_MSG = '不能编辑集团角色';
 
     protected $orgnization;
     protected $mongo_conn;

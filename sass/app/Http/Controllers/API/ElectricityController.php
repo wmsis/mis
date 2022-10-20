@@ -59,7 +59,7 @@ class ElectricityController extends Controller
             $lists = DcsStandard::where('type', 'electricity')->get();
         }
 
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $lists);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $lists);
     }
 
     /**
@@ -149,6 +149,6 @@ class ElectricityController extends Controller
             }
         }
 
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $lists);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $lists);
     }
 }

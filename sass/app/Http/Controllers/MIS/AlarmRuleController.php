@@ -97,7 +97,7 @@ class AlarmRuleController extends Controller
             $dcs_standard = $item->dcs_standard;
             $alarm_grade = $item->alarm_grade;
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total]);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total]);
     }
 
     /**
@@ -224,9 +224,9 @@ class AlarmRuleController extends Controller
             $input['orgnization_id'] = $this->orgnization->id;
             $res = AlarmRule::create($input);
         } catch (QueryException $e) {
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
     }
 
     /**
@@ -266,10 +266,14 @@ class AlarmRuleController extends Controller
         if (!$row) {
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
+        elseif($row && $row->orgnization_id != $this->orgnization->id){
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
+        }
+        
         $device = $row->device;
         $dcs_standard = $row->dcs_standard;
         $alarm_grade = $row->alarm_grade;
-        return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $row);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $row);
     }
 
     /**
@@ -391,8 +395,9 @@ class AlarmRuleController extends Controller
             return response()->json(UtilService::format_data(self::AJAX_FAIL, '该数据不存在', ''));
         }
         elseif($row && $row->orgnization_id != $this->orgnization->id){
-            return response()->json(UtilService::format_data(self::AJAX_FAIL, '非法操作', ''));
+            return response()->json(UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, ''));
         }
+
         $input = $request->input();
         $allowField = ['name', 'device_id', 'dcs_standard_id', 'period', 'sustain', 'min_value', 'max_value', 'alarm_grade_id', 'type', 'notify_user_ids'];
         foreach ($allowField as $field) {
@@ -447,6 +452,10 @@ class AlarmRuleController extends Controller
         if (!$row) {
             return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
         }
+        elseif($row && $row->orgnization_id != $this->orgnization->id){
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
+        }
+
         try {
             $row->delete();
         } catch (Exception $e) {

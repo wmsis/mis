@@ -334,10 +334,10 @@ class UserController extends Controller
                     $user->orgnizations()->save($this->orgnization); //保存当前二级组织（电厂）
                 }
                 DB::commit();
-                return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', '');
+                return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
             } catch (QueryException $ex) {
                 DB::rollback();
-                return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+                return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
             }
         }
     }
@@ -436,7 +436,7 @@ class UserController extends Controller
      */
     public function storeRole(StoreRoleRequest $request, User $user){
         if($user->type != 'instation'){
-            return UtilService::format_data(self::AJAX_FAIL, '集团角色不能编辑', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_GROUP_ROLE_MSG, '');
         }
         $roles = $user->roles;
 
@@ -497,14 +497,14 @@ class UserController extends Controller
         $user = User::find($id);
         $org = $user->orgnizations()->where('orgnization_id', $this->orgnization->id)->first();
         if(!$org || !$org->id){
-            return UtilService::format_data(self::AJAX_FAIL, '非法操作', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
         }
         $res = $user->delete();
         if($user && $res){
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
         }
         else{
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 
@@ -560,9 +560,9 @@ class UserController extends Controller
             $idarray = explode(',', $idstring);
             $res = User::whereIn('id', $idarray)->delete();;
             if ($res) {
-                return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+                return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
             } else {
-                return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+                return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
             }
         }
         else{
@@ -620,9 +620,9 @@ class UserController extends Controller
             $user->password = bcrypt($newpwd);
             $res = $user->save();
             if ($res) {
-                return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+                return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
             } else {
-                return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+                return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
             }
         }
         else{
@@ -670,9 +670,9 @@ class UserController extends Controller
         ]);
 
         if ($res) {
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
         } else {
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 
@@ -714,9 +714,9 @@ class UserController extends Controller
         $res = $user->save();
 
         if ($res) {
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
         } else {
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 
@@ -819,10 +819,10 @@ class UserController extends Controller
                 $user->deleteOrgnization($orgnization);
             }
             DB::commit();
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', '');
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
         } catch (QueryException $ex) {
             DB::rollback();
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 }

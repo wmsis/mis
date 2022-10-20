@@ -175,7 +175,7 @@ class RoleController extends Controller
         if($id){
             $role = Role::find($id);
             if($role && $role->type == 'group'){
-                return UtilService::format_data(self::AJAX_FAIL, '不能编辑集团角色', '');
+                return UtilService::format_data(self::AJAX_FAIL, self::AJAX_GROUP_ROLE_MSG, '');
             }
             $role->name = $name;
             $role->type = 'instation';//只保存站内角色
@@ -190,10 +190,10 @@ class RoleController extends Controller
         }
 
         if($res){
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
         }
         else{
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 
@@ -325,7 +325,7 @@ class RoleController extends Controller
     public function storePermission(Request $request, Role $role){
         //验证
         if($role->type != 'instation'){
-            return UtilService::format_data(self::AJAX_FAIL, '集团角色不能编辑', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_GROUP_ROLE_MSG, '');
         }
 
         //获取权限参数
@@ -349,11 +349,11 @@ class RoleController extends Controller
             }
 
             DB::commit();
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', '');
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
         }
         catch(QueryException $ex) {
             DB::rollback();
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 
@@ -393,10 +393,10 @@ class RoleController extends Controller
         $role = Role::find($id);
         $res = $role->delete();
         if($role && $res){
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
         }
         else{
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 
@@ -583,11 +583,11 @@ class RoleController extends Controller
             }
 
             DB::commit();
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', '');
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
         }
         catch(QueryException $ex) {
             DB::rollback();
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 }

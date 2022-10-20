@@ -93,7 +93,7 @@ class HomeController extends Controller
             'yestoday' => array_merge($yestoday_electricity, $yestoday_handle_leachate, $yestoday_weigh_bridge, $yestoday_grab_garbage),
             'month' => array_merge($month_electricity, $month_handle_leachate, $month_weigh_bridge, $month_grab_garbage),
         );
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $final);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $final);
     }
 
     /**
@@ -235,6 +235,6 @@ class HomeController extends Controller
             'datalist' => $handle_leachate_datalist,
         );
 
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $final);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $final);
     }
 }

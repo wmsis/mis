@@ -72,7 +72,7 @@ class GarbageController extends Controller
             $liao['values'][] = $item->liao;
         }
 
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', compact('che', 'dou', 'liao'));
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, compact('che', 'dou', 'liao'));
     }
 
     /**
@@ -174,6 +174,6 @@ class GarbageController extends Controller
             $key_values[$data->datetime] = $data->value;
         }
 
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $key_values);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $key_values);
     }
 }

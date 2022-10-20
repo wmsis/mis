@@ -72,7 +72,7 @@ class ApiController extends Controller
                     'children' => $arr
                 )
             );
-            return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $tree);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $tree);
         }
         else{
             return UtilService::format_data(self::AJAX_FAIL, '获取失败', []);
@@ -197,10 +197,10 @@ class ApiController extends Controller
                 API::create($params); //save 和 create 的不同之处在于 save 接收整个 Eloquent 模型实例而 create 接收原生 PHP 数组
             }
             DB::commit();
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', '');
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
         } catch (QueryException $ex) {
             DB::rollback();
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', $ex->getMessage());
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, $ex->getMessage());
         }
     }
 
@@ -241,10 +241,10 @@ class ApiController extends Controller
         $row = API::find($id);
         $res = $row->delete();
         if($row && $res){
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
         }
         else{
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 }

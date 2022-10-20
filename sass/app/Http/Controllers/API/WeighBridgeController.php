@@ -81,7 +81,7 @@ class WeighBridgeController extends Controller
             $lists = WeighbridgeCateBig::all();
         }
 
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $lists);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $lists);
     }
 
     /**
@@ -170,7 +170,7 @@ class WeighBridgeController extends Controller
             }
         }
 
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', $lists);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $lists);
     }
 
 }
