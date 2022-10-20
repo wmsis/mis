@@ -114,17 +114,22 @@
                 let that = this;
                 that.ajax({
                     method: 'POST',
-                    url: '/device/store',
+                    url: '/device-property-template/store',
                     data: {
+                        id: 5,
                         name: '除臭风机',
                         properties: JSON.stringify([
                             {
-                                name: '属性名1',
-                                value: '属性值1'
+                                name: ' 设备名称',
+                                type: 'text',
+                                value: '',
+                                default_value: ''
                             },
                             {
-                                name: '属性名2',
-                                value: '属性值2'
+                                name: '日期',
+                                type: 'date',
+                                value: '',
+                                default_value: ''
                             }
                         ])
                     },

@@ -9,6 +9,8 @@ use UtilService;
 use App\Models\MIS\Announcement;
 use App\Models\User;
 use App\Events\AnnouncementEvent;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\SendEmail;
 
 class AnnouncementController extends Controller
 {
@@ -192,6 +194,9 @@ class AnnouncementController extends Controller
             foreach ($users as $key => $user) {
                 AnnouncementEvent::dispatch($user, $announcement);
             }
+
+            //发送邮件通知
+            Notification::send($users, new SendEmail($announcement));
         } catch (QueryException $e) {
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
