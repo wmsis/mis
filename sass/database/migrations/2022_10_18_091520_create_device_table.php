@@ -27,6 +27,7 @@ class CreateDeviceTable extends Migration
             $table->string('code', 50)->nullable()->comment('编码型号');
             $table->text('img')->nullable()->comment('图片');
             $table->integer('is_group')->nullable()->comment('是否分组');
+            $table->integer('orgnization_id')->nullable()->comment('组织ID');
 
             $table->timestamps();
             $table->softDeletes();
@@ -56,6 +57,7 @@ class CreateDeviceTable extends Migration
             $table->dateTime('confirm_time')->nullable()->comment('确认时间');
             $table->enum('status', ['init', 'complete'])->nullable()->comment('任务状态 init发布状态  complete完成状态');
             $table->string('remark', 50)->nullable()->comment('备注');
+            $table->integer('orgnization_id')->nullable()->comment('组织ID');
 
             $table->timestamps();
             $table->softDeletes();
@@ -68,6 +70,7 @@ class CreateDeviceTable extends Migration
             $table->string('content', 50)->nullable()->comment('报警内容');
             $table->dateTime('confirm_time')->nullable()->comment('确认时间');
             $table->enum('status', ['init', 'complete'])->nullable()->comment('任务状态 init初始状态  complete解决完成状态');
+            $table->integer('orgnization_id')->nullable()->comment('组织ID');
 
             $table->timestamps();
             $table->softDeletes();
@@ -80,6 +83,7 @@ class CreateDeviceTable extends Migration
             $table->double('min_value', 10, 2)->nullable()->comment('最低值');
             $table->double('max_value', 10, 2)->nullable()->comment('最高值');
             $table->string('description', 50)->nullable()->comment('等级描述');
+            $table->integer('orgnization_id')->nullable()->comment('组织ID');
 
             $table->timestamps();
             $table->softDeletes();
@@ -98,6 +102,7 @@ class CreateDeviceTable extends Migration
             $table->integer('alarm_grade_id')->nullable()->comment('报警等级ID');
             $table->enum('type', ['communication', 'scene'])->nullable()->comment('报警类型 communication通信, scene现场');
             $table->text('notify_user_ids', 50)->nullable()->comment('通知用户ID列表，英文逗号隔开');
+            $table->integer('orgnization_id')->nullable()->comment('组织ID');
 
             $table->timestamps();
             $table->softDeletes();
@@ -111,6 +116,7 @@ class CreateDeviceTable extends Migration
             $table->dateTime('confirm_time')->nullable()->comment('确认时间');
             $table->enum('type', ['alarm', 'announce'])->nullable()->comment('通知类型 alarm报警, announce通告');
             $table->integer('foreign_id')->nullable()->comment('外键ID值，type=alarm时为alarm的ID，type=announce时为announcement的ID');
+            $table->integer('orgnization_id')->nullable()->comment('组织ID');
 
             $table->timestamps();
             $table->softDeletes();
@@ -122,6 +128,7 @@ class CreateDeviceTable extends Migration
             $table->string('title', 50)->nullable()->comment('通告内容');
             $table->text('content')->nullable()->comment('通告内容');
             $table->text('notify_user_ids', 50)->nullable()->comment('通知用户ID列表，英文逗号隔开');
+            $table->integer('orgnization_id')->nullable()->comment('组织ID');
 
             $table->timestamps();
             $table->softDeletes();

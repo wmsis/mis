@@ -20,22 +20,20 @@ class CreateInspectRuleTable extends Migration
             $table->integer('device_property_id')->nullable()->comment('设备属性ID');
             $table->text('content')->nullable()->comment('规则内容');
             $table->text('standard')->nullable()->comment('巡检标准');
+            $table->integer('orgnization_id')->nullable()->comment('组织ID');
             $table->timestamps();
             $table->softDeletes();
         });
 
-        //设备自定义属性模板
+        //设备自定义设备属性模板
         Schema::create('device_property_template', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 50)->nullable()->comment('属性名');
+            $table->integer('device_template_id')->nullable()->comment('设备模板ID');
+            $table->string('name', 50)->nullable()->comment('属性模板名');
             $table->enum('type', ['text', 'integer', 'image', 'date', 'radio', 'checkbox', 'select', 'switch'])->nullable()->comment('模板类型 text文本, integer数字, image图片, date日期, radio单选, checkbox多选, select下拉列表, switch开关');
-            $table->integer('parent_id')->nullable()->comment('父节点ID');
-            $table->integer('ancestor_id')->nullable()->comment('祖先节点ID');
-            $table->integer('level')->nullable()->comment('所属层级');
-            $table->integer('sort')->nullable()->comment('排序号');
-            $table->integer('is_group')->nullable()->comment('是否分组');
             $table->string('value', 50)->nullable()->comment('文本框为单个值，列表为多个值，英文逗号隔开');
             $table->string('default_value', 50)->nullable()->comment('默认值');
+            $table->integer('orgnization_id')->nullable()->comment('组织ID');
 
             $table->timestamps();
             $table->softDeletes();

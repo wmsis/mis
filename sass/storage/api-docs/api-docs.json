@@ -2680,6 +2680,41 @@
                 }
             }
         },
+        "/api/device-property-template/lists": {
+            "get": {
+                "tags": [
+                    "设备属性模板device-property-template"
+                ],
+                "summary": "获取所有数据列表",
+                "description": "使用说明：获取所有数据列表",
+                "operationId": "device-property-template-lists",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "名称",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
         "/api/device-property-template/page": {
             "get": {
                 "tags": [
@@ -2744,7 +2779,7 @@
                                             "description": "返回数据",
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/components/schemas/DevicePropertyTemplate"
+                                                "$ref": "#/components/schemas/DeviceTemplate"
                                             }
                                         },
                                         "message": {
@@ -2802,7 +2837,7 @@
                 ],
                 "summary": "保存设备属性模板",
                 "description": "使用说明：保存设备属性模板",
-                "operationId": "storeDevicePropertyTemplate",
+                "operationId": "storeDeviceTemplate",
                 "parameters": [
                     {
                         "name": "token",
@@ -2816,7 +2851,7 @@
                     {
                         "name": "id",
                         "in": "query",
-                        "description": "设备属性模板id",
+                        "description": "设备模板id",
                         "required": false,
                         "schema": {
                             "type": "integer"
@@ -2829,29 +2864,6 @@
                         "required": true,
                         "schema": {
                             "type": "string"
-                        }
-                    },
-                    {
-                        "name": "type",
-                        "in": "query",
-                        "description": "模板类型 text文本, integer数字, image图片, date日期, radio单选框, checkbox复选框, select下拉列表, switch开关",
-                        "required": false,
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "string",
-                                "enum": [
-                                    "text",
-                                    "integer",
-                                    "image",
-                                    "date",
-                                    "radio",
-                                    "checkbox",
-                                    "select",
-                                    "switch"
-                                ]
-                            },
-                            "default": "text"
                         }
                     },
                     {
@@ -2882,18 +2894,9 @@
                         }
                     },
                     {
-                        "name": "value",
+                        "name": "properties",
                         "in": "query",
-                        "description": "值 文本框为单个值，列表为多个值，英文逗号隔开",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "default_value",
-                        "in": "query",
-                        "description": "默认值",
+                        "description": "自定义属性json格式  [{'type': '属性类型', 'value': '属性值', 'default_value': '默认属性'}]  类型text文本, integer数字, image图片, date日期, radio单选框, checkbox复选框, select下拉列表, switch开关",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -2928,7 +2931,7 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "DevicePropertyTemplate主键",
+                        "description": "DeviceTemplate主键",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2952,7 +2955,7 @@
                                             "type": "object",
                                             "allOf": [
                                                 {
-                                                    "$ref": "#/components/schemas/DevicePropertyTemplate"
+                                                    "$ref": "#/components/schemas/DeviceTemplate"
                                                 }
                                             ]
                                         },
@@ -2990,7 +2993,7 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "DevicePropertyTemplate主键",
+                        "description": "DeviceTemplate主键",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -6474,10 +6477,36 @@
                         "description": "创建数据模型",
                         "type": "integer"
                     },
+                    "device_template_id": {
+                        "type": "integer"
+                    },
                     "name": {
                         "type": "string"
                     },
                     "type": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "type": "string"
+                    },
+                    "default_value": {
+                        "type": "string"
+                    },
+                    "orgnization_id": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "DeviceTemplate": {
+                "title": "DeviceTemplate model",
+                "description": "DeviceTemplate model",
+                "properties": {
+                    "id": {
+                        "description": "创建数据模型",
+                        "type": "integer"
+                    },
+                    "name": {
                         "type": "string"
                     },
                     "parent_id": {
@@ -6494,12 +6523,6 @@
                     },
                     "is_group": {
                         "type": "integer"
-                    },
-                    "value": {
-                        "type": "string"
-                    },
-                    "default_value": {
-                        "type": "string"
                     },
                     "orgnization_id": {
                         "type": "integer"

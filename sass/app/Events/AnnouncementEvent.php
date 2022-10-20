@@ -25,11 +25,13 @@ class AnnouncementEvent implements ShouldBroadcast
     public function __construct(User $user, Announcement $announcement)
     {
         $this->user = $user;
+        unset($announcement->notify_user_ids);
+        unset($announcement->orgnization_id);
         $this->announcement = $announcement;
     }
 
     /**
-     * Get the channels the event should broadcast on.
+     * 发布事件广播到前端用户
      *
      * @return \Illuminate\Broadcasting\Channel|array
      */

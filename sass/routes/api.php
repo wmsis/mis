@@ -168,6 +168,7 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
 
         //设备属性模板
         Route::prefix('device-property-template')->group(function () {
+            Route::get('lists', 'DevicePropertyTemplateController@lists');
             Route::get('page', 'DevicePropertyTemplateController@index');
             Route::get('tree', 'DevicePropertyTemplateController@tree');
             Route::get('show/{id}', 'DevicePropertyTemplateController@show');
