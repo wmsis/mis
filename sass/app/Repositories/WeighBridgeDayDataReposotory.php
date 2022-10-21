@@ -39,8 +39,8 @@ class WeighBridgeDayDataReposotory extends BaseRepository
         $final[] = array(
             'cn_name' => config('standard.not_dcs.ljrkl.cn_name'),
             'en_name' => config('standard.not_dcs.ljrkl.en_name'),
-            'value' => $sum_value,
-            'messure' => 'KG'
+            'value' => (float)($sum_value/1000),
+            'messure' => '吨'
         );
 
         return $final;
@@ -59,10 +59,13 @@ class WeighBridgeDayDataReposotory extends BaseRepository
             ->groupBy('date')
             ->get();
 
+        foreach ($datalist as $key => $item) {
+            $datalist[$key]['val'] = (float)($item->val/1000);
+        }
         $final['datalist'] = $datalist;
         $final['en_name'] = config('standard.not_dcs.ljrkl.en_name');
         $final['cn_name'] = config('standard.not_dcs.ljrkl.cn_name');
-        $final['messure'] = 'KG';
+        $final['messure'] = '吨';
 
         return $final;
     }
