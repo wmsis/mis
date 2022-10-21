@@ -135,6 +135,9 @@ class HomeController extends Controller
         $month_electricity = $electricityObj->chartData($start, $end, $this->orgnization->code);  //垃圾入库量
         $month_weigh_bridge = $weighBridgeObj->chartData($start, $end, $this->orgnization->code);  //垃圾入炉量
 
+        Log::info('0000000000000000');
+        Log::info(var_export($month_electricity, true));
+
         //上网电量和厂用电量
         foreach ($month_electricity as $k1 => $itemlist) {
             //遍历其中一个
