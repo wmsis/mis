@@ -146,8 +146,8 @@ class HomeController extends Controller
             );
             if($itemlist['datalist'] && count($itemlist['datalist']) > 0){
                 for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
-                    $temp['datalist'][$date] = 0; //初始值
                     $date = date('Y-m-d', $i);
+                    $temp['datalist'][$date] = 0; //初始值
                     foreach ($itemlist['datalist'] as $k2 => $item) {
                         if($item->date == $date){
                             //有当天数据
