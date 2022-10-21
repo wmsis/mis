@@ -23,13 +23,21 @@ use App\Models\SIS\DcsGroup;
  *         property="cn_name",
  *         type="string"
  *     ),
+ *     @OA\Property(
+ *         property="sort",
+ *         type="integer"
+ *     ),
+ *     @OA\Property(
+ *         property="is_show",
+ *         type="integer"
+ *     ),
  * )
  */
 class DcsStandard extends Model
 {
     use softDeletes;
     protected $table = 'dcs_standard';
-    protected $fillable = ['en_name', 'cn_name'];
+    protected $fillable = ['en_name', 'cn_name', 'sort', 'is_show'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',

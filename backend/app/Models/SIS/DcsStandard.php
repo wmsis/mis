@@ -35,13 +35,21 @@ use App\Models\SIS\DcsGroup;
  *         property="messure",
  *         type="string"
  *     ),
+ *     @OA\Property(
+ *         property="sort",
+ *         type="integer"
+ *     ),
+ *     @OA\Property(
+ *         property="is_show",
+ *         type="integer"
+ *     ),
  * )
  */
 class DcsStandard extends Model
 {
     use softDeletes;
     protected $table = 'dcs_standard';
-    protected $fillable = ['en_name', 'cn_name', 'dcs_group_id', 'type', 'messure'];
+    protected $fillable = ['en_name', 'cn_name', 'dcs_group_id', 'type', 'messure', 'sort', 'is_show'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',

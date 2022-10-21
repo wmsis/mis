@@ -233,6 +233,24 @@ class DcsStandardController extends Controller
      *             type="string"
      *         )
      *     ),
+     *     @OA\Parameter(
+     *         description="排序号 小的在前",
+     *         in="query",
+     *         name="sort",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="是否显示",
+     *         in="query",
+     *         name="is_show",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="store succeed",
@@ -262,7 +280,7 @@ class DcsStandardController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->only(['cn_name', 'en_name', 'type', 'messure']);
+        $input = $request->only(['cn_name', 'en_name', 'type', 'messure', 'sort', 'is_show']);
         //判断是否有其他相同的名称
         $data = DcsStandard::where('en_name', $input['en_name'])->orWhere('cn_name', $input['cn_name'])->first();
         if($data && $data->cn_name == $input['cn_name']){
@@ -402,6 +420,24 @@ class DcsStandardController extends Controller
      *             type="string"
      *         )
      *     ),
+     *     @OA\Parameter(
+     *         description="排序号 小的在前",
+     *         in="query",
+     *         name="sort",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="是否显示",
+     *         in="query",
+     *         name="is_show",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="update succeed",
@@ -446,7 +482,7 @@ class DcsStandardController extends Controller
             return UtilService::format_data(self::AJAX_FAIL, '英文名称已存在', '');
         }
 
-        $allowField = ['cn_name', 'en_name', 'type', 'messure'];
+        $allowField = ['cn_name', 'en_name', 'type', 'messure', 'sort', 'is_show'];
         foreach ($allowField as $field) {
             if (key_exists($field, $input)) {
                 $inputValue = $input[$field];

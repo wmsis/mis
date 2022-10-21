@@ -132,8 +132,8 @@ class HomeController extends Controller
         $end = date('Y-m-d', $end_timestamp);
 
         $month_grab_garbage = $grabGarbageObj->chartData($start, $end, $this->orgnization->code);  //垃圾入炉量
-        $month_electricity = $electricityObj->chartData($start, $end, $this->orgnization->code);  //垃圾入库量
-        $month_weigh_bridge = $weighBridgeObj->chartData($start, $end, $this->orgnization->code);  //垃圾入炉量
+        $month_electricity = $electricityObj->chartData($start, $end, $this->orgnization->code);  //用电量
+        $month_weigh_bridge = $weighBridgeObj->chartData($start, $end, $this->orgnization->code);  //垃圾入库量
 
         //上网电量和厂用电量
         foreach ($month_electricity as $k1 => $itemlist) {

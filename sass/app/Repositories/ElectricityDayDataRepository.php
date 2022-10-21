@@ -28,7 +28,7 @@ class ElectricityDayDataRepository extends BaseRepository
     public function countData($start, $end, $factory, $tenement_conn=null)
     {
         $final = [];
-        $standard_lists = DcsStandard::where('type', 'electricity')->get();
+        $standard_lists = DcsStandard::where('type', 'electricity')->where('is_show', 1)->orderBy('sort', 'ASC')->get();
         foreach ($standard_lists as $key => $item) {
             //获取厂用电量 上网电量
             if(!$tenement_conn){
@@ -63,7 +63,7 @@ class ElectricityDayDataRepository extends BaseRepository
     {
         //获取厂用电量 上网电量
         $final = [];
-        $standard_lists = DcsStandard::where('type', 'electricity')->get();
+        $standard_lists = DcsStandard::where('type', 'electricity')->where('is_show', 1)->orderBy('sort', 'ASC')->get();
         foreach ($standard_lists as $key => $item) {
             $temp = [];
             $datalist = DB::table('power_map')

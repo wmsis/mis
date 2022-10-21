@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repositories\ElectricityDayDataRepository;
+use App\Repositories\WeighBridgeDayDataReposotory;
+use App\Repositories\GrabGarbageDayDataReposotory;
 use UtilService;
 use EconomyDailyService;
 
@@ -123,16 +125,20 @@ class DataAnalysisController extends Controller
         $end = $request->input('end');
         $final = [];
         $electricityObj = new ElectricityDayDataRepository();
+        $grabGarbageObj = new GrabGarbageDayDataReposotory();
+        $weighBridgeObj = new WeighBridgeDayDataReposotory();
 
         //曲线图
         $begin_timestamp = $start ? strtotime($start) : time() - 30 * 24 * 60 * 60;
         $end_timestamp = $end ? strtotime($end) : time() - 24 * 60 * 60;
         $start_date = date('Y-m-d', $begin_timestamp);
         $end_date = date('Y-m-d', $end_timestamp);
-        $month_electricity = $electricityObj->chartData($start_date, $end_date, $this->orgnization->code);  //垃圾入库量
+        $month_electricity = $electricityObj->chartData($start_date, $end_date, $this->orgnization->code);  //用电量
+        $month_grab_garbage = $grabGarbageObj->chartData($start_date, $end_date, $this->orgnization->code);  //垃圾入炉量
+        $month_weigh_bridge = $weighBridgeObj->chartData($start_date, $end_date, $this->orgnization->code);  //垃圾入库量
 
         //赋值
-        //循环发电量和上网电量  month_electricity包含发电量和上网电量
+        //上网电量和厂用电量
         foreach ($month_electricity as $k1 => $itemlist) {
             //遍历其中一个
             $temp = array(
@@ -163,6 +169,62 @@ class DataAnalysisController extends Controller
             }
             $final[] = $temp;
         }
+
+        //垃圾入炉量
+        $temp_grab_garbage_datalist = [];
+        if($month_grab_garbage['datalist'] && count($month_grab_garbage['datalist']) > 0){
+            foreach ($month_grab_garbage['datalist'] as $k2 => $item) {
+                for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
+                    $date = date('Y-m-d', $i);
+                    if($item->date == $date){
+                        $temp_grab_garbage_datalist[$date] = (float)$item->val;
+                    }
+                    else{
+                        $temp_grab_garbage_datalist[$date] = 0; //初始值
+                    }
+                }
+            }
+        }
+        else{
+            for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
+                $date = date('Y-m-d', $i);
+                $temp_grab_garbage_datalist[$date] = 0; //初始值
+            }
+        }
+        $final[] = array(
+            'en_name' => $month_grab_garbage['en_name'],
+            'cn_name' => $month_grab_garbage['cn_name'],
+            'messure' => $month_grab_garbage['messure'],
+            'datalist' => $temp_grab_garbage_datalist,
+        );
+
+        //垃圾入库量
+        $temp_weigh_bridge_datalist = [];
+        if($month_weigh_bridge['datalist'] && count($month_weigh_bridge['datalist']) > 0){
+            foreach ($month_weigh_bridge['datalist'] as $k2 => $item) {
+                for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
+                    $date = date('Y-m-d', $i);
+                    if($item->date == $date){
+                        $temp_weigh_bridge_datalist[$date] = (float)$item->val;
+                    }
+                    else{
+                        $temp_weigh_bridge_datalist[$date] = 0; //初始值
+                    }
+                }
+            }
+        }
+        else{
+            for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
+                $date = date('Y-m-d', $i);
+                $temp_weigh_bridge_datalist[$date] = 0; //初始值
+            }
+        }
+        $final[] = array(
+            'en_name' => $month_weigh_bridge['en_name'],
+            'cn_name' => $month_weigh_bridge['cn_name'],
+            'messure' => $month_weigh_bridge['messure'],
+            'datalist' => $temp_weigh_bridge_datalist,
+        );
 
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $final);
     }
