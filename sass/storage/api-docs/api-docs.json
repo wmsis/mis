@@ -2896,8 +2896,8 @@
                     {
                         "name": "properties",
                         "in": "query",
-                        "description": "自定义属性json格式  [{'type': '属性类型', 'value': '属性值', 'default_value': '默认属性'}]  类型text文本, integer数字, image图片, date日期, radio单选框, checkbox复选框, select下拉列表, switch开关",
-                        "required": false,
+                        "description": "自定义属性json格式  [{'name': '属性名', 'type': '属性类型', 'value': '属性值', 'default_value': '默认属性'}]  类型text文本, integer数字, image图片, date日期, radio单选框, checkbox复选框, select下拉列表, switch开关",
+                        "required": true,
                         "schema": {
                             "type": "string"
                         }
@@ -3589,27 +3589,9 @@
                         }
                     },
                     {
-                        "name": "confirm_time",
-                        "in": "query",
-                        "description": "确认时间",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
                         "name": "status",
                         "in": "query",
                         "description": "任务状态 init发布状态  complete完成状态",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "remark",
-                        "in": "query",
-                        "description": "备注",
                         "required": true,
                         "schema": {
                             "type": "string"

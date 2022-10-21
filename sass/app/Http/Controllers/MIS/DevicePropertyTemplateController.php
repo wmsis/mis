@@ -57,7 +57,7 @@ class DevicePropertyTemplateController extends Controller
         foreach ($rows as $key => $item) {
             $properties = $item->device_property_templates;
             foreach ($properties as $k2 => $property) {
-                $property_tpl_obj = DevicePropertyTemplate::find($id);
+                $property_tpl_obj = DevicePropertyTemplate::find($property->id);
                 $properties[$k2]['property_name'] = $property_tpl_obj && $property_tpl_obj->name ? $property_tpl_obj->name : '';
                 $properties[$k2]['property_value'] = $property->value;
             }
@@ -214,6 +214,7 @@ class DevicePropertyTemplateController extends Controller
                     'parent_id' => $item->parent_id,
                     'level' => $item->level,
                     'is_group' => $item->is_group,
+                    'device_property_templates' => $properties,
                     'children' => $this->children($item->id, $level)
                 );
             }
@@ -250,6 +251,7 @@ class DevicePropertyTemplateController extends Controller
                 'parent_id' => $item->parent_id,
                 'level' => $item->level,
                 'is_group' => $item->is_group,
+                'device_property_templates' => $properties,
                 'children' => $children
             );
         }
