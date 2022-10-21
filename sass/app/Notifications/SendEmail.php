@@ -9,6 +9,10 @@ use Illuminate\Notifications\Notification;
 
 class SendEmail extends Notification implements ShouldQueue
 {
+    protected $instance;
+    protected $type;
+    protected $title;
+    protected $content;
     use Queueable;
 
     /**
@@ -16,9 +20,14 @@ class SendEmail extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($type, $instance)
     {
-        //
+        $this->instance = $instance;
+        $this->type = $type;
+        if($this->type == 'announcement'){
+            $this->title = $this->instance->title;
+            $this->content = $this->instance->content;
+        }
     }
 
     /**
@@ -41,9 +50,10 @@ class SendEmail extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                    ->greeting($this->title)    //问候语
+                    ->line($this->content)      //一行文本
+                    ->action('去看看', url('/')) //一个按钮超链接
+                    ->line('感谢您的信赖！');    //一行文本
     }
 
     /**

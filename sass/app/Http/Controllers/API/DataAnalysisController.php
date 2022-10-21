@@ -143,14 +143,14 @@ class DataAnalysisController extends Controller
             );
 
             if($itemlist['datalist'] && count($itemlist['datalist']) > 0){
-                foreach ($itemlist['datalist'] as $k2 => $item) {
-                    for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
-                        $date = date('Y-m-d', $i);
+                for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
+                    $date = date('Y-m-d', $i);
+                    $temp['datalist'][$date] = 0; //初始值
+                    foreach ($itemlist['datalist'] as $k2 => $item) {
                         if($item->date == $date){
+                            //有当天数据
                             $temp['datalist'][$date] = (float)$item->val;
-                        }
-                        else{
-                            $temp['datalist'][$date] = 0; //初始值
+                            break;
                         }
                     }
                 }
@@ -207,7 +207,7 @@ class DataAnalysisController extends Controller
         elseif(strtotime($date . ' 00:00:00') > time()){
             return UtilService::format_data(self::AJAX_FAIL, '日期不能大于今天', '');
         }
-        
+
         $final = EconomyDailyService::daydata($date);
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $final);
     }

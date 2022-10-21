@@ -196,7 +196,7 @@ class AnnouncementController extends Controller
             }
 
             //发送邮件通知
-            Notification::send($users, new SendEmail($announcement));
+            Notification::send($users, new SendEmail('announcement', $announcement));
         } catch (QueryException $e) {
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
