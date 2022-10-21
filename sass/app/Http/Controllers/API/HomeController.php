@@ -135,9 +135,6 @@ class HomeController extends Controller
         $month_electricity = $electricityObj->chartData($start, $end, $this->orgnization->code);  //垃圾入库量
         $month_weigh_bridge = $weighBridgeObj->chartData($start, $end, $this->orgnization->code);  //垃圾入炉量
 
-        Log::info('0000000000000000');
-        Log::info(var_export($month_electricity, true));
-
         //上网电量和厂用电量
         foreach ($month_electricity as $k1 => $itemlist) {
             //遍历其中一个
@@ -148,14 +145,14 @@ class HomeController extends Controller
                 'datalist' => [],
             );
             if($itemlist['datalist'] && count($itemlist['datalist']) > 0){
-                foreach ($itemlist['datalist'] as $k2 => $item) {
-                    for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
-                        $date = date('Y-m-d', $i);
+                for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
+                    $temp['datalist'][$date] = 0; //初始值
+                    $date = date('Y-m-d', $i);
+                    foreach ($itemlist['datalist'] as $k2 => $item) {
                         if($item->date == $date){
+                            //有当天数据
                             $temp['datalist'][$date] = (float)$item->val;
-                        }
-                        else{
-                            $temp['datalist'][$date] = 0; //初始值
+                            break;
                         }
                     }
                 }
