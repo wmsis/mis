@@ -1901,6 +1901,15 @@
                         }
                     },
                     {
+                        "name": "rate",
+                        "in": "query",
+                        "description": "倍率",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
                         "name": "orgnization_id",
                         "in": "query",
                         "description": "组织ID",
@@ -1999,6 +2008,15 @@
                         "name": "func",
                         "in": "query",
                         "description": "函数",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "rate",
+                        "in": "query",
+                        "description": "倍率",
                         "required": true,
                         "schema": {
                             "type": "integer"

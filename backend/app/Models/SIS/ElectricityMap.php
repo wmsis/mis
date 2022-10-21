@@ -9,7 +9,7 @@ class ElectricityMap extends Model
 {
     use softDeletes;
     protected $table = 'electricity_map';
-    protected $fillable = ['addr', 'cn_name', 'func', 'orgnization_id'];
+    protected $fillable = ['addr', 'cn_name', 'func', 'rate', 'orgnization_id'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',

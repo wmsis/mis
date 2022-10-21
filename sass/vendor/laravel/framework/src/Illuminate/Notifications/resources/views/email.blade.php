@@ -43,7 +43,7 @@
 @if (! empty($salutation))
 {{ $salutation }}
 @else
-@lang('Regards'),<br>
+
 {{ config('app.name') }}
 @endif
 
@@ -51,8 +51,8 @@
 @isset($actionText)
 @slot('subcopy')
 @lang(
-    "If you're having trouble clicking the \":actionText\" button, copy and paste the URL below\n".
-    'into your web browser:',
+    "您如果有不明白的地方，请点击 \":actionText\" 按钮, 复制粘贴下面的连接".
+    '到浏览器的地址栏:',
     [
         'actionText' => $actionText,
     ]

@@ -50,6 +50,7 @@ class SendEmail extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
+                    ->subject('伟明环保设备有限公司')
                     ->greeting($this->title)    //问候语
                     ->line($this->content)      //一行文本
                     ->action('去看看', url('/')) //一个按钮超链接

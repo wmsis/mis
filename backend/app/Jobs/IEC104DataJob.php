@@ -299,7 +299,8 @@ class IEC104DataJob implements ShouldQueue
             $cn_names[] = array(
                 'name'=> $item['cn_name'],
                 'electricity_map_id'=> $item['id'],
-                'factor'=> $item['func']
+                'factor'=> $item['func'],
+                'rate'=> $item['rate'] ? $item['rate'] : 1
             );
         }
 
@@ -313,7 +314,7 @@ class IEC104DataJob implements ShouldQueue
                 $params[] = array(
                     "electricity_map_id" => $cn_names[$i]['electricity_map_id'],
                     "value" => $item['value'],
-                    "actual_value" => $item['value'] * $cn_names[$i]['factor']
+                    "actual_value" => $item['value'] * $cn_names[$i]['factor'] * $cn_names[$i]['rate']
                 );
                 $i++;
             }

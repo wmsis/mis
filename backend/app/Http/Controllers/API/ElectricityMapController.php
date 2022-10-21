@@ -196,6 +196,15 @@ class ElectricityMapController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
+     *         description="倍率",
+     *         in="query",
+     *         name="rate",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Parameter(
      *         description="组织ID",
      *         in="query",
      *         name="orgnization_id",
@@ -221,7 +230,7 @@ class ElectricityMapController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->only(['addr', 'cn_name', 'func', 'orgnization_id']);
+        $input = $request->only(['addr', 'cn_name', 'func', 'orgnization_id', 'rate']);
         try {
             $res = ElectricityMap::create($input);
         } catch (QueryException $e) {
@@ -332,6 +341,15 @@ class ElectricityMapController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
+     *         description="倍率",
+     *         in="query",
+     *         name="rate",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Parameter(
      *         description="组织ID",
      *         in="query",
      *         name="orgnization_id",
@@ -362,7 +380,7 @@ class ElectricityMapController extends Controller
             return response()->json(UtilService::format_data(self::AJAX_FAIL, '该数据不存在', ''));
         }
         $input = $request->input();
-        $allowField = ['addr', 'cn_name', 'func', 'orgnization_id'];
+        $allowField = ['addr', 'cn_name', 'func', 'orgnization_id', 'rate'];
         foreach ($allowField as $field) {
             if (key_exists($field, $input)) {
                 $inputValue = $input[$field];
