@@ -71,7 +71,7 @@ class ElectricityDayDataRepository extends BaseRepository
                 ->where('power_map.dcs_standard_id', $item->id)
                 ->where('power_day_data_' . $factory . '.date', '>=', $start)
                 ->where('power_day_data_' . $factory . '.date', '<=', $end)
-                ->selectRaw('MAX(power_day_data_' . $factory . '.value) as val, power_day_data_' . $factory . '.date')
+                ->selectRaw('SUM(power_day_data_' . $factory . '.value) as val, power_day_data_' . $factory . '.date')
                 ->groupBy('power_day_data_' . $factory . '.date')
                 ->get();
 

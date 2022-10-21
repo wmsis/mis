@@ -54,7 +54,7 @@ class GrabGarbageDayDataReposotory extends BaseRepository
         //获取日期范围内用电量 上网电量具体数据
         $datalist = $grabGarbageObj->where('date', '>=', $start)
             ->where('date', '<=', $end)
-            ->selectRaw('MAX(value) as val, date')
+            ->selectRaw('SUM(value) as val, date')
             ->groupBy('date')
             ->get();
 
