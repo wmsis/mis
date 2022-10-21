@@ -89,9 +89,9 @@ class HomeController extends Controller
 
 
         $final = array(
-            'today' => array_merge($today_electricity, $today_handle_leachate, $today_weigh_bridge, $today_grab_garbage),
-            'yestoday' => array_merge($yestoday_electricity, $yestoday_handle_leachate, $yestoday_weigh_bridge, $yestoday_grab_garbage),
-            'month' => array_merge($month_electricity, $month_handle_leachate, $month_weigh_bridge, $month_grab_garbage),
+            'today' => array_merge($today_electricity, $today_weigh_bridge, $today_grab_garbage),
+            'yestoday' => array_merge($yestoday_electricity, $yestoday_weigh_bridge, $yestoday_grab_garbage),
+            'month' => array_merge($month_electricity, $month_weigh_bridge, $month_grab_garbage),
         );
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $final);
     }
@@ -223,17 +223,17 @@ class HomeController extends Controller
         );
 
         //渗沥液处理量
-        $handle_leachate_datalist = [];
-        for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
-            $date = date('Y-m-d', $i);
-            $handle_leachate_datalist[$date] = mt_rand(50,100);
-        }
-        $final[] = array(
-            'en_name' => 'slycll',
-            'cn_name' => '渗沥液处理量',
-            'messure' => '吨',
-            'datalist' => $handle_leachate_datalist,
-        );
+        // $handle_leachate_datalist = [];
+        // for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
+        //     $date = date('Y-m-d', $i);
+        //     $handle_leachate_datalist[$date] = mt_rand(50,100);
+        // }
+        // $final[] = array(
+        //     'en_name' => 'slycll',
+        //     'cn_name' => '渗沥液处理量',
+        //     'messure' => '吨',
+        //     'datalist' => $handle_leachate_datalist,
+        // );
 
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $final);
     }
