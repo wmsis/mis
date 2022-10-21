@@ -54,8 +54,8 @@ class CountDayWeighBridgeDataJob implements ShouldQueue
 
             $weigh_bridge_format = (new WeighBridgeFormat())->setConnection($this->tenement_conn)->setTable($this->weighbridge_format_data_table); //连接特定租户下面的标准DCS名称表
             $weigh_bridge_day_data = (new WeighBridgeDayData())->setConnection($this->tenement_conn)->setTable($this->weighbridge_day_data_table);//连接特定租户下面的格式化后的历史数据表
-            $weigh_bridge_sum = $weigh_bridge_format->where('taredatetime', '>', $start)
-                ->where('taredatetime', '<', $end)
+            $weigh_bridge_sum = $weigh_bridge_format->where('taredatetime', '>=', $start)
+                ->where('taredatetime', '<=', $end)
                 ->selectRaw('SUM(net) as total, weighbridge_cate_small_id')
                 ->groupBy('weighbridge_cate_small_id')
                 ->get();
