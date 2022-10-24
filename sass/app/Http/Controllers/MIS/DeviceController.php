@@ -135,6 +135,15 @@ class DeviceController extends Controller
      *             type="string"
      *         )
      *     ),
+     *     @OA\Parameter(
+     *         description="是否文件夹",
+     *         in="query",
+     *         name="is_group",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="succeed",
@@ -168,11 +177,17 @@ class DeviceController extends Controller
         $page = $page ? $page : 1;
 
         $name = $request->input('name');
+        $is_group = $request->input('is_group');
         $rows = Device::select(['*'])->where('orgnization_id', $this->orgnization->id);
 
         if ($name) {
             $rows = $rows->where('name', 'like', "%{$name}%");
         }
+
+        if (isset($is_group)) {
+            $rows = $rows->where('is_group', $is_group);
+        }
+
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
         foreach ($rows as $key => $item) {

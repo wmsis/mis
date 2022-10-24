@@ -160,8 +160,13 @@ class TaskController extends Controller
      *         name="type",
      *         required=true,
      *         @OA\Schema(
-     *             type="string"
-     *         )
+     *             type="array",
+     *             default="communication",
+     *             @OA\Items(
+     *                 type="string",
+     *                 enum = {"inspect", "recondition", "fix_defect"},
+     *             )
+     *         ),
      *     ),
      *     @OA\Parameter(
      *         description="开始时间",
@@ -199,15 +204,6 @@ class TaskController extends Controller
      *             type="string"
      *         )
      *     ),
-     *     @OA\Parameter(
-     *         description="任务状态 init发布状态  complete完成状态",
-     *         in="query",
-     *         name="status",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="string"
-     *         )
-     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="store succeed",
@@ -237,9 +233,10 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->only(['name', 'type', 'begin', 'end', 'user_id', 'device_id', 'content', 'status']);
+        $input = $request->only(['name', 'type', 'begin', 'end', 'user_id', 'device_id', 'content']);
         try {
             $input['orgnization_id'] = $this->orgnization->id;
+            $input['status'] = 'init';
             $task = Task::create($input);
 
             //事件发生调度

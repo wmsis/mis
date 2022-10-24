@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 
 class SendEmail extends Notification implements ShouldQueue
 {
@@ -39,14 +40,14 @@ class SendEmail extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the notification's delivery channels.
+     * 发送指定频道.
      *
      * @param  mixed  $notifiable
      * @return array
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail', 'broadcast'];
     }
 
     /**
@@ -76,5 +77,14 @@ class SendEmail extends Notification implements ShouldQueue
         return [
             //
         ];
+    }
+
+    //广播通知
+    public function toBroadcast($notifiable)
+    {
+        return new BroadcastMessage([
+            'type' => $this->type,
+            'instance' => $this->instance
+        ]);
     }
 }

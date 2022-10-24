@@ -2398,6 +2398,15 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "name": "is_group",
+                        "in": "query",
+                        "description": "是否文件夹",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
@@ -3549,7 +3558,16 @@
                         "description": "任务类型 inspect巡检, recondition检修, fix_defect消缺",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "inspect",
+                                    "recondition",
+                                    "fix_defect"
+                                ]
+                            },
+                            "default": "communication"
                         }
                     },
                     {
@@ -3583,15 +3601,6 @@
                         "name": "device_id",
                         "in": "query",
                         "description": "设备ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "status",
-                        "in": "query",
-                        "description": "任务状态 init发布状态  complete完成状态",
                         "required": true,
                         "schema": {
                             "type": "string"

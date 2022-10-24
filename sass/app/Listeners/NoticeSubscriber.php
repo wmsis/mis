@@ -52,7 +52,7 @@ class NoticeSubscriber
      * 处理发布公告事件 插入事件通知数据到数据库
      */
     public function handleAnnouncement($event) {
-        //$this->saveAnnounceNoticeData($event); //有开启事件监听，这里不订阅
+        $this->saveAnnounceNoticeData($event); //也可以开启事件监听，这里不订阅  EventServiceProvider中listener需要配置
     }
 
     //处理任务事件 插入事件通知数据到数据库
@@ -82,7 +82,7 @@ class NoticeSubscriber
             ]);
         }
 
-        //发送邮件通知和频道通知
+        //发送邮件通知
         Notification::send($users, new SendEmail('announcement', $event->announcement));
     }
 
@@ -97,7 +97,7 @@ class NoticeSubscriber
             'orgnization_id' => $event->task->orgnization_id
         ]);
 
-        //发送邮件通知和频道通知
+        //发送邮件通知
         //Notification::send($event->user, new SendEmail('task', $event->task));  //有触发报警事件广播通知，此处不发送通知
     }
 
@@ -121,7 +121,7 @@ class NoticeSubscriber
                 ]);
             }
 
-            //发送邮件通知和频道通知
+            //发送邮件通知
             Notification::send($users, new SendEmail('alarm', $event->alarm));
         }
     }

@@ -23,9 +23,9 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         //手动注册事件监听器
-        AnnouncementEvent::class => [
-            AnnouncementNotification::class,
-        ],
+        // AnnouncementEvent::class => [
+        //     AnnouncementNotification::class,
+        // ],
     ];
 
     /**
