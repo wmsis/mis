@@ -129,7 +129,7 @@ class DataAnalysisController extends Controller
         $weighBridgeObj = new WeighBridgeDayDataReposotory();
 
         //曲线图
-        $begin_timestamp = $start ? strtotime($start) : time() - 30 * 24 * 60 * 60;
+        $begin_timestamp = $start ? strtotime($start) : time() - 10 * 24 * 60 * 60;
         $end_timestamp = $end ? strtotime($end) : time() - 24 * 60 * 60;
         $start_date = date('Y-m-d', $begin_timestamp);
         $end_date = date('Y-m-d', $end_timestamp);
