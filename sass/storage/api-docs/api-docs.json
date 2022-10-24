@@ -6712,6 +6712,12 @@
                     },
                     "cn_name": {
                         "type": "string"
+                    },
+                    "sort": {
+                        "type": "integer"
+                    },
+                    "is_show": {
+                        "type": "integer"
                     }
                 },
                 "type": "object"

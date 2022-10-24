@@ -81,9 +81,9 @@ class DeviceController extends Controller
                 $property_tpl_obj = DevicePropertyTemplate::find($property->device_property_template_id);
                 $properties[$k2]['property_name'] = $property_tpl_obj && $property_tpl_obj->name ? $property_tpl_obj->name : '';
                 $properties[$k2]['property_value'] = $property->value;
-                $properties[$key]['values'] = $property_tpl_obj && $property_tpl_obj->value ? $property_tpl_obj->value : '';
-                $properties[$key]['type'] = $property_tpl_obj && $property_tpl_obj->type ? $property_tpl_obj->type : '';
-                $properties[$key]['default_value'] = $property_tpl_obj && $property_tpl_obj->default_value ? $property_tpl_obj->default_value : '';
+                $properties[$k2]['values'] = $property_tpl_obj && $property_tpl_obj->value ? $property_tpl_obj->value : '';
+                $properties[$k2]['type'] = $property_tpl_obj && $property_tpl_obj->type ? $property_tpl_obj->type : '';
+                $properties[$k2]['default_value'] = $property_tpl_obj && $property_tpl_obj->default_value ? $property_tpl_obj->default_value : '';
                 $inspect_rule = $property->inspect_rule;
             }
         }
@@ -181,9 +181,9 @@ class DeviceController extends Controller
                 $property_tpl_obj = DevicePropertyTemplate::find($property->device_property_template_id);
                 $properties[$k2]['property_name'] = $property_tpl_obj && $property_tpl_obj->name ? $property_tpl_obj->name : '';
                 $properties[$k2]['property_value'] = $property->value;
-                $properties[$key]['values'] = $property_tpl_obj && $property_tpl_obj->value ? $property_tpl_obj->value : '';
-                $properties[$key]['type'] = $property_tpl_obj && $property_tpl_obj->type ? $property_tpl_obj->type : '';
-                $properties[$key]['default_value'] = $property_tpl_obj && $property_tpl_obj->default_value ? $property_tpl_obj->default_value : '';
+                $properties[$k2]['values'] = $property_tpl_obj && $property_tpl_obj->value ? $property_tpl_obj->value : '';
+                $properties[$k2]['type'] = $property_tpl_obj && $property_tpl_obj->type ? $property_tpl_obj->type : '';
+                $properties[$k2]['default_value'] = $property_tpl_obj && $property_tpl_obj->default_value ? $property_tpl_obj->default_value : '';
                 $inspect_rule = $property->inspect_rule;
             }
         }
@@ -233,9 +233,9 @@ class DeviceController extends Controller
                     $property_tpl_obj = DevicePropertyTemplate::find($property->device_property_template_id);
                     $properties[$k2]['property_name'] = $property_tpl_obj && $property_tpl_obj->name ? $property_tpl_obj->name : '';
                     $properties[$k2]['property_value'] = $property->value;
-                    $properties[$key]['values'] = $property_tpl_obj && $property_tpl_obj->value ? $property_tpl_obj->value : '';
-                    $properties[$key]['type'] = $property_tpl_obj && $property_tpl_obj->type ? $property_tpl_obj->type : '';
-                    $properties[$key]['default_value'] = $property_tpl_obj && $property_tpl_obj->default_value ? $property_tpl_obj->default_value : '';
+                    $properties[$k2]['values'] = $property_tpl_obj && $property_tpl_obj->value ? $property_tpl_obj->value : '';
+                    $properties[$k2]['type'] = $property_tpl_obj && $property_tpl_obj->type ? $property_tpl_obj->type : '';
+                    $properties[$k2]['default_value'] = $property_tpl_obj && $property_tpl_obj->default_value ? $property_tpl_obj->default_value : '';
                     $inspect_rule = $property->inspect_rule;
                 }
                 $arr[] = array(
@@ -272,9 +272,9 @@ class DeviceController extends Controller
                 $property_tpl_obj = DevicePropertyTemplate::find($property->device_property_template_id);
                 $properties[$k2]['property_name'] = $property_tpl_obj && $property_tpl_obj->name ? $property_tpl_obj->name : '';
                 $properties[$k2]['property_value'] = $property->value;
-                $properties[$key]['values'] = $property_tpl_obj && $property_tpl_obj->value ? $property_tpl_obj->value : '';
-                $properties[$key]['type'] = $property_tpl_obj && $property_tpl_obj->type ? $property_tpl_obj->type : '';
-                $properties[$key]['default_value'] = $property_tpl_obj && $property_tpl_obj->default_value ? $property_tpl_obj->default_value : '';
+                $properties[$k2]['values'] = $property_tpl_obj && $property_tpl_obj->value ? $property_tpl_obj->value : '';
+                $properties[$k2]['type'] = $property_tpl_obj && $property_tpl_obj->type ? $property_tpl_obj->type : '';
+                $properties[$k2]['default_value'] = $property_tpl_obj && $property_tpl_obj->default_value ? $property_tpl_obj->default_value : '';
                 $inspect_rule = $property->inspect_rule;
             }
 
