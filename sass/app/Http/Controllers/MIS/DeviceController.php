@@ -81,7 +81,9 @@ class DeviceController extends Controller
                 $property_tpl_obj = DevicePropertyTemplate::find($property->device_property_template_id);
                 $properties[$k2]['property_name'] = $property_tpl_obj && $property_tpl_obj->name ? $property_tpl_obj->name : '';
                 $properties[$k2]['property_value'] = $property->value;
-                unset($properties[$k2]['device_property_template_id']);
+                $properties[$key]['values'] = $property_tpl_obj && $property_tpl_obj->value ? $property_tpl_obj->value : '';
+                $properties[$key]['type'] = $property_tpl_obj && $property_tpl_obj->type ? $property_tpl_obj->type : '';
+                $properties[$key]['default_value'] = $property_tpl_obj && $property_tpl_obj->default_value ? $property_tpl_obj->default_value : '';
                 $inspect_rule = $property->inspect_rule;
             }
         }
@@ -179,7 +181,9 @@ class DeviceController extends Controller
                 $property_tpl_obj = DevicePropertyTemplate::find($property->device_property_template_id);
                 $properties[$k2]['property_name'] = $property_tpl_obj && $property_tpl_obj->name ? $property_tpl_obj->name : '';
                 $properties[$k2]['property_value'] = $property->value;
-                unset($properties[$k2]['device_property_template_id']);
+                $properties[$key]['values'] = $property_tpl_obj && $property_tpl_obj->value ? $property_tpl_obj->value : '';
+                $properties[$key]['type'] = $property_tpl_obj && $property_tpl_obj->type ? $property_tpl_obj->type : '';
+                $properties[$key]['default_value'] = $property_tpl_obj && $property_tpl_obj->default_value ? $property_tpl_obj->default_value : '';
                 $inspect_rule = $property->inspect_rule;
             }
         }
@@ -229,7 +233,9 @@ class DeviceController extends Controller
                     $property_tpl_obj = DevicePropertyTemplate::find($property->device_property_template_id);
                     $properties[$k2]['property_name'] = $property_tpl_obj && $property_tpl_obj->name ? $property_tpl_obj->name : '';
                     $properties[$k2]['property_value'] = $property->value;
-                    unset($properties[$k2]['device_property_template_id']);
+                    $properties[$key]['values'] = $property_tpl_obj && $property_tpl_obj->value ? $property_tpl_obj->value : '';
+                    $properties[$key]['type'] = $property_tpl_obj && $property_tpl_obj->type ? $property_tpl_obj->type : '';
+                    $properties[$key]['default_value'] = $property_tpl_obj && $property_tpl_obj->default_value ? $property_tpl_obj->default_value : '';
                     $inspect_rule = $property->inspect_rule;
                 }
                 $arr[] = array(
@@ -266,7 +272,9 @@ class DeviceController extends Controller
                 $property_tpl_obj = DevicePropertyTemplate::find($property->device_property_template_id);
                 $properties[$k2]['property_name'] = $property_tpl_obj && $property_tpl_obj->name ? $property_tpl_obj->name : '';
                 $properties[$k2]['property_value'] = $property->value;
-                unset($properties[$k2]['device_property_template_id']);
+                $properties[$key]['values'] = $property_tpl_obj && $property_tpl_obj->value ? $property_tpl_obj->value : '';
+                $properties[$key]['type'] = $property_tpl_obj && $property_tpl_obj->type ? $property_tpl_obj->type : '';
+                $properties[$key]['default_value'] = $property_tpl_obj && $property_tpl_obj->default_value ? $property_tpl_obj->default_value : '';
                 $inspect_rule = $property->inspect_rule;
             }
 
@@ -564,7 +572,9 @@ class DeviceController extends Controller
             $property_tpl_obj = DevicePropertyTemplate::find($property->device_property_template_id);
             $properties[$key]['property_name'] = $property_tpl_obj && $property_tpl_obj->name ? $property_tpl_obj->name : '';
             $properties[$key]['property_value'] = $property->value;
-            unset($properties[$key]['device_property_template_id']);
+            $properties[$key]['values'] = $property_tpl_obj && $property_tpl_obj->value ? $property_tpl_obj->value : '';
+            $properties[$key]['type'] = $property_tpl_obj && $property_tpl_obj->type ? $property_tpl_obj->type : '';
+            $properties[$key]['default_value'] = $property_tpl_obj && $property_tpl_obj->default_value ? $property_tpl_obj->default_value : '';
             $inspect_rule = $property->inspect_rule;
         }
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $row);

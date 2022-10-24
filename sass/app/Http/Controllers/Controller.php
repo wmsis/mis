@@ -24,6 +24,7 @@ class Controller extends BaseController
     const AJAX_GROUP_ROLE_MSG = '不能编辑集团角色';
 
     protected $orgnization;
+    protected $tenement_conn;
     protected $mongo_conn;
 
     public function __construct(){
@@ -36,9 +37,11 @@ class Controller extends BaseController
             if($third && strpos($domain, '10.99.99.88') === false && strpos($domain, '10.99.99.99') === false){ //没查询到10.99.99.88  排除测试环境
                 $tenement = DB::connection('mysql_mis')->table('tenement')->where('code', $third)->first();
                 $this->mongo_conn = $tenement && isset($tenement->code) ? $tenement->code . '_mongo': 'wmhb_mongo';
+                $this->tenement_conn = $tenement && isset($tenement->code) ? $tenement->code: 'wmhb';
             }
             else{
                 $this->mongo_conn = 'wmhb_mongo';
+                $this->tenement_conn = 'wmhb';
             }
         }
     }

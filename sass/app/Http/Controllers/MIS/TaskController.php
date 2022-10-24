@@ -244,7 +244,7 @@ class TaskController extends Controller
 
             //事件发生调度
             $user = User::find($input['user_id']);
-            TaskEvent::dispatch($user, $task);
+            TaskEvent::dispatch($user, $task, $this->tenement_conn);
         } catch (QueryException $e) {
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }

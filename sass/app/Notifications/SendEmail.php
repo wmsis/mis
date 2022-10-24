@@ -28,6 +28,14 @@ class SendEmail extends Notification implements ShouldQueue
             $this->title = $this->instance->title;
             $this->content = $this->instance->content;
         }
+        elseif($this->type == 'alarm'){
+            $this->title = $this->instance->alarm_rule->name;
+            $this->content = $this->instance->content;
+        }
+        elseif($this->type == 'task'){
+            $this->title = $this->instance->name;
+            $this->content = $this->instance->content;
+        }
     }
 
     /**

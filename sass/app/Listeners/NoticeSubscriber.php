@@ -8,9 +8,17 @@ use App\Events\AnnouncementEvent;
 use App\Events\TaskEvent; //事件
 use App\Events\AlarmEvent;
 use App\Models\MIS\Notice;
+use App\Models\User;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\SendEmail;
+use App\Models\MIS\Alarm;
+use App\Models\MIS\AlarmRule;
+use App\Models\SIS\Orgnization;
 
 class NoticeSubscriber
 {
+    protected $notice;
+
     /**
      * 事件订阅者
      *
@@ -18,7 +26,7 @@ class NoticeSubscriber
      */
     public function __construct()
     {
-        //
+        $this->notice = '';
     }
 
     /**
@@ -47,41 +55,74 @@ class NoticeSubscriber
         //$this->saveAnnounceNoticeData($event); //有开启事件监听，这里不订阅
     }
 
+    //处理任务事件 插入事件通知数据到数据库
     public function handleTask($event) {
         $this->saveTaskNoticeData($event);
     }
 
+    //处理报警事件 插入事件通知数据到数据库
     public function handleAlarm($event) {
         $this->saveAlarmNoticeData($event);
     }
 
+    //插入公告通知数据到数据库
     private function saveAnnounceNoticeData($event){
-        Notice::create([
-            'user_id' => $event->user->id,
-            'status' => 'init',
-            'type' => 'announce',
-            'foreign_id' => $event->announcement->id,
-            'orgnization_id' => $event->announcement->orgnization_id
-        ]);
+        $user_obj = (new User())->setConnection($event->tenement_conn);
+        $id_arr = explode(',', $event->announcement->notify_user_ids);
+        $users = $user_obj->whereIn('id', $id_arr)->get();
+
+        $notice_obj = (new Notice())->setConnection($event->tenement_conn);
+        foreach ($users as $key => $user) {
+            $notice_obj->create([
+                'user_id' => $user->id,
+                'status' => 'init',
+                'type' => 'announce',
+                'foreign_id' => $event->announcement->id,
+                'orgnization_id' => $event->announcement->orgnization_id
+            ]);
+        }
+
+        //发送邮件通知和频道通知
+        Notification::send($users, new SendEmail('announcement', $event->announcement));
     }
 
+    //插入任务通知数据到数据库
     private function saveTaskNoticeData($event){
-        Notice::create([
+        $notice_obj = (new Notice())->setConnection($event->tenement_conn);
+        $notice_obj->create([
             'user_id' => $event->user->id,
             'status' => 'init',
             'type' => 'task',
             'foreign_id' => $event->task->id,
             'orgnization_id' => $event->task->orgnization_id
         ]);
+
+        //发送邮件通知和频道通知
+        //Notification::send($event->user, new SendEmail('task', $event->task));  //有触发报警事件广播通知，此处不发送通知
     }
 
+    //插入报警通知数据到数据库
     private function saveAlarmNoticeData($event){
-        Notice::create([
-            'user_id' => $event->user->id,
-            'status' => 'init',
-            'type' => 'alarm',
-            'foreign_id' => $event->alarm->id,
-            'orgnization_id' => $event->alarm->orgnization_id
-        ]);
+        $alarm_rule_obj = (new AlarmRule())->setConnection($event->tenement_conn);
+        $alarm_rule = $alarm_rule_obj->find($event->alarm->alarm_rule_id);
+        if($alarm_rule){
+            $event->alarm->alarm_rule = $alarm_rule;
+            $notice_obj = (new Notice())->setConnection($event->tenement_conn);
+            $user_obj = (new User())->setConnection($event->tenement_conn);
+            $id_arr = explode(',', $alarm_rule->notify_user_ids);
+            $users = $user_obj->whereIn('id', $id_arr)->get();
+            foreach ($users as $k1 => $user) {
+                $notice_obj->create([
+                    'user_id' => $user->id,
+                    'status' => 'init',
+                    'type' => 'alarm',
+                    'foreign_id' => $event->alarm->id,
+                    'orgnization_id' => $event->alarm->orgnization_id
+                ]);
+            }
+
+            //发送邮件通知和频道通知
+            Notification::send($users, new SendEmail('alarm', $event->alarm));
+        }
     }
 }

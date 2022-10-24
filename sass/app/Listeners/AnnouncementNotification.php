@@ -6,9 +6,13 @@ use App\Events\AnnouncementEvent;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Models\MIS\Notice;
+use App\Models\User;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\SendEmail;
 
 class AnnouncementNotification implements ShouldQueue   //事件监听器队列
 {
+
     /**
      * 事件监听器
      *
@@ -32,12 +36,22 @@ class AnnouncementNotification implements ShouldQueue   //事件监听器队列
 
     //插入事件通知数据到数据库
     private function saveNoticeData($event){
-        Notice::create([
-            'user_id' => $event->user->id,
-            'status' => 'init',
-            'type' => 'announce',
-            'foreign_id' => $event->announcement->id,
-            'orgnization_id' => $event->announcement->orgnization_id
-        ]);
+        $user_obj = (new User())->setConnection($event->tenement_conn);
+        $id_arr = explode(',', $event->announcement->notify_user_ids);
+        $users = $user_obj->whereIn('id', $id_arr)->get();
+
+        $notice_obj = (new Notice())->setConnection($event->tenement_conn);
+        foreach ($users as $key => $user) {
+            $notice_obj->create([
+                'user_id' => $user->id,
+                'status' => 'init',
+                'type' => 'announce',
+                'foreign_id' => $event->announcement->id,
+                'orgnization_id' => $event->announcement->orgnization_id
+            ]);
+        }
+
+        //发送邮件通知和频道通知
+        Notification::send($users, new SendEmail('announcement', $event->announcement));
     }
 }

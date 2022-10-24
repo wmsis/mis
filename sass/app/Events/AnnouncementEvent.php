@@ -10,42 +10,22 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\MIS\Announcement;
-use App\Models\User;
 
-class AnnouncementEvent implements ShouldBroadcast
+class AnnouncementEvent
 {
     public $announcement;
-    public $user;
+    public $tenement_conn;
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * Create a new event instance.
+     * 此事件通过事件监听器监听，没有通过事件 订阅器订阅
+     * 创建公告信息时触发事件，公告发送的是多用户，此处不发送事件通知  不继承ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(User $user, Announcement $announcement)
+    public function __construct(Announcement $announcement, $tenement_conn)
     {
-        $this->user = $user;
-        unset($announcement->notify_user_ids);
         $this->announcement = $announcement;
-    }
-
-    /**
-     * 发布事件广播到前端用户
-     *
-     * @return \Illuminate\Broadcasting\Channel|array
-     */
-    public function broadcastOn()
-    {
-        return new PrivateChannel('announcement.' . $this->user->id);
-    }
-
-    //广播内容
-    public function broadcastWith()
-    {
-        return [
-            'user_id' => $this->user->id,
-            'announcement' => $this->announcement
-        ];
+        $this->tenement_conn = $tenement_conn;
     }
 }

@@ -10,41 +10,22 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\MIS\Alarm;
-use App\Models\User;
+use App\Models\Mongo\HistorianFormatData;
 
 class AlarmEvent
 {
     public $alarm;
-    public $user;
+    public $tenement_conn;
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * Create a new event instance.
+     * 创建报警信息时触发事件，警报发送的是多用户，此处不发送事件通知  不继承ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(User $user, Announcement $alarm)
+    public function __construct(Alarm $alarm, $tenement_conn)
     {
-        $this->user = $user;
         $this->alarm = $alarm;
-    }
-
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\Channel|array
-     */
-    public function broadcastOn()
-    {
-        return new PrivateChannel('alarm.' . $this->user->id);
-    }
-
-    //广播内容
-    public function broadcastWith()
-    {
-        return [
-            'user_id' => $this->user->id,
-            'alarm' => $this->alarm
-        ];
+        $this->tenement_conn = $tenement_conn;
     }
 }

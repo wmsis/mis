@@ -12,21 +12,23 @@ use Illuminate\Queue\SerializesModels;
 use App\Models\MIS\Task;
 use App\Models\User;
 
-class TaskEvent
+class TaskEvent implements ShouldBroadcast
 {
     public $task;
     public $user;
+    public $tenement_conn;
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * Create a new event instance.
+     * 创建任务信息时触发事件，此处一个任务为一个用户，可以继承ShouldBroadcast，为用户触发一个事件通知，通过频道发出
      *
      * @return void
      */
-    public function __construct(User $user, Task $task)
+    public function __construct(User $user, Task $task, $tenement_conn)
     {
         $this->user = $user;
         $this->task = $task;
+        $this->tenement_conn = $tenement_conn;
     }
 
     /**
