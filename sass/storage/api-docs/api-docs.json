@@ -2318,6 +2318,15 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "name": "is_group",
+                        "in": "query",
+                        "description": "是否文件夹",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
@@ -3019,7 +3028,7 @@
         "/api/inspect-rule": {
             "get": {
                 "tags": [
-                    "报警等级inspect-rule"
+                    "设备巡检inspect-rule"
                 ],
                 "summary": "分页获取数据列表",
                 "description": "使用说明：分页获取数据列表",
@@ -3097,7 +3106,7 @@
             },
             "post": {
                 "tags": [
-                    "报警等级inspect-rule"
+                    "设备巡检inspect-rule"
                 ],
                 "summary": "新增单条数据",
                 "description": "使用说明：新增单条数据",
@@ -3186,7 +3195,7 @@
         "/api/inspect-rule/{id}": {
             "get": {
                 "tags": [
-                    "报警等级inspect-rule"
+                    "设备巡检inspect-rule"
                 ],
                 "summary": "获取详细信息",
                 "description": "使用说明：获取详细信息",
@@ -3246,7 +3255,7 @@
             },
             "put": {
                 "tags": [
-                    "报警等级inspect-rule"
+                    "设备巡检inspect-rule"
                 ],
                 "summary": "修改",
                 "description": "使用说明：修改单条数据",
@@ -3342,7 +3351,7 @@
             },
             "delete": {
                 "tags": [
-                    "报警等级inspect-rule"
+                    "设备巡检inspect-rule"
                 ],
                 "summary": "删除单条数据",
                 "description": "使用说明：删除单条数据",

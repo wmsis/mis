@@ -17,7 +17,7 @@ class InspectRuleController extends Controller
     /**
      * @OA\Get(
      *     path="/api/inspect-rule",
-     *     tags={"报警等级inspect-rule"},
+     *     tags={"设备巡检inspect-rule"},
      *     operationId="inspect-rule-index",
      *     summary="分页获取数据列表",
      *     description="使用说明：分页获取数据列表",
@@ -117,7 +117,7 @@ class InspectRuleController extends Controller
     /**
      * @OA\Post(
      *     path="/api/inspect-rule",
-     *     tags={"报警等级inspect-rule"},
+     *     tags={"设备巡检inspect-rule"},
      *     operationId="inspect-rule-store",
      *     summary="新增单条数据",
      *     description="使用说明：新增单条数据",
@@ -214,7 +214,7 @@ class InspectRuleController extends Controller
     /**
      * @OA\Get(
      *     path="/api/inspect-rule/{id}",
-     *     tags={"报警等级inspect-rule"},
+     *     tags={"设备巡检inspect-rule"},
      *     operationId="inspect-rule-show",
      *     summary="获取详细信息",
      *     description="使用说明：获取详细信息",
@@ -272,14 +272,14 @@ class InspectRuleController extends Controller
         elseif($row && $row->orgnization_id != $this->orgnization->id){
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
         }
-        
+
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $row);
     }
 
     /**
      * @OA\Put(
      *     path="/api/inspect-rule/{id}",
-     *     tags={"报警等级inspect-rule"},
+     *     tags={"设备巡检inspect-rule"},
      *     operationId="inspect-rule-update",
      *     summary="修改",
      *     description="使用说明：修改单条数据",
@@ -401,7 +401,7 @@ class InspectRuleController extends Controller
     /**
      * @OA\Delete(
      *     path="/api/inspect-rule/{id}",
-     *     tags={"报警等级inspect-rule"},
+     *     tags={"设备巡检inspect-rule"},
      *     operationId="inspect-rule-destroy",
      *     summary="删除单条数据",
      *     description="使用说明：删除单条数据",

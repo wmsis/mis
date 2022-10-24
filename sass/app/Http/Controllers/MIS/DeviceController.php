@@ -40,6 +40,15 @@ class DeviceController extends Controller
      *             type="string",
      *         ),
      *     ),
+     *     @OA\Parameter(
+     *         description="是否文件夹",
+     *         in="query",
+     *         name="is_group",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="succeed",
@@ -68,11 +77,15 @@ class DeviceController extends Controller
     public function lists(Request $request)
     {
         $name = $request->input('name');
+        $is_group = $request->input('is_group');
+
+        $rows = Device::select(['*'])->where('orgnization_id', $this->orgnization->id);
         if ($name) {
-            $rows = Device::where('name', 'like', "%{$name}%")->where('orgnization_id', $this->orgnization->id)->get();
+            $rows = $rows->where('name', 'like', "%{$name}%");
         }
-        else{
-            $rows = Device::where('orgnization_id', $this->orgnization->id)->get();
+
+        if (isset($is_group)) {
+            $rows = $rows->where('is_group', $is_group);
         }
 
         foreach ($rows as $key => $item) {
