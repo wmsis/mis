@@ -236,6 +236,7 @@
                     console.log('22222222222222222');
                     //监听广播通知
                     let channel2 = 'App.Models.User.' + that.userInfo.id;
+                    console.log(channel2);
                     window.Echo.private(channel2)
                         .notification((notification) => {
                             console.log('广播通知');

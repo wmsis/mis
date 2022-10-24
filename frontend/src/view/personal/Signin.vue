@@ -78,7 +78,6 @@
                             userInfo: response.user
                         });
                         that.me();
-                        that.test();
                     },
                     fail(err){
                         that.loading = false;

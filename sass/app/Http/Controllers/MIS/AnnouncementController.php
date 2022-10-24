@@ -147,7 +147,7 @@ class AnnouncementController extends Controller
      *         description="通知用户ID列表，英文逗号隔开",
      *         in="query",
      *         name="notify_user_ids",
-     *         required=false,
+     *         required=true,
      *         @OA\Schema(
      *             type="string"
      *         )

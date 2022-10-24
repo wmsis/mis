@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\BroadcastMessage;
+use Log;
 
 class SendEmail extends Notification implements ShouldQueue
 {
@@ -74,6 +75,7 @@ class SendEmail extends Notification implements ShouldQueue
      */
     public function toArray($notifiable)
     {
+        Log::info('000000000000000');
         return [
             //
         ];
@@ -82,6 +84,7 @@ class SendEmail extends Notification implements ShouldQueue
     //广播通知
     public function toBroadcast($notifiable)
     {
+        Log::info('1111111111111111');
         return new BroadcastMessage([
             'type' => $this->type,
             'instance' => $this->instance
