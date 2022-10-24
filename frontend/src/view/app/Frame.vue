@@ -187,7 +187,9 @@
             },
             ws(){
                 let that = this;
+                console.log('AAAAAAAAAAAAAAAAAAAAA');
                 if(window.Echo) {
+                    console.log('11111111111111111111');
                     window.Echo.channel('test-channel')
                         .listen('TaskFlowEvent', (e) => {
                             console.log('测试广播');
@@ -231,6 +233,7 @@
                             }
                         });
 
+                    console.log('22222222222222222');
                     //监听广播通知
                     let channel2 = 'App.Models.User.' + that.userInfo.id;
                     window.Echo.private(channel2)

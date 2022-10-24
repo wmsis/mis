@@ -88,6 +88,7 @@ class DeviceController extends Controller
             $rows = $rows->where('is_group', $is_group);
         }
 
+        $rows = $rows->get();
         foreach ($rows as $key => $item) {
             $properties = $item->device_properties;
             foreach ($properties as $k2 => $property) {
