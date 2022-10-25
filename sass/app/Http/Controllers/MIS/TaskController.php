@@ -119,13 +119,14 @@ class TaskController extends Controller
                       ->orWhere('publish_user_id', $user->id);
             });
         }
-        
+
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
         foreach ($rows as $key => $item) {
             $device = $item->device;
             $user = $item->user;
             $publisher = $item->publisher;
+            $rows[$key]['publish_user_name'] = $publisher ? $publisher['name'] : '';
         }
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total]);
     }
