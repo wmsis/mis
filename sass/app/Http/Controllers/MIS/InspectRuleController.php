@@ -86,6 +86,7 @@ class InspectRuleController extends Controller
      */
     public function index(Request $request)
     {
+        $user = auth('api')->user();
         $perPage = $request->input('num');
         $perPage = $perPage ? $perPage : 20;
         $page = $request->input('page');
@@ -98,7 +99,6 @@ class InspectRuleController extends Controller
             $rows = $rows->where('name', 'like', "%{$name}%");
         }
         if($user && ($user->type == 'instation')){
-            $user = auth('api')->user();
             $rows = $rows->where(function($query) {
                 $query->where('user_id', $user->id)
                       ->orWhere('publish_user_id', $user->id);
