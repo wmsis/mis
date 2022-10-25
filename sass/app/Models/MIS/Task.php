@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\MIS\Device;
-use App\Models\Users;
+use App\Models\User;
 use App\Models\MIS\InspectRule;
 
 /**
@@ -82,7 +82,7 @@ class Task extends Model
 
     public function user()
     {
-        return $this->belongsTo(Users::class);
+        return $this->belongsTo(User::class);
     }
 
     public function inspect_rules(){

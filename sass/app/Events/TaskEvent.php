@@ -11,6 +11,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\MIS\Task;
 use App\Models\User;
+use Log;
 
 class TaskEvent implements ShouldBroadcast
 {
@@ -38,12 +39,15 @@ class TaskEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('task.' . $this->user->id);
+        Log::info('111111111111111');
+        //return new PrivateChannel('task.' . $this->user->id);
+        return new Channel('test-channel');
     }
 
     //广播内容
     public function broadcastWith()
     {
+        Log::info('00000000000000');
         return [
             'user_id' => $this->user->id,
             'task' => $this->task
