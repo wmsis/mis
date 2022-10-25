@@ -57,6 +57,7 @@ class CreateDeviceTable extends Migration
             $table->dateTime('confirm_time')->nullable()->comment('确认时间');
             $table->enum('status', ['init', 'complete'])->nullable()->comment('任务状态 init发布状态  complete完成状态')->default('init');
             $table->string('remark', 50)->nullable()->comment('备注');
+            $table->integer('publish_user_id')->nullable()->comment('发布人ID');
             $table->integer('orgnization_id')->nullable()->comment('组织ID');
 
             $table->timestamps();

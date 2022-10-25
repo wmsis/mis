@@ -196,7 +196,52 @@
                             console.log(e);
                         });
 
-                    
+                    let channel1 = 'user.' + that.userInfo.id;
+                    window.Echo.private(channel1)
+                        .listen('UserLoginEvent', (e) => {
+                            console.log('用户登录');
+                            console.log(e);
+                            let key = e.key;
+                            let local_key = md5(that.token.access_token);
+                            if(local_key != key){
+                                let clickCb = ()=>{
+                                    if(that.notifyInstance.hasOwnProperty(key) && that.notifyInstance[key]){
+                                        that.notifyInstance[key].close();
+                                    }
+                                };
+                                let closeCb = ()=>{
+                                    if(that.notifyInstance.hasOwnProperty(key) && that.notifyInstance[key]){
+                                        delete that.notifyInstance[key];
+                                    }
+                                };
+                                that.notifyInstance[key] = that.showNotification(
+                                    '退出提示',
+                                    '当前账号在其它地方登录，即将退出',
+                                    'warning',
+                                    1200,
+                                    clickCb,
+                                    closeCb
+                                );
+
+                                setTimeout(()=>{
+                                    that.$store.dispatch('logout');
+                                    that.$router.replace({
+                                        name: 'signin',
+                                        query: {redirect: that.$router.currentRoute.fullPath}
+                                    });
+                                }, 1200);
+                            }
+                        });
+
+                    console.log('22222222222222222');
+                    //监听广播通知
+                    let channel2 = 'App.Models.User.' + that.userInfo.id;
+                    console.log(channel2);
+                    window.Echo.private(channel2)
+                        .notification((notification) => {
+                            console.log('广播通知');
+                            console.log(notification);
+                        });
                 }
             },
             echo(token){

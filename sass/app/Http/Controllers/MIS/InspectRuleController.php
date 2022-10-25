@@ -97,6 +97,13 @@ class InspectRuleController extends Controller
         if ($name) {
             $rows = $rows->where('name', 'like', "%{$name}%");
         }
+        if($user && ($user->type == 'instation')){
+            $user = auth('api')->user();
+            $rows = $rows->where(function($query) {
+                $query->where('user_id', $user->id)
+                      ->orWhere('publish_user_id', $user->id);
+            });
+        }
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
         foreach ($rows as $key => $item) {
@@ -107,6 +114,7 @@ class InspectRuleController extends Controller
                 $property_tpl_obj = DevicePropertyTemplate::find($property->device_property_template_id);
                 $rows[$key]['property_name'] = $property_tpl_obj && $property_tpl_obj->name ? $property_tpl_obj->name : '';
                 $rows[$key]['property_value'] = $property->value;
+                $rows[$key]['device_id'] = $property->device_id;
                 unset($rows[$key]['device_property']);
             }
             $item->tasks;
@@ -203,7 +211,9 @@ class InspectRuleController extends Controller
         }
 
         try {
+            $user = auth('api')->user();
             $input['orgnization_id'] = $this->orgnization->id;
+            $input['publish_user_id'] = $user->id;
             $res = InspectRule::create($input);
         } catch (QueryException $e) {
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
