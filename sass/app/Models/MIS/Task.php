@@ -92,4 +92,9 @@ class Task extends Model
     public function inspect_rules(){
         return $this->belongsToMany(InspectRule::class, 'task_inspect_rule', 'task_id', 'inspect_rule_id')->withTimestamps();
     }
+
+    public function publisher()
+    {
+        return $this->belongsTo(User::class, 'publish_user_id');
+    }
 }

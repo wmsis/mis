@@ -94,6 +94,7 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
+        $user = auth('api')->user();
         $perPage = $request->input('num');
         $perPage = $perPage ? $perPage : 20;
         $page = $request->input('page');
@@ -111,11 +112,20 @@ class TaskController extends Controller
         if ($name) {
             $rows = $rows->where('name', 'like', "%{$name}%");
         }
+
+        if($user && ($user->type == 'instation')){
+            $rows = $rows->where(function($query) {
+                $query->where('user_id', $user->id)
+                      ->orWhere('publish_user_id', $user->id);
+            });
+        }
+        
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
         foreach ($rows as $key => $item) {
             $device = $item->device;
             $user = $item->user;
+            $publisher = $item->publisher;
         }
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total]);
     }
@@ -235,9 +245,10 @@ class TaskController extends Controller
     {
         $input = $request->only(['name', 'type', 'begin', 'end', 'user_id', 'device_id', 'content']);
         try {
+            $publisher = auth('api')->user();
             $input['orgnization_id'] = $this->orgnization->id;
             $input['status'] = 'init';
-            $input['publish_user_id'] = $user->id;
+            $input['publish_user_id'] = $publisher->id;
             $task = Task::create($input);
 
             //事件发生调度

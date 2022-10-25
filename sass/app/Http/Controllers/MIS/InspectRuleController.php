@@ -86,7 +86,6 @@ class InspectRuleController extends Controller
      */
     public function index(Request $request)
     {
-        $user = auth('api')->user();
         $perPage = $request->input('num');
         $perPage = $perPage ? $perPage : 20;
         $page = $request->input('page');
@@ -98,12 +97,7 @@ class InspectRuleController extends Controller
         if ($name) {
             $rows = $rows->where('name', 'like', "%{$name}%");
         }
-        if($user && ($user->type == 'instation')){
-            $rows = $rows->where(function($query) {
-                $query->where('user_id', $user->id)
-                      ->orWhere('publish_user_id', $user->id);
-            });
-        }
+        
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
         foreach ($rows as $key => $item) {
@@ -211,7 +205,6 @@ class InspectRuleController extends Controller
         }
 
         try {
-            $user = auth('api')->user();
             $input['orgnization_id'] = $this->orgnization->id;
             $res = InspectRule::create($input);
         } catch (QueryException $e) {
