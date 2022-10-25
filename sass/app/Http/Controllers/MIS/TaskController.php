@@ -237,6 +237,7 @@ class TaskController extends Controller
         try {
             $input['orgnization_id'] = $this->orgnization->id;
             $input['status'] = 'init';
+            $input['publish_user_id'] = $user->id;
             $task = Task::create($input);
 
             //事件发生调度

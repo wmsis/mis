@@ -213,7 +213,6 @@ class InspectRuleController extends Controller
         try {
             $user = auth('api')->user();
             $input['orgnization_id'] = $this->orgnization->id;
-            $input['publish_user_id'] = $user->id;
             $res = InspectRule::create($input);
         } catch (QueryException $e) {
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');

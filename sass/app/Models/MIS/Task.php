@@ -59,6 +59,10 @@ use App\Models\MIS\InspectRule;
  *         type="string"
  *     ),
  *     @OA\Property(
+ *         property="publish_user_id",
+ *         type="integer"
+ *     ),
+ *     @OA\Property(
  *         property="orgnization_id",
  *         type="integer"
  *     ),
