@@ -188,12 +188,12 @@
             },
             ws(){
                 let that = this;
-                console.log('AAAAAAAAAAAAAAAAAAAAA');
                 if(window.Echo) {
                     let channel88 = 'task.' + that.userInfo.id;
                     window.Echo.private(channel88)
                         .listen('TaskEvent', (e) => {
                             console.log('TaskEvent');
+                            console.log(e);
                         });
 
                     let channel1 = 'user.' + that.userInfo.id;
@@ -233,10 +233,8 @@
                             }
                         });
 
-                    console.log('22222222222222222');
                     //监听广播通知
                     let channel2 = 'App.User.' + that.userInfo.id;
-                    console.log(channel2);
                     window.Echo.private(channel2)
                         .notification((notification) => {
                             console.log('广播通知');
@@ -255,9 +253,6 @@
                     broadcaster: 'socket.io',
                     host: that.socketHost + ':6001'
                 });
-
-                console.log('BBBBBBBBBBBBBBBBBBBBBBBB');
-                console.log(window.Echo);
 
                 that.ws();
             }

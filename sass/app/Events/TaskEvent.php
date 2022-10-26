@@ -12,7 +12,7 @@ use Illuminate\Queue\SerializesModels;
 use App\Models\MIS\Task;
 use App\Models\User;
 
-class TaskEvent implements ShouldBroadcast
+class TaskEvent
 {
     public $task;
     public $user;
