@@ -5,6 +5,7 @@ export default {
     sitetitle: '伟明环保设备有限公司',
     host: process.env.VUE_APP_HOST,
     baseURL: process.env.VUE_APP_BASE_URL,
+    socketHost: process.env.VUE_SOCKET_HOST,
 
     //以下为商家信息
     userInfo: sessionStorage.getItem('userInfo') ? JSON.parse(sessionStorage.getItem('userInfo')) : '',

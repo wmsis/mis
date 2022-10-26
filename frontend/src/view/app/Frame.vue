@@ -86,7 +86,8 @@
                 'sitename',
                 'privileges',
                 'token',
-                'host'
+                'host',
+                'socketHost'
             ]),
             ...mapGetters([
                 'loading',
@@ -189,11 +190,10 @@
                 let that = this;
                 console.log('AAAAAAAAAAAAAAAAAAAAA');
                 if(window.Echo) {
-                    console.log('11111111111111111111');
-                    window.Echo.channel('test-channel')
+                    let channel88 = 'task.' + that.userInfo.id;
+                    window.Echo.private(channel88)
                         .listen('TaskEvent', (e) => {
-                            console.log('测试广播');
-                            console.log(e);
+                            console.log('TaskEvent');
                         });
 
                     let channel1 = 'user.' + that.userInfo.id;
@@ -235,7 +235,7 @@
 
                     console.log('22222222222222222');
                     //监听广播通知
-                    let channel2 = 'App.Models.User.' + that.userInfo.id;
+                    let channel2 = 'App.User.' + that.userInfo.id;
                     console.log(channel2);
                     window.Echo.private(channel2)
                         .notification((notification) => {
@@ -253,8 +253,11 @@
                         }
                     },
                     broadcaster: 'socket.io',
-                    host: that.host + ':6001'
+                    host: that.socketHost + ':6001'
                 });
+
+                console.log('BBBBBBBBBBBBBBBBBBBBBBBB');
+                console.log(window.Echo);
 
                 that.ws();
             }
