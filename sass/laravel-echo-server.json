@@ -1,5 +1,5 @@
 {
-	"authHost": "http://wm-mis.com",
+	"authHost": "http://wmhb.wm-mis.com",
 	"authEndpoint": "/broadcasting/auth",
 	"clients": [],
 	"database": "redis",
