@@ -97,7 +97,7 @@ class InspectRuleController extends Controller
         if ($name) {
             $rows = $rows->where('name', 'like', "%{$name}%");
         }
-        
+
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
         foreach ($rows as $key => $item) {
@@ -109,6 +109,7 @@ class InspectRuleController extends Controller
                 $rows[$key]['property_name'] = $property_tpl_obj && $property_tpl_obj->name ? $property_tpl_obj->name : '';
                 $rows[$key]['property_value'] = $property->value;
                 $rows[$key]['device_id'] = $property->device_id;
+                $rows[$key]['device'] = $device_obj;
                 unset($rows[$key]['device_property']);
             }
             $item->tasks;
