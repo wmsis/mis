@@ -1,5 +1,5 @@
 {
-	"authHost": "http://wmhbapi.wm-mis.com",
+	"authHost": "http://socket.wm-mis.com",
 	"authEndpoint": "/broadcasting/auth",
 	"clients": [],
 	"database": "redis",
@@ -9,7 +9,7 @@
 			"databasePath": "/database/laravel-echo-server.sqlite"
 		}
 	},
-	"devMode": true,
+	"devMode": false,
 	"host": null,
 	"port": "6001",
 	"protocol": "http",

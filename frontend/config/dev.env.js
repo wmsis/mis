@@ -11,5 +11,5 @@ module.exports = merge(prodEnv, {
   // VUE_APP_HOST: '"http://wmhb.mis.com"'
   VUE_APP_BASE_URL: '"http://wmhbapi.wm-mis.com/api"',
   VUE_APP_HOST: '"http://wmhbapi.wm-mis.com"',
-  VUE_SOCKET_HOST: '"http://wmhbapi.wm-mis.com"'
+  VUE_SOCKET_HOST: '"http://socket.wm-mis.com"'
 })
