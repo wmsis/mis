@@ -12,6 +12,7 @@ use Illuminate\Queue\SerializesModels;
 use App\Models\MIS\Task;
 use App\Models\User;
 
+//可以继承implements ShouldBroadcast，为用户触发一个事件通知，通过频道发出
 class TaskEvent
 {
     public $task;
