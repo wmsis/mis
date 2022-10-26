@@ -330,10 +330,10 @@ class PermissionController extends Controller
             $row->api_name = $api_name;
             $res = $row->save();
             if($res){
-                return UtilService::format_data(self::AJAX_SUCCESS, '修改成功', '');
+                return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
             }
             else{
-                return UtilService::format_data(self::AJAX_FAIL, '修改失败', '');
+                return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
             }
         }
         else{

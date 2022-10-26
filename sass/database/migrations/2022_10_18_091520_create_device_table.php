@@ -69,6 +69,7 @@ class CreateDeviceTable extends Migration
             $table->id();
             $table->integer('alarm_rule_id')->nullable()->comment('设备报警规则ID');
             $table->string('content', 50)->nullable()->comment('报警内容');
+            $table->string('remark', 50)->nullable()->comment('备注');
             $table->dateTime('confirm_time')->nullable()->comment('确认时间');
             $table->enum('status', ['init', 'complete'])->nullable()->comment('任务状态 init初始状态  complete解决完成状态')->default('init');
             $table->integer('orgnization_id')->nullable()->comment('组织ID');

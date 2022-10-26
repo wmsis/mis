@@ -590,7 +590,7 @@ class DeviceController extends Controller
     {
         $row = Device::find($id);
         if (!$row) {
-            return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_NO_DATA_MSG, '');
         }
         elseif($row && $row->orgnization_id != $this->orgnization->id){
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
@@ -644,7 +644,7 @@ class DeviceController extends Controller
     {
         $row = Device::find($id);
         if (!$row) {
-            return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_NO_DATA_MSG, '');
         }
         elseif($row && $row->orgnization_id != $this->orgnization->id){
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
@@ -653,8 +653,51 @@ class DeviceController extends Controller
         try {
             $row->delete();
         } catch (Exception $e) {
-            return UtilService::format_data(self::AJAX_FAIL, '删除失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '删除成功', '');
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/device/upload",
+     *     tags={"设备档案device"},
+     *     operationId="device-upload",
+     *     summary="上传文件",
+     *     description="使用说明：上传文件",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="上传文件名",
+     *         in="query",
+     *         name="file",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation",
+     *     )
+     * )
+     */
+    public function upload(Request $request)
+    {
+        $file = $request->file('file');
+        $name = $this->orgnization->code.'/device/'.date('Ymd');  //指定的是目录名，而不是文件名 storage/app下
+        $path = $file->store($name, 'uploads');    //返回文件的路径和文件名，第二个参数为指定磁盘
+        $path = '/uploads/'.$path;
+
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, [
+            "path" => $path
+        ]);
     }
 }

@@ -11,7 +11,7 @@ class Alarm extends Model
 {
     use HasFactory, softDeletes;
     protected $table = 'alarm';
-    protected $fillable = ['alarm_rule_id', 'content', 'confirm_time', 'status', 'orgnization_id'];
+    protected $fillable = ['alarm_rule_id', 'content', 'confirm_time', 'status', 'orgnization_id', 'remark'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',

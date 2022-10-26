@@ -683,9 +683,9 @@ class HistorianTagController extends Controller
             //删除缓存
             $this->HistorianTag->updateCache(['id'=>$id]);
         } catch (QueryException $ex) {
-            return response()->json(UtilService::format_data(self::AJAX_FAIL, '修改失败', ''));
+            return response()->json(UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, ''));
         }
-        return response()->json(UtilService::format_data(self::AJAX_SUCCESS, '修改成功', $tag));
+        return response()->json(UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $tag));
     }
 
     /**
@@ -746,9 +746,9 @@ class HistorianTagController extends Controller
             //删除缓存
             $this->HistorianTag->updateCache(['id'=>$id]);
         } catch (QueryException $e) {
-            return response()->json(UtilService::format_data(self::AJAX_FAIL, '删除失败', ''));
+            return response()->json(UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, ''));
         }
-        return response()->json(UtilService::format_data(self::AJAX_SUCCESS, '删除成功', ''));
+        return response()->json(UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ''));
     }
 
     private function validate_factory($factory){

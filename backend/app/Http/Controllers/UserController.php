@@ -441,7 +441,7 @@ class UserController extends Controller
             $user->deleteRole($role);
         }
 
-        return UtilService::format_data(self::AJAX_SUCCESS, '保存成功', []);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, []);
     }
 
     /**

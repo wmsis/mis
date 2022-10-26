@@ -456,9 +456,9 @@ class TenementController extends Controller
             $tenement->save();
             $tenement->refresh();
         } catch (Exception $ex) {
-            return UtilService::format_data(self::AJAX_FAIL, '修改失败', $ex->getMessage());
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, $ex->getMessage());
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '修改成功', $tenement);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $tenement);
     }
 
     /**
@@ -497,9 +497,9 @@ class TenementController extends Controller
         try {
             $tenement->delete();
         } catch (Exception $e) {
-            return UtilService::format_data(self::AJAX_FAIL, '删除失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '删除成功', '');
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
     }
 }
 

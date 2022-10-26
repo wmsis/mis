@@ -138,7 +138,7 @@ class ElectricityDbConfigController extends Controller
     {
         $row = ConfigElectricityDB::where('orgnization_id', $id)->first();
         if (!$row) {
-            return UtilService::format_data(self::AJAX_SUCCESS, '该数据不存在', []);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_NO_DATA_MSG, []);
         }
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $row);
     }
@@ -214,7 +214,7 @@ class ElectricityDbConfigController extends Controller
     {
         $row = ConfigElectricityDB::where('orgnization_id', $id)->first();
         if (!$row) {
-            return response()->json(UtilService::format_data(self::AJAX_FAIL, '该数据不存在', ''));
+            return response()->json(UtilService::format_data(self::AJAX_FAIL, self::AJAX_NO_DATA_MSG, ''));
         }
         $input = $request->input();
         $allowField = ['master_ip', 'slave_ip', 'common_addr'];
@@ -228,9 +228,9 @@ class ElectricityDbConfigController extends Controller
             $row->save();
             $row->refresh();
         } catch (Exception $ex) {
-            return UtilService::format_data(self::AJAX_FAIL, '修改失败', $ex->getMessage());
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, $ex->getMessage());
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '修改成功', $row);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $row);
     }
 
     /**
@@ -268,14 +268,14 @@ class ElectricityDbConfigController extends Controller
     {
         $row = ConfigElectricityDB::where('orgnization_id', $id)->first();
         if (!$row) {
-            return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_NO_DATA_MSG, '');
         }
         try {
             $row->forceDelete();
         } catch (Exception $e) {
-            return UtilService::format_data(self::AJAX_FAIL, '删除失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '删除成功', '');
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
     }
 }
 

@@ -480,7 +480,7 @@ class DevicePropertyTemplateController extends Controller
     {
         $row = DeviceTemplate::find($id);
         if (!$row) {
-            return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_NO_DATA_MSG, '');
         }
         elseif($row && $row->orgnization_id != $this->orgnization->id){
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
@@ -531,7 +531,7 @@ class DevicePropertyTemplateController extends Controller
     {
         $row = DeviceTemplate::find($id);
         if (!$row) {
-            return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_NO_DATA_MSG, '');
         }
         elseif($row && $row->orgnization_id != $this->orgnization->id){
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
@@ -540,8 +540,8 @@ class DevicePropertyTemplateController extends Controller
         try {
             $row->delete();
         } catch (Exception $e) {
-            return UtilService::format_data(self::AJAX_FAIL, '删除失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '删除成功', '');
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
     }
 }

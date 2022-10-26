@@ -53,6 +53,13 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
         ],
 
+        'uploads' => [
+            'driver' => 'local',
+
+            // 文件将上传到public/uploads目录 如果需要浏览器直接访问 请设置成这个
+            'root' => public_path('uploads'),
+        ],
+
     ],
 
     /*

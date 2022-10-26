@@ -1226,6 +1226,59 @@
                 }
             }
         },
+        "/api/alarm/confirm": {
+            "post": {
+                "tags": [
+                    "报警alarm"
+                ],
+                "summary": "报警确认",
+                "description": "使用说明：报警确认",
+                "operationId": "alarm-confirm",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "主键",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "remark",
+                        "in": "query",
+                        "description": "回执内容",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "confirm_time",
+                        "in": "query",
+                        "description": "确认时间 格式如2022-10-01 12:56:56",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "update succeed"
+                    }
+                }
+            }
+        },
         "/api/alarm-grade": {
             "get": {
                 "tags": [
@@ -2694,6 +2747,41 @@
                 "responses": {
                     "200": {
                         "description": "detroy succeed"
+                    }
+                }
+            }
+        },
+        "/api/device/upload": {
+            "post": {
+                "tags": [
+                    "设备档案device"
+                ],
+                "summary": "上传文件",
+                "description": "使用说明：上传文件",
+                "operationId": "device-upload",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "file",
+                        "in": "query",
+                        "description": "上传文件名",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
                     }
                 }
             }
@@ -6593,6 +6681,9 @@
                     },
                     "remark": {
                         "type": "string"
+                    },
+                    "publish_user_id": {
+                        "type": "integer"
                     },
                     "orgnization_id": {
                         "type": "integer"

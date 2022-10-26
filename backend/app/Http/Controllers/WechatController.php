@@ -1100,12 +1100,12 @@ class WechatController extends Controller
 
         $bool = true;
         if($bool) {
-            return UtilService::format_data(self::AJAX_SUCCESS, '保存成功', [
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, [
                 "path" => $path
             ]);
         }
         else{
-            return UtilService::format_data(self::AJAX_FAIL, '保存失败', []);
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, []);
         }
     }
 
@@ -2122,10 +2122,10 @@ class WechatController extends Controller
 
             $res = $row->save();
             if($res){
-                return UtilService::format_data(self::AJAX_SUCCESS, '修改成功', ['id'=>$id]);
+                return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['id'=>$id]);
             }
             else{
-                return UtilService::format_data(self::AJAX_FAIL, '修改失败', '');
+                return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
             }
         }
         else{

@@ -198,7 +198,7 @@ class DcsGroupController extends Controller
     {
         $row = DcsGroup::find($id);
         if (!$row) {
-            return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_NO_DATA_MSG, '');
         }
 
         $row->dcsStandard;
@@ -267,7 +267,7 @@ class DcsGroupController extends Controller
     {
         $row = DcsGroup::find($id);
         if (!$row) {
-            return response()->json(UtilService::format_data(self::AJAX_FAIL, '该数据不存在', ''));
+            return response()->json(UtilService::format_data(self::AJAX_FAIL, self::AJAX_NO_DATA_MSG, ''));
         }
         $input = $request->input();
         $allowField = ['name', 'description'];
@@ -281,9 +281,9 @@ class DcsGroupController extends Controller
             $row->save();
             $row->refresh();
         } catch (Exception $ex) {
-            return UtilService::format_data(self::AJAX_FAIL, '修改失败', $ex->getMessage());
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, $ex->getMessage());
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '修改成功', $row);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $row);
     }
 
     /**
@@ -321,14 +321,14 @@ class DcsGroupController extends Controller
     {
         $row = DcsGroup::find($id);
         if (!$row) {
-            return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_NO_DATA_MSG, '');
         }
         try {
             $row->delete();
         } catch (Exception $e) {
-            return UtilService::format_data(self::AJAX_FAIL, '删除失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '删除成功', '');
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
     }
 
     /**
@@ -447,7 +447,7 @@ class DcsGroupController extends Controller
     {
         $row = DcsGroup::find($id);
         if (!$row) {
-            return UtilService::format_data(self::AJAX_FAIL, '该数据不存在', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_NO_DATA_MSG, '');
         }
         $row->dcsStandard;
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $row);
