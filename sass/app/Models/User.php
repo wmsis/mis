@@ -8,7 +8,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Database\Eloquent\SoftDeletes;  //添加软删除
 use App\Models\SIS\HistorianTag;
 use App\Models\MIS\Notice;
@@ -152,19 +151,6 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return ['role' => 'user'];
-    }
-
-    /**
-     * 自定义用户接收广播通知的通道。
-     *
-     * @return string
-     */
-    public function receivesBroadcastNotificationsOn()
-    {
-        if($this->last_login_orgnization){
-            return 'App.Models.User.' . $this->last_login_orgnization . '.' . $this->id;
-        }
-        return 'App.Models.User.'.$this->id;
     }
 }
 
