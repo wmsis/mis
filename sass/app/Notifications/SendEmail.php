@@ -11,7 +11,7 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 class SendEmail extends Notification implements ShouldQueue
 {
     protected $instance;
-    protected $type;
+    protected $msgtype;
     protected $title;
     protected $content;
     use Queueable;
@@ -21,19 +21,19 @@ class SendEmail extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($type, $instance)
+    public function __construct($msgtype, $instance)
     {
         $this->instance = $instance;
-        $this->type = $type;
-        if($this->type == 'announcement'){
+        $this->msgtype = $msgtype;
+        if($this->msgtype == 'announcement'){
             $this->title = $this->instance->title;
             $this->content = $this->instance->content;
         }
-        elseif($this->type == 'alarm'){
+        elseif($this->msgtype == 'alarm'){
             $this->title = $this->instance->alarm_rule->name;
             $this->content = $this->instance->content;
         }
-        elseif($this->type == 'task'){
+        elseif($this->msgtype == 'task'){
             $this->title = $this->instance->name;
             $this->content = $this->instance->content;
         }
@@ -83,7 +83,7 @@ class SendEmail extends Notification implements ShouldQueue
     public function toBroadcast($notifiable)
     {
         return new BroadcastMessage([
-            'type' => $this->type,
+            'msgtype' => $this->msgtype,
             'instance' => $this->instance
         ]);
     }
