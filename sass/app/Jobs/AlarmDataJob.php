@@ -49,7 +49,7 @@ class AlarmDataJob implements ShouldQueue
     public function handle()
     {
         Log::info('0000000000000000');
-        $alarm_obj = (new AlarmRule())->setConnection($this->tenement_conn); //连接特定租户下面的报警数据表
+        $alarm_obj = (new Alarm())->setConnection($this->tenement_conn); //连接特定租户下面的报警数据表
         $alarm_record_obj = (new AlarmRecord())->setConnection($this->tenement_conn);
         $historian_format_data_obj = (new HistorianFormatData())->setConnection($this->tenement_mongo_conn)->setTable($this->historian_format_data_table);//连接特定租户下面的格式化后的历史数据表
         $lists = DB::connection($this->tenement_conn)->table('dcs_standard')
