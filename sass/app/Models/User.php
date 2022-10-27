@@ -162,7 +162,7 @@ class User extends Authenticatable implements JWTSubject
     public function receivesBroadcastNotificationsOn()
     {
         if($this->last_login_orgnization){
-            return 'App.Models.Users.' . $this->last_login_orgnization . '.' . $this->id;
+            return 'App.Models.User.' . $this->last_login_orgnization . '.' . $this->id;
         }
         return 'App.Models.User.'.$this->id;
     }
