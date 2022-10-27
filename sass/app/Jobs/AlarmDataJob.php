@@ -15,6 +15,7 @@ use App\Models\MIS\AlarmRule;
 use App\Models\MIS\Alarm;
 use App\Models\MIS\AlarmRecord;
 use App\Events\AlarmEvent;
+use Log;
 
 class AlarmDataJob implements ShouldQueue
 {
@@ -47,6 +48,7 @@ class AlarmDataJob implements ShouldQueue
      */
     public function handle()
     {
+        Log::info('0000000000000000');
         $alarm_obj = (new AlarmRule())->setConnection($this->tenement_conn); //连接特定租户下面的报警数据表
         $alarm_record_obj = (new AlarmRecord())->setConnection($this->tenement_conn);
         $historian_format_data_obj = (new HistorianFormatData())->setConnection($this->tenement_mongo_conn)->setTable($this->historian_format_data_table);//连接特定租户下面的格式化后的历史数据表
@@ -56,6 +58,7 @@ class AlarmDataJob implements ShouldQueue
             ->get();
 
         foreach ($lists as $key => $item) {
+            Log::info('11111111111111111111');
             //最新的DCS值
             $latest_historian_data = $historian_format_data_obj->where('dcs_standard_id', $item->dcs_standard_id)
                 ->orderBy('datetime', 'desc')
@@ -67,9 +70,12 @@ class AlarmDataJob implements ShouldQueue
                 ->first();
 
             if($latest_historian_data && $latest_historian_data->value){
+                Log::info('22222222222222222222222');
                 //判断是否报警
                 if($latest_historian_data->value >= $item->max_value || $latest_historian_data->value <= $item->min_value){
+                    Log::info('33333333333333333');
                     if(($latest_alarm_record && $latest_alarm_record->end_time) || !$latest_alarm_record){
+                        Log::info('55555555555555555555');
                         //有报警记录，并且报警结束时间不为空,或，或者没有报警记录，创建报警记录，记录报警开始时间
                         $alarm_record_obj->create([
                             "alarm_rule_id" => $item->id,
@@ -81,8 +87,10 @@ class AlarmDataJob implements ShouldQueue
                     }
                 }
                 else{
+                    Log::info('666666666666666666666');
                     //有报警并且没有记录报警结束时间，记录报警结束时间
                     if($latest_alarm_record && !$latest_alarm_record->end_time){
+                        Log::info('7777777777777777');
                         $latest_alarm_record->end_time = date('Y-m-d H:i:s');
                         $latest_alarm_record->save();
 
@@ -90,6 +98,7 @@ class AlarmDataJob implements ShouldQueue
                         $set_alarm_sustain = $item->period * $item->sustain;
                         //报警时长大于设置的时长，需要报警，否则不需要
                         if($time_diff > $set_alarm_sustain){
+                            Log::info('88888888888888888888888');
                             $content = '报警上限值为' . $item->max_value . '，下限值为' . $item->min_value . '，已经持续报警了' . $time_diff . '秒，当前值为' . $latest_historian_data->value;
                             $alarm_obj->create([
                                 "alarm_rule_id" => $item->id,
