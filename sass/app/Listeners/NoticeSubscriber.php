@@ -98,7 +98,7 @@ class NoticeSubscriber
         ]);
 
         //发送邮件通知
-        Notification::send($event->user, new SendEmail('task', $event->task));  //有触发报警事件广播通知，此处不发送通知
+        Notification::send($event->user, new SendEmail('task', $event->task)); 
     }
 
     //插入报警通知数据到数据库

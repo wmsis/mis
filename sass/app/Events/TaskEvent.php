@@ -33,7 +33,7 @@ class TaskEvent
     }
 
     /**
-     * Get the channels the event should broadcast on.
+     * 未继承ShouldBroadcast，不会在这里广播.
      *
      * @return \Illuminate\Broadcasting\Channel|array
      */
@@ -42,7 +42,7 @@ class TaskEvent
         return new PrivateChannel('task.' . $this->user->id);
     }
 
-    //广播内容
+    //广播内容  未继承ShouldBroadcast，不会在这里广播
     public function broadcastWith()
     {
         return [
