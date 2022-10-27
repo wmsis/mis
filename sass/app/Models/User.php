@@ -152,6 +152,19 @@ class User extends Authenticatable implements JWTSubject
     {
         return ['role' => 'user'];
     }
+
+    /**
+     * 自定义用户接收广播通知的通道。
+     *
+     * @return string
+     */
+    public function receivesBroadcastNotificationsOn()
+    {
+        if($this->last_login_orgnization){
+            return 'App.Models.User.' . $this->last_login_orgnization . '.' . $this->id;
+        }
+        return 'App.Models.User.'.$this->id;
+    }
 }
 
 /**
