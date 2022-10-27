@@ -155,7 +155,7 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
-     * 用户接收广播通知的通道。
+     * 自定义用户接收广播通知的通道。
      *
      * @return string
      */
