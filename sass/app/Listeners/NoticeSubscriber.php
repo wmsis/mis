@@ -106,8 +106,11 @@ class NoticeSubscriber
     //插入报警通知数据到数据库
     private function saveAlarmNoticeData($event){
         Log::info('1111111111111111');
+        Log::info($event->alarm->alarm_rule_id);
         $alarm_rule_obj = (new AlarmRule())->setConnection($event->tenement_conn);
-        $alarm_rule = $alarm_rule_obj->find($event->alarm->alarm_rule_id);
+        $alarm_rule = $alarm_rule_obj->where('id', $event->alarm->alarm_rule_id)->first();
+        Log::info('AAAAAAAAAAAAAAAAA');
+        Log::info(var_export($alarm_rule, true));
         if($alarm_rule){
             Log::info('2222222222222222222222');
             $event->alarm->alarm_rule = $alarm_rule;
