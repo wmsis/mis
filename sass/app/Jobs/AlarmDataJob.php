@@ -71,6 +71,9 @@ class AlarmDataJob implements ShouldQueue
 
             if($latest_historian_data && $latest_historian_data->value){
                 Log::info('22222222222222222222222');
+                Log::info($latest_historian_data->value);
+                Log::info($item->max_value);
+                Log::info($item->min_value);
                 //判断是否报警
                 if($latest_historian_data->value >= $item->max_value || $latest_historian_data->value <= $item->min_value){
                     Log::info('33333333333333333');
