@@ -92,7 +92,7 @@ class AlarmDataJob implements ShouldQueue
                         //报警时长大于设置的时长，需要报警，否则不需要
                         if($time_diff > $set_alarm_sustain){
                             $min = intval($time_diff/60);
-                            $content = '报警上限值为' . $item->max_value . '，下限值为' . $item->min_value . '，已经持续报警了' . $min . '分，当前值为' . $latest_historian_data->value;
+                            $content = '报警上限值为' . $item->max_value . '，下限值为' . $item->min_value . '，已经持续报警了' . $min . '分钟，当前值为' . $latest_historian_data->value;
                             $alarm_obj->create([
                                 "alarm_rule_id" => $item->id,
                                 "status" => 'init',
