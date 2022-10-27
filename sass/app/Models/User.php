@@ -164,7 +164,7 @@ class User extends Authenticatable implements JWTSubject
         if($this->last_login_orgnization){
             return 'App.Models.Users.' . $this->last_login_orgnization . '.' . $this->id;
         }
-        return 'App.Models.Users.'.$this->id;
+        return 'App.Models.User.'.$this->id;
     }
 }
 
