@@ -44,6 +44,7 @@ class AlarmData extends Command
         //循环租户
         foreach ($tenements as $k1 => $tenement) {
             $tenement_conn = $tenement->code; //租户数据库连接名称
+            $tenement_mongo_conn =  $tenement->code . '_mongo'; //租户MongoDB数据库连接名称
             $orgnization = (new Orgnization())->setConnection($tenement_conn);//连接特定租户下面的组织表
             //循环电厂
             $factories = $orgnization->where('level', 2)->get();
