@@ -14,7 +14,6 @@ use App\Notifications\SendEmail;
 use App\Models\MIS\Alarm;
 use App\Models\MIS\AlarmRule;
 use App\Models\SIS\Orgnization;
-use Log;
 
 class NoticeSubscriber
 {
@@ -63,7 +62,6 @@ class NoticeSubscriber
 
     //处理报警事件 插入事件通知数据到数据库
     public function handleAlarm($event) {
-        Log::info('0000000000000');
         $this->saveAlarmNoticeData($event);
     }
 
@@ -108,12 +106,10 @@ class NoticeSubscriber
         $alarm_rule_obj = (new AlarmRule())->setConnection($event->tenement_conn);
         $alarm_rule = $alarm_rule_obj->where('id', $event->alarm->alarm_rule_id)->first();
         if($alarm_rule){
-            Log::info('2222222222222222222222');
             $event->alarm->alarm_rule = $alarm_rule;
             $notice_obj = (new Notice())->setConnection($event->tenement_conn);
             $user_obj = (new User())->setConnection($event->tenement_conn);
-            Log::info('333333333333');
-            Log::info($alarm_rule->notify_user_ids);
+
             $id_arr = explode(',', $alarm_rule->notify_user_ids);
             $users = $user_obj->whereIn('id', $id_arr)->get();
             foreach ($users as $k1 => $user) {
