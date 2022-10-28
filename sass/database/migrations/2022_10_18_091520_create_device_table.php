@@ -28,6 +28,7 @@ class CreateDeviceTable extends Migration
             $table->text('img')->nullable()->comment('图片');
             $table->integer('is_group')->nullable()->comment('是否分组');
             $table->integer('orgnization_id')->nullable()->comment('组织ID');
+            $table->integer('device_template_id')->nullable()->comment('设备模板ID');
 
             $table->timestamps();
             $table->softDeletes();

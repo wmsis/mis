@@ -431,7 +431,16 @@ class DeviceController extends Controller
      *         ),
      *     ),
      *     @OA\Parameter(
-     *         description="自定义属性json格式  [{'device_property_template_id': '属性模板ID', 'value': '属性值'}]",
+     *         description="设备模板ID",
+     *         in="query",
+     *         name="device_template_id",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="自定义属性json格式  [{'device_property_template_id': '属性模板ID', 'value': '属性名'}]",
      *         in="query",
      *         name="properties",
      *         required=true,
@@ -458,6 +467,7 @@ class DeviceController extends Controller
         $is_group = $request->input('is_group');
         $properties = $request->input('properties');
         $properties = json_decode($properties, true);
+        $device_template_id = $request->input('device_template_id');
 
         DB::beginTransaction();
         try {
@@ -480,6 +490,10 @@ class DeviceController extends Controller
                 $row->img = $img;
                 $row->sort = $sort;
                 $row->is_group = $is_group;
+                if($device_template_id){
+                    $row->device_template_id = $device_template_id;
+                }
+
                 if($parent){
                     $row->ancestor_id = $parent->ancestor_id;
                 }
@@ -507,6 +521,10 @@ class DeviceController extends Controller
                 if($parent){
                     $params['ancestor_id'] = $parent->ancestor_id;
                 }
+                if($device_template_id){
+                    $params['device_template_id'] = $device_template_id;
+                }
+
                 $row = Device::create($params); //save 和 create 的不同之处在于 save 接收整个 Eloquent 模型实例而 create 接收原生 PHP 数组
                 if(!$parent){
                     //没有父设备  祖先ID为自己的ID
