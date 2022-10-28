@@ -2641,7 +2641,7 @@
                         "name": "properties",
                         "in": "query",
                         "description": "自定义属性json格式  [{'device_property_template_id': '属性模板ID', 'value': '属性值'}]",
-                        "required": true,
+                        "required": false,
                         "schema": {
                             "type": "string"
                         }

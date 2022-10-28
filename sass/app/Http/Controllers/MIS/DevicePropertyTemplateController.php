@@ -38,6 +38,15 @@ class DevicePropertyTemplateController extends Controller
      *             type="string",
      *         ),
      *     ),
+     *     @OA\Parameter(
+     *         description="是否文件夹",
+     *         in="query",
+     *         name="is_group",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="succeed",
@@ -46,14 +55,19 @@ class DevicePropertyTemplateController extends Controller
      */
     public function lists(Request $request)
     {
+        $is_group = $request->input('is_group');
         $name = $request->input('name');
-        if ($name) {
-            $rows = DeviceTemplate::where('name', 'like', "%{$name}%")->where('orgnization_id', $this->orgnization->id)->get();
-        }
-        else{
-            $rows = DeviceTemplate::where('orgnization_id', $this->orgnization->id)->get();
+
+        $rows = DeviceTemplate::select(['*'])->where('orgnization_id', $this->orgnization->id);
+        if (isset($is_group)) {
+            $rows = $rows->where('is_group', $is_group);
         }
 
+        if ($name) {
+            $rows = $rows->where('name', 'like', "%{$name}%");
+        }
+
+        $rows = $rows->get();
         foreach ($rows as $key => $item) {
             $properties = $item->device_property_templates;
             foreach ($properties as $k2 => $property) {
@@ -110,6 +124,15 @@ class DevicePropertyTemplateController extends Controller
      *             type="string"
      *         )
      *     ),
+     *     @OA\Parameter(
+     *         description="是否文件夹",
+     *         in="query",
+     *         name="is_group",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="succeed",
@@ -137,6 +160,7 @@ class DevicePropertyTemplateController extends Controller
      */
     public function index(Request $request)
     {
+        $is_group = $request->input('is_group');
         $perPage = $request->input('num');
         $perPage = $perPage ? $perPage : 20;
         $page = $request->input('page');
@@ -148,6 +172,10 @@ class DevicePropertyTemplateController extends Controller
         if ($name) {
             $rows = $rows->where('name', 'like', "%{$name}%");
         }
+        if (isset($is_group)) {
+            $rows = $rows->where('is_group', $is_group);
+        }
+        
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
         foreach ($rows as $key => $item) {
