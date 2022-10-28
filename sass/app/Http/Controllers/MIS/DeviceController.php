@@ -280,6 +280,7 @@ class DeviceController extends Controller
                     'img' => $item->img,
                     'properties' => $properties,
                     'is_group' => $item->is_group,
+                    'device_template_id' => $item->device_template_id,
                     'children' => $this->children($item->id, $level)
                 );
             }
@@ -326,6 +327,7 @@ class DeviceController extends Controller
                 'img' => $item->img,
                 'properties' => $properties,
                 'is_group' => $item->is_group,
+                'device_template_id' => $item->device_template_id,
                 'children' => $children
             );
         }
