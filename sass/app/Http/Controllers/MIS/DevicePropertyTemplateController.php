@@ -175,7 +175,7 @@ class DevicePropertyTemplateController extends Controller
         if (isset($is_group)) {
             $rows = $rows->where('is_group', $is_group);
         }
-        
+
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
         foreach ($rows as $key => $item) {
@@ -563,6 +563,11 @@ class DevicePropertyTemplateController extends Controller
         }
         elseif($row && $row->orgnization_id != $this->orgnization->id){
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
+        }
+
+        $children = DeviceTemplate::where('parent_id', $id)->orWhere('ancestor_id', $id)->get();
+        if($children && count($children) > 0 && isset($children[0]->id)){
+            return UtilService::format_data(self::AJAX_SUCCESS, '请先删除子节点', '');
         }
 
         try {

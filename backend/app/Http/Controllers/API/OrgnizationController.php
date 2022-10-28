@@ -509,10 +509,14 @@ class OrgnizationController extends Controller
      */
     public function delete(Request $request){
         $id = $request->input('id');
-
         $row = Orgnization::find($id);
-        $res = $row->delete();
-        if($row && $res){
+        if($row){
+            $children = Orgnization::where('parent_id', $id)->orWhere('ancestor_id', $id)->get();
+            if($children && count($children) > 0 && isset($children[0]->id)){
+                return UtilService::format_data(self::AJAX_SUCCESS, '请先删除子节点', '');
+            }
+
+            $row->delete();
             return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
         }
         else{

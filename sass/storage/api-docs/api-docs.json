@@ -2641,7 +2641,7 @@
                         "name": "properties",
                         "in": "query",
                         "description": "自定义属性json格式  [{'device_property_template_id': '属性模板ID', 'value': '属性值'}]",
-                        "required": false,
+                        "required": true,
                         "schema": {
                             "type": "string"
                         }
@@ -2812,6 +2812,15 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "name": "is_group",
+                        "in": "query",
+                        "description": "是否文件夹",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
@@ -2863,6 +2872,15 @@
                         "name": "name",
                         "in": "query",
                         "description": "关键字中文名搜索",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "is_group",
+                        "in": "query",
+                        "description": "是否文件夹",
                         "required": false,
                         "schema": {
                             "type": "string"
