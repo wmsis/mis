@@ -668,9 +668,9 @@ class DeviceController extends Controller
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
         }
 
-        $children = Device::where('parent_id', $id)->orWhere('ancestor_id', $id)->get();
+        $children = Device::where('parent_id', $id)->get();
         if($children && count($children) > 0 && isset($children[0]->id)){
-            return UtilService::format_data(self::AJAX_SUCCESS, '请先删除子节点', '');
+            return UtilService::format_data(self::AJAX_FAIL, '请先删除子节点', '');
         }
 
         try {
