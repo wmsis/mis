@@ -106,6 +106,15 @@ class Handler extends ExceptionHandler
             $res = UtilService::format_data(self::AJAX_CONN_ERROR, '连接异常', '');
             return response()->json($res);
         }
+        else{
+            return response()->json([
+                'code' => $exception->getCode() ?? 1,
+                'file' => $exception->getFile(), //获取出错误的文件
+                'line' => $exception->getLine(), //获取错误在哪一行
+                'message' => $exception->getMessage() ?? "error!",
+                'data' => []
+            ]);
+        }
 
         return parent::render($request, $exception);
     }
