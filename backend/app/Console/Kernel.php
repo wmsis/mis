@@ -7,6 +7,11 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Console\Commands\IEC104Data;
 use App\Console\Commands\GrabGarbageData;
 use App\Console\Commands\HistorianData;
+use App\Console\Commands\CountDayDcsData;
+use App\Console\Commands\CountDayElectricityData;
+use App\Console\Commands\CountDayGrabGarbageData;
+use App\Console\Commands\CountDayWeighBridgeData;
+use App\Console\Commands\CountDayPowerData;
 
 class Kernel extends ConsoleKernel
 {
@@ -14,7 +19,12 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         IEC104Data::class,
         GrabGarbageData::class,
-        HistorianData::class
+        HistorianData::class,
+        CountDayDcsData::class,
+        CountDayElectricityData::class,
+        CountDayGrabGarbageData::class,
+        CountDayWeighBridgeData::class,
+        CountDayPowerData::class,
     ];
 
     /**
@@ -25,13 +35,37 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        //收集采集数据
         $yestoday = date('Y-m-d', time() - 24 * 60 * 60);
         $yestoday_cmd = 'collect:grabGarbageData --date=' . $yestoday;
         $schedule->command('collect:iec104data')->everyTenMinutes();
         $schedule->command('collect:grabGarbageData')->twiceDaily(12, 23);//当天的数据
         $schedule->command($yestoday_cmd)->twiceDaily(13, 22);//前一天的数据
         $schedule->command('collect:historianData')->everyFiveMinutes();
-        //$schedule->command('collect:historianData')->everyMinute();
+
+        //每日累计数据
+        $schedule->command('count:dayElectricityData')->everyMinute();
+        $schedule->command('count:dayDcsData')->everyMinute();
+        $schedule->command('count:dayGrabGarbageData')->everyMinute();
+        $schedule->command('count:dayWeighBridgeData')->everyMinute();
+        $schedule->command('count:dayPowerData')->everyMinute();
+
+        //累计前一天的数据
+        $yestoday = date('Y-m-d', time() - 24 * 60 * 60);
+        $electricity_cmd = 'count:dayElectricityData --date=' . $yestoday;
+        $schedule->command($electricity_cmd)->twiceDaily(13, 23);
+
+        $dcs_cmd = 'count:dayDcsData --date=' . $yestoday;
+        $schedule->command($dcs_cmd)->twiceDaily(13, 23);
+
+        $grab_garbage_cmd = 'count:dayGrabGarbageData --date=' . $yestoday;
+        $schedule->command($grab_garbage_cmd)->twiceDaily(13, 23);
+
+        $weigh_bridge_cmd = 'count:dayWeighBridgeData --date=' . $yestoday;
+        $schedule->command($weigh_bridge_cmd)->twiceDaily(13, 23);
+
+        $power_cmd = 'count:dayPowerData --date=' . $yestoday;
+        $schedule->command($power_cmd)->twiceDaily(13, 23);
     }
 
     /**

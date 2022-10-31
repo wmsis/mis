@@ -4,22 +4,12 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use App\Console\Commands\CountDayDcsData;
-use App\Console\Commands\CountDayElectricityData;
-use App\Console\Commands\CountDayGrabGarbageData;
-use App\Console\Commands\CountDayWeighBridgeData;
-use App\Console\Commands\CountDayPowerData;
 use App\Console\Commands\AlarmData;
 
 class Kernel extends ConsoleKernel
 {
 
     protected $commands = [
-        CountDayDcsData::class,
-        CountDayElectricityData::class,
-        CountDayGrabGarbageData::class,
-        CountDayWeighBridgeData::class,
-        CountDayPowerData::class,
         AlarmData::class,
     ];
 
@@ -31,11 +21,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('count:dayElectricityData')->everyMinute();
-        $schedule->command('count:dayDcsData')->everyMinute();
-        $schedule->command('count:dayGrabGarbageData')->everyMinute();
-        $schedule->command('count:dayWeighBridgeData')->everyMinute();
-        $schedule->command('count:dayPowerData')->everyMinute();
         $schedule->command('alarm:data')->everyMinute();
     }
 

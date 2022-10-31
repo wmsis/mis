@@ -10,6 +10,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use App\Models\SIS\WeighBridge;
 use App\Models\SIS\WeighBridgeFormat;
 use App\Models\SIS\WeighbridgeCateSmall;
@@ -189,6 +190,7 @@ class WeighBridgeController extends Controller
             return UtilService::format_data(self::AJAX_FAIL, 'input参数错误', '');
         }
         else{
+            $datelist = [];
             $formatlist = [];
             $updatelist = [];
             $deletelist = [];
@@ -207,6 +209,10 @@ class WeighBridgeController extends Controller
 
             //查询数据是否存在，不存在则增加
             foreach ($datalist as $key => $item) {
+                $date = date('Y-m-d', strtotime($item['taredatetime']);
+                if(!in_array($date, $datelist)){
+                    $datelist[] = $date;
+                }
                 $datalist[$key]['created_at'] = date('Y-m-d H:i:s');
                 $datalist[$key]['updated_at'] = date('Y-m-d H:i:s');
 
@@ -256,6 +262,17 @@ class WeighBridgeController extends Controller
                 } catch (QueryException $e) {
                     DB::rollback();
                     return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, $e->getMessage());
+                }
+
+                //不是今天的要重新统计当天的累积量
+                if(!empty($datelist)){
+                    foreach ($datelist as $k9 => $date) {
+                        if($date != date('Y-m-d')){
+                            Artisan::queue('count:dayWeighBridgeData', [
+                                '--date' => $date
+                            ]);
+                        }
+                    }
                 }
             }
             return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
