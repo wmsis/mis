@@ -209,7 +209,7 @@ class WeighBridgeController extends Controller
 
             //查询数据是否存在，不存在则增加
             foreach ($datalist as $key => $item) {
-                $date = date('Y-m-d', strtotime($item['taredatetime']);
+                $date = date('Y-m-d', strtotime($item['taredatetime']));
                 if(!in_array($date, $datelist)){
                     $datelist[] = $date;
                 }
