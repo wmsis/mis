@@ -15,6 +15,7 @@ use App\Models\SIS\ElectricityMap;
 use App\Models\SIS\Orgnization;
 use App\Models\SIS\DcsStandard;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\API\PowerMapStoreRequest;
 use UtilService;
 
 class PowerMapController extends Controller
@@ -171,7 +172,7 @@ class PowerMapController extends Controller
      *     ),
      * )
      */
-    public function store(Request $request)
+    public function store(PowerMapStoreRequest $request)
     {
         $input = $request->only(['electricity_map_ids', 'dcs_standard_id', 'func', 'orgnization_id']);
         try {

@@ -8,6 +8,7 @@ use UtilService;
 use App\Models\SIS\DcsStandard;
 use App\Models\MIS\Device;
 use App\Models\MIS\AlarmRule;
+use App\Http\Requests\API\AlarmRuleStoreRequest;
 
 class AlarmRuleController extends Controller
 {
@@ -217,7 +218,7 @@ class AlarmRuleController extends Controller
      *     ),
      * )
      */
-    public function store(Request $request)
+    public function store(AlarmRuleStoreRequest $request)
     {
         $input = $request->only(['name', 'device_id', 'dcs_standard_id', 'period', 'sustain', 'min_value', 'max_value', 'alarm_grade_id', 'type', 'notify_user_ids']);
         try {

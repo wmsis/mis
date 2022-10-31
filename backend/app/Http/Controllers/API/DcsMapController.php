@@ -16,6 +16,7 @@ use App\Models\SIS\Orgnization;
 use App\Models\SIS\DcsStandard;
 use App\Models\SIS\HistorianTag;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\API\DcsMapStoreRequest;
 use UtilService;
 
 class DcsMapController extends Controller
@@ -190,7 +191,7 @@ class DcsMapController extends Controller
      *     ),
      * )
      */
-    public function store(Request $request)
+    public function store(DcsMapStoreRequest $request)
     {
         $input = $request->only(['tag_ids', 'dcs_standard_id', 'func', 'orgnization_id']);
         try {

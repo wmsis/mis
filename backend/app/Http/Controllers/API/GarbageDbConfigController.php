@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SIS\ConfigGarbageDB;
 use Illuminate\Database\QueryException;
+use App\Http\Requests\API\GarbageDbConfigStoreRequest;
 use UtilService;
 
 class GarbageDbConfigController extends Controller
@@ -104,7 +105,7 @@ class GarbageDbConfigController extends Controller
      *     ),
      * )
      */
-    public function store(Request $request)
+    public function store(GarbageDbConfigStoreRequest $request)
     {
         $input = $request->only(['type', 'user', 'password', 'ip', 'port', 'db_name', 'orgnization_id']);
         $row = ConfigGarbageDB::where('orgnization_id', $input['orgnization_id'])->first();

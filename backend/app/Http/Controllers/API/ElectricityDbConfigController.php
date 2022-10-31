@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SIS\ConfigElectricityDB;
 use Illuminate\Database\QueryException;
+use App\Http\Requests\API\ElectricityDbConfigStoreRequest;
 use UtilService;
 use Log;
 
@@ -78,7 +79,7 @@ class ElectricityDbConfigController extends Controller
      *     ),
      * )
      */
-    public function store(Request $request)
+    public function store(ElectricityDbConfigStoreRequest $request)
     {
         $input = $request->only(['master_ip', 'slave_ip', 'common_addr', 'orgnization_id']);
         $row = ConfigElectricityDB::where('orgnization_id', $input['orgnization_id'])->first();

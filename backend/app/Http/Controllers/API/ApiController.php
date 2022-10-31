@@ -14,7 +14,7 @@ use UtilService;
 use App\Models\SIS\API;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
-use App\Http\Requests\User\StoreRoleRequest;
+use App\Http\Requests\API\ApiStoreRequest;
 use Log;
 
 class ApiController extends Controller
@@ -167,7 +167,7 @@ class ApiController extends Controller
      *     )
      * )
      */
-    public function store(Request $request){
+    public function store(ApiStoreRequest $request){
         $id = $request->input('id');
         $name = $request->input('name');
         $description = $request->input('description');

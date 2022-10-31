@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SIS\DcsStandard;
 use Illuminate\Database\QueryException;
+use App\Http\Requests\API\DcsStandardStoreRequest;
 use UtilService;
 
 class DcsStandardController extends Controller
@@ -278,7 +279,7 @@ class DcsStandardController extends Controller
      *     ),
      * )
      */
-    public function store(Request $request)
+    public function store(DcsStandardStoreRequest $request)
     {
         $input = $request->only(['cn_name', 'en_name', 'type', 'messure', 'sort', 'is_show']);
         //判断是否有其他相同的名称

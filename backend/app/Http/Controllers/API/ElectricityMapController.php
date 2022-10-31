@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use App\Models\SIS\ElectricityMap;
 use Illuminate\Database\QueryException;
 use App\Models\SIS\Orgnization;
+use App\Http\Requests\API\ElectricityMapStoreRequest;
 use UtilService;
 
 class ElectricityMapController extends Controller
@@ -228,7 +229,7 @@ class ElectricityMapController extends Controller
      *     ),
      * )
      */
-    public function store(Request $request)
+    public function store(ElectricityMapStoreRequest $request)
     {
         $input = $request->only(['addr', 'cn_name', 'func', 'orgnization_id', 'rate']);
         try {

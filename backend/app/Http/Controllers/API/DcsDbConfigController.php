@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SIS\ConfigHistorianDB;
 use Illuminate\Database\QueryException;
+use App\Http\Requests\API\DcsDbConfigStoreRequest;
 use UtilService;
 use Log;
 
@@ -97,7 +98,7 @@ class DcsDbConfigController extends Controller
      *     ),
      * )
      */
-    public function store(Request $request)
+    public function store(DcsDbConfigStoreRequest $request)
     {
         $input = $request->only(['user', 'password', 'ip', 'port', 'version', 'orgnization_id', 'db_name']);
         $row = ConfigHistorianDB::where('orgnization_id', $input['orgnization_id'])->first();

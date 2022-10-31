@@ -10,6 +10,7 @@ use App\Models\MIS\Device;
 use App\Models\MIS\Task;
 use App\Events\TaskEvent;
 use App\Models\User;
+use App\Http\Requests\API\TaskStoreRequest;
 
 class TaskController extends Controller
 {
@@ -242,7 +243,7 @@ class TaskController extends Controller
      *     ),
      * )
      */
-    public function store(Request $request)
+    public function store(TaskStoreRequest $request)
     {
         $input = $request->only(['name', 'type', 'begin', 'end', 'user_id', 'device_id', 'content']);
         try {

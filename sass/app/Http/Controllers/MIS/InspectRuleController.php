@@ -11,6 +11,7 @@ use App\Models\MIS\InspectRule;
 use App\Models\MIS\Device;
 use App\Models\MIS\DevicePropertyTemplate;
 use App\Models\MIS\DeviceProperty;
+use App\Http\Requests\API\InspectRuleStoreRequest;
 
 class InspectRuleController extends Controller
 {
@@ -196,7 +197,7 @@ class InspectRuleController extends Controller
      *     ),
      * )
      */
-    public function store(Request $request)
+    public function store(InspectRuleStoreRequest $request)
     {
         $input = $request->only(['name', 'device_property_id', 'content', 'standard']);
         //判断是否有其他相同的名称

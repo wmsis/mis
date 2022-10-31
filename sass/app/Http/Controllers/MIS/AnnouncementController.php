@@ -9,6 +9,7 @@ use UtilService;
 use App\Models\MIS\Announcement;
 use App\Models\User;
 use App\Events\AnnouncementEvent;
+use App\Http\Requests\API\AnnouncementStoreRequest;
 
 class AnnouncementController extends Controller
 {
@@ -179,7 +180,7 @@ class AnnouncementController extends Controller
      *     ),
      * )
      */
-    public function store(Request $request)
+    public function store(AnnouncementStoreRequest $request)
     {
         $input = $request->only(['title', 'content', 'notify_user_ids']);
         try {
