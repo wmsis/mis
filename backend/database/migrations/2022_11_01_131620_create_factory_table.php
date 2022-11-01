@@ -13,7 +13,7 @@ class CreateFactoryTable extends Migration
      */
     public function up()
     {
-        Schema::create('historian_tag_yongqiang1', function (Blueprint $table) {
+        Schema::create('historian_tag_yongqiang2', function (Blueprint $table) {
             $table->id();
             $table->string('tag_id', 50)->nullable()->comment('卡车号');
             $table->string('tag_name', 50)->nullable()->comment('tag中文名');
@@ -22,7 +22,7 @@ class CreateFactoryTable extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('electricity_day_data_yongqiang1', function (Blueprint $table) {
+        Schema::create('electricity_day_data_yongqiang2', function (Blueprint $table) {
             $table->id();
             $table->integer('electricity_map_id')->nullable()->comment('电表映射关系ID');
             $table->decimal('value', $precision = 8, $scale = 2)->nullable()->comment('累计值');
@@ -31,7 +31,7 @@ class CreateFactoryTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('electricity_yongqiang1', function (Blueprint $table) {
+        Schema::create('electricity_yongqiang2', function (Blueprint $table) {
             $table->id();
             $table->integer('electricity_map_id')->nullable()->comment('电表映射关系ID');
             $table->decimal('value', $precision = 14, $scale = 2)->nullable()->comment('远动获取的原始值');
@@ -40,7 +40,7 @@ class CreateFactoryTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('grab_garbage_day_data_yongqiang1', function (Blueprint $table) {
+        Schema::create('grab_garbage_day_data_yongqiang2', function (Blueprint $table) {
             $table->id();
             $table->integer('liao')->nullable()->comment('料口号');
             $table->decimal('value', $precision = 8, $scale = 2)->nullable()->comment('累计值');
@@ -49,7 +49,7 @@ class CreateFactoryTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('grab_garbage_yongqiang1', function (Blueprint $table) {
+        Schema::create('grab_garbage_yongqiang2', function (Blueprint $table) {
             $table->id();
             $table->integer('allsn')->nullable()->comment('流水号');
             $table->integer('sn')->nullable()->comment('称重记录序列');
@@ -65,7 +65,7 @@ class CreateFactoryTable extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('power_day_data_yongqiang1', function (Blueprint $table) {
+        Schema::create('power_day_data_yongqiang2', function (Blueprint $table) {
             $table->id();
             $table->integer('power_map_id')->nullable()->comment('用电映射关系ID');
             $table->decimal('value', $precision = 8, $scale = 2)->nullable()->comment('当日值');
@@ -74,7 +74,7 @@ class CreateFactoryTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('weighbridge_day_data_yongqiang1', function (Blueprint $table) {
+        Schema::create('weighbridge_day_data_yongqiang2', function (Blueprint $table) {
             $table->id();
             $table->integer('weighbridge_cate_small_id')->nullable()->comment('垃圾分类小类ID');
             $table->decimal('value', $precision = 8, $scale = 2)->nullable()->comment('净重');
@@ -83,7 +83,7 @@ class CreateFactoryTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('weighbridge_format_yongqiang1', function (Blueprint $table) {
+        Schema::create('weighbridge_format_yongqiang2', function (Blueprint $table) {
             $table->id();
             $table->dateTime('grossdatetime')->nullable()->comment('毛重时间');
             $table->dateTime('taredatetime')->nullable()->comment('皮重时间');
@@ -94,7 +94,7 @@ class CreateFactoryTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('weighbridge_yongqiang1', function (Blueprint $table) {
+        Schema::create('weighbridge_yongqiang2', function (Blueprint $table) {
             $table->id();
             $table->integer('weighid')->nullable()->comment('称重磅单号');
             $table->string('truckno', 50)->nullable()->comment('卡车号');
@@ -126,14 +126,14 @@ class CreateFactoryTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('historian_tag_yongqiang1');
-        Schema::dropIfExists('electricity_day_data_yongqiang1');
-        Schema::dropIfExists('electricity_yongqiang1');
-        Schema::dropIfExists('grab_garbage_day_data_yongqiang1');
-        Schema::dropIfExists('grab_garbage_yongqiang1');
-        Schema::dropIfExists('power_day_data_yongqiang1');
-        Schema::dropIfExists('weighbridge_day_data_yongqiang1');
-        Schema::dropIfExists('weighbridge_format_yongqiang1');
-        Schema::dropIfExists('weighbridge_yongqiang1');
+        Schema::dropIfExists('historian_tag_yongqiang2');
+        Schema::dropIfExists('electricity_day_data_yongqiang2');
+        Schema::dropIfExists('electricity_yongqiang2');
+        Schema::dropIfExists('grab_garbage_day_data_yongqiang2');
+        Schema::dropIfExists('grab_garbage_yongqiang2');
+        Schema::dropIfExists('power_day_data_yongqiang2');
+        Schema::dropIfExists('weighbridge_day_data_yongqiang2');
+        Schema::dropIfExists('weighbridge_format_yongqiang2');
+        Schema::dropIfExists('weighbridge_yongqiang2');
     }
 }

@@ -298,7 +298,7 @@ class ApiController extends Controller
         try{
             copy($tpl_file, $des_file);
             $contents = file_get_contents($des_file);
-            $new_content = str_replace('yongqiang1', $factory, $contents);
+            $new_content = str_replace('yongqiang2', $factory, $contents);
             file_put_contents($des_file, $new_content);
             Artisan::queue('migrate', []);
             return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $des_file);
