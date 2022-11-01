@@ -12,9 +12,7 @@ class HistorianTag extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'historian_tag_yongqiang2';
-    protected $fillable = ['tag_id', 'tag_name', 'description', 'alias', 'measure', 'upper_limit', 'lower_limit',
-        'origin_upper_limit', 'origin_lower_limit'];
+    protected $fillable = ['tag_id', 'tag_name'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',
@@ -42,9 +40,6 @@ class HistorianTag extends Model
 
     public function findByPage($params){
         $tags = $this->select(['*']);
-        if (isset($params['alias']) && $params['alias']) {
-            $tags = $tags->where('alias', 'like', "%{$params['alias']}%");
-        }
         if (isset($params['tag_name']) && $params['tag_name']) {
             $tags = $tags->where('tag_name', 'like', "%{$params['tag_name']}%");
         }
@@ -108,46 +103,14 @@ class HistorianTag extends Model
  * @OA\Definition(
  *     definition="HistorianTag",
  *     type="object",
- *     required={"tag_id", "tag_name"},
+ *     required={"tag_name"},
  *     @OA\Property(
  *         property="id",
  *         type="integer"
  *     ),
  *     @OA\Property(
- *         property="tag_id",
- *         type="string"
- *     ),
- *     @OA\Property(
  *         property="tag_name",
  *         type="string"
- *     ),
- *     @OA\Property(
- *         property="description",
- *         type="string"
- *     ),
- *     @OA\Property(
- *         property="alias",
- *         type="string"
- *     ),
- *     @OA\Property(
- *         property="measure",
- *         type="string"
- *     ),
- *     @OA\Property(
- *         property="upper_limit",
- *         type="number"
- *     ),
- *     @OA\Property(
- *         property="lower_limit",
- *         type="number"
- *     ),
- *     @OA\Property(
- *         property="origin_upper_limit",
- *         type="number"
- *     ),
- *     @OA\Property(
- *         property="origin_lower_limit",
- *         type="number"
  *     ),
  * )
  */

@@ -30,7 +30,6 @@ use Jenssegers\Mongodb\Eloquent\Model;
  */
 class HistorianFormatData extends Model
 {
-    protected $collection = 'historian_format_data_yongqiang2';     //文档名
     protected $primaryKey = '_id';    //设置id
     protected $fillable = ['dcs_standard_id', 'value', 'datetime'];
 

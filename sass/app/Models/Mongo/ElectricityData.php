@@ -45,8 +45,6 @@ use Jenssegers\Mongodb\Eloquent\Model;
 
 class ElectricityData extends Model
 {
-    protected $connection = 'mongodb';  //库名
-    protected $collection = 'historian_data';     //文档名
     protected $primaryKey = '_id';    //设置id
     protected $fillable = ['cn_name', 'address', 'actual_value', 'value', 'factor', 'quality', 'datetime'];
 

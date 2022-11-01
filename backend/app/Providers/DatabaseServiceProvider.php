@@ -97,8 +97,8 @@ class DatabaseServiceProvider extends ServiceProvider
                     $final = array (
                         'host' => $db->ip,
                         'database' => $db->db_name,
-                        //'username' => $db->user,
-                        //'password' => $db->password,
+                        'username' => $db->user,
+                        'password' => $db->password,
                         'port' => $db->port,
                         'driver' => 'mongodb'
                     );

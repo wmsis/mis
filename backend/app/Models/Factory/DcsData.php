@@ -1,7 +1,7 @@
 <?php
 
 /**
- * App\Models\Factory\Historian
+ * App\Models\Factory\DcsData
  * author 叶文华
  * IEC104 电厂本地DCS数据，存于MongoDB
  */
@@ -12,8 +12,8 @@ use Log;
 
 /**
  * @OA\Schema(
- *     title="Historian Model",
- *     description="Historian Model",
+ *     title="DcsData Model",
+ *     description="DcsData Model",
  *     @OA\Property(
  *         property="_id",
  *         type="string"
@@ -32,9 +32,9 @@ use Log;
  *     ),
  * )
  */
-class Historian extends Model
+class DcsData extends Model
 {
-    protected $collection = 'hitorian';
+    protected $collection = 'history';
     protected $primaryKey = '_id';    //设置id
     protected $fillable = ['tag_name', 'value', 'datetime'];
 

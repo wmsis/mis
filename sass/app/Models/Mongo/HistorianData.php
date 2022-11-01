@@ -37,8 +37,6 @@ use Jenssegers\Mongodb\Eloquent\Model;
 
 class HistorianData extends Model
 {
-    protected $connection = 'mongodb';  //库名
-    protected $collection = 'historian_data';     //文档名
     protected $primaryKey = '_id';    //设置id
     protected $fillable = ['cn_name', 'en_name', 'tag_name', 'value', 'time'];
 

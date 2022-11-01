@@ -13,11 +13,11 @@ use HistorianService;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Swagger\Annotations as SWG;
 use UtilService;
 use App\Models\User;
 use App\Models\SIS\Orgnization;
 use App\Models\SIS\ConfigHistorianDB;
+use App\Models\Factory\DcsData;
 use Log;
 
 class HistorianTagController extends Controller
@@ -26,7 +26,7 @@ class HistorianTagController extends Controller
 
     public function __construct()
     {
-
+        parent::__construct();
     }
 
     /**
@@ -75,15 +75,6 @@ class HistorianTagController extends Controller
      *         ),
      *     ),
      *     @OA\Parameter(
-     *         description="alias 搜索",
-     *         in="query",
-     *         name="searchAlias",
-     *         required=false,
-     *         @OA\Schema(
-     *             type="string"
-     *         ),
-     *     ),
-     *     @OA\Parameter(
      *         description="tag_name 搜索",
      *         in="query",
      *         name="searchTagName",
@@ -114,7 +105,6 @@ class HistorianTagController extends Controller
         $page = $request->input('page');
         $page = $page ? $page : 1;
 
-        $searchName = $request->input('searchAlias');
         $searchTagName = $request->input('searchTagName');
         $factory = $request->input('factory');
         if(!$this->validate_factory($factory)){
@@ -124,9 +114,6 @@ class HistorianTagController extends Controller
         $this->HistorianTag = (new HistorianTag())->setTable($tb);
 
         $params = [];
-        if ($searchName) {
-            $params['alias'] = $searchName;
-        }
         if ($searchTagName) {
             $params['tag_name'] = $searchTagName;
         }
@@ -199,145 +186,6 @@ class HistorianTagController extends Controller
             $data = $obj_historian_tag->select(['id', 'tag_name'])->get();
         }
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $data);
-    }
-
-    /**
-     * @OA\Get(
-     *     path="/api/historian-tag/listdata",
-     *     tags={"历史数据库标签historian tag"},
-     *     operationId="historian-tag-listdata",
-     *     summary="获取 tag 列表（包含当前值）",
-     *     description="使用说明：获取 tag 列表（包含当前值）",
-     *     @OA\Parameter(
-     *         description="token",
-     *         in="query",
-     *         name="token",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="string"
-     *         ),
-     *     ),
-     *     @OA\Parameter(
-     *         description="电厂英文名称  如永强二期：yongqiang2",
-     *         in="query",
-     *         name="factory",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="string"
-     *         ),
-     *     ),
-     *     @OA\Parameter(
-     *         in="query",
-     *         name="num",
-     *         required=false,
-     *         @OA\Schema(
-     *             type="integer",
-     *             default=20,
-     *         ),
-     *     ),
-     *     @OA\Parameter(
-     *         description="页数",
-     *         in="query",
-     *         name="page",
-     *         required=false,
-     *         @OA\Schema(
-     *              type="integer",
-     *              default=1,
-     *         ),
-     *     ),
-     *     @OA\Parameter(
-     *         description="alias 搜索",
-     *         in="query",
-     *         name="searchAlias",
-     *         required=false,
-     *         @OA\Schema(
-     *             type="string"
-     *         ),
-     *     ),
-     *     @OA\Parameter(
-     *         description="tag_name 搜索",
-     *         in="query",
-     *         name="searchTagName",
-     *         required=false,
-     *         @OA\Schema(
-     *             type="string"
-     *         ),
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="succeed",
-     *         @OA\Schema(
-     *              @OA\Property(
-     *                  property="historianTags",
-     *                  description="historianTags",
-     *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/HistorianTags")
-     *                  }
-     *             )
-     *         )
-     *     ),
-     * )
-     */
-    public function listWithData(Request $request)
-    {
-        $perPage = $request->input('num');
-        $perPage = $perPage ? $perPage : 20;
-        $page = $request->input('page');
-        $page = $page ? $page : 1;
-
-        $searchName = $request->input('searchAlias');
-        $searchTagName = $request->input('searchTagName');
-        $factory = $request->input('factory');
-        if(!$this->validate_factory($factory)){
-            return UtilService::format_data(self::AJAX_FAIL, 'factory参数错误', '');
-        }
-        $tb = 'historian_tag_' . $factory;
-        $this->HistorianTag = (new HistorianTag())->setTable($tb);
-
-        $params = [];
-        if ($searchName) {
-            $params['alias'] = $searchName;
-        }
-        if ($searchTagName) {
-            $params['tag_name'] = $searchTagName;
-        }
-        $params['offset'] = ($page - 1) * $perPage;
-        $params['limit'] = $perPage;
-        $data = $this->HistorianTag->findByPage($params);
-        if(count($data['data']) > 0){
-            $tagnames = '';
-            foreach ($data['data'] as $key=>$item){
-                if($tagnames){
-                    $tagnames .= ';' . $item->tag_name;
-                }
-                else{
-                    $tagnames = $item->tag_name;
-                }
-            }
-            $org = Orgnization::where('code', $factory)->first()->toArray();
-            $cfg = ConfigHistorianDB::where('orgnization_id', $org['id'])->first()->toArray();
-            $cd = HistorianService::currentData($cfg, $tagnames);
-            $curr_data_list = array();
-            if ($cd && $cd['code'] === self::AJAX_SUCCESS && $cd['data']['ErrorCode'] === 0) {
-                $curr_data_list = $cd['data']['Data'];
-            }
-
-            foreach ($data['data'] as $key=>$item){
-                $data['data'][$key]['Value'] = '';
-                $data['data'][$key]['TimeStamp'] = '';
-                $data['data'][$key]['Quality'] = '';
-                foreach($curr_data_list as $k2=>$val){
-                    if($val['ErrorCode'] == 0 && $val['TagName'] == $item->tag_name && $val['Samples'] && count($val['Samples']) > 0){
-                        $data['data'][$key]['Value'] = $val['Samples'][0]['Value'];
-                        $data['data'][$key]['TimeStamp'] = $val['Samples'][0]['TimeStamp'];
-                        $data['data'][$key]['Quality'] = $val['Samples'][0]['Quality'];
-                        break;
-                    }
-                }
-            }
-        }
-
-        return response()->json(UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $data));
     }
 
     /**
@@ -522,10 +370,7 @@ class HistorianTagController extends Controller
             $errorCount = 0;
             $propertyNames = [
                 'tag_id' => 'Id',
-                'tag_name' => 'Name',
-                'description' => 'Description',
-                'origin_upper_limit' => 'HiEngineeringUnits',
-                'origin_lower_limit' => 'LoEngineeringUnits',
+                'tag_name' => 'Name'
             ];
             $properties = [];
             array_walk($propertyNames, function ($value, $key) use (&$properties) {
@@ -561,12 +406,12 @@ class HistorianTagController extends Controller
     }
 
     /**
-     * @OA\Post(
-     *     path="/api/historian-tag/update/{id}",
+     * @OA\Get(
+     *     path="/api/historian-tag/load-mongo",
      *     tags={"历史数据库标签historian tag"},
-     *     operationId="historian-tag-update",
-     *     summary="修改 tag",
-     *     description="使用说明：修改 tag",
+     *     operationId="historian-tag-load-mongo",
+     *     summary="从 MongoDB 加载 tags",
+     *     description="使用说明：从 MongoDB 加载 tags, 保存到数据库",
      *     @OA\Parameter(
      *         description="token",
      *         in="query",
@@ -585,107 +430,44 @@ class HistorianTagController extends Controller
      *             type="string"
      *         ),
      *     ),
-     *     @OA\Parameter(
-     *         description="tag 主键",
-     *         in="path",
-     *         name="id",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="string"
-     *         ),
-     *     ),
-     *     @OA\Parameter(
-     *         description="alias",
-     *         in="query",
-     *         name="alias",
-     *         required=false,
-     *         @OA\Schema(
-     *             type="string"
-     *         ),
-     *     ),
-     *     @OA\Parameter(
-     *         description="description",
-     *         in="query",
-     *         name="description",
-     *         required=false,
-     *         @OA\Schema(
-     *             type="string"
-     *         ),
-     *     ),
-     *     @OA\Parameter(
-     *         description="单位",
-     *         in="query",
-     *         name="measure",
-     *         required=false,
-     *         @OA\Schema(
-     *             type="string"
-     *         ),
-     *     ),
-     *     @OA\Parameter(
-     *         description="上限值",
-     *         in="query",
-     *         name="upper_limit",
-     *         required=false,
-     *         @OA\Schema(
-     *             type="string"
-     *         ),
-     *     ),
-     *     @OA\Parameter(
-     *         description="下限值",
-     *         in="query",
-     *         name="lower_limit",
-     *         required=false,
-     *         @OA\Schema(
-     *             type="string"
-     *         ),
-     *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="update succeed",
-     *         @OA\Schema(
-     *              @OA\Property(
-     *                  property="historianTag",
-     *                  description="historianTag",
-     *                  allOf={
-     *                      @OA\Schema(ref="#/definitions/HistorianTag")
-     *                  }
-     *             )
-     *         )
+     *         description="succeed",
      *     ),
      * )
      */
-    public function update(Request $request, $id)
+    public function loadMongo(Request $request)
     {
         $factory = $request->input('factory');
         if(!$this->validate_factory($factory)){
             return UtilService::format_data(self::AJAX_FAIL, 'factory参数错误', '');
         }
+
+        set_time_limit(0);
+        $org = Orgnization::where('code', $factory)->first()->toArray();
+        $cfg = ConfigHistorianDB::where('orgnization_id', $org['id'])->first()->toArray(); //电厂的数据库配置信息
+        $start = date('Y-m-d', time()-24*60*60) . ' 00:00:00';
+        $end = date('Y-m-d', time()-24*60*60) . ' 00:59:59';
+        $factory_dcs_db_conn = 'historian_' . $this->tenement['id'] . '_' . $cfg['id']; //电厂MongoDB数据连接
         $tb = 'historian_tag_' . $factory;
-        $this->HistorianTag = (new HistorianTag())->setTable($tb);
+        $historianTag = (new HistorianTag())->setTable($tb);  //保存tag的MongoDB集合
+        $dcsData = (new DcsData())->setConnection($factory_dcs_db_conn); //电厂本地MongoDB数据集合
+        $dcsData->select(['tag_name'])
+                ->where('datetime', '>=', $start)
+                ->where('datetime', '<=', $end)
+                ->groupBy('tag_name')
+                ->chunk(100, function ($tagslist) use ($historianTag) {
+                    foreach ($tagslist as $key => $tag) {
+                        $row = $historianTag->where('tag_name', $tag->tag_name)->first();
+                        if(!$row) {
+                            $historianTag->create([
+                                'tag_name'=>$tag->tag_name
+                            ]);
+                        }
+                    }
+                });
 
-        $tag = $this->HistorianTag->findByID($id);
-        if (!$tag) {
-            return response()->json(UtilService::format_data(self::AJAX_NO_DATA, '该Tag不存在', ''));
-        }
-        $input = $request->input();
-        $allowField = ['alias', 'description', 'measure', 'upper_limit', 'lower_limit'];
-        foreach ($allowField as $field) {
-            if (key_exists($field, $input)) {
-                $inputValue = $input[$field];
-                $tag[$field] = $inputValue;
-            }
-        }
-
-        try {
-            $tag->save();
-            $tag->refresh();
-
-            //删除缓存
-            $this->HistorianTag->updateCache(['id'=>$id]);
-        } catch (QueryException $ex) {
-            return response()->json(UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, ''));
-        }
-        return response()->json(UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $tag));
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
     }
 
     /**

@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Factory\Historian;   //电厂数据模型
+use App\Models\Factory\DcsData;   //电厂数据模型
 use App\Models\Mongo\HistorianData; //本地数据模型
 use App\Models\SIS\HistorianTag;    //本地数据标签模型
 use App\Models\Mongo\HistorianFormatData; //本地格式化数据模型
@@ -70,7 +70,7 @@ class HistorianDataJob implements ShouldQueue
     //从远程historian7.0获取数据
     private function historiandb_data(){
         try{
-            $obj_hitorian_factory = (new HistorianTag())->setConnection($this->remote_conn)->setTable($this->local_tag_table);  //连接电厂数据库
+            $obj_hitorian_factory = (new HistorianTag())->setConnection($this->tenement_conn)->setTable($this->local_tag_table);  //连接电厂数据库
             $obj_hitorian_local = (new HistorianData())->setConnection($this->tenement_mongo_conn)->setTable($this->local_data_table); //连接特定租户下面的本地数据库表
         }
         catch(Exception $ex){
@@ -139,7 +139,7 @@ class HistorianDataJob implements ShouldQueue
     private function mongodb_data(){
         $params = [];
         try{
-            $obj_hitorian_factory = (new Historian())->setConnection($this->remote_conn);  //连接电厂内部数据库
+            $obj_hitorian_factory = (new DcsData())->setConnection($this->remote_conn);  //连接电厂内部数据库
             $obj_hitorian_local = (new HistorianData())->setConnection($this->tenement_conn)->setTable($this->local_data_table); //连接特定租户下面的本地数据库表
         }
         catch(Exception $ex){
@@ -150,16 +150,14 @@ class HistorianDataJob implements ShouldQueue
         $rows = $obj_hitorian_factory->findByDatetime($this->datetime);
         if($rows && count($rows) > 0){
             foreach ($rows as $key => $item) {
-                $local_row = $obj_hitorian_local->findRowBySn($item->_id);
+                $local_row = $obj_hitorian_local->findRowByTagAndTime($item->tag_name, $item->datetime);
                 if(!$local_row){
                     //本地不存在则插入
                     $params[] = array(
-                        '_id'=>$item['_id'],
-                        'tag_name'=>$item['tag_name'],
-                        'description'=>$item['description'],
-                        'value'=>$item['value'],
-                        'datetime'=>$item['datetime'],
-                        'created_at' => $item['datetime'],
+                        'tag_name' => $item->tag_name,
+                        'value'=> $item->value,
+                        'datetime'=> date('Y-m-d H:i:s', strtotime($item->datetime)),
+                        'created_at' => date('Y-m-d H:i:s', strtotime($item->datetime)),
                         'updated_at' => date('Y-m-d H:i:s')
                     );
                 }
@@ -173,6 +171,8 @@ class HistorianDataJob implements ShouldQueue
         else{
             Log::info($this->datetime . '历史数据库没有数据插入');
         }
+
+        $this->historian_format_data();
     }
 
     //根据DCS标准名称格式化获取到的数据
@@ -185,7 +185,7 @@ class HistorianDataJob implements ShouldQueue
             //找到每个映射关系绑定的tagid
             $ids = explode(',', $item->tag_ids);
             $tag_key_values = [];
-            $obj_hitorian_factory = (new HistorianTag())->setConnection($this->remote_conn)->setTable($this->local_tag_table);
+            $obj_hitorian_factory = (new HistorianTag())->setConnection($this->tenement_conn)->setTable($this->local_tag_table);
             $taglists = $obj_hitorian_factory->whereIn('id', $ids)->get();
             if($taglists &&  count($taglists) > 0){
                 $tagname_arr = [];  //所有tagname列表

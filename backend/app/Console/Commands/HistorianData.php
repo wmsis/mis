@@ -7,7 +7,7 @@ use App\Jobs\HistorianDataJob;
 use Illuminate\Support\Facades\DB;
 use App\Models\SIS\Orgnization;
 use App\Models\SIS\ConfigHistorianDB;
-use App\Models\Factory\Historian;
+use App\Models\Factory\DcsData;
 use App\Models\SIS\HistorianTag;
 use Log;
 

@@ -37,7 +37,6 @@ use Jenssegers\Mongodb\Eloquent\Model;
  */
 class EconomyDailyData extends Model
 {
-    protected $collection = 'economy_daily_data_yongqiang2';     //文档名
     protected $primaryKey = '_id';    //设置id
     protected $fillable = ['dcs_standard_id', 'avg_value','min_value', 'max_value', 'date'];
 

@@ -1233,6 +1233,24 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "排序号 小的在前",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "is_show",
+                        "in": "query",
+                        "description": "是否显示",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
@@ -1388,6 +1406,24 @@
                         "in": "query",
                         "description": "单位",
                         "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "排序号 小的在前",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "is_show",
+                        "in": "query",
+                        "description": "是否显示",
+                        "required": false,
                         "schema": {
                             "type": "string"
                         }
@@ -2990,6 +3026,41 @@
                 "summary": "从 Historian 加载 tags",
                 "description": "使用说明：从 Historian 加载 tags, 保存到数据库",
                 "operationId": "historian-tag-load",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "factory",
+                        "in": "query",
+                        "description": "电厂英文名称  如永强二期：yongqiang2",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/historian-tag/load-mongo": {
+            "get": {
+                "tags": [
+                    "历史数据库标签historian tag"
+                ],
+                "summary": "从 MongoDB 加载 tags",
+                "description": "使用说明：从 MongoDB 加载 tags, 保存到数据库",
+                "operationId": "historian-tag-load-mongo",
                 "parameters": [
                     {
                         "name": "token",
@@ -7206,9 +7277,9 @@
     },
     "components": {
         "schemas": {
-            "Historian": {
-                "title": "Historian Model",
-                "description": "Historian Model",
+            "DcsData": {
+                "title": "DcsData Model",
+                "description": "DcsData Model",
                 "properties": {
                     "_id": {
                         "type": "string"
@@ -7220,6 +7291,19 @@
                         "type": "string"
                     },
                     "datetime": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "DcsTag": {
+                "title": "DcsTag Model",
+                "description": "DcsTag Model",
+                "properties": {
+                    "_id": {
+                        "type": "string"
+                    },
+                    "tag_name": {
                         "type": "string"
                     }
                 },
@@ -7333,6 +7417,12 @@
                     },
                     "messure": {
                         "type": "string"
+                    },
+                    "sort": {
+                        "type": "integer"
+                    },
+                    "is_show": {
+                        "type": "integer"
                     }
                 },
                 "type": "object"

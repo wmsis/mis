@@ -124,22 +124,16 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:admin', 'jwt.auth
         Route::prefix('historian-tag')->group(function () {
             Route::get('index', 'HistorianTagController@index');
             Route::get('all', 'HistorianTagController@all');
-            Route::get('listdata', 'HistorianTagController@listWithData');
             Route::get('show/{id}', 'HistorianTagController@show');
             Route::get('load', 'HistorianTagController@load');
+            Route::get('load-mongo', 'HistorianTagController@loadMongo');
             Route::post('show-many', 'HistorianTagController@showMany');
-            Route::post('store', 'HistorianTagController@store');
-            Route::post('update/{id}', 'HistorianTagController@update');
             Route::delete('destroy/{id}', 'HistorianTagController@destroy');
         });
 
         // Historian Data
         Route::prefix('historian-data')->group(function () {
             Route::get('index', 'HistorianDataController@index');
-            Route::post('current-data', 'HistorianDataController@currentData');
-            Route::post('raw-data', 'HistorianDataController@rawData');//原始数据
-            Route::post('sampled-data', 'HistorianDataController@sampledData');
-            Route::post('watch-data', 'HistorianDataController@watchData'); //监控数据
         });
 
         //用户组织

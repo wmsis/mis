@@ -29,7 +29,6 @@ use Jenssegers\Mongodb\Eloquent\Model;
 
 class HistorianData extends Model
 {
-    protected $collection = 'historian_data_yongqiang2';     //文档名
     protected $primaryKey = '_id';    //设置id
     protected $fillable = ['tag_name', 'value', 'datetime'];
 
