@@ -59,6 +59,9 @@ class IEC104DataJob implements ShouldQueue
         }
         else{
             $host = $this->cfgdb['slave_ip'];
+            if(!$host){
+                return false;
+            }
         }
         $port = 2404;
         if(($this->sock = socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) !== FALSE)
