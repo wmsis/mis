@@ -271,7 +271,7 @@ class ApiController extends Controller
      *        )
      *     ),
      *     @OA\Parameter(
-     *         description="电厂简称 英文加数字",
+     *         description="电厂简称 英文加数字 如yongqiang1",
      *         in="query",
      *         name="factory",
      *         required=true,
@@ -297,6 +297,9 @@ class ApiController extends Controller
 
         try{
             copy($tpl_file, $des_file);
+            $contents = file_get_contents($des_file);
+            $new_content = str_replace('yongqiang1', $factory, $contents);
+            file_put_contents($des_file, $new_content);
             Artisan::queue('migrate', []);
             return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $des_file);
         } catch (Exception $e) {
