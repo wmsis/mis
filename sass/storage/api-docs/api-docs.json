@@ -6491,7 +6491,7 @@
                     "max_value": {
                         "type": "string"
                     },
-                    "orgnization_ids": {
+                    "orgnization_id": {
                         "type": "integer"
                     }
                 },

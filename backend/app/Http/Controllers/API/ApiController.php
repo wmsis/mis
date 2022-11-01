@@ -10,11 +10,13 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use UtilService;
 use App\Models\SIS\API;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 use App\Http\Requests\API\ApiStoreRequest;
+use App\Models\SIS\Orgnization;
 use Log;
 
 class ApiController extends Controller
@@ -249,6 +251,70 @@ class ApiController extends Controller
         }
         else{
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
+        }
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/api/add-tables",
+     *     tags={"接口权限apis"},
+     *     operationId="addTables",
+     *     summary="添加新建电厂数据库表",
+     *     description="使用说明：添加新建电厂数据库表",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *        )
+     *     ),
+     *     @OA\Parameter(
+     *         description="电厂简称 英文加数字",
+     *         in="query",
+     *         name="factory",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation",
+     *     )
+     * )
+     */
+    public function addTables(Request $request){
+        $factory = $request->input('factory');
+        if(!$this->validate_factory($factory)){
+            return UtilService::format_data(self::AJAX_FAIL, 'factory参数错误', '');
+        }
+
+        $base_path = base_path();
+        $des_file = $base_path . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'migrations' . DIRECTORY_SEPARATOR . date('Y_m_d') . '_' . rand(100000, 999999) . '_create_factory_table.php';
+        $tpl_file = $base_path . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'migrations' . DIRECTORY_SEPARATOR . '2022_11_01_131620_create_factory_table.php';
+
+        try{
+            copy($tpl_file, $des_file);
+            Artisan::queue('migrate', []);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $des_file);
+        } catch (Exception $e) {
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
+        }
+    }
+
+    private function validate_factory($factory){
+        $tb_list = [];
+        $datalist = Orgnization::where('level', 2)->get();
+        foreach ($datalist as $key => $item) {
+            $tb_list[] = $item->code;
+        }
+        if(!$factory || ($factory && !in_array($factory, $tb_list))){
+            return false;
+        }
+        else{
+            return true;
         }
     }
 }

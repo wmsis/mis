@@ -152,6 +152,7 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:admin', 'jwt.auth
             Route::get('tree', 'ApiController@tree');
             Route::post('store', 'ApiController@store'); //创建用户组织保存
             Route::post('delete', 'ApiController@delete');
+            Route::post('add-tables', 'ApiController@addTables');
         });
 
         // IEC104取得的电表数据

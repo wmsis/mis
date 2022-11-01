@@ -138,6 +138,41 @@
                 }
             }
         },
+        "/api/api/add-tables": {
+            "post": {
+                "tags": [
+                    "接口权限apis"
+                ],
+                "summary": "添加新建电厂数据库表",
+                "description": "使用说明：添加新建电厂数据库表",
+                "operationId": "addTables",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "factory",
+                        "in": "query",
+                        "description": "电厂简称 英文加数字",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
         "/api/auth/login": {
             "post": {
                 "tags": [
