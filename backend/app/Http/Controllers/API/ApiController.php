@@ -303,6 +303,9 @@ class ApiController extends Controller
             Artisan::queue('migrate', []);
             return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $des_file);
         } catch (Exception $e) {
+            if(file_exists($des_file)){
+                unlink($des_file);
+            }
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
