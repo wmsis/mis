@@ -16,7 +16,7 @@ class CreateGrabGarbageDayDataTable extends Migration
         Schema::create('grab_garbage_day_data_yongqiang2', function (Blueprint $table) {
             $table->id();
             $table->integer('liao')->nullable()->comment('料口号');
-            $table->decimal('value', $precision = 8, $scale = 2)->nullable()->comment('累计值');
+            $table->decimal('value', $precision = 10, $scale = 2)->nullable()->comment('累计值');
             $table->date('date')->nullable()->comment('累计日期');
 
             $table->timestamps();
