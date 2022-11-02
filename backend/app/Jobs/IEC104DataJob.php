@@ -349,7 +349,6 @@ class IEC104DataJob implements ShouldQueue
         ksort($this->info_list);
         $sorted_values = $this->info_list;
         $params = array();
-
         if(count($sorted_values) == count($tags)){
             $i = 0;
             foreach ($sorted_values as $key => $item) {
@@ -371,7 +370,8 @@ class IEC104DataJob implements ShouldQueue
                 $electricity->insertMany($params);
                 //Log::info('=========操作成功=========');
             } catch (QueryException $e) {
-
+                Log::info('获取南瑞电表数据异常');
+                Log::info($e->getMessage());
             }
         }
         else{

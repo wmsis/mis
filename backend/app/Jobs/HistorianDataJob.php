@@ -125,7 +125,7 @@ class HistorianDataJob implements ShouldQueue
 
             if($params && count($params) > 0){
                 $res = $obj_hitorian_local->insertMany($params);
-                Log::info($this->datetime . '历史数据库数据插入成功'.count($params).'条');
+                //Log::info($this->datetime . '历史数据库数据插入成功'.count($params).'条');
             }
             else{
                 Log::info($this->datetime . '历史数据库没有数据插入');
@@ -166,7 +166,7 @@ class HistorianDataJob implements ShouldQueue
 
         if($params && count($params) > 0){
             $res = $obj_hitorian_local->insertMany($params);
-            Log::info($this->datetime . '历史数据库数据插入成功'.count($params).'条');
+            //Log::info($this->datetime . '历史数据库数据插入成功'.count($params).'条');
         }
         else{
             Log::info($this->datetime . '历史数据库没有数据插入');

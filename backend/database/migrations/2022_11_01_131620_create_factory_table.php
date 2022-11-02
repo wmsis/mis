@@ -25,7 +25,7 @@ class CreateFactoryTable extends Migration
         Schema::create('electricity_day_data_yongqiang2', function (Blueprint $table) {
             $table->id();
             $table->integer('electricity_map_id')->nullable()->comment('电表映射关系ID');
-            $table->decimal('value', $precision = 8, $scale = 2)->nullable()->comment('累计值');
+            $table->decimal('value', $precision = 20, $scale = 2)->nullable()->comment('累计值');
             $table->date('date')->nullable()->comment('日期');
 
             $table->timestamps();
@@ -34,8 +34,8 @@ class CreateFactoryTable extends Migration
         Schema::create('electricity_yongqiang2', function (Blueprint $table) {
             $table->id();
             $table->integer('electricity_map_id')->nullable()->comment('电表映射关系ID');
-            $table->decimal('value', $precision = 14, $scale = 2)->nullable()->comment('远动获取的原始值');
-            $table->decimal('actual_value', $precision = 14, $scale = 2)->nullable()->comment('实际值');
+            $table->decimal('value', $precision = 20, $scale = 2)->nullable()->comment('远动获取的原始值');
+            $table->decimal('actual_value', $precision = 20, $scale = 2)->nullable()->comment('实际值');
 
             $table->timestamps();
         });
@@ -43,7 +43,7 @@ class CreateFactoryTable extends Migration
         Schema::create('grab_garbage_day_data_yongqiang2', function (Blueprint $table) {
             $table->id();
             $table->integer('liao')->nullable()->comment('料口号');
-            $table->decimal('value', $precision = 8, $scale = 2)->nullable()->comment('累计值');
+            $table->decimal('value', $precision = 10, $scale = 2)->nullable()->comment('累计值');
             $table->date('date')->nullable()->comment('日期');
 
             $table->timestamps();
@@ -68,7 +68,7 @@ class CreateFactoryTable extends Migration
         Schema::create('power_day_data_yongqiang2', function (Blueprint $table) {
             $table->id();
             $table->integer('power_map_id')->nullable()->comment('用电映射关系ID');
-            $table->decimal('value', $precision = 8, $scale = 2)->nullable()->comment('当日值');
+            $table->decimal('value', $precision = 20, $scale = 2)->nullable()->comment('当日值');
             $table->date('date')->nullable()->comment('日期');
 
             $table->timestamps();
@@ -77,7 +77,7 @@ class CreateFactoryTable extends Migration
         Schema::create('weighbridge_day_data_yongqiang2', function (Blueprint $table) {
             $table->id();
             $table->integer('weighbridge_cate_small_id')->nullable()->comment('垃圾分类小类ID');
-            $table->decimal('value', $precision = 8, $scale = 2)->nullable()->comment('净重');
+            $table->decimal('value', $precision = 10, $scale = 2)->nullable()->comment('净重');
             $table->date('date')->nullable()->comment('日期');
 
             $table->timestamps();
