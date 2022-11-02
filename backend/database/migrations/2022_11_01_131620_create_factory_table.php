@@ -15,7 +15,7 @@ class CreateFactoryTable extends Migration
     {
         Schema::create('historian_tag_yongqiang2', function (Blueprint $table) {
             $table->id();
-            $table->string('tag_id', 50)->nullable()->comment('卡车号');
+            $table->string('tag_id', 50)->nullable()->comment('tag ID');
             $table->string('tag_name', 50)->nullable()->comment('tag中文名');
 
             $table->timestamps();

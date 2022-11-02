@@ -140,7 +140,7 @@ class HistorianDataJob implements ShouldQueue
         $params = [];
         try{
             $obj_hitorian_factory = (new DcsData())->setConnection($this->remote_conn);  //连接电厂内部数据库
-            $obj_hitorian_local = (new HistorianData())->setConnection($this->tenement_conn)->setTable($this->local_data_table); //连接特定租户下面的本地数据库表
+            $obj_hitorian_local = (new HistorianData())->setConnection($this->tenement_mongo_conn)->setTable($this->local_data_table); //连接特定租户下面的本地数据库表
         }
         catch(Exception $ex){
             Log::info('连接电厂历史数据库异常');

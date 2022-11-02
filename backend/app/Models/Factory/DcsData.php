@@ -44,7 +44,7 @@ class DcsData extends Model
     ];
 
     public function findByDatetime($datetime){
-        $begin = date('Y-m-d H:i', strtotime($datetime)) . ':00';
+        $begin = date('Y-m-d H:i', strtotime($datetime) - 10 * 60) . ':00';
         $end = date('Y-m-d H:i', strtotime($datetime)) . ':59';
         $rows = self::where('datetime', '>=', $begin)
             ->where('datetime', '<=', $end)
