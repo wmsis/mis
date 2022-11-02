@@ -84,21 +84,25 @@ class IEC104DataJob implements ShouldQueue
                     $receiveStrHex = bin2hex($receiveStr); // 将2进制数据转换成16进制
                     //Log::info('收到16进制报文');
                     //Log::info($receiveStrHex);
-
-                    if (strlen($receiveStrHex) == 12){
-                        #U帧和S帧
-                        if (strpos($receiveStrHex, '68040100') != false){
-                            #S帧
-                            $this->s_frame($receiveStrHex);
+                    $pkgs = $this->package($receiveStrHex);
+                    foreach ($pkgs as $key => $cmd) {
+                        //Log::info('0000000000000000');
+                        //Log::info($cmd);
+                        if (strlen($cmd) == 12){
+                            #U帧和S帧
+                            if (strpos($cmd, '68040100') != false){
+                                #S帧
+                                $this->s_frame($cmd);
+                            }
+                            else{
+                                #U帧
+                                $this->u_frame($cmd);
+                            }
                         }
                         else{
-                            #U帧
-                            $this->u_frame($receiveStrHex);
+                            #I帧
+                            $this->i_frame($cmd);
                         }
-                    }
-                    else{
-                        #I帧
-                        $this->i_frame($receiveStrHex);
                     }
                 }
                 //Log::info('接收消息结束');
@@ -192,6 +196,41 @@ class IEC104DataJob implements ShouldQueue
         $grp = $low_sixteen . ' ' . $high_sixteen;
         #print($grp)
         return $grp;
+    }
+
+    #递归获取可能粘包的报文
+    private function package($hex_str){
+        $rtn = $this->str_substr($hex_str);
+        $pkgs = [];
+        $pkgs[] = $rtn[0];
+        if($rtn[1]){
+            $arr = $this->package($rtn[1]);
+            $pkgs = array_merge($pkgs, $arr);
+        }
+        return $pkgs;
+    }
+
+    #截取字符串中第一个完整的报文
+    private function str_substr($hex_str){
+        $cmd_arr = [];
+        if(strpos($hex_str, '68') !== false && strpos($hex_str, '68') == 0){
+            $length = hexdec(substr($hex_str, 2, 2));
+            $cmd_len = $length * 2 + 4;
+            if(strlen($hex_str) > $cmd_len){
+                //多个包需要拆包
+                $cmd = substr($hex_str, 0, $cmd_len);
+                $other_cmd = substr($hex_str, $cmd_len); //其他包作为一个整体递归
+            }
+            else{
+                //单个包
+                $cmd = $hex_str;
+                $other_cmd = '';
+            }
+        }
+
+        $cmd_arr[] = $cmd;
+        $cmd_arr[] = $other_cmd;
+        return $cmd_arr;
     }
 
     //S帧回调
