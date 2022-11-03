@@ -63,7 +63,7 @@ class HistorianData extends Command
             //循环电厂
             $factories = $orgObj->where('level', 2)->get();
             foreach ($factories as $k2 => $factory) {
-                if($factory->code && $factory->id == 8){
+                if($factory->code){
                     //具体电厂的历史数据库配置信息
                     $cfg = $configHistorian->where('orgnization_id', $factory->id)->first();
                     if($cfg){
