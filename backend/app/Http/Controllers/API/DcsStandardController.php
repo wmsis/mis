@@ -656,8 +656,7 @@ class DcsStandardController extends Controller
     {
         ini_set('memory_limit', -1);
         $ids = $request->input('ids');
-        if($ids == 'all'){
-            $id_arr = explode(',', $ids);
+        if($ids == 'all' || $ids == ''){
             $final_data = DcsStandard::select(['en_name', 'cn_name', 'type', 'sort', 'messure'])->get()->toArray();
         }
         else{

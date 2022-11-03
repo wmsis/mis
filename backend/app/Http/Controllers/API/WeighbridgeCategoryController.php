@@ -743,8 +743,7 @@ class WeighbridgeCategoryController extends Controller
     {
         ini_set('memory_limit', -1);
         $ids = $request->input('ids');
-        if($ids == 'all'){
-            $id_arr = explode(',', $ids);
+        if($ids == 'all' || $ids == ''){
             $final_data = WeighbridgeCateBig::select(['name', 'description'])->get()->toArray();
         }
         else{
