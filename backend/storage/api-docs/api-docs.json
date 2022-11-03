@@ -159,7 +159,7 @@
                     {
                         "name": "factory",
                         "in": "query",
-                        "description": "电厂简称 英文加数字",
+                        "description": "电厂简称 英文加数字 如yongqiang1",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -1527,6 +1527,76 @@
                 "responses": {
                     "200": {
                         "description": "detroy succeed"
+                    }
+                }
+            }
+        },
+        "/api/dcs-standard/import": {
+            "post": {
+                "tags": [
+                    "DCS标准命名dcs-standard"
+                ],
+                "summary": "导入多条数据",
+                "description": "使用说明：导入多条数据",
+                "operationId": "dcs-standard-import",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "json",
+                        "in": "query",
+                        "description": "JSON文件",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/dcs-standard/download": {
+            "get": {
+                "tags": [
+                    "DCS标准命名dcs-standard"
+                ],
+                "summary": "导出多条数据",
+                "description": "使用说明：导出多条数据",
+                "operationId": "dcs-standard-download",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ids",
+                        "in": "query",
+                        "description": "ID列表 多个英文逗号隔开  所有传all",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
                     }
                 }
             }

@@ -102,6 +102,7 @@
                         that.$router.push({
                             path: goto_url
                         });
+                        that.test();
                     },
                     fail(err){
                         that.loading = false;
@@ -113,29 +114,33 @@
                 let that = this;
                 that.ajax({
                     method: 'POST',
-                    url: '/device-property-template/store',
+                    url: '/dcs-standard/import',
                     data: {
-                        id: 4,
-                        is_group: 0,
-                        level: 2,
-                        parent_id: 3,
-                        sort: 10,
-                        name: '锅炉1',
-                        title: '锅炉1',
-                        properties: JSON.stringify([
-                            {
-                                name: ' 设备名称',
-                                type: 'text',
-                                value: '',
-                                default_value: ''
-                            },
-                            {
-                                name: '日期',
-                                type: 'date',
-                                value: '',
-                                default_value: ''
-                            }
-                        ])
+                        json: JSON.stringify({
+                            "header": [
+                                "cn_name",
+                                "en_name",
+                                "messure"
+                            ],
+                            "results": [
+                                {
+                                    "cn_name": "炉温11",
+                                    "en_name": "lw",
+                                    "messure": "℃"
+                                },
+                                {
+                                    "cn_name": "炉温22",
+                                    "en_name": "lllm",
+                                    "messure": "℃"
+                                },
+                                {
+                                    "cn_name": "炉温33",
+                                    "en_name": "ll3",
+                                    "messure": "℃"
+                                }
+                            ],
+                            "name": "统一字段名导入.xlsx"
+                        })
                     },
                     success(response) {
                         console.log('0000000000000');

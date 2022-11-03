@@ -63,4 +63,8 @@ class DcsStandard extends Model
     {
         return $this->belongsTo(DcsGroup::class);
     }
+
+    public function insertMany($params){
+        return self::insert($params);
+    }
 }

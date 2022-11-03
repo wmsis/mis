@@ -185,6 +185,8 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:admin', 'jwt.auth
 
         //如有补充路由应在 Route::apiResources 方法之前定义
         Route::get('dcs-standard/lists', 'DcsStandardController@lists');
+        Route::get('dcs-standard/download', 'DcsStandardController@download');
+        Route::post('dcs-standard/import', 'DcsStandardController@import');
         Route::get('dcs-group/show-relation/{id}', 'DcsGroupController@showRelation');
         Route::post('dcs-group/bind-relation', 'DcsGroupController@bindRelation');
         Route::get('electricity-map/lists', 'ElectricityMapController@lists');
