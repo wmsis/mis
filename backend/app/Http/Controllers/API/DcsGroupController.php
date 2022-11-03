@@ -497,6 +497,11 @@ class DcsGroupController extends Controller
         try {
             $params = [];
             foreach ($results as $key => $item) {
+                $row = DcsGroup::where('name', $item['name'])->first();
+                if($row && $row->id){
+                    continue;
+                }
+
                 if(isset($item['index'])){
                     unset($item['index']);
                 }
@@ -505,8 +510,14 @@ class DcsGroupController extends Controller
                 $temp['updated_at'] = date('Y-m-d H:i:s');
                 $params[] = $temp;
             }
-            $obj->insertMany($params);
-            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
+
+            if(!empty($params)){
+                $obj->insertMany($params);
+                return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
+            }
+            else{
+                return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
+            }
         } catch (Exception $e) {
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
