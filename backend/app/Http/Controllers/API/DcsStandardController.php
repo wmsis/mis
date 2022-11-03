@@ -595,6 +595,9 @@ class DcsStandardController extends Controller
         try {
             $params = [];
             foreach ($results as $key => $item) {
+                if(isset($item['index'])){
+                    unset($item['index']);
+                }
                 $temp = $item;
                 $temp['created_at'] = date('Y-m-d H:i:s');
                 $temp['updated_at'] = date('Y-m-d H:i:s');
