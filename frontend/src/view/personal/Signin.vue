@@ -102,7 +102,6 @@
                         that.$router.push({
                             path: goto_url
                         });
-                        //that.test();
                     },
                     fail(err){
                         that.loading = false;
@@ -112,6 +111,13 @@
             },
             test(){
                 let that = this;
+                let token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9taXMuY29tOjg4ODhcL2FwaVwvYWRtaW5cL2xvZ2luIiwiaWF0IjoxNjY3NDU4NDM5LCJleHAiOjE2Njc0NjIwMzksIm5iZiI6MTY2NzQ1ODQzOSwianRpIjoiR0RnRWpYSFRBeGVpMXdMWSIsInN1YiI6MiwicHJ2IjoiYTMyOGEzMWQ4MzQwM2NkMThiZjRmODg3MmM5ZTJkOWJmZTFlNGVjMyIsInJvbGUiOiJhZG1pbiJ9.bBBCjLV8Vsc42IhFGqiHaZOa_O8shpWAIM6degaZVZk';
+                that.$store.dispatch('login', {
+                    access_token: token,
+                    refresh_token: '',
+                    expiresIn: 3500
+                });
+
                 that.ajax({
                     method: 'POST',
                     url: '/dcs-standard/import',
@@ -155,6 +161,7 @@
         mounted(){
             console.log("login")
             this.$store.dispatch('logout')
+            this.test();
         }
     }
 </script>

@@ -17,6 +17,7 @@ use UtilService;
 use Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\BaseExport;
+use Log;
 
 class DcsStandardController extends Controller
 {
@@ -584,7 +585,7 @@ class DcsStandardController extends Controller
      *     ),
      * )
      */
-    public function import()
+    public function import(Request $request)
     {
         $json = $request->input('json');
         $arr = json_decode($json, true);
@@ -648,12 +649,12 @@ class DcsStandardController extends Controller
         }
         else{
             $id_arr = explode(',', $ids);
-            $final_data = DcsStandard::select(['en_name', 'cn_name', 'type', 'sort', 'messure'])->whereIn('id', '')->get()->toArray();
+            $final_data = DcsStandard::select(['en_name', 'cn_name', 'type', 'sort', 'messure'])->whereIn('id', $id_arr)->get()->toArray();
         }
         $headings = ['英文名称', '中文名称', '类型', '排序号', '单位'];
         array_unshift($final_data, $headings);
         $excel = new BaseExport($final_data, $author='猫小鱼', $sheetname='统一字段名');
 
-        Excel::store($excel, '统一字段名_' . date('YmdHis') . '.xlsx');
+        Excel::download($excel, '统一字段名_' . date('YmdHis') . '.xlsx');
     }
 }
