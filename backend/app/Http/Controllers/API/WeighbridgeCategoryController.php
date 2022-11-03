@@ -15,6 +15,8 @@ use App\Models\SIS\WeighbridgeCateSmall;
 use App\Models\SIS\WeighBridgeFormat;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\BaseExport;
 use UtilService;
 use Log;
 
@@ -636,6 +638,110 @@ class WeighbridgeCategoryController extends Controller
         }
         $row->small_names;
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $row);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/weighbridge-category/import",
+     *     tags={"地磅垃圾分类weighbridge-category"},
+     *     operationId="weighbridge-category-import",
+     *     summary="导入多条数据",
+     *     description="使用说明：导入多条数据",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="JSON文件",
+     *         in="query",
+     *         name="json",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="succeed",
+     *     ),
+     * )
+     */
+    public function import(Request $request)
+    {
+        $json = $request->input('json');
+        $arr = json_decode($json, true);
+        $header = $arr['header'];
+        $results = $arr['results'];
+        $obj = new WeighbridgeCateBig();
+
+        try {
+            $params = [];
+            foreach ($results as $key => $item) {
+                $temp = $item;
+                $temp['created_at'] = date('Y-m-d H:i:s');
+                $temp['updated_at'] = date('Y-m-d H:i:s');
+                $params[] = $temp;
+            }
+            $obj->insertMany($params);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
+        } catch (Exception $e) {
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/weighbridge-category/download",
+     *     tags={"地磅垃圾分类weighbridge-category"},
+     *     operationId="weighbridge-category-download",
+     *     summary="导出多条数据",
+     *     description="使用说明：导出多条数据",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="ID列表 多个英文逗号隔开  所有传all",
+     *         in="query",
+     *         name="ids",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="succeed",
+     *     ),
+     * )
+     */
+    public function download(Request $request)
+    {
+        ini_set('memory_limit', -1);
+        $ids = $request->input('ids');
+        if($ids == 'all'){
+            $id_arr = explode(',', $ids);
+            $final_data = WeighbridgeCateBig::select(['name', 'description'])->get()->toArray();
+        }
+        else{
+            $id_arr = explode(',', $ids);
+            $final_data = WeighbridgeCateBig::select(['name', 'description'])->whereIn('id', $id_arr)->get()->toArray();
+        }
+        $headings = ['名称', '描述'];
+        array_unshift($final_data, $headings);
+        $excel = new BaseExport($final_data, $author='猫小鱼', $sheetname='垃圾分类');
+
+        return Excel::download($excel, '统一字段名_' . date('YmdHis') . '.xlsx');
     }
 }
 

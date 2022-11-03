@@ -44,4 +44,8 @@ class DcsGroup extends Model
     {
         return $this->hasMany(DcsStandard::class);
     }
+
+    public function insertMany($params){
+        return self::insert($params);
+    }
 }

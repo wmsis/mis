@@ -18,4 +18,8 @@ class WeighbridgeCateBig extends Model
     {
         return $this->hasMany('App\Models\SIS\WeighbridgeCateSmall');
     }
+
+    public function insertMany($params){
+        return self::insert($params);
+    }
 }

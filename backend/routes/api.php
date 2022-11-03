@@ -181,6 +181,8 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:admin', 'jwt.auth
             Route::get('page-small', 'WeighbridgeCategoryController@pageSmall');
             Route::get('show-relation/{id}', 'WeighbridgeCategoryController@showRelation');
             Route::post('bind-relation', 'WeighbridgeCategoryController@bindRelation');
+            Route::get('download', 'WeighbridgeCategoryController@download');
+            Route::post('import', 'WeighbridgeCategoryController@import');
         });
 
         //如有补充路由应在 Route::apiResources 方法之前定义
@@ -189,6 +191,8 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:admin', 'jwt.auth
         Route::post('dcs-standard/import', 'DcsStandardController@import');
         Route::get('dcs-group/show-relation/{id}', 'DcsGroupController@showRelation');
         Route::post('dcs-group/bind-relation', 'DcsGroupController@bindRelation');
+        Route::get('dcs-group/download', 'DcsGroupController@download');
+        Route::post('dcs-group/import', 'DcsGroupController@import');
         Route::get('electricity-map/lists', 'ElectricityMapController@lists');
         //API 资源路由  DCS映射关系 标准DCS 电表映射关系 抓斗数据库配置 电表数据库配置 历史数据库配置
         Route::apiResources([
