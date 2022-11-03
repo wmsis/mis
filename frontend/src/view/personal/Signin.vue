@@ -102,7 +102,7 @@
                         that.$router.push({
                             path: goto_url
                         });
-                        that.test();
+                        //that.test();
                     },
                     fail(err){
                         that.loading = false;

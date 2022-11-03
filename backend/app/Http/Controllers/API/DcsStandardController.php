@@ -644,11 +644,11 @@ class DcsStandardController extends Controller
         $ids = $request->input('ids');
         if($ids == 'all'){
             $id_arr = explode(',', $ids);
-            $final_data = DcsStandard::select(['en_name', 'cn_name', 'type', 'sort', 'messure'])->get();
+            $final_data = DcsStandard::select(['en_name', 'cn_name', 'type', 'sort', 'messure'])->get()->toArray();
         }
         else{
             $id_arr = explode(',', $ids);
-            $final_data = DcsStandard::select(['en_name', 'cn_name', 'type', 'sort', 'messure'])->whereIn('id', '')->get();
+            $final_data = DcsStandard::select(['en_name', 'cn_name', 'type', 'sort', 'messure'])->whereIn('id', '')->get()->toArray();
         }
         $headings = ['英文名称', '中文名称', '类型', '排序号', '单位'];
         array_unshift($final_data, $headings);
