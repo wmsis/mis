@@ -807,6 +807,76 @@
                 }
             }
         },
+        "/api/dcs-group/import": {
+            "post": {
+                "tags": [
+                    "DCS分组dcs-group"
+                ],
+                "summary": "导入多条数据",
+                "description": "使用说明：导入多条数据",
+                "operationId": "dcs-group-import",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "json",
+                        "in": "query",
+                        "description": "JSON文件",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/dcs-group/download": {
+            "get": {
+                "tags": [
+                    "DCS分组dcs-group"
+                ],
+                "summary": "导出多条数据",
+                "description": "使用说明：导出多条数据",
+                "operationId": "dcs-group-download",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ids",
+                        "in": "query",
+                        "description": "ID列表 多个英文逗号隔开  所有传all",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
         "/api/dcs-map": {
             "get": {
                 "tags": [
@@ -3988,6 +4058,76 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/weighbridge-category/import": {
+            "post": {
+                "tags": [
+                    "地磅垃圾分类weighbridge-category"
+                ],
+                "summary": "导入多条数据",
+                "description": "使用说明：导入多条数据",
+                "operationId": "weighbridge-category-import",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "json",
+                        "in": "query",
+                        "description": "JSON文件",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
+        "/api/weighbridge-category/download": {
+            "get": {
+                "tags": [
+                    "地磅垃圾分类weighbridge-category"
+                ],
+                "summary": "导出多条数据",
+                "description": "使用说明：导出多条数据",
+                "operationId": "weighbridge-category-download",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ids",
+                        "in": "query",
+                        "description": "ID列表 多个英文逗号隔开  所有传all",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 ],
