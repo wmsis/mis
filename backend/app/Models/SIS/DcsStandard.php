@@ -5,6 +5,8 @@ namespace App\Models\SIS;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\SIS\DcsGroup;
+use Carbon\Carbon;
+use DateTimeInterface;
 
 /**
  * 创建数据模型
@@ -51,11 +53,6 @@ class DcsStandard extends Model
     protected $table = 'dcs_standard';
     protected $fillable = ['en_name', 'cn_name', 'dcs_group_id', 'type', 'messure', 'sort', 'is_show'];
 
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:i:s',
-        'updated_at' => 'datetime:Y-m-d H:i:s'
-    ];
-
     /**
      * 获取拥有此标准DCS名称的分组
      */
@@ -67,4 +64,8 @@ class DcsStandard extends Model
     public function insertMany($params){
         return self::insert($params);
     }
-}
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format(Carbon::parse($date)->toDateTimeString());
+    }
