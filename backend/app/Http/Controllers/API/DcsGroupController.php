@@ -569,7 +569,7 @@ class DcsGroupController extends Controller
         array_unshift($final_data, $headings);
         $excel = new BaseExport($final_data, $author='猫小鱼', $sheetname='统一字段名分组');
 
-        return Excel::download($excel, '统一字段名_' . date('YmdHis') . '.xlsx');
+        return Excel::download($excel, '统一字段分组名_' . date('YmdHis') . '.xlsx');
     }
 }
 
