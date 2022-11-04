@@ -349,7 +349,6 @@ class AdminController extends Controller
         $id = $request->input('id');
         $username = $request->input('username');
         $nickname = $request->input('nickname');
-        $password = $request->input('password');
 
         $row = Admin::where('username', $username)->first();
         if (($id && $row && $row->id != $id) || (!$id && $row)) {
@@ -366,7 +365,7 @@ class AdminController extends Controller
                 else {
                     $params = request(['username', 'nickname']);
                     $params['type'] = 'system';
-                    $params['password'] = bcrypt($password);
+                    $params['password'] = bcrypt('123456');
                     Admin::create($params); //save 和 create 的不同之处在于 save 接收整个 Eloquent 模型实例而 create 接收原生 PHP 数组
                 }
                 DB::commit();
