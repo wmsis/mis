@@ -41,9 +41,9 @@ class MiniController extends Controller
             //将session_key写进缓存，add 方法只会在缓存项不存在的情况下添加数据到缓存（分钟数）
             $res = Cache::add($key, $param, 60 * 6);
             if ($res) {
-                return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', ['third_session'=>$third_session]);
+                return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['third_session'=>$third_session]);
             } else {
-                return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+                return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
             }
         }
         else{

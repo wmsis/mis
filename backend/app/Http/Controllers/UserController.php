@@ -203,7 +203,7 @@ class UserController extends Controller
      *         description="id",
      *         in="query",
      *         name="id",
-     *         required=true,
+     *         required=false,
      *         @OA\Schema(
      *             type="integer"
      *         ),
@@ -327,10 +327,10 @@ class UserController extends Controller
                     User::create($params); //save 和 create 的不同之处在于 save 接收整个 Eloquent 模型实例而 create 接收原生 PHP 数组
                 }
                 DB::commit();
-                return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', '');
+                return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
             } catch (QueryException $ex) {
                 DB::rollback();
-                return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+                return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
             }
         }
     }
@@ -477,14 +477,13 @@ class UserController extends Controller
      */
     public function delete(SingleDeleteRequest $request){
         $id = $request->input('id');
-
         $user = User::find($id);
-        $res = $user->delete();
-        if($user && $res){
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+        if($user){
+            $user->delete();
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
         }
         else{
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 
@@ -540,9 +539,9 @@ class UserController extends Controller
             $idarray = explode(',', $idstring);
             $res = User::whereIn('id', $idarray)->delete();;
             if ($res) {
-                return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+                return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
             } else {
-                return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+                return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
             }
         }
         else{
@@ -610,9 +609,9 @@ class UserController extends Controller
             $user->password = bcrypt($newpwd);
             $res = $user->save();
             if ($res) {
-                return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+                return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
             } else {
-                return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+                return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
             }
         }
         else{
@@ -660,9 +659,9 @@ class UserController extends Controller
         ]);
 
         if ($res) {
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
         } else {
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 
@@ -765,10 +764,10 @@ class UserController extends Controller
                 $user->deleteOrgnization($orgnization);
             }
             DB::commit();
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', '');
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
         } catch (QueryException $ex) {
             DB::rollback();
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 }

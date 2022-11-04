@@ -765,10 +765,10 @@ class WechatController extends Controller
         }
 
         if($res){
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
         }
         else{
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 
@@ -809,9 +809,9 @@ class WechatController extends Controller
         if($obj) {
             $res = $obj->delete();
             if ($res) {
-                return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+                return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
             } else {
-                return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+                return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
             }
         }
         else{
@@ -963,10 +963,10 @@ class WechatController extends Controller
         }
 
         if($res){
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
         }
         else{
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 
@@ -1049,10 +1049,10 @@ class WechatController extends Controller
         if($obj) {
             $res = $obj->delete();
             if ($res) {
-                return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+                return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
             }
             else {
-                return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+                return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
             }
         }
         else{
@@ -1241,7 +1241,7 @@ class WechatController extends Controller
                     $fail++;
                 }
             }
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功'.$success.'条，失败'.$fail.'条', '');
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG.$success.'条，失败'.$fail.'条', '');
         }
         else{
             return UtilService::format_data(self::AJAX_FAIL, '参数错误', '');
@@ -1384,10 +1384,10 @@ class WechatController extends Controller
         if($obj) {
             $res = $obj->delete();
             if ($res) {
-                return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+                return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
             }
             else {
-                return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+                return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
             }
         }
         else{
@@ -1431,9 +1431,9 @@ class WechatController extends Controller
         $idarray = explode(',', $idstring);
         $res = MemberPicTxt::whereIn('id', $idarray)->delete();
         if ($res) {
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
         } else {
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 
@@ -1550,10 +1550,10 @@ class WechatController extends Controller
         }
 
         if($res){
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
         }
         else{
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 
@@ -1594,10 +1594,10 @@ class WechatController extends Controller
         if($obj) {
             $res = $obj->delete();
             if ($res) {
-                return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+                return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
             }
             else {
-                return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+                return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
             }
         }
         else{
@@ -1643,10 +1643,10 @@ class WechatController extends Controller
                 ->orderBy('id', 'desc')->first();
 
             if ($data) {
-                return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $data);
+                return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $data);
             }
             else {
-                return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+                return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
             }
         }
         else{
@@ -2171,10 +2171,10 @@ class WechatController extends Controller
         if($row){
             $res = $row->delete();
             if($res){
-                return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', ['id'=>$id]);
+                return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['id'=>$id]);
             }
             else{
-                return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+                return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
             }
         }
         else{

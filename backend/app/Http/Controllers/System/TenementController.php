@@ -106,9 +106,9 @@ class TenementController extends Controller
                 $expire = auth('admin')->factory()->getTTL() * 60;
                 MyCacheService::setCache($key, $data, $expire);
             }
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $data);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $data);
         }
-        return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+        return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
     }
 
     /**
@@ -289,9 +289,9 @@ class TenementController extends Controller
         try {
             $res = Tenement::create($input);
         } catch (QueryException $e) {
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
     }
 
     /**
@@ -336,7 +336,7 @@ class TenementController extends Controller
      */
     public function show(Tenement $tenement)
     {
-        return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $tenement);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $tenement);
     }
 
     /**

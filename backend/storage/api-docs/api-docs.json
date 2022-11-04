@@ -4990,6 +4990,93 @@
                 }
             }
         },
+        "/api/admin/store": {
+            "post": {
+                "tags": [
+                    "系统管理员admin"
+                ],
+                "summary": "保存管理员",
+                "description": "使用说明：保存管理员",
+                "operationId": "storeAdmin",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "id",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "username",
+                        "in": "query",
+                        "description": "管理员名称",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "nickname",
+                        "in": "query",
+                        "description": "管理员昵称",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/admin/delete": {
+            "post": {
+                "tags": [
+                    "系统管理员admin"
+                ],
+                "summary": "删除管理员",
+                "description": "使用说明：删除管理员",
+                "operationId": "deleteAdmin",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "管理员ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
         "/api/tenements/lists": {
             "get": {
                 "tags": [
@@ -5441,7 +5528,7 @@
                         "name": "id",
                         "in": "query",
                         "description": "id",
-                        "required": true,
+                        "required": false,
                         "schema": {
                             "type": "integer"
                         }

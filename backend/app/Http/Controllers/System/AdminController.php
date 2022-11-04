@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use UtilService;
 use MyCacheService;
 use App\Models\System\Admin;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 use JWTAuth;
 use Hash;
 use Log;
@@ -104,7 +106,7 @@ class AdminController extends Controller
     public function me()
     {
         $user = auth('admin')->user();
-        return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $user);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $user);
     }
 
     /**
@@ -186,9 +188,8 @@ class AdminController extends Controller
             'token_type' => 'bearer',
             'expires_in' => auth('admin')->factory()->getTTL() * 60
         ];
-        return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $rtn);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $rtn);
     }
-
 
     /**
      * @OA\Post(
@@ -240,9 +241,9 @@ class AdminController extends Controller
             $user->password = bcrypt($newpwd);
             $res = $user->save();
             if ($res) {
-                return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+                return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
             } else {
-                return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+                return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
             }
         }
         else{
@@ -290,9 +291,133 @@ class AdminController extends Controller
         ]);
 
         if ($res) {
-            return UtilService::format_data(self::AJAX_SUCCESS, '操作成功', $res);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
         } else {
-            return UtilService::format_data(self::AJAX_FAIL, '操作失败', '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
+        }
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/admin/store",
+     *     tags={"系统管理员admin"},
+     *     operationId="storeAdmin",
+     *     summary="保存管理员",
+     *     description="使用说明：保存管理员",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="id",
+     *         in="query",
+     *         name="id",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="integer"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="管理员名称",
+     *         in="query",
+     *         name="username",
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="管理员昵称",
+     *         in="query",
+     *         name="nickname",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation",
+     *     )
+     * )
+     */
+    public function store(Request $request){
+        $id = $request->input('id');
+        $username = $request->input('username');
+        $nickname = $request->input('nickname');
+        $password = $request->input('password');
+
+        $row = Admin::where('username', $username)->first();
+        if (($id && $row && $row->id != $id) || (!$id && $row)) {
+            return UtilService::format_data(self::AJAX_FAIL, '该用户已存在或已软删除', '');
+        } else {
+            DB::beginTransaction();
+            try {
+                if ($id) {
+                    $admin = Admin::find($id);
+                    $admin->username = $username;
+                    $admin->nickname = $nickname;
+                    $admin->save();
+                }
+                else {
+                    $params = request(['username', 'nickname']);
+                    $params['type'] = 'system';
+                    $params['password'] = bcrypt($password);
+                    Admin::create($params); //save 和 create 的不同之处在于 save 接收整个 Eloquent 模型实例而 create 接收原生 PHP 数组
+                }
+                DB::commit();
+                return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
+            } catch (QueryException $ex) {
+                DB::rollback();
+                return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
+            }
+        }
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/admin/delete",
+     *     tags={"系统管理员admin"},
+     *     operationId="deleteAdmin",
+     *     summary="删除管理员",
+     *     description="使用说明：删除管理员",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="管理员ID",
+     *         in="query",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation",
+     *     )
+     * )
+     */
+    public function delete(Request $request){
+        $id = $request->input('id');
+        $user = Admin::find($id);
+        if($user){
+            $user->delete();
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
+        }
+        else{
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
 }
