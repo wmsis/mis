@@ -590,20 +590,30 @@ class DcsStandardController extends Controller
         $arr = json_decode($json, true);
         $header = $arr['header'];
         $results = $arr['results'];
-        $obj = new DcsStandard();
 
+        if(!isset($header['en_name']) || !isset($header['cn_name'])){
+            return UtilService::format_data(self::AJAX_FAIL, '导入格式不正确', '');
+        }
+
+        $obj = new DcsStandard();
         try {
             $params = [];
+            $fillable = array('en_name', 'cn_name', 'type', 'sort', 'messure');
             foreach ($results as $key => $item) {
                 $row = DcsStandard::where('en_name', $item['en_name'])->orWhere('cn_name', $item['cn_name'])->first();
                 if($row && $row->id){
+                    //去除重名的
                     continue;
                 }
 
-                if(isset($item['index'])){
-                    unset($item['index']);
+                //只导入允许的字段
+                $temp = array();
+                foreach ($item as $k9 => $val) {
+                    if(in_array($k9, $fillable)){
+                        $temp[$k9] = $val;
+                    }
                 }
-                $temp = $item;
+
                 $temp['created_at'] = date('Y-m-d H:i:s');
                 $temp['updated_at'] = date('Y-m-d H:i:s');
                 $params[] = $temp;

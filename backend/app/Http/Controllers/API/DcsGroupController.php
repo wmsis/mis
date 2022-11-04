@@ -492,20 +492,30 @@ class DcsGroupController extends Controller
         $arr = json_decode($json, true);
         $header = $arr['header'];
         $results = $arr['results'];
-        $obj = new DcsGroup();
 
+        if(!isset($header['name'])){
+            return UtilService::format_data(self::AJAX_FAIL, '导入格式不正确', '');
+        }
+
+        $obj = new DcsGroup();
         try {
             $params = [];
+            $fillable = array('name', 'description');
             foreach ($results as $key => $item) {
                 $row = DcsGroup::where('name', $item['name'])->first();
                 if($row && $row->id){
+                    //去除重名的
                     continue;
                 }
 
-                if(isset($item['index'])){
-                    unset($item['index']);
+                //只导入允许的字段
+                $temp = array();
+                foreach ($item as $k9 => $val) {
+                    if(in_array($k9, $fillable)){
+                        $temp[$k9] = $val;
+                    }
                 }
-                $temp = $item;
+
                 $temp['created_at'] = date('Y-m-d H:i:s');
                 $temp['updated_at'] = date('Y-m-d H:i:s');
                 $params[] = $temp;
