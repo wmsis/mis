@@ -113,7 +113,7 @@ class WeighBridgeController extends Controller
             $rows = $rows->where('product', 'like', "%{$product}%");
         }
         $total = $rows->count();
-        $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
+        $rows = $rows->orderBy('id', 'desc')->offset(($page - 1) * $perPage)->limit($perPage)->get();
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total]);
     }
 
