@@ -15,6 +15,9 @@ class Admin extends Authenticatable implements JWTSubject
 
     protected $connection = 'mysql_mis';  //连接名
     protected $table = 'admin';
+    protected $fillable = [
+        'username', 'type', 'nickname', 'password'
+    ];
 
     //配置 保持一直
     protected $guard = 'admin';
