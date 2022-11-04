@@ -685,6 +685,7 @@ class WeighbridgeCategoryController extends Controller
         $obj = new WeighbridgeCateBig();
         try {
             $params = [];
+            $fillable = array('name', 'description');
             foreach ($results as $key => $item) {
                 $row = WeighbridgeCateBig::where('name', $item['name'])->first();
                 if($row && $row->id){
@@ -699,7 +700,7 @@ class WeighbridgeCategoryController extends Controller
                         $temp[$k9] = $val;
                     }
                 }
-                
+
                 $temp['created_at'] = date('Y-m-d H:i:s');
                 $temp['updated_at'] = date('Y-m-d H:i:s');
                 $params[] = $temp;
