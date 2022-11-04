@@ -38,6 +38,7 @@ Route::group(['namespace' => 'App\Http\Controllers\System', 'prefix' => 'admin',
     Route::post('resetpwd', 'AdminController@resetpwd');
     Route::post('store', 'AdminController@store');
     Route::post('delete', 'AdminController@delete');
+    Route::get('page', 'AdminController@page'); //用户列表页
 });
 
 //系统租户和系统组织

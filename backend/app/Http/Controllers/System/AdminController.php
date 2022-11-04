@@ -420,4 +420,94 @@ class AdminController extends Controller
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
     }
+
+    /**
+     * @OA\Get(
+     *     path="/api/admin/page",
+     *     tags={"系统管理员admin"},
+     *     operationId="admins",
+     *     summary="管理员列表",
+     *     description="使用说明：管理员列表",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="当前分页",
+     *         in="query",
+     *         name="page",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="每页获取数量",
+     *         in="query",
+     *         name="num",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="integer"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="搜索关键词",
+     *         in="query",
+     *         name="username",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *      ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation",
+     *     )
+     * )
+     */
+    public function page(PageRequest $request){
+        $page = $request->input('page');
+        $num = $request->input('num');
+        $num = $num ? $num : 10;
+        $username = $request->input('username');
+        $offset = ($page - 1) * $num;
+        $like = '%' . $username . '%';
+
+        $total = Admin::select(['id']);
+        $admins = Admin::select(['*']);
+
+        if($username){
+            $total = $total->where('username', 'like', $like);
+            $admins = $admins->where('username', 'like', $like);
+        }
+
+        $total = $total->count();
+        $admins = $admins->orderBy('id', 'desc')
+            ->offset($offset)
+            ->limit($num)
+            ->get();
+
+        foreach ($admins as $key=>$item) {
+            if($item->type == 'system'){
+                $admins[$key]['type_name'] = '系统超级管理员';
+            }
+            elseif($item->type == 'guest'){
+                $admins[$key]['type_name'] = '游客';
+            }
+            else{
+                $admins[$key]['type_name'] = '';
+            }
+        }
+
+        $res = array(
+            'data' => $admins,
+            'total' => $total
+        );
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
+    }
 }
