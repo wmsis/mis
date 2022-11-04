@@ -69,3 +69,4 @@ class DcsStandard extends Model
     {
         return $date->format(Carbon::parse($date)->toDateTimeString());
     }
+}
