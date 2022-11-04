@@ -414,7 +414,7 @@ class AdminController extends Controller
         $user = Admin::find($id);
         if($user){
             $user->delete();
-            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
         }
         else{
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');

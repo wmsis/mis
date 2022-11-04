@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Admin extends Authenticatable implements JWTSubject
 {
-    use Notifiable;
+    use softDeletes, Notifiable;
 
     protected $connection = 'mysql_mis';  //连接名
     protected $table = 'admin';
