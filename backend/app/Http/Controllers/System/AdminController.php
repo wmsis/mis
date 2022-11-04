@@ -470,7 +470,7 @@ class AdminController extends Controller
      *     )
      * )
      */
-    public function page(PageRequest $request){
+    public function page(Request $request){
         $page = $request->input('page');
         $num = $request->input('num');
         $num = $num ? $num : 10;
