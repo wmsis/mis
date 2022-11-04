@@ -22,6 +22,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Traits\ForwardsCalls;
 use JsonSerializable;
 use LogicException;
+use Carbon\Carbon;
+use DateTimeInterface;
 
 abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToString, HasBroadcastChannel, Jsonable, JsonSerializable, QueueableEntity, UrlRoutable
 {
@@ -2194,5 +2196,10 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
         $this->bootIfNotBooted();
 
         $this->initializeTraits();
+    }
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format(Carbon::parse($date)->toDateTimeString());
     }
 }

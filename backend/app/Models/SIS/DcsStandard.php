@@ -5,8 +5,6 @@ namespace App\Models\SIS;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\SIS\DcsGroup;
-use Carbon\Carbon;
-use DateTimeInterface;
 
 /**
  * 创建数据模型
@@ -63,10 +61,5 @@ class DcsStandard extends Model
 
     public function insertMany($params){
         return self::insert($params);
-    }
-
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format(Carbon::parse($date)->toDateTimeString());
     }
 }
