@@ -146,7 +146,7 @@ class HistorianDataJob implements ShouldQueue
             Log::info(var_export($ex, true));
         }
 
-        $begin = date('Y-m-d H:i', strtotime($this->datetime) - 10 * 60) . ':00'; //获取十分钟内的数据
+        $begin = date('Y-m-d H:i', strtotime($this->datetime)) . ':00'; //获取十分钟内的数据
         $end = date('Y-m-d H:i', strtotime($this->datetime)) . ':59';
         $obj_hitorian_factory->select(['tag_name', 'datetime', 'value'])
             ->where('datetime', '>=', $begin)
