@@ -153,7 +153,7 @@ class ScreenController extends Controller
                         $date = date('Y-m-d', $i);
                         foreach ($factory_grab_garbage['datalist'] as $k2 => $item) {
                             if($item->date == $date){
-                                $final[$factory_grab_garbage['en_name']][$date] = (float)$item->val + $final[$itemlist['en_name']][$date];
+                                $final[$factory_grab_garbage['en_name']]['datalist'][$date] = (float)$item->val + $final[$factory_grab_garbage['en_name']]['datalist'][$date];
                                 break;
                             }
                         }
@@ -178,7 +178,7 @@ class ScreenController extends Controller
                         $date = date('Y-m-d', $i);
                         foreach ($factory_weigh_bridge['datalist'] as $k2 => $item) {
                             if($item->date == $date){
-                                $final[$factory_weigh_bridge['en_name']][$date] = (float)$item->val;
+                                $final[$factory_weigh_bridge['en_name']]['datalist'][$date] = (float)$item->val + $final[$factory_weigh_bridge['en_name']]['datalist'][$date];
                                 break;
                             }
                         }
