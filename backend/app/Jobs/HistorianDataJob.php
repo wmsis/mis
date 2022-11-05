@@ -59,16 +59,20 @@ class HistorianDataJob implements ShouldQueue
      */
     public function handle()
     {
+        Log::info('PPPPPPPPPPPPPPPPPP');
         if($this->db_type == 'historiandb'){
+            Log::info('QQQQQQQQQQQQQQQQQQQ');
             $this->historiandb_data(); //读取historian7.0以上数据库的数据
         }
         else{
+            Log::info('RRRRRRRRRRRRRRRRRRR');
             $this->mongodb_data(); //若数据库historian为7.0以下，则从opcserver读取数据，OPC读取后转存到电厂本地MongoDB数据库
         }
     }
 
     //从远程historian7.0获取数据
     private function historiandb_data(){
+        Log::info('SSSSSSSSSSSSSSSSSSSSSSSSS');
         try{
             $obj_hitorian_factory = (new HistorianTag())->setConnection($this->tenement_conn)->setTable($this->local_tag_table);  //连接电厂数据库
             $obj_hitorian_local = (new HistorianData())->setConnection($this->tenement_mongo_conn)->setTable($this->local_data_table); //连接特定租户下面的本地数据库表
@@ -131,7 +135,7 @@ class HistorianDataJob implements ShouldQueue
                 Log::info($this->datetime . '历史数据库没有数据插入');
             }
         });
-
+        Log::info('TTTTTTTTTTTTTTTTTTTTTTTT');
         $this->historian_format_data();
     }
 

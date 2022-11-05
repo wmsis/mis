@@ -63,7 +63,6 @@ class HistorianData extends Command
             //循环电厂
             $factories = $orgObj->where('level', 2)->get();
             Log::info('GGGGGGGGGGGGGGGGGGG');
-            Log::info(var_export($factories, true));
             foreach ($factories as $k2 => $factory) {
                 if($factory->code){
                     Log::info('HHHHHHHHHHHHHHHHHHHH');
@@ -78,10 +77,12 @@ class HistorianData extends Command
                         if($cfg['version'] && $cfg['version'] < 7){
                             $remote_conn =  'historian_' . $tenement->id . '_' . $cfg['id'];       //5.5版本存储在电厂本地MongoDB数据库，电厂历史数据库连接名称
                             $db_type = 'mongodb';
+                            Log::info('KKKKKKKKKKKKKKKK');
                         }
                         else{
                             $remote_conn =  $tenement_conn;       //7.0以上存在电厂本地historian数据库，电厂历史数据库连接名称,远程直连
                             $db_type = 'historiandb';
+                            Log::info('LLLLLLLLLLLLLLL');
                         }
 
                         $params = array(
@@ -95,8 +96,9 @@ class HistorianData extends Command
                             'db_type' => $db_type,
                             'cfgdb' => $cfg->toArray()
                         );
-
+                        Log::info('MMMMMMMMMMMMMMMMMMMMMMMMM');
                         dispatch(new HistorianDataJob($params));
+                        Log::info('NNNNNNNNNNNNNNNNNNNNNN');
                     }
                 }
             }
