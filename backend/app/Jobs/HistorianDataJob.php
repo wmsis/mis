@@ -187,6 +187,8 @@ class HistorianDataJob implements ShouldQueue
         //获取映射关系
         //本租户下面某个电厂的DCS映射关系
         Log::info('444444444444444444');
+        Log::info($this->tenement_conn);
+        Log::info($this->cfgdb['orgnization_id']);
         $map_lists = (new DcsMap())->setConnection($this->tenement_conn)->where('orgnization_id', $this->cfgdb['orgnization_id'])->get();
         foreach ($map_lists as $k1 => $item) {
             Log::info('55555555555555555555555');
