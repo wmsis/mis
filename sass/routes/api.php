@@ -198,6 +198,13 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
             'inspect-rule' => InspectRuleController::class,
         ]);
     });
+
+    Route::group(['namespace' => 'App\Http\Controllers\DATA'], function () {
+        //大数据大屏
+        Route::prefix('screen')->group(function () {
+            Route::get('chart', 'ScreenController@chart');
+        });
+    });
 });
 
 //微信会员
