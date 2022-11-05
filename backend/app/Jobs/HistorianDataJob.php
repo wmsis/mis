@@ -61,11 +61,9 @@ class HistorianDataJob implements ShouldQueue
     {
         Log::info('PPPPPPPPPPPPPPPPPP');
         if($this->db_type == 'historiandb'){
-            Log::info('QQQQQQQQQQQQQQQQQQQ');
             $this->historiandb_data(); //读取historian7.0以上数据库的数据
         }
         else{
-            Log::info('RRRRRRRRRRRRRRRRRRR');
             $this->mongodb_data(); //若数据库historian为7.0以下，则从opcserver读取数据，OPC读取后转存到电厂本地MongoDB数据库
         }
     }
@@ -81,12 +79,15 @@ class HistorianDataJob implements ShouldQueue
             Log::info('连接电厂历史数据库异常');
             Log::info(var_export($ex, true));
         }
+        Log::info('UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU');
 
         $start = date('Y-m-d H:i', strtotime($this->datetime) - 60) . ':00';
         $start = gmdate("Y-m-d\TH:i:s\Z", strtotime($start)); //国际时间
         $end = date('Y-m-d H:i', strtotime($this->datetime)) . ':00';
         $end = gmdate("Y-m-d\TH:i:s\Z", strtotime($end)); //国际时间
+        Log::info('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV');
         $obj_hitorian_factory->chunk(20, function ($tagslist) use ($obj_hitorian_local, $start, $end) {
+            Log::info('XXXXXXXXXXXXXXXXXXXXXXXXX');
             $params = [];
             $tagsNameList = [];
             foreach ($tagslist as $key => $tag) {
@@ -97,8 +98,10 @@ class HistorianDataJob implements ShouldQueue
             $samplingMode = 2;
             $calculationMode = 1;
             $intervalMS = null;
+            Log::info('YYYYYYYYYYYYYYYYYYYYYYYYY');
             $res = HistorianService::SampledData($this->cfgdb, $tagsNameString, $start, $end, $count, $samplingMode, $calculationMode, $intervalMS);
             if($res && $res['code'] === 0 && $res['data']['ErrorCode'] === 0){
+                Log::info('ZZZZZZZZZZZZZZZZZZZZZZZZZ');
                 $datalist = $res['data']['Data'];
                 foreach ($datalist as $key => $item) {
                     $timestamp = '';
