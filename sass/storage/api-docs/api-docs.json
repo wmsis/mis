@@ -1171,6 +1171,59 @@
                 }
             }
         },
+        "/api/screen/total": {
+            "get": {
+                "tags": [
+                    "大数据大屏screen"
+                ],
+                "summary": "上网电量 厂用电量等汇总指标",
+                "description": "使用说明：厂用电量等汇总指标",
+                "operationId": "screen-total",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "factory_ids",
+                        "in": "query",
+                        "description": "电厂ID 多个用英文逗号分割",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "开始时间",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "结束时间",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
         "/api/screen/chart": {
             "get": {
                 "tags": [
