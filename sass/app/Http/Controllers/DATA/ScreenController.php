@@ -187,6 +187,11 @@ class ScreenController extends Controller
             }
         }
 
-        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $final);
+        $datalist = [];
+        foreach ($final as $key => $item) {
+            $datalist[] = $item;
+        }
+
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $datalist);
     }
 }
