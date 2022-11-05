@@ -65,10 +65,10 @@ class HistorianDataJob implements ShouldQueue
             $this->historiandb_data(); //读取historian7.0以上数据库的数据
         }
         else{
-            Log::info('3333333333333333');
+            Log::info('AAAAAAAAAAAAAAAAAA');
             $this->mongodb_data(); //若数据库historian为7.0以下，则从opcserver读取数据，OPC读取后转存到电厂本地MongoDB数据库
         }
-        Log::info('6666666666666666666');
+        Log::info('ZZZZZZZZZZZZZZZZZZZZZZZZZ');
         $this->historian_format_data();
     }
 
@@ -137,7 +137,7 @@ class HistorianDataJob implements ShouldQueue
             else{
                 Log::info($this->datetime . '历史数据库没有数据插入');
             }
-            Log::info('GGGGGGGGGGGGGGGGGGGGGG');
+            Log::info('33333333333333333333333');
         });
         Log::info('444444444444444444');
     }
@@ -155,7 +155,7 @@ class HistorianDataJob implements ShouldQueue
 
         $begin = date('Y-m-d H:i', strtotime($this->datetime)) . ':00'; //获取一分钟内的数据
         $end = date('Y-m-d H:i', strtotime($this->datetime)) . ':59';
-        Log::info('AAAAAAAAAAAAAAAAAA');
+        Log::info('BBBBBBBBBBBBBBBBBBBBBBBB');
         $obj_hitorian_factory->select(['tag_name', 'datetime', 'value'])
             ->where('datetime', '>=', $begin)
             ->where('datetime', '<=', $end)
@@ -186,9 +186,9 @@ class HistorianDataJob implements ShouldQueue
                 Log::info($this->datetime . '历史数据库没有数据插入');
             }
 
-            Log::info('HHHHHHHHHHHHHHHHHHHH');
+            Log::info('CCCCCCCCCCCCCCCCCCCCC');
         });
-        Log::info('BBBBBBBBBBBBBBBBBBB');
+        Log::info('DDDDDDDDDDDDDDDDDDDDD');
     }
 
     //根据DCS标准名称格式化获取到的数据
