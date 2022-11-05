@@ -185,6 +185,8 @@ class HistorianDataJob implements ShouldQueue
             else{
                 Log::info($this->datetime . '历史数据库没有数据插入');
             }
+
+            Log::info('HHHHHHHHHHHHHHHHHHHH');
         });
         Log::info('BBBBBBBBBBBBBBBBBBB');
     }
