@@ -63,12 +63,10 @@ class HistorianDataJob implements ShouldQueue
         if($this->db_type == 'historiandb'){
             Log::info('111111111111');
             $this->historiandb_data(); //读取historian7.0以上数据库的数据
-            Log::info('222222222222');
         }
         else{
             Log::info('3333333333333333');
             $this->mongodb_data(); //若数据库historian为7.0以下，则从opcserver读取数据，OPC读取后转存到电厂本地MongoDB数据库
-            Log::info('5555555555555555');
         }
         Log::info('6666666666666666666');
         $this->historian_format_data();
@@ -90,6 +88,7 @@ class HistorianDataJob implements ShouldQueue
         $start = gmdate("Y-m-d\TH:i:s\Z", strtotime($start)); //国际时间
         $end = date('Y-m-d H:i', strtotime($this->datetime)) . ':00';
         $end = gmdate("Y-m-d\TH:i:s\Z", strtotime($end)); //国际时间
+        Log::info('222222222222');
         $obj_hitorian_factory->chunk(20, function ($tagslist) use ($obj_hitorian_local, $start, $end) {
             $params = [];
             $tagsNameList = [];
@@ -139,6 +138,7 @@ class HistorianDataJob implements ShouldQueue
                 Log::info($this->datetime . '历史数据库没有数据插入');
             }
         });
+        Log::info('444444444444444444');
     }
 
     //从远程MongoDB获取数据（historian5.5读取不方便转为opc读取并转存到电厂本地MongoDB）
@@ -154,6 +154,7 @@ class HistorianDataJob implements ShouldQueue
 
         $begin = date('Y-m-d H:i', strtotime($this->datetime)) . ':00'; //获取一分钟内的数据
         $end = date('Y-m-d H:i', strtotime($this->datetime)) . ':59';
+        Log::info('AAAAAAAAAAAAAAAAAA');
         $obj_hitorian_factory->select(['tag_name', 'datetime', 'value'])
             ->where('datetime', '>=', $begin)
             ->where('datetime', '<=', $end)
@@ -184,6 +185,7 @@ class HistorianDataJob implements ShouldQueue
                 Log::info($this->datetime . '历史数据库没有数据插入');
             }
         });
+        Log::info('BBBBBBBBBBBBBBBBBBB');
     }
 
     //根据DCS标准名称格式化获取到的数据
