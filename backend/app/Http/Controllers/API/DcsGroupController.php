@@ -493,7 +493,7 @@ class DcsGroupController extends Controller
         $header = $arr['header'];
         $results = $arr['results'];
 
-        if(!isset($header['name'])){
+        if(!in_array('name', $header)){
             return UtilService::format_data(self::AJAX_FAIL, '导入格式不正确', '');
         }
 

@@ -26,7 +26,7 @@ class DcsMapStoreRequest extends FormRequest
         return [
             'tag_ids' => 'required',
             'dcs_standard_id' => 'required',
-            'func' => 'required',
+            //'func' => 'required',
             'orgnization_id' => 'required',
         ];
     }
@@ -41,7 +41,7 @@ class DcsMapStoreRequest extends FormRequest
         return [
             'tag_ids.required' => 'TAG ID不能为空',
             'dcs_standard_id.required' => '统一字段名ID不能为空',
-            'func.required' => '函数不能为空',
+            //'func.required' => '函数不能为空',
             'orgnization_id.required' => '组织ID不能为空',
         ];
     }

@@ -591,7 +591,7 @@ class DcsStandardController extends Controller
         $header = $arr['header'];
         $results = $arr['results'];
 
-        if(!isset($header['en_name']) || !isset($header['cn_name'])){
+        if(!in_array('en_name', $header) || !in_array('cn_name', $header)){
             return UtilService::format_data(self::AJAX_FAIL, '导入格式不正确', '');
         }
 
