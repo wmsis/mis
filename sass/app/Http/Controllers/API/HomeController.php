@@ -130,6 +130,11 @@ class HomeController extends Controller
         $end_timestamp = time() - 24 * 60 * 60;
         $start = date('Y-m-d', $begin_timestamp);
         $end = date('Y-m-d', $end_timestamp);
+        $datelist = array();
+        for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
+            $date = date('Y-m-d', $i);
+            $datelist[$date] = 0; //初始值
+        }
 
         $month_grab_garbage = $grabGarbageObj->chartData($start, $end, $this->orgnization->code);  //垃圾入炉量
         $month_electricity = $electricityObj->chartData($start, $end, $this->orgnization->code);  //用电量
@@ -142,12 +147,11 @@ class HomeController extends Controller
                 'en_name' => $itemlist['en_name'],
                 'cn_name' => $itemlist['cn_name'],
                 'messure' => $itemlist['messure'],
-                'datalist' => [],
+                'datalist' => $datelist,
             );
             if($itemlist['datalist'] && count($itemlist['datalist']) > 0){
                 for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
                     $date = date('Y-m-d', $i);
-                    $temp['datalist'][$date] = 0; //初始值
                     foreach ($itemlist['datalist'] as $k2 => $item) {
                         if($item->date == $date){
                             //有当天数据
@@ -157,68 +161,51 @@ class HomeController extends Controller
                     }
                 }
             }
-            else{
-                for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
-                    $date = date('Y-m-d', $i);
-                    $temp['datalist'][$date] = 0; //初始值
-                }
-            }
+
             $final[] = $temp;
         }
 
         //垃圾入炉量
-        $temp_grab_garbage_datalist = [];
+        $grab_garbage_datalist = $datelist;
         if($month_grab_garbage['datalist'] && count($month_grab_garbage['datalist']) > 0){
             for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
                 $date = date('Y-m-d', $i);
-                $temp_grab_garbage_datalist[$date] = 0; //初始值
                 foreach ($month_grab_garbage['datalist'] as $k2 => $item) {
                     $date = date('Y-m-d', $i);
                     if($item->date == $date){
-                        $temp_grab_garbage_datalist[$date] = (float)$item->val;
+                        $grab_garbage_datalist[$date] = (float)$item->val;
                         break;
                     }
                 }
             }
         }
-        else{
-            for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
-                $date = date('Y-m-d', $i);
-                $temp_grab_garbage_datalist[$date] = 0; //初始值
-            }
-        }
+
         $final[] = array(
             'en_name' => $month_grab_garbage['en_name'],
             'cn_name' => $month_grab_garbage['cn_name'],
             'messure' => $month_grab_garbage['messure'],
-            'datalist' => $temp_grab_garbage_datalist,
+            'datalist' => $grab_garbage_datalist,
         );
 
         //垃圾入库量
-        $temp_weigh_bridge_datalist = [];
+        $weigh_bridge_datalist = $datelist;
         if($month_weigh_bridge['datalist'] && count($month_weigh_bridge['datalist']) > 0){
             for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
                 $date = date('Y-m-d', $i);
-                $temp_weigh_bridge_datalist[$date] = 0; //初始值
                 foreach ($month_weigh_bridge['datalist'] as $k2 => $item) {
                     if($item->date == $date){
-                        $temp_weigh_bridge_datalist[$date] = (float)$item->val;
+                        $weigh_bridge_datalist[$date] = (float)$item->val;
                         break;
                     }
                 }
             }
         }
-        else{
-            for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
-                $date = date('Y-m-d', $i);
-                $temp_weigh_bridge_datalist[$date] = 0; //初始值
-            }
-        }
+
         $final[] = array(
             'en_name' => $month_weigh_bridge['en_name'],
             'cn_name' => $month_weigh_bridge['cn_name'],
             'messure' => $month_weigh_bridge['messure'],
-            'datalist' => $temp_weigh_bridge_datalist,
+            'datalist' => $weigh_bridge_datalist,
         );
 
         //渗沥液处理量

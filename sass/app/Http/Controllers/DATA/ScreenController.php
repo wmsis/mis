@@ -15,6 +15,111 @@ class ScreenController extends Controller
 {
     /**
      * @OA\Get(
+     *     path="/api/screen/total",
+     *     tags={"大数据大屏screen"},
+     *     operationId="screen-total",
+     *     summary="上网电量 厂用电量等汇总指标",
+     *     description="使用说明：厂用电量等汇总指标",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="电厂ID 多个用英文逗号分割",
+     *         in="query",
+     *         name="factory_ids",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="开始时间",
+     *         in="query",
+     *         name="start",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="结束时间",
+     *         in="query",
+     *         name="end",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="succeed",
+     *     ),
+     * )
+     */
+    public function total(Request $request)
+    {
+        //获取接收的参数
+        $factory_ids = $request->input('factory_ids');
+        $start = $request->input('start');
+        $end = $request->input('end');
+
+        //初始化参数
+        $final = [];
+        $electricityObj = new ElectricityDayDataRepository();
+        $grabGarbageObj = new GrabGarbageDayDataReposotory();
+        $weighBridgeObj = new WeighBridgeDayDataReposotory();
+        $begin_timestamp = $start ? strtotime($start) : time() - 10 * 24 * 60 * 60;
+        $end_timestamp = $end ? strtotime($end) : time() - 24 * 60 * 60;
+        $start_date = date('Y-m-d', $begin_timestamp);
+        $end_date = date('Y-m-d', $end_timestamp);
+
+        //获取电厂组织
+        if($factory_ids == '' || $factory_ids == 'all'){
+            $factories = Orgnization::where('level', 2)->get();
+        }
+        else{
+            $idarr = explode(',', $factory_ids);
+            $factories = Orgnization::where('level', 2)->whereIn('id', $idarr)->get();
+        }
+
+        if($factories && count($factories) > 0){
+            $month_electricity = [];
+            $month_grab_garbage = [];
+            $month_weigh_bridge = [];
+            $datelist = array();
+            for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
+                $date = date('Y-m-d', $i);
+                $datelist[$date] = 0; //初始值
+            }
+
+            //获取各个电厂的曲线数据
+            foreach ($factories as $kf => $factory) {
+                if($factory->code){
+                    $month_electricity[$factory->code] = $electricityObj->countData($start_date, $end_date, $factory->code);  //用电量
+                    $month_grab_garbage[$factory->code] = $grabGarbageObj->countData($start_date, $end_date, $factory->code);  //垃圾入炉量
+                    $month_weigh_bridge[$factory->code] = $weighBridgeObj->countData($start_date, $end_date, $factory->code);  //垃圾入库量
+                }
+            }
+
+
+        }
+
+        $datalist = [];
+        foreach ($final as $key => $item) {
+            $datalist[] = $item;
+        }
+
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $datalist);
+    }
+
+    /**
+     * @OA\Get(
      *     path="/api/screen/chart",
      *     tags={"大数据大屏screen"},
      *     operationId="screen-chart",
