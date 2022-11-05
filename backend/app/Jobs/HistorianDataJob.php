@@ -184,19 +184,23 @@ class HistorianDataJob implements ShouldQueue
 
     //根据DCS标准名称格式化获取到的数据
     private function historian_format_data(){
+        Log::info('0000000000000');
         //获取映射关系
         $datetime = date('Y-m-d H:i', strtotime($this->datetime)) . ':00';
         //本租户下面某个电厂的DCS映射关系
         $map_lists = (new DcsMap())->setConnection($this->tenement_conn)->where('orgnization_id', $this->cfgdb['orgnization_id'])->get();
         foreach ($map_lists as $k1 => $item) {
+            Log::info('11111111111111111111');
             //找到每个映射关系绑定的tagid
             $ids = explode(',', $item->tag_ids);
             $tag_key_values = [];
             $obj_hitorian_factory = (new HistorianTag())->setConnection($this->tenement_conn)->setTable($this->local_tag_table);
             $taglists = $obj_hitorian_factory->whereIn('id', $ids)->get();
             if($taglists &&  count($taglists) > 0){
+                Log::info('22222222222222222222');
                 $tagname_arr = [];  //所有tagname列表
                 foreach ($taglists as $key => $tag) {
+                    Log::info('33333333333333333333333');
                     $tagname_arr[] = $tag->tag_name;
                     //初始化键值对
                     $tag_key_values[$tag->tag_name] = array(
@@ -218,6 +222,7 @@ class HistorianDataJob implements ShouldQueue
 
             //取值成功
             if(!empty($tag_key_values)){
+                Log::info('5555555555555555555555');
                 $val = 0;
                 if($item->func){
                     //计算函数的值
@@ -237,6 +242,7 @@ class HistorianDataJob implements ShouldQueue
                 $obj_hitorian_format = (new HistorianFormatData())->setConnection($this->tenement_mongo_conn)->setTable($this->local_format_data_table);
                 $local_row = $obj_hitorian_format->findRowByIdAndTime($item->dcs_standard_id, $datetime);
                 if(!$local_row){
+                    Log::info('6666666666666666666666666');
                     //本地不存在则插入
                     $obj_hitorian_format->dcs_standard_id = $item->dcs_standard_id;
                     $obj_hitorian_format->value = $val;
