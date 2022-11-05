@@ -59,16 +59,12 @@ class HistorianDataJob implements ShouldQueue
      */
     public function handle()
     {
-        Log::info('0000000000000000');
         if($this->db_type == 'historiandb'){
-            Log::info('111111111111');
             $this->historiandb_data(); //读取historian7.0以上数据库的数据
         }
         else{
-            Log::info('AAAAAAAAAAAAAAAAAA');
             $this->mongodb_data(); //若数据库historian为7.0以下，则从opcserver读取数据，OPC读取后转存到电厂本地MongoDB数据库
         }
-        Log::info('ZZZZZZZZZZZZZZZZZZZZZZZZZ');
         $this->historian_format_data();
     }
 
@@ -83,12 +79,10 @@ class HistorianDataJob implements ShouldQueue
             Log::info(var_export($ex, true));
         }
 
-        //一分钟内平均值
         $start = date('Y-m-d H:i', strtotime($this->datetime) - 60) . ':00';
         $start = gmdate("Y-m-d\TH:i:s\Z", strtotime($start)); //国际时间
         $end = date('Y-m-d H:i', strtotime($this->datetime)) . ':00';
         $end = gmdate("Y-m-d\TH:i:s\Z", strtotime($end)); //国际时间
-        Log::info('222222222222');
         $obj_hitorian_factory->chunk(20, function ($tagslist) use ($obj_hitorian_local, $start, $end) {
             $params = [];
             $tagsNameList = [];
@@ -104,7 +98,6 @@ class HistorianDataJob implements ShouldQueue
             if($res && $res['code'] === 0 && $res['data']['ErrorCode'] === 0){
                 $datalist = $res['data']['Data'];
                 foreach ($datalist as $key => $item) {
-                    $timestamp = '';
                     $value = '';
                     if(isset($item['Samples']) && $item['Samples'] && count($item['Samples']) > 0) {
                         $timestamp = $item['Samples'][0]['TimeStamp'];
@@ -116,13 +109,13 @@ class HistorianDataJob implements ShouldQueue
                             $value = 1;
                         }
                     }
-                    $local_row = $obj_hitorian_local->findRowByTagAndTime($item['TagName'], $timestamp);
+                    $local_row = $obj_hitorian_local->findRowByTagAndTime($item['TagName'], $this->datetime);
                     if(!$local_row){
                         //本地不存在则插入
                         $params[] = array(
                             'tag_name' => $item['TagName'],
                             'value'=> $value,
-                            'datetime'=> $this->datetime, //保存的时间统一为获取数据的时间
+                            'datetime'=> $this->datetime,
                             'created_at' => $this->datetime,
                             'updated_at' => date('Y-m-d H:i:s')
                         );
@@ -137,9 +130,7 @@ class HistorianDataJob implements ShouldQueue
             else{
                 Log::info($this->datetime . '历史数据库没有数据插入');
             }
-            Log::info('33333333333333333333333');
         });
-        Log::info('444444444444444444');
     }
 
     //从远程MongoDB获取数据（historian5.5读取不方便转为opc读取并转存到电厂本地MongoDB）
@@ -155,7 +146,6 @@ class HistorianDataJob implements ShouldQueue
 
         $begin = date('Y-m-d H:i', strtotime($this->datetime)) . ':00'; //获取一分钟内的数据
         $end = date('Y-m-d H:i', strtotime($this->datetime)) . ':59';
-        Log::info('BBBBBBBBBBBBBBBBBBBBBBBB');
         $obj_hitorian_factory->select(['tag_name', 'datetime', 'value'])
             ->where('datetime', '>=', $begin)
             ->where('datetime', '<=', $end)
@@ -164,13 +154,13 @@ class HistorianDataJob implements ShouldQueue
             $params = [];
             if($rows && count($rows) > 0){
                 foreach ($rows as $key => $item) {
-                    $local_row = $obj_hitorian_local->findRowByTagAndTime($item->tag_name, $item->datetime);
+                    $local_row = $obj_hitorian_local->findRowByTagAndTime($item->tag_name, $this->datetime);
                     if(!$local_row){
                         //本地不存在则插入
                         $params[] = array(
                             'tag_name' => $item->tag_name,
                             'value'=> $item->value,
-                            'datetime'=> $this->datetime, //保存的时间统一为获取数据的时间
+                            'datetime'=> $this->datetime,
                             'created_at' => $this->datetime,
                             'updated_at' => date('Y-m-d H:i:s')
                         );
@@ -185,10 +175,7 @@ class HistorianDataJob implements ShouldQueue
             else{
                 Log::info($this->datetime . '历史数据库没有数据插入');
             }
-
-            Log::info('CCCCCCCCCCCCCCCCCCCCC');
         });
-        Log::info('DDDDDDDDDDDDDDDDDDDDD');
     }
 
     //根据DCS标准名称格式化获取到的数据
@@ -200,9 +187,8 @@ class HistorianDataJob implements ShouldQueue
             //找到每个映射关系绑定的tagid
             $ids = explode(',', $item->tag_ids);
             $tag_key_values = [];
-            $get_data_num = 0; //获取到的数据数量
             $obj_hitorian_factory = (new HistorianTag())->setConnection($this->tenement_conn)->setTable($this->local_tag_table);
-            $taglists = $obj_hitorian_factory->whereIn('id', $ids)->get();  //获取函数中需要用到的所有tag
+            $taglists = $obj_hitorian_factory->whereIn('id', $ids)->get();
             if($taglists &&  count($taglists) > 0){
                 $tagname_arr = [];  //所有tagname列表
                 foreach ($taglists as $key => $tag) {
@@ -215,23 +201,16 @@ class HistorianDataJob implements ShouldQueue
 
                 //本地保存的数据库
                 $obj_hitorian_local = (new HistorianData())->setConnection($this->tenement_mongo_conn)->setTable($this->local_data_table);
-                //获取所有tag 该时间点的数据  只对参数tag_name取唯一值
-                $tags_data = $obj_hitorian_local->select(['tag_name', 'datetime', 'value'])
-                    ->whereIn('tag_name', $tagname_arr)
-                    ->where('datetime', $this->datetime)
-                    //->groupBy('tag_name')
-                    ->get();
-
+                $tags_data = $obj_hitorian_local->whereIn('tag_name', $tagname_arr)->where('datetime', $this->datetime)->get();
                 foreach ($tags_data as $key => $tag) {
-                    $get_data_num++;
                     $tag_key_values[$tag->tag_name] = array(
                         'value' => $tag->value
                     );
                 }
             }
 
-            //取值成功，并且所有tag都已取到数据
-            if(!empty($tag_key_values) && count($ids) == $get_data_num){
+            //取值成功
+            if(!empty($tag_key_values)){
                 $val = 0;
                 if($item->func){
                     //计算函数的值
