@@ -62,11 +62,16 @@ class HistorianData extends Command
             $orgObj = (new Orgnization())->setConnection($tenement_conn);
             //循环电厂
             $factories = $orgObj->where('level', 2)->get();
+            Log::info('GGGGGGGGGGGGGGGGGGG');
+            Log::info(var_export($factories, true));
             foreach ($factories as $k2 => $factory) {
                 if($factory->code){
+                    Log::info('HHHHHHHHHHHHHHHHHHHH');
+                    Log::info($factory->code);
                     //具体电厂的历史数据库配置信息
                     $cfg = $configHistorian->where('orgnization_id', $factory->id)->first();
                     if($cfg){
+                        Log::info('JJJJJJJJJJJJJJJJJJJJJJ');
                         $local_tag_table = 'historian_tag_' . $factory->code; //本地存储数据库表名称
                         $local_data_table = 'historian_data_' . $factory->code; //本地存储数据库表名称
                         $local_format_data_table = 'historian_format_data_' . $factory->code; //本地存储数据库表名称
