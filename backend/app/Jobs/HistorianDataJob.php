@@ -118,6 +118,7 @@ class HistorianDataJob implements ShouldQueue
                     }
                     $local_row = $obj_hitorian_local->findRowByTagAndTime($item['TagName'], $timestamp);
                     if(!$local_row){
+                        Log::info('###################');
                         //本地不存在则插入
                         $params[] = array(
                             'tag_name' => $item['TagName'],
@@ -128,18 +129,24 @@ class HistorianDataJob implements ShouldQueue
                         );
                     }
                 }
+                Log::info('$$$$$$$$$$$$$$$$$$$$$$$$$');
             }
+            Log::info('%%%%%%%%%%%%%%%%%%%%%%%%%');
 
             if($params && count($params) > 0){
+                Log::info('&&&&&&&&&&&&&&&&&&&&&');
                 $res = $obj_hitorian_local->insertMany($params);
                 //Log::info($this->datetime . '历史数据库数据插入成功'.count($params).'条');
             }
             else{
+                Log::info('*********************');
                 Log::info($this->datetime . '历史数据库没有数据插入');
             }
+            Log::info('@@@@@@@@@@@@@@@@@@@');
         });
         Log::info('TTTTTTTTTTTTTTTTTTTTTTTT');
         $this->historian_format_data();
+        Log::info('!!!!!!!!!!!!!!!!!!!!!!!!');
     }
 
     //从远程MongoDB获取数据（historian5.5读取不方便转为opc读取并转存到电厂本地MongoDB）
