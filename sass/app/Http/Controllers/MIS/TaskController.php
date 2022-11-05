@@ -129,7 +129,7 @@ class TaskController extends Controller
             $publisher = $item->publisher;
             $rows[$key]['publish_user_name'] = $publisher ? $publisher['name'] : '';
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total]);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total, 'page' => $page, 'num' => $perPage]);
     }
 
     /**

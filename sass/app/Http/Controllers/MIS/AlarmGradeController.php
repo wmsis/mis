@@ -95,7 +95,7 @@ class AlarmGradeController extends Controller
         }
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
-        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total]);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total, 'page' => $page, 'num' => $perPage]);
     }
 
     /**
@@ -256,7 +256,7 @@ class AlarmGradeController extends Controller
         elseif($row && $row->orgnization_id != $this->orgnization->id){
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
         }
-        
+
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $row);
     }
 
