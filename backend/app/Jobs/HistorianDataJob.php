@@ -187,8 +187,11 @@ class HistorianDataJob implements ShouldQueue
         Log::info('0000000000000');
         //获取映射关系
         $datetime = date('Y-m-d H:i', strtotime($this->datetime)) . ':00';
+        Log::info($this->tenement_conn);
+        Log::info($this->cfgdb['orgnization_id']);
         //本租户下面某个电厂的DCS映射关系
         $map_lists = (new DcsMap())->setConnection($this->tenement_conn)->where('orgnization_id', $this->cfgdb['orgnization_id'])->get();
+        Log::info('AAAAAAAAAAAAAAAAAAAAA');
         foreach ($map_lists as $k1 => $item) {
             Log::info('11111111111111111111');
             //找到每个映射关系绑定的tagid
