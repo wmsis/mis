@@ -111,7 +111,7 @@ class PowerMapController extends Controller
             $rows[$key]->dcs_standard = $dcs_standard;
             $rows[$key]->electricity_map = $maps;
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total]);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total, 'page' => $page, 'num' => $perPage]);
     }
 
     /**

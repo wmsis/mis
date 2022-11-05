@@ -96,7 +96,7 @@ class GarbageController extends Controller
         $rows = $GrabGarbageObj->select(['*']);
         $total = $rows->count();
         $rows = $rows->orderBy('id', 'desc')->offset(($page - 1) * $perPage)->limit($perPage)->get();
-        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total]);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total, 'page' => $page, 'num' => $perPage]);
     }
 
     private function validate_factory($factory){

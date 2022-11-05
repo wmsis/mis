@@ -95,7 +95,7 @@ class OrgnizationController extends Controller
         }
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
-        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total]);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total, 'page' => $page, 'num' => $perPage]);
     }
 
     /**

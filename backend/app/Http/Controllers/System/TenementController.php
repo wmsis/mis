@@ -186,7 +186,7 @@ class TenementController extends Controller
         }
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
-        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total]);
+        return UtilService::format_data(self::AJAX_SUCCESS, '获取成功', ['data' => $rows, 'total' => $total, 'page' => $page, 'num' => $perPage]);
     }
 
     /**

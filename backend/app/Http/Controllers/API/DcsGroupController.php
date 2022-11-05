@@ -93,7 +93,7 @@ class DcsGroupController extends Controller
         foreach ($rows as $key => $item) {
             $item->dcsStandard;
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total]);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total, 'page' => $page, 'num' => $perPage]);
     }
 
     /**
