@@ -50,7 +50,7 @@ class HistorianData extends Command
             $datetime = $optionDate;
         }
         else{
-            $datetime = date('Y-m-d H:i:s', time() - 10 * 60);  ////取十分钟之前的数据
+            $datetime = date('Y-m-d H:i', time() - 10 * 60) . ':00';  ////取十分钟之前的数据
         }
 
         $tenements = DB::connection('mysql_mis')->table('tenement')->get();
