@@ -128,7 +128,7 @@ class PermissionController extends Controller
      *         name="parent_id",
      *         required=false,
      *         @OA\Schema(
-     *             type="string"
+     *             type="integer"
      *         ),
      *     ),
      *     @OA\Parameter(
@@ -176,6 +176,15 @@ class PermissionController extends Controller
      *             type="string"
      *         ),
      *     ),
+     *     @OA\Parameter(
+     *         description="是否显示 1显示 0隐藏",
+     *         in="query",
+     *         name="is_show",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="integer"
+     *         ),
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="successful operation",
@@ -194,6 +203,7 @@ class PermissionController extends Controller
         $level = 1;
         $page_url = $request->input('page_url');
         $icon = $request->input('icon');
+        $is_show = $request->input('is_show');
 
         if($parent_id){
             $parent = Permission::find($parent_id);
@@ -210,6 +220,7 @@ class PermissionController extends Controller
             'page_url' => $page_url,
             'api_name' => $api_name,
             'parent_id' => $parent_id,
+            'is_show' => $is_show,
             'created_at' => date('Y-m-d H:i:s', time()),
             'updated_at' => date('Y-m-d H:i:s', time())
         );
@@ -304,6 +315,15 @@ class PermissionController extends Controller
      *             type="string"
      *         ),
      *     ),
+     *     @OA\Parameter(
+     *         description="是否显示 1显示 0隐藏",
+     *         in="query",
+     *         name="is_show",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="integer"
+     *         ),
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="successful operation",
@@ -320,6 +340,7 @@ class PermissionController extends Controller
         $type = $request->input('type');
         $icon = $request->input('icon');
         $color = $request->input('color');
+        $is_show = $request->input('is_show');
 
         $row = $obj->rowById($id);
         if($row){
@@ -330,6 +351,7 @@ class PermissionController extends Controller
             $row->icon = $icon;
             $row->color = $color;
             $row->api_name = $api_name;
+            $row->is_show = $is_show;
             $res = $row->save();
             if($res){
                 return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
