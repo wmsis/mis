@@ -190,8 +190,8 @@ class DcsStandardController extends Controller
 
                 $key_values = [];
                 foreach ($datalist as $k9 => $data) {
-                    $short_datetime = substr($data->datetime, 11, 5);
-                    $key_values[$short_datetime] = $data->value;
+                    //$short_datetime = substr($data->datetime, 11, 5);
+                    $key_values[$data->datetime] = $data->value;
                 }
 
                 $lists[$key]['datalist'] = $key_values;
