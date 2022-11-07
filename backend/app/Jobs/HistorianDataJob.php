@@ -108,10 +108,8 @@ class HistorianDataJob implements ShouldQueue
                             $value = 1;
                         }
                     }
-                    Log::info('KKKKKKKKKKKKKKKKK');
                     $local_row = $obj_hitorian_local->findRowByTagAndTime($item['TagName'], $this->datetime);
                     if(!$local_row){
-                        Log::info('NNNNNNNNNNNNNNNNNNNN');
                         //本地不存在则插入
                         $params[] = array(
                             'tag_name' => $item['TagName'],
