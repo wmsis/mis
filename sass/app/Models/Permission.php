@@ -44,7 +44,6 @@ class Permission extends Model
     {
         return $this->whereNull('deleted_at')
             ->where('level', 1)
-            ->where('is_show', 1)
             ->orderBy('sort', 'asc')
             ->get();
     }
@@ -53,7 +52,6 @@ class Permission extends Model
     {
         return $this->whereNull('deleted_at')
             ->where('parent_id', $parent_id)
-            ->where('is_show', 1)
             ->orderBy('sort', 'asc')
             ->get();
     }

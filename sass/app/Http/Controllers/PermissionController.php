@@ -60,6 +60,7 @@ class PermissionController extends Controller
                     'api_name' => $item->api_name,
                     'type' => $item->type,
                     'icon' => $item->icon,
+                    'is_show' => $item->is_show,
                     'children' => $this->children($item->id)
                 );
             }
@@ -88,6 +89,7 @@ class PermissionController extends Controller
                 'api_name' => $item->api_name,
                 'type' => $item->type,
                 'icon' => $item->icon,
+                'is_show' => $item->is_show,
                 'children' => $this->children($item->id)
             );
         }
