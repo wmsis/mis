@@ -49,6 +49,8 @@ class CountDayPowerDataJob implements ShouldQueue
                 ->join('power_map', 'power_map.dcs_standard_id', '=', 'dcs_standard.id')
                 ->select('power_map.*', 'dcs_standard.cn_name', 'dcs_standard.en_name')
                 ->where('dcs_standard.type', 'electricity')
+                ->whereNull('dcs_standard.deleted_at')
+                ->whereNull('power_map.deleted_at')
                 ->get();
 
             $final = [];
