@@ -84,7 +84,7 @@ class HistorianDataJob implements ShouldQueue
         $end = gmdate("Y-m-d\TH:i:s\Z", strtotime($end)); //国际时间
         Log::info('000000000000000');
         $obj_hitorian_factory->chunk(10, function ($tagslist) use ($obj_hitorian_local, $start, $end) {
-            Log::info('111111111111111111');
+            //Log::info('111111111111111111');
             $params = [];
             $tagsNameList = [];
             foreach ($tagslist as $key => $tag) {
@@ -96,7 +96,7 @@ class HistorianDataJob implements ShouldQueue
             $calculationMode = 1;
             $intervalMS = null;
             $res = HistorianService::SampledData($this->cfgdb, $tagsNameString, $start, $end, $count, $samplingMode, $calculationMode, $intervalMS);
-            Log::info('88888888888888');
+            //Log::info('88888888888888');
             //Log::info(var_export($res['code'], true));
             //Log::info(var_export($res['data']['ErrorCode'], true));
             Log::info(var_export(count($res['data']['Data']), true));
@@ -139,7 +139,7 @@ class HistorianDataJob implements ShouldQueue
             else{
                 //Log::info($this->datetime . '历史数据库没有数据插入');
             }
-            Log::info('222222222222222222');
+            //Log::info('222222222222222222');
         });
         Log::info('33333333333333333333333');
 
