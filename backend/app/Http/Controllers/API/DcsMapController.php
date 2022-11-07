@@ -104,7 +104,8 @@ class DcsMapController extends Controller
             ->leftJoin('dcs_standard', 'dcs_map.dcs_standard_id', '=', 'dcs_standard.id')
             ->select('dcs_map.*', 'dcs_standard.cn_name')
             ->where('dcs_map.orgnization_id', $orgnization_id)
-            ->whereNull('dcs_map.deleted_at');
+            ->whereNull('dcs_map.deleted_at')
+            ->whereNull('dcs_standard.deleted_at');
 
         if ($name) {
             $rows = $rows->where('dcs_standard.cn_name', 'like', "%{$name}%");
