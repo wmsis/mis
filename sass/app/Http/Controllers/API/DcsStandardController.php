@@ -183,6 +183,7 @@ class DcsStandardController extends Controller
 
                 $datalist = $obj_hitorian_format_local->select(['value', 'datetime'])
                     ->where('dcs_standard_id', $item->id)
+                    ->orderBy('datetime', 'ASC')
                     ->where('datetime', '>=', $start)
                     ->where('datetime', '<=', $end)
                     ->get();

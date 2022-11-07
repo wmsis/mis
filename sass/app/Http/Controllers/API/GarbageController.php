@@ -153,6 +153,7 @@ class GarbageController extends Controller
         $table = 'grab_garbage_' . $this->orgnization->code;
         $obj = (new GrabGarbage())->setTable($table);
         $datalist = $obj->select(['hev as value', 'created_at as datetime'])
+            ->orderBy('created_at', 'ASC')
             ->where('created_at', '>', $start)
             ->where('created_at', '<', $end);
 

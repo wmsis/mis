@@ -154,6 +154,7 @@ class WeighBridgeController extends Controller
                     ->whereIn('weighbridge_cate_small_id', $small_ids)
                     ->where('taredatetime', '>', $start)
                     ->where('taredatetime', '<', $end)
+                    ->orderBy('taredatetime', 'ASC')
                     ->get();
 
                 foreach ($datalist as $k3 => $data) {
