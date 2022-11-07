@@ -97,8 +97,8 @@ class HistorianDataJob implements ShouldQueue
             $intervalMS = null;
             $res = HistorianService::SampledData($this->cfgdb, $tagsNameString, $start, $end, $count, $samplingMode, $calculationMode, $intervalMS);
             Log::info('88888888888888');
-            Log::info(var_export($res['code'], true));
-            Log::info(var_export($res['data']['ErrorCode'], true));
+            //Log::info(var_export($res['code'], true));
+            //Log::info(var_export($res['data']['ErrorCode'], true));
             Log::info(var_export(count($res['data']['Data']), true));
             if($res && $res['code'] === 0 && $res['data']['ErrorCode'] === 0){
                 $datalist = $res['data']['Data'];
@@ -117,7 +117,7 @@ class HistorianDataJob implements ShouldQueue
                     }
                     $local_row = $obj_hitorian_local->findRowByTagAndTime($item['TagName'], $this->datetime);
                     if(!$local_row){
-                        Log::info('9999999999999999999');
+                        //Log::info('9999999999999999999');
                         //本地不存在则插入
                         $params[] = array(
                             'tag_name' => $item['TagName'],
@@ -132,6 +132,7 @@ class HistorianDataJob implements ShouldQueue
 
             if($params && count($params) > 0){
                 Log::info('AAAAAAAAAAAA');
+                Log::info(count($params));
                 $res = $obj_hitorian_local->insertMany($params);
                 //Log::info($this->datetime . '历史数据库数据插入成功'.count($params).'条');
             }
