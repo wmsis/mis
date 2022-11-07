@@ -4477,6 +4477,50 @@
                 }
             }
         },
+        "/api/permissions/isshow": {
+            "post": {
+                "tags": [
+                    "菜单权限permissions"
+                ],
+                "summary": "是否显示",
+                "description": "使用说明：是否显示",
+                "operationId": "permissionsIsShow",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "is_show",
+                        "in": "query",
+                        "description": "是否显示  1显示  0隐藏",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
         "/api/roles": {
             "get": {
                 "tags": [

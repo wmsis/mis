@@ -10,7 +10,7 @@ class Permission extends Model
 {
     use SoftDeletes;
     protected  $table = 'permissions';
-    protected  $fillable = ['name', 'icon', 'color', 'page_url', 'level', 'sort', 'type', 'api_name', 'parent_id']; //批量赋值
+    protected  $fillable = ['name', 'icon', 'color', 'page_url', 'level', 'sort', 'type', 'api_name', 'parent_id', 'is_show']; //批量赋值
     protected  $dates = ['deleted_at'];  //添加软删除
     protected  $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',
@@ -26,6 +26,7 @@ class Permission extends Model
     {
         return $this->whereNull('deleted_at')
             ->where('level', 1)
+            ->where('is_show', 1)
             ->orderBy('sort', 'asc')
             ->get();
     }
@@ -43,6 +44,7 @@ class Permission extends Model
     {
         return $this->whereNull('deleted_at')
             ->where('level', 1)
+            ->where('is_show', 1)
             ->orderBy('sort', 'asc')
             ->get();
     }
@@ -51,6 +53,7 @@ class Permission extends Model
     {
         return $this->whereNull('deleted_at')
             ->where('parent_id', $parent_id)
+            ->where('is_show', 1)
             ->orderBy('sort', 'asc')
             ->get();
     }
