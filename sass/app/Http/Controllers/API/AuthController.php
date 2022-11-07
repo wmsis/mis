@@ -215,6 +215,7 @@ class AuthController extends Controller
                     'type' => $item->type,
                     'title' => $item->name,
                     'sort' => $item->sort,
+                    'is_show' => $item->is_show,
                     'children' => $this->children($item, $privileges)
                 );
             }
@@ -247,6 +248,7 @@ class AuthController extends Controller
                 'type' => $item->type,
                 'title' => $item->name,
                 'sort' => $item->sort,
+                'is_show' => $item->is_show,
                 'children' => $this->children($item, $privileges)
             );
         }
