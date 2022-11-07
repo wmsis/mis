@@ -105,7 +105,7 @@ class HistorianDataJob implements ShouldQueue
                 foreach ($datalist as $key => $item) {
                     $value = '';
                     if(isset($item['Samples']) && $item['Samples'] && count($item['Samples']) > 0) {
-                        Log::info('9999999999999999999');
+                        //Log::info('9999999999999999999');
                         $timestamp = $item['Samples'][0]['TimeStamp'];
                         $value = $item['Samples'][0]['Value'];
                         if(strtolower($value) == 'false'){
