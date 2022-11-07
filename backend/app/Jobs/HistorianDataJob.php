@@ -82,9 +82,7 @@ class HistorianDataJob implements ShouldQueue
         $start = gmdate("Y-m-d\TH:i:s\Z", strtotime($start)); //国际时间
         $end = date('Y-m-d H:i', strtotime($this->datetime)) . ':00';
         $end = gmdate("Y-m-d\TH:i:s\Z", strtotime($end)); //国际时间
-        Log::info('000000000000000');
-        $obj_hitorian_factory->chunk(10, function ($tagslist) use ($obj_hitorian_local, $start, $end) {
-            //Log::info('111111111111111111');
+        $obj_hitorian_factory->chunk(20, function ($tagslist) use ($obj_hitorian_local, $start, $end) {
             $params = [];
             $tagsNameList = [];
             foreach ($tagslist as $key => $tag) {
@@ -96,16 +94,11 @@ class HistorianDataJob implements ShouldQueue
             $calculationMode = 1;
             $intervalMS = null;
             $res = HistorianService::SampledData($this->cfgdb, $tagsNameString, $start, $end, $count, $samplingMode, $calculationMode, $intervalMS);
-            Log::info('88888888888888');
-            Log::info(var_export($res['code'], true));
-            Log::info(var_export($res['data']['ErrorCode'], true));
-            //Log::info(var_export(count($res['data']['Data']), true));
             if($res && $res['code'] === 0 && $res['data']['ErrorCode'] === 0){
                 $datalist = $res['data']['Data'];
                 foreach ($datalist as $key => $item) {
                     $value = '';
                     if(isset($item['Samples']) && $item['Samples'] && count($item['Samples']) > 0) {
-                        //Log::info('9999999999999999999');
                         $timestamp = $item['Samples'][0]['TimeStamp'];
                         $value = $item['Samples'][0]['Value'];
                         if(strtolower($value) == 'false'){
@@ -115,9 +108,10 @@ class HistorianDataJob implements ShouldQueue
                             $value = 1;
                         }
                     }
+                    Log::info('KKKKKKKKKKKKKKKKK');
                     $local_row = $obj_hitorian_local->findRowByTagAndTime($item['TagName'], $this->datetime);
                     if(!$local_row){
-                        //Log::info('9999999999999999999');
+                        Log::info('NNNNNNNNNNNNNNNNNNNN');
                         //本地不存在则插入
                         $params[] = array(
                             'tag_name' => $item['TagName'],
@@ -131,17 +125,13 @@ class HistorianDataJob implements ShouldQueue
             }
 
             if($params && count($params) > 0){
-                Log::info('AAAAAAAAAAAA');
-                Log::info(count($params));
                 $res = $obj_hitorian_local->insertMany($params);
                 //Log::info($this->datetime . '历史数据库数据插入成功'.count($params).'条');
             }
             else{
                 //Log::info($this->datetime . '历史数据库没有数据插入');
             }
-            //Log::info('222222222222222222');
         });
-        Log::info('33333333333333333333333');
 
         $this->historian_format_data();
     }
@@ -197,25 +187,14 @@ class HistorianDataJob implements ShouldQueue
     protected function historian_format_data(){
         //获取映射关系
         //本租户下面某个电厂的DCS映射关系
-        if($this->cfgdb['orgnization_id'] == 9){
-            Log::info('444444444444444444');
-            Log::info($this->tenement_conn);
-            Log::info($this->cfgdb['orgnization_id']);
-        }
         $map_lists = (new DcsMap())->setConnection($this->tenement_conn)->where('orgnization_id', $this->cfgdb['orgnization_id'])->get();
         foreach ($map_lists as $k1 => $item) {
-            if($this->cfgdb['orgnization_id'] == 9){
-                Log::info('55555555555555555555555');
-            }
             //找到每个映射关系绑定的tagid
             $ids = explode(',', $item->tag_ids);
             $tag_key_values = [];
             $obj_hitorian_factory = (new HistorianTag())->setConnection($this->tenement_conn)->setTable($this->local_tag_table);
             $taglists = $obj_hitorian_factory->whereIn('id', $ids)->get();
             if($taglists &&  count($taglists) > 0){
-                if($this->cfgdb['orgnization_id'] == 9){
-                    Log::info('666666666666666666');
-                }
                 $tagname_arr = [];  //所有tagname列表
                 foreach ($taglists as $key => $tag) {
                     $tagname_arr[] = $tag->tag_name;
@@ -237,9 +216,6 @@ class HistorianDataJob implements ShouldQueue
 
             //取值成功
             if(!empty($tag_key_values)){
-                if($this->cfgdb['orgnization_id'] == 9){
-                    Log::info('7777777777777777777');
-                }
                 $val = 0;
                 if($item->func){
                     //计算函数的值
@@ -259,9 +235,6 @@ class HistorianDataJob implements ShouldQueue
                 $obj_hitorian_format = (new HistorianFormatData())->setConnection($this->tenement_mongo_conn)->setTable($this->local_format_data_table);
                 $local_row = $obj_hitorian_format->findRowByIdAndTime($item->dcs_standard_id, $this->datetime);
                 if(!$local_row){
-                    if($this->cfgdb['orgnization_id'] == 9){
-                        Log::info('88888888888888888888');
-                    }
                     //本地不存在则插入
                     $obj_hitorian_format->dcs_standard_id = $item->dcs_standard_id;
                     $obj_hitorian_format->value = $val;
