@@ -401,4 +401,62 @@ class PermissionController extends Controller
             }
         }
     }
+
+    /**
+     * @OA\Post(
+     *     path="/api/permissions/isshow",
+     *     tags={"菜单权限permissions"},
+     *     operationId="permissionsIsShow",
+     *     summary="是否显示",
+     *     description="使用说明：是否显示",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="ID",
+     *         in="query",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="是否显示  1显示  0隐藏",
+     *         in="query",
+     *         name="is_show",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation",
+     *     )
+     * )
+     */
+    public function isShow(Request $request){
+        try {
+            $id = $request->input('id');
+            $is_show = $request->input('is_show');
+            $row = Permission::find($id);
+            if($row){
+                $row->is_show = $is_show;
+                $row->save();
+                return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
+            }
+            else{
+                return UtilService::format_data(self::AJAX_FAIL, self::AJAX_NO_DATA_MSG, '');
+            }
+        } catch (QueryException $ex) {
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, $ex->getMessage());
+        }
+    }
 }

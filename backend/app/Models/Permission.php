@@ -10,7 +10,7 @@ class Permission extends Model
 {
     use SoftDeletes;
     protected  $table = 'permissions';
-    protected  $fillable = ['name', 'icon', 'color', 'page_url', 'level', 'sort', 'type', 'api_name', 'parent_id']; //批量赋值
+    protected  $fillable = ['name', 'icon', 'color', 'page_url', 'level', 'sort', 'type', 'api_name', 'parent_id', 'is_show']; //批量赋值
     protected  $dates = ['deleted_at'];  //添加软删除
     protected  $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',

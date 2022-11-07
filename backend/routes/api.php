@@ -83,6 +83,7 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:admin', 'jwt.auth
         Route::post('permissions/insert', 'PermissionController@insert');
         Route::post('permissions/update', 'PermissionController@update');
         Route::post('permissions/delete', 'PermissionController@delete');
+        Route::post('permissions/isshow', 'PermissionController@isShow');
 
 
         //微信推送
