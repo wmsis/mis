@@ -117,6 +117,7 @@ class HistorianDataJob implements ShouldQueue
                     }
                     $local_row = $obj_hitorian_local->findRowByTagAndTime($item['TagName'], $this->datetime);
                     if(!$local_row){
+                        Log::info('9999999999999999999');
                         //本地不存在则插入
                         $params[] = array(
                             'tag_name' => $item['TagName'],
@@ -130,6 +131,7 @@ class HistorianDataJob implements ShouldQueue
             }
 
             if($params && count($params) > 0){
+                Log::info('AAAAAAAAAAAA');
                 $res = $obj_hitorian_local->insertMany($params);
                 //Log::info($this->datetime . '历史数据库数据插入成功'.count($params).'条');
             }
