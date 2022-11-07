@@ -97,7 +97,9 @@ class HistorianDataJob implements ShouldQueue
             $intervalMS = null;
             $res = HistorianService::SampledData($this->cfgdb, $tagsNameString, $start, $end, $count, $samplingMode, $calculationMode, $intervalMS);
             Log::info('88888888888888');
-            Log::info(var_export($res, true));
+            Log::info(var_export($res['code'], true));
+            Log::info(var_export($res['data']['ErrorCode'], true));
+            Log::info(var_export(count($res['data']['Data']), true));
             if($res && $res['code'] === 0 && $res['data']['ErrorCode'] === 0){
                 $datalist = $res['data']['Data'];
                 foreach ($datalist as $key => $item) {
