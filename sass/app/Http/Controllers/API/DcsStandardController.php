@@ -110,10 +110,10 @@ class DcsStandardController extends Controller
         }
 
         $final = [];
-        $final[] = $other;
         foreach ($key_values as $key => $item) {
             $final[] = $item;
         }
+        $final[] = $other;
 
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $final);
     }
