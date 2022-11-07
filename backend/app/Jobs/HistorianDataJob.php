@@ -96,11 +96,14 @@ class HistorianDataJob implements ShouldQueue
             $calculationMode = 1;
             $intervalMS = null;
             $res = HistorianService::SampledData($this->cfgdb, $tagsNameString, $start, $end, $count, $samplingMode, $calculationMode, $intervalMS);
+            Log::info('88888888888888');
+            Log::info(var_export($res, true));
             if($res && $res['code'] === 0 && $res['data']['ErrorCode'] === 0){
                 $datalist = $res['data']['Data'];
                 foreach ($datalist as $key => $item) {
                     $value = '';
                     if(isset($item['Samples']) && $item['Samples'] && count($item['Samples']) > 0) {
+                        Log::info('9999999999999999999');
                         $timestamp = $item['Samples'][0]['TimeStamp'];
                         $value = $item['Samples'][0]['Value'];
                         if(strtolower($value) == 'false'){
@@ -129,7 +132,7 @@ class HistorianDataJob implements ShouldQueue
                 //Log::info($this->datetime . '历史数据库数据插入成功'.count($params).'条');
             }
             else{
-                Log::info($this->datetime . '历史数据库没有数据插入');
+                //Log::info($this->datetime . '历史数据库没有数据插入');
             }
             Log::info('222222222222222222');
         });
@@ -178,7 +181,7 @@ class HistorianDataJob implements ShouldQueue
                 //Log::info($this->datetime . '历史数据库数据插入成功'.count($params).'条');
             }
             else{
-                Log::info($this->datetime . '历史数据库没有数据插入');
+                //Log::info($this->datetime . '历史数据库没有数据插入');
             }
         });
 
