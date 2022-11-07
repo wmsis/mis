@@ -83,7 +83,7 @@ class HistorianDataJob implements ShouldQueue
         $end = date('Y-m-d H:i', strtotime($this->datetime)) . ':00';
         $end = gmdate("Y-m-d\TH:i:s\Z", strtotime($end)); //国际时间
         Log::info('000000000000000');
-        $obj_hitorian_factory->chunk(20, function ($tagslist) use ($obj_hitorian_local, $start, $end) {
+        $obj_hitorian_factory->chunk(50, function ($tagslist) use ($obj_hitorian_local, $start, $end) {
             Log::info('111111111111111111');
             $params = [];
             $tagsNameList = [];
