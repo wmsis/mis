@@ -9,7 +9,7 @@ class API extends Model
 {
     use softDeletes;
     protected $table = 'api';
-    protected $fillable = ['name', 'description', 'parent_id', 'level', 'sort', 'url'];
+    protected $fillable = ['name', 'description', 'parent_id', 'level', 'sort', 'url', 'method'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',

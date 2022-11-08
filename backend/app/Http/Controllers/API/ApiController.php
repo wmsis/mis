@@ -163,6 +163,19 @@ class ApiController extends Controller
      *             type="integer"
      *         ),
      *     ),
+     *     @OA\Parameter(
+     *         description="接口方法  POST GET PUT DELETE PATCH",
+     *         in="query",
+     *         name="method",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="array",
+     *             @OA\Items(
+     *                 type="string",
+     *                 enum = {"POST", "GET", "PUT", "DELETE", "PATCH"},
+     *             )
+     *         ),
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="successful operation",
@@ -177,6 +190,7 @@ class ApiController extends Controller
         $level = 1;
         $parent_id = $request->input('parent_id');
         $sort = $request->input('sort');
+        $method = $request->input('method');
 
         DB::beginTransaction();
         try {
@@ -187,6 +201,9 @@ class ApiController extends Controller
                 $row->url = $url;
                 $row->parent_id = $parent_id;
                 $row->sort = $sort;
+                if($method){
+                    $row->method = $method;
+                }
                 $row->save();
             }
             else {
@@ -196,6 +213,9 @@ class ApiController extends Controller
                     $level = $parent && $parent->level ? $parent->level + 1 : 1;
                 }
                 $params['level'] = $level;
+                if($method){
+                    $params['method'] = $method;
+                }
                 API::create($params); //save 和 create 的不同之处在于 save 接收整个 Eloquent 模型实例而 create 接收原生 PHP 数组
             }
             DB::commit();

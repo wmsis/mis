@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Gate;
 use UtilService;
 use JWTAuth;
 use App\Models\SIS\API;
+use Log;
 
 class CheckPermission
 {
@@ -24,6 +25,7 @@ class CheckPermission
         //此处用auth()->user() 不会报token失效异常
         $userObj = JWTAuth::parseToken()->authenticate();
         $path = $request->path(); //接口路径
+        $method = $request->method(); //接口方法
         $pattern = '/(\d+)/i'; //替换数字为{id}
         if(strpos($path, 'roles/') != false){
             $path = preg_replace($pattern, '{role}', $path);
@@ -58,7 +60,7 @@ class CheckPermission
             $permissions = API::where('url', 'like', '%'.$path.'%')->get();
             foreach ($permissions as $permission) {
                 //路径加权限ID连接，防止同一个路径多次定义
-                if (Gate::allows($path.$permission->id, $permission)) {
+                if (Gate::allows($path.$permission->id, $permission) && (!$permission->method || ($permission->method && $permission->method == $method))) {
                     $flag = true;
                     break;
                 }

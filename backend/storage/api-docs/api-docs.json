@@ -94,6 +94,25 @@
                         "schema": {
                             "type": "integer"
                         }
+                    },
+                    {
+                        "name": "method",
+                        "in": "query",
+                        "description": "接口方法  POST GET PUT DELETE PATCH",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "POST",
+                                    "GET",
+                                    "PUT",
+                                    "DELETE",
+                                    "PATCH"
+                                ]
+                            }
+                        }
                     }
                 ],
                 "responses": {
