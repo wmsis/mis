@@ -130,7 +130,7 @@ class MemberController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/member/{id}/info",
+     *     path="/api/member/{member}/info",
      *     tags={"微信会员member"},
      *     operationId="memberInfo",
      *     summary="用户详情",

@@ -25,25 +25,25 @@ class CheckPermission
         $userObj = JWTAuth::parseToken()->authenticate();
         $path = $request->path(); //接口路径
         $pattern = '/(\d+)/i'; //替换数字为{id}
-        if(strpos($path, 'role') != false){
+        if(strpos($path, 'roles/') != false){
             $path = preg_replace($pattern, '{role}', $path);
         }
-        elseif(strpos($path, 'admin') != false){
+        elseif(strpos($path, 'users/') != false){
             $path = preg_replace($pattern, '{user}', $path);
         }
-        elseif(strpos($path, 'pictxt') != false){
+        elseif(strpos($path, 'pictxt/') != false){
             $path = preg_replace($pattern, '{pictxt}', $path);
         }
-        elseif(strpos($path, 'material') != false){
+        elseif(strpos($path, 'material/') != false){
             $path = preg_replace($pattern, '{material}', $path);
         }
-        elseif(strpos($path, 'member') != false){
+        elseif(strpos($path, 'member/') != false){
             $path = preg_replace($pattern, '{member}', $path);
         }
-        elseif(strpos($path, 'orgnization') != false){
+        elseif(strpos($path, 'orgnizations/') != false){
             $path = preg_replace($pattern, '{orgnization}', $path);
         }
-        elseif(strpos($path, 'tenement') != false){
+        elseif(strpos($path, 'tenements/') != false){
             $path = preg_replace($pattern, '{tenement}', $path);
         }
         else{

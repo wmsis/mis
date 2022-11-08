@@ -162,7 +162,7 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
             Route::get('page', 'DeviceController@index');
             Route::get('tree', 'DeviceController@tree');
             Route::get('show/{id}', 'DeviceController@show');
-            Route::post('store', 'DeviceController@store'); //创建用户组织保存
+            Route::post('store', 'DeviceController@store');
             Route::post('destroy/{id}', 'DeviceController@destroy');
             Route::post('upload', 'DeviceController@upload');
         });

@@ -439,7 +439,7 @@ class OrgnizationController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/orgnizations/{id}/role",
+     *     path="/api/orgnizations/{orgnization}/role",
      *     tags={"公司组织架构orgnizations"},
      *     operationId="getOrgRole",
      *     summary="组织角色",
@@ -479,7 +479,7 @@ class OrgnizationController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/orgnizations/{id}/role",
+     *     path="/api/orgnizations/{orgnization}/role",
      *     tags={"公司组织架构orgnizations"},
      *     operationId="storeOrgRole",
      *     summary="保存组织角色",

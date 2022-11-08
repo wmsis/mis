@@ -672,7 +672,7 @@ class WechatController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/wechat/pictxt/{id}/materials",
+     *     path="/api/wechat/pictxt/{pictxt}/materials",
      *     tags={"微信wechat"},
      *     operationId="materials",
      *     summary="某个图文素材列表",
@@ -972,7 +972,7 @@ class WechatController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/wechat/material/{id}",
+     *     path="/api/wechat/material/{material}",
      *     tags={"微信wechat"},
      *     operationId="material-id",
      *     summary="某个图文素材详情",
@@ -1111,7 +1111,7 @@ class WechatController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/wechat/material/{id}/members",
+     *     path="/api/wechat/material/{material}/members",
      *     tags={"微信wechat"},
      *     operationId="wechat-material-member",
      *     summary="素材用户",

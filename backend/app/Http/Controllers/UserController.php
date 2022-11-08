@@ -337,7 +337,7 @@ class UserController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/users/{id}/role",
+     *     path="/api/users/{user}/role",
      *     tags={"用户users"},
      *     operationId="getUserRole",
      *     summary="用户角色",
@@ -383,7 +383,7 @@ class UserController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/users/{id}/role",
+     *     path="/api/users/{user}/role",
      *     tags={"用户users"},
      *     operationId="storeUserRole",
      *     summary="保存用户角色",
@@ -667,7 +667,7 @@ class UserController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/users/{id}/orgnization",
+     *     path="/api/users/{user}/orgnization",
      *     tags={"用户users"},
      *     operationId="getOrgnization",
      *     summary="用户组织",
@@ -706,7 +706,7 @@ class UserController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/users/{id}/orgnization",
+     *     path="/api/users/{user}/orgnization",
      *     tags={"用户users"},
      *     operationId="storeUserOrgnization",
      *     summary="保存用户组织",
