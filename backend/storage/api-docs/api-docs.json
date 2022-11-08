@@ -3161,7 +3161,7 @@
                 }
             }
         },
-        "/api/orgnizations/{id}/role": {
+        "/api/orgnizations/{orgnization}/role": {
             "get": {
                 "tags": [
                     "公司组织架构orgnizations"
@@ -4197,7 +4197,7 @@
                 }
             }
         },
-        "/api/member/{id}/info": {
+        "/api/member/{member}/info": {
             "get": {
                 "tags": [
                     "微信会员member"
@@ -4297,7 +4297,7 @@
                         "description": "权限父节点ID",
                         "required": false,
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
                         }
                     },
                     {
@@ -4343,6 +4343,15 @@
                         "required": true,
                         "schema": {
                             "type": "string"
+                        }
+                    },
+                    {
+                        "name": "is_show",
+                        "in": "query",
+                        "description": "是否显示 1显示 0隐藏",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
                         }
                     }
                 ],
@@ -4432,6 +4441,15 @@
                         "required": true,
                         "schema": {
                             "type": "string"
+                        }
+                    },
+                    {
+                        "name": "is_show",
+                        "in": "query",
+                        "description": "是否显示 1显示 0隐藏",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
                         }
                     }
                 ],
@@ -4627,7 +4645,7 @@
                 }
             }
         },
-        "/api/roles/{id}/permission": {
+        "/api/roles/{role}/permission": {
             "get": {
                 "tags": [
                     "角色roles"
@@ -4765,7 +4783,7 @@
                 }
             }
         },
-        "/api/roles/{id}/api": {
+        "/api/roles/{role}/api": {
             "get": {
                 "tags": [
                     "角色roles"
@@ -5719,7 +5737,7 @@
                 }
             }
         },
-        "/api/users/{id}/role": {
+        "/api/users/{user}/role": {
             "get": {
                 "tags": [
                     "用户users"
@@ -5963,7 +5981,7 @@
                 }
             }
         },
-        "/api/users/{id}/orgnization": {
+        "/api/users/{user}/orgnization": {
             "get": {
                 "tags": [
                     "用户users"
@@ -6118,7 +6136,7 @@
                 }
             }
         },
-        "/api/wechat/pictxt/{id}/materials": {
+        "/api/wechat/pictxt/{pictxt}/materials": {
             "get": {
                 "tags": [
                     "微信wechat"
@@ -6357,7 +6375,7 @@
                 }
             }
         },
-        "/api/wechat/material/{id}": {
+        "/api/wechat/material/{material}": {
             "get": {
                 "tags": [
                     "微信wechat"
@@ -6461,7 +6479,7 @@
                 }
             }
         },
-        "/api/wechat/material/{id}/members": {
+        "/api/wechat/material/{material}/members": {
             "get": {
                 "tags": [
                     "微信wechat"

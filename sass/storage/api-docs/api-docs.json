@@ -946,7 +946,7 @@
                 }
             }
         },
-        "/api/orgnizations/{id}/role": {
+        "/api/orgnizations/{orgnization}/role": {
             "get": {
                 "tags": [
                     "公司组织架构orgnizations"
@@ -4228,7 +4228,7 @@
                 }
             }
         },
-        "/api/member/{id}/info": {
+        "/api/member/{member}/info": {
             "get": {
                 "tags": [
                     "微信会员member"
@@ -4566,8 +4566,8 @@
                 "tags": [
                     "角色roles"
                 ],
-                "summary": "保存集团角色",
-                "description": "使用说明：保存集团角色",
+                "summary": "保存角色",
+                "description": "使用说明：保存角色",
                 "operationId": "roleStore",
                 "parameters": [
                     {
@@ -4614,7 +4614,7 @@
                 }
             }
         },
-        "/api/roles/{id}/permission": {
+        "/api/roles/{role}/permission": {
             "get": {
                 "tags": [
                     "角色roles"
@@ -4752,7 +4752,7 @@
                 }
             }
         },
-        "/api/roles/{id}/api": {
+        "/api/roles/{role}/api": {
             "get": {
                 "tags": [
                     "角色roles"
@@ -5004,7 +5004,7 @@
                 }
             }
         },
-        "/api/users/{id}/role": {
+        "/api/users/{user}/role": {
             "get": {
                 "tags": [
                     "用户users"
@@ -5274,7 +5274,7 @@
                 }
             }
         },
-        "/api/users/{id}/orgnization": {
+        "/api/users/{user}/orgnization": {
             "get": {
                 "tags": [
                     "用户users"
@@ -5429,7 +5429,7 @@
                 }
             }
         },
-        "/api/wechat/pictxt/{id}/materials": {
+        "/api/wechat/pictxt/{pictxt}/materials": {
             "get": {
                 "tags": [
                     "微信wechat"
@@ -5668,7 +5668,7 @@
                 }
             }
         },
-        "/api/wechat/material/{id}": {
+        "/api/wechat/material/{material}": {
             "get": {
                 "tags": [
                     "微信wechat"
@@ -5772,7 +5772,7 @@
                 }
             }
         },
-        "/api/wechat/material/{id}/members": {
+        "/api/wechat/material/{material}/members": {
             "get": {
                 "tags": [
                     "微信wechat"
