@@ -113,7 +113,10 @@ class DcsStandardController extends Controller
         foreach ($key_values as $key => $item) {
             $final[] = $item;
         }
-        $final[] = $other;
+        
+        if(!empty($other['datalist'])){
+            $final[] = $other;
+        }
 
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $final);
     }
