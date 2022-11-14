@@ -91,7 +91,7 @@ class OrgnizationController extends Controller
         $name = $request->input('name');
         $obj = new Orgnization();
 
-        $rows = $obj->select(['*'])->where('level', 2);
+        $rows = $obj->select(['*'])->where('level', 2)->orderBy('sort', 'asc');
         if ($name) {
             $rows = $rows->where('name', 'like', "%{$name}%");
         }
