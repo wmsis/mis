@@ -38,9 +38,9 @@ class Kernel extends ConsoleKernel
         //收集采集数据
         $yestoday = date('Y-m-d', time() - 24 * 60 * 60);
         $yestoday_cmd = 'collect:grabGarbageData --date=' . $yestoday;
-        $schedule->command('collect:iec104data')->everyTenMinutes();
-        $schedule->command('collect:grabGarbageData')->twiceDaily(12, 23);//当天的数据
-        $schedule->command($yestoday_cmd)->twiceDaily(13, 22);//前一天的数据
+        $schedule->command('collect:iec104data')->everyFiveMinutes();
+        $schedule->command('collect:grabGarbageData')->hourlyAt(30);//当天的数据  每小时第30分钟
+        $schedule->command($yestoday_cmd)->twiceDaily(1, 22);//前一天的数据
         $schedule->command('collect:historianData')->everyFiveMinutes();
 
         //每日累计数据
@@ -53,19 +53,19 @@ class Kernel extends ConsoleKernel
         //累计前一天的数据
         $yestoday = date('Y-m-d', time() - 24 * 60 * 60);
         $electricity_cmd = 'count:dayElectricityData --date=' . $yestoday;
-        $schedule->command($electricity_cmd)->twiceDaily(13, 23);
+        $schedule->command($electricity_cmd)->twiceDaily(1, 22);
 
         $dcs_cmd = 'count:dayDcsData --date=' . $yestoday;
-        $schedule->command($dcs_cmd)->twiceDaily(13, 23);
+        $schedule->command($dcs_cmd)->twiceDaily(1, 22);
 
         $grab_garbage_cmd = 'count:dayGrabGarbageData --date=' . $yestoday;
-        $schedule->command($grab_garbage_cmd)->twiceDaily(13, 23);
+        $schedule->command($grab_garbage_cmd)->twiceDaily(2, 23);
 
         $weigh_bridge_cmd = 'count:dayWeighBridgeData --date=' . $yestoday;
-        $schedule->command($weigh_bridge_cmd)->twiceDaily(13, 23);
+        $schedule->command($weigh_bridge_cmd)->twiceDaily(1, 22);
 
         $power_cmd = 'count:dayPowerData --date=' . $yestoday;
-        $schedule->command($power_cmd)->twiceDaily(13, 23);
+        $schedule->command($power_cmd)->twiceDaily(2, 23);
     }
 
     /**
