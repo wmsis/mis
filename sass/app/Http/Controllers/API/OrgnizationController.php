@@ -202,7 +202,7 @@ class OrgnizationController extends Controller
      */
     public function factories(Request $request)
     {
-        $data = Orgnization::where('level', 2)->get();
+        $data = Orgnization::where('level', 2)->orderBy('sort', 'asc')->get();
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $data);
     }
 
