@@ -16,7 +16,7 @@ class CreateFactoryTable extends Migration
         Schema::create('historian_tag_yongqiang2', function (Blueprint $table) {
             $table->id();
             $table->string('tag_id', 50)->nullable()->comment('tag ID');
-            $table->string('tag_name', 50)->nullable()->comment('tag中文名');
+            $table->string('tag_name', 50)->nullable()->comment('tag中文名')->index();
 
             $table->timestamps();
             $table->softDeletes();
@@ -24,16 +24,16 @@ class CreateFactoryTable extends Migration
 
         Schema::create('electricity_day_data_yongqiang2', function (Blueprint $table) {
             $table->id();
-            $table->integer('electricity_map_id')->nullable()->comment('电表映射关系ID');
+            $table->integer('electricity_map_id')->nullable()->comment('电表映射关系ID')->index();
             $table->decimal('value', $precision = 20, $scale = 2)->nullable()->comment('累计值');
-            $table->date('date')->nullable()->comment('日期');
+            $table->date('date')->nullable()->comment('日期')->index();
 
             $table->timestamps();
         });
 
         Schema::create('electricity_yongqiang2', function (Blueprint $table) {
             $table->id();
-            $table->integer('electricity_map_id')->nullable()->comment('电表映射关系ID');
+            $table->integer('electricity_map_id')->nullable()->comment('电表映射关系ID')->index();
             $table->decimal('value', $precision = 20, $scale = 2)->nullable()->comment('远动获取的原始值');
             $table->decimal('actual_value', $precision = 20, $scale = 2)->nullable()->comment('实际值');
 
@@ -42,9 +42,9 @@ class CreateFactoryTable extends Migration
 
         Schema::create('grab_garbage_day_data_yongqiang2', function (Blueprint $table) {
             $table->id();
-            $table->integer('liao')->nullable()->comment('料口号');
+            $table->integer('liao')->nullable()->comment('料口号')->index();
             $table->decimal('value', $precision = 10, $scale = 2)->nullable()->comment('累计值');
-            $table->date('date')->nullable()->comment('日期');
+            $table->date('date')->nullable()->comment('日期')->index();
 
             $table->timestamps();
         });
@@ -63,33 +63,34 @@ class CreateFactoryTable extends Migration
 
             $table->timestamps();
             $table->softDeletes();
+            $table->index('created_at');
         });
 
         Schema::create('power_day_data_yongqiang2', function (Blueprint $table) {
             $table->id();
-            $table->integer('power_map_id')->nullable()->comment('用电映射关系ID');
+            $table->integer('power_map_id')->nullable()->comment('用电映射关系ID')->index();
             $table->decimal('value', $precision = 20, $scale = 2)->nullable()->comment('当日值');
-            $table->date('date')->nullable()->comment('日期');
+            $table->date('date')->nullable()->comment('日期')->index();
 
             $table->timestamps();
         });
 
         Schema::create('weighbridge_day_data_yongqiang2', function (Blueprint $table) {
             $table->id();
-            $table->integer('weighbridge_cate_small_id')->nullable()->comment('垃圾分类小类ID');
+            $table->integer('weighbridge_cate_small_id')->nullable()->comment('垃圾分类小类ID')->index();
             $table->decimal('value', $precision = 10, $scale = 2)->nullable()->comment('净重');
-            $table->date('date')->nullable()->comment('日期');
+            $table->date('date')->nullable()->comment('日期')->index();
 
             $table->timestamps();
         });
 
         Schema::create('weighbridge_format_yongqiang2', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('grossdatetime')->nullable()->comment('毛重时间');
-            $table->dateTime('taredatetime')->nullable()->comment('皮重时间');
+            $table->dateTime('grossdatetime')->nullable()->comment('毛重时间')->index();
+            $table->dateTime('taredatetime')->nullable()->comment('皮重时间')->index();
             $table->smallInteger('net')->nullable()->comment('净重');
             $table->integer('weighid')->nullable()->comment('称重磅单号');
-            $table->integer('weighbridge_cate_small_id')->nullable()->comment('垃圾分类小类ID');
+            $table->integer('weighbridge_cate_small_id')->nullable()->comment('垃圾分类小类ID')->index();
 
             $table->timestamps();
         });
