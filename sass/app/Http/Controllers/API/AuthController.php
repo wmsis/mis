@@ -138,10 +138,10 @@ class AuthController extends Controller
 
                 //用户所在组织
                 if($user->type == 'admin'){
-                    $orgnizations = Orgnization::where('level', 2)->get();
+                    $orgnizations = Orgnization::where('level', 2)->orderBy('sort', 'asc')->get();
                 }
                 else{
-                    $orgnizations = $user->orgnizations()->where('level', 2)->get();
+                    $orgnizations = $user->orgnizations()->where('level', 2)->orderBy('sort', 'asc')->get();
                 }
                 $user->orgnizations = $orgnizations;
             }
