@@ -89,7 +89,7 @@ class OrgnizationController extends Controller
         $name = $request->input('name');
         $obj = new Orgnization();
 
-        $rows = $obj->select(['*'])->where('level', 2);
+        $rows = $obj->select(['*'])->where('level', 2)->orderBy('sort', 'asc');
         if ($name) {
             $rows = $rows->where('name', 'like', "%{$name}%");
         }
@@ -131,7 +131,7 @@ class OrgnizationController extends Controller
      */
     public function factories(Request $request)
     {
-        $data = Orgnization::where('level', 2)->get();
+        $data = Orgnization::where('level', 2)->orderBy('sort', 'asc')->get();
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $data);
     }
 
