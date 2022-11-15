@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Repositories\ElectricityDayDataRepository;
 use App\Repositories\WeighBridgeDayDataReposotory;
 use App\Repositories\GrabGarbageDayDataReposotory;
+use App\Repositories\DcsStandardRepository;
 use App\Models\SIS\Orgnization;
 use UtilService;
 use Log;
@@ -298,5 +299,80 @@ class ScreenController extends Controller
         }
 
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $datalist);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/screen/boiler-temperature",
+     *     tags={"大数据大屏screen"},
+     *     operationId="screen-boiler-temperature",
+     *     summary="炉温分布",
+     *     description="使用说明：炉温分布",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="电厂ID",
+     *         in="query",
+     *         name="factory_id",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="开始时间",
+     *         in="query",
+     *         name="start",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="结束时间",
+     *         in="query",
+     *         name="end",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="succeed",
+     *     ),
+     * )
+     */
+    public function boilerTemperature(Request $request)
+    {
+        //获取接收的参数
+        $factory_id = $request->input('factory_id');
+        $start = $request->input('start');
+        $end = $request->input('end');
+
+        //初始化参数
+        $final = [];
+        $dcsStandardObj = new DcsStandardRepository();
+        $begin_timestamp = $start ? strtotime($start) : time() - 24 * 60 * 60;
+        $end_timestamp = $end ? strtotime($end) : time();
+        $start_datetime = date('Y-m-d H:i:s', $begin_timestamp);
+        $end_datetime = date('Y-m-d H:i:s', $end_timestamp);
+
+        //获取电厂组织
+        $factory = Orgnization::where('id', $factory_id)->get();
+        if($factory){
+            $datalist = $dcsStandardObj->countData($start_datetime, $end_datetime, $factory, $this->mongo_conn);
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $datalist);
+        }
+        else{
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, []);
+        }
     }
 }

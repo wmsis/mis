@@ -64,6 +64,12 @@ return [
         //     'en_name' => 'gl3_gswd'
         // ),
     ),
+    'boiler' => array(
+        'gl1_ltsbwd' => array(
+            'cn_name' => '1#锅炉炉膛上部温度',
+            'en_name' => 'gl1_ltsbwd'
+        ),
+    ),
     'user' => array(
         'instation'=>'电厂用户',
         'webmaster'=>'电厂管理员',

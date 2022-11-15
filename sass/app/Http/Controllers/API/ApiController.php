@@ -75,7 +75,7 @@ class ApiController extends Controller
             return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $tree);
         }
         else{
-            return UtilService::format_data(self::AJAX_FAIL, '获取失败', []);
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, []);
         }
     }
 

@@ -203,6 +203,7 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
         //大数据大屏
         Route::prefix('screen')->group(function () {
             Route::get('chart', 'ScreenController@chart');
+            Route::get('boiler-temperature', 'ScreenController@boilerTemperature');
         });
     });
 });
