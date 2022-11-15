@@ -366,7 +366,7 @@ class ScreenController extends Controller
         $end_datetime = date('Y-m-d H:i:s', $end_timestamp);
 
         //获取电厂组织
-        $factory = Orgnization::where('id', $factory_id)->get();
+        $factory = Orgnization::where('id', $factory_id)->first();
         if($factory){
             $datalist = $dcsStandardObj->countData($start_datetime, $end_datetime, $factory, $this->mongo_conn);
             return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $datalist);
