@@ -21,7 +21,7 @@ class DcsStandardRepository extends BaseRepository
      */
     public function model()
     {
-        return ElectricityDayData::class;
+        return HistorianFormatData::class;
     }
 
     public function countData($start, $end, $factory, $tenement_mongo_conn=null)
