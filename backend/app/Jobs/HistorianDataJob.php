@@ -225,7 +225,7 @@ class HistorianDataJob implements ShouldQueue
                 }
                 else{
                     foreach ($tag_key_values as $tag_name => $tag) {
-                        $val = $tag['value']; //取第一个tag的值
+                        $val = (float)$tag['value']; //取第一个tag的值
                         break;
                     }
                 }
