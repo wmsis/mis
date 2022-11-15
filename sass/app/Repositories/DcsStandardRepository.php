@@ -37,6 +37,10 @@ class DcsStandardRepository extends BaseRepository
         $standard = DcsStandard::where('type', 'dcs')->where('en_name', $cfg['en_name'])->first();
         $table = 'historian_format_data_' . $factory['code'];
         $historian_format_obj = (new HistorianFormatData())->setConnection($tenement_mongo_conn)->setTable($table);
+        Log::info('00000000000000');
+        Log::info($standard['id']);
+        Log::info($start);
+        Log::info($end);
 
         for($i=1; $i<count($range)-1; $i++){
             $num = $historian_format_obj->where('dcs_standard_id', $standard['id'])
