@@ -52,6 +52,11 @@ class DcsStandardRepository extends BaseRepository
             );
         }
 
-        return $final;
+        $datalist = [];
+        foreach ($final as $key => $item) {
+            $datalist[] = $item;
+        }
+
+        return $datalist;
     }
 }

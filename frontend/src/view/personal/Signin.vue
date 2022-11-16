@@ -161,7 +161,7 @@
         mounted(){
             console.log("login")
             this.$store.dispatch('logout')
-            this.test();
+            //this.test();
         }
     }
 </script>
