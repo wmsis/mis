@@ -53,10 +53,10 @@ class ElectricityController extends Controller
     {
         $name = $request->input('name');
         if($name){
-            $lists = DcsStandard::where('cn_name', 'like', "%{$name}%")->where('type', 'electricity')->get();
+            $lists = DcsStandard::where('cn_name', 'like', "%{$name}%")->where('type', 'electricity')->orderBy('sort', 'ASC')->get();
         }
         else{
-            $lists = DcsStandard::where('type', 'electricity')->get();
+            $lists = DcsStandard::where('type', 'electricity')->orderBy('sort', 'ASC')->get();
         }
 
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $lists);
