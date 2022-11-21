@@ -82,7 +82,8 @@ class DcsStandardController extends Controller
         $lists = DB::table('dcs_standard')
             ->leftJoin('dcs_group', 'dcs_standard.dcs_group_id', '=', 'dcs_group.id')
             ->select('dcs_standard.*', 'dcs_group.name AS group_name')
-            ->where('dcs_standard.type',  'dcs');
+            ->where('dcs_standard.type',  'dcs')
+            ->orderBy('dcs_standard.sort', 'ASC');
 
         if($cn_name){
             $lists = $lists->where('dcs_standard.cn_name', 'like', "%{$cn_name}%");
@@ -113,7 +114,7 @@ class DcsStandardController extends Controller
         foreach ($key_values as $key => $item) {
             $final[] = $item;
         }
-        
+
         if(!empty($other['datalist'])){
             $final[] = $other;
         }

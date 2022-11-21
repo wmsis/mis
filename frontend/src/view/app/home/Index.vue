@@ -1,8 +1,8 @@
 <template>
     <div>
         <div class="pageWrapper">
-            <div class="">数据中台</div>
-            <HChart :id="idFirst" :option="optionRubbish"></HChart>
+            <div style="display:none;">数据中台</div>
+            <HChart :id="idFirst" :option="optionRubbish" v-if="hasData"></HChart>
         </div>
     </div>
 </template>
@@ -30,7 +30,7 @@
             type: 'pie'
         },
         title: {
-            text: '垃圾进厂量/焚烧量'
+            text: '炉温分布图'
         },
         subtitle: {
             text: ''
@@ -42,13 +42,13 @@
         yAxis: {
             min: 0,
             title: {
-                text: '垃圾 (吨)'
+                text: '℃'
             }
         },
         tooltip: {
             // head + 每个 point + footer 拼接成完整的 table
             headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' + '<td style="padding:0"><b>{point.y:.1f} 吨</b></td></tr>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' + '<td style="padding:0"><b>{point.y}</b></td></tr>',
             footerFormat: '</table>',
             shared: true,
             useHTML: true
@@ -59,7 +59,7 @@
             }
         },
         series: [{
-				name: 'Brands',
+				name: '小时数',
 				colorByPoint: true,
 				data: []
 		}]
@@ -122,7 +122,26 @@
                         // vm.optionLeachate.series[0].data = Object.values(data.produce_leachate);
                         // vm.optionLeachate.series[1].data = Object.values(data.handle_leachate);
                         vm.hasData = true;
-                        vm.optionRubbish.series.data = [];
+                        let list = [];
+                        let key = 0;
+                        let index = 0;
+                        let max = 0;
+                        for(let item of data){
+                            let hour = Number((item.value * 5/60).toFixed(2));
+                            list.push({
+                                name: item.name,
+						        y: hour
+                            });
+
+                            if(item.value > 0 && item.value > max){
+                                key = index;
+                                max = item.value;
+                            }
+                            index++;
+                        }
+                        list[key].sliced = true;
+                        list[key].selected = true;
+                        vm.optionRubbish.series[0].data = list;
                     },
                     fail() {
                         vm.graghLoading = false;
