@@ -206,6 +206,10 @@ class HistorianDataJob implements ShouldQueue
                 $obj_hitorian_local = (new HistorianData())->setConnection($this->tenement_mongo_conn)->setTable($this->local_data_table);
                 $tags_data = $obj_hitorian_local->whereIn('tag_name', $tagname_arr)->where('datetime', $this->datetime)->get();
                 foreach ($tags_data as $key => $tag) {
+                    if(strpos($tag->value, '.') !== false){
+                        $tag->value = number_format($tag->value, 2);
+                    }
+
                     $tag_key_values[$tag->tag_name] = array(
                         'value' => $tag->value
                     );
