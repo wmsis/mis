@@ -11,6 +11,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SIS\DcsStandard;
+use App\Models\SIS\DcsMap;
+use App\Models\SIS\PowerMap;
 use Illuminate\Database\QueryException;
 use App\Http\Requests\API\DcsStandardStoreRequest;
 use UtilService;
@@ -546,7 +548,17 @@ class DcsStandardController extends Controller
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_NO_DATA_MSG, '');
         }
         try {
-            $row->delete();
+            $dcs_map = DcsMap::where('dcs_standard_id', $id)->first();
+            $power_map = PowerMap::where('dcs_standard_id', $id)->first();
+            if($dcs_map){
+                return UtilService::format_data(self::AJAX_FAIL, '请先删除DCS映射关系', '');
+            }
+            elseif($power_map){
+                return UtilService::format_data(self::AJAX_FAIL, '请先删除电表映射关系', '');
+            }
+            else{
+                $row->delete();
+            }
         } catch (Exception $e) {
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
