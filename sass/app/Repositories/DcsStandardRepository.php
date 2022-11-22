@@ -33,7 +33,7 @@ class DcsStandardRepository extends BaseRepository
             1000, 1110, 1120, 1130, 1140, 1150, 1160, 1170, 1180, 1190,
             1200, 1250, 1300, 1400
         );
-        $cfg = config('standard.boiler.gl1_ltsbwd');
+        $cfg = config('standard.boiler.GL1_LTSBWD_L');
         $standard = DcsStandard::where('type', 'dcs')->where('en_name', $cfg['en_name'])->first();
         $table = 'historian_format_data_' . $factory['code'];
         $historian_format_obj = (new HistorianFormatData())->setConnection($tenement_mongo_conn)->setTable($table);

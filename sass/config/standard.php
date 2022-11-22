@@ -65,9 +65,9 @@ return [
         // ),
     ),
     'boiler' => array(
-        'gl1_ltsbwd' => array(
-            'cn_name' => '1#锅炉炉膛上部温度',
-            'en_name' => 'gl1_ltsbwd'
+        'GL1_LTSBWD_L' => array(
+            'cn_name' => '1#炉炉膛内上部断面左墙温度',
+            'en_name' => 'GL1_LTSBWD_L'
         ),
     ),
     'user' => array(
