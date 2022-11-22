@@ -193,6 +193,7 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:admin', 'jwt.auth
         Route::get('dcs-standard/lists', 'DcsStandardController@lists');
         Route::get('dcs-standard/download', 'DcsStandardController@download');
         Route::post('dcs-standard/import', 'DcsStandardController@import');
+        Route::get('dcs-standard/messure', 'DcsStandardController@messure');
         Route::get('dcs-group/show-relation/{id}', 'DcsGroupController@showRelation');
         Route::post('dcs-group/bind-relation', 'DcsGroupController@bindRelation');
         Route::get('dcs-group/download', 'DcsGroupController@download');

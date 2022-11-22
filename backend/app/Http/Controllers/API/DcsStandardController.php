@@ -691,4 +691,51 @@ class DcsStandardController extends Controller
 
         return Excel::download($excel, '统一字段名_' . date('YmdHis') . '.xlsx');
     }
+
+    /**
+     * @OA\Get(
+     *     path="/api/dcs-standard/messure",
+     *     tags={"DCS标准命名dcs-standard"},
+     *     operationId="dcs-standard-messure",
+     *     summary="获取单位列表",
+     *     description="使用说明：获取单位列表",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="类型 值为dcs或electricity",
+     *         in="query",
+     *         name="type",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string",
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="succeed",
+     *     ),
+     * )
+     */
+    public function messure(Request $request)
+    {
+        $type = $request->input('type');
+        if ($type) {
+            $data = DcsStandard::select(['messure'])->where('type', $type)->groupBy('messure')->get();
+        }
+        else{
+            $data = DcsStandard::select(['messure'])->groupBy('messure')->get();
+        }
+        $final = [];
+        foreach ($data as $key => $item) {
+            $final[] = $item->messure;
+        }
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $final);
+    }
 }

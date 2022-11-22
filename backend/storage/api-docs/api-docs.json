@@ -1690,6 +1690,41 @@
                 }
             }
         },
+        "/api/dcs-standard/messure": {
+            "get": {
+                "tags": [
+                    "DCS标准命名dcs-standard"
+                ],
+                "summary": "获取单位列表",
+                "description": "使用说明：获取单位列表",
+                "operationId": "dcs-standard-messure",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "类型 值为dcs或electricity",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
         "/api/electricity/index": {
             "get": {
                 "tags": [
