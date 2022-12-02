@@ -111,7 +111,7 @@
             },
             test(){
                 let that = this;
-                let token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9taXMuY29tOjg4ODhcL2FwaVwvYWRtaW5cL2xvZ2luIiwiaWF0IjoxNjY3NDU4NDM5LCJleHAiOjE2Njc0NjIwMzksIm5iZiI6MTY2NzQ1ODQzOSwianRpIjoiR0RnRWpYSFRBeGVpMXdMWSIsInN1YiI6MiwicHJ2IjoiYTMyOGEzMWQ4MzQwM2NkMThiZjRmODg3MmM5ZTJkOWJmZTFlNGVjMyIsInJvbGUiOiJhZG1pbiJ9.bBBCjLV8Vsc42IhFGqiHaZOa_O8shpWAIM6degaZVZk';
+                let token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMC45OS45OS45OTo1MDUwXC9hcGlcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNjY5ODgyMjA1LCJleHAiOjE2Njk4ODU4MDUsIm5iZiI6MTY2OTg4MjIwNSwianRpIjoiT0wyeDdMWXlyanpYYVBSYSIsInN1YiI6MiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyIsInJvbGUiOiJ1c2VyIn0.hEw0kLx7KiOSosTmXAOtKFkd0x4JRgfOiD9VsULrv08';
                 that.$store.dispatch('login', {
                     access_token: token,
                     refresh_token: '',
@@ -120,33 +120,23 @@
 
                 that.ajax({
                     method: 'POST',
-                    url: '/dcs-standard/import',
+                    url: '/daily-data/store',
                     data: {
-                        json: JSON.stringify({
-                            "header": [
-                                "cn_name",
-                                "en_name",
-                                "messure"
-                            ],
-                            "results": [
-                                {
-                                    "cn_name": "炉温11",
-                                    "en_name": "lw",
-                                    "messure": "℃"
-                                },
-                                {
-                                    "cn_name": "炉温22",
-                                    "en_name": "lllm",
-                                    "messure": "℃"
-                                },
-                                {
-                                    "cn_name": "炉温33",
-                                    "en_name": "ll3",
-                                    "messure": "℃"
-                                }
-                            ],
-                            "name": "统一字段名导入.xlsx"
-                        })
+                        orgnization_id: 27,
+                        module_name: 'rubbish',
+                        date: "2022-12-01",
+                        values: JSON.stringify([
+                            {
+                                "dcs_standard_id": 1,
+                                "cn_name":"炉温",
+                                "value": 850
+                            },
+                            {
+                                "dcs_standard_id": 2,
+                                "cn_name":"炉温2",
+                                "value": 950
+                            }
+                        ])
                     },
                     success(response) {
                         console.log('0000000000000');
@@ -161,7 +151,7 @@
         mounted(){
             console.log("login")
             this.$store.dispatch('logout')
-            //this.test();
+            this.test();
         }
     }
 </script>

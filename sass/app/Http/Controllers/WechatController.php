@@ -33,7 +33,6 @@ use App\Events\WechatScanLogin;
 use Illuminate\Support\Facades\Auth;
 use App\Models\SIS\OfflineData;
 use App\Models\SIS\EconomyDaily;
-use App\Models\SIS\DailyData;
 use Log;
 
 class WechatController extends Controller
