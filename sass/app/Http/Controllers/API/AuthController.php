@@ -148,7 +148,7 @@ class AuthController extends Controller
             MyCacheService::setCache($key, $token, 3600);
         } catch (JWTException $e) {
             Log::error($e);
-            $res = UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
+            $res = UtilService::format_data(self::AJAX_FAIL, $e->getMessage(), '');
             return response()->json($res, 500);
         }
 

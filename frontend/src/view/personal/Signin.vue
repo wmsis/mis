@@ -111,7 +111,7 @@
             },
             test(){
                 let that = this;
-                let token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMC45OS45OS45OTo1MDUwXC9hcGlcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNjY5ODgyMjA1LCJleHAiOjE2Njk4ODU4MDUsIm5iZiI6MTY2OTg4MjIwNSwianRpIjoiT0wyeDdMWXlyanpYYVBSYSIsInN1YiI6MiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyIsInJvbGUiOiJ1c2VyIn0.hEw0kLx7KiOSosTmXAOtKFkd0x4JRgfOiD9VsULrv08';
+                let token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC93ZWNoYXQuY29tXC9hcGlcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNjcwMzkwNDI2LCJleHAiOjE2NzAzOTQwMjYsIm5iZiI6MTY3MDM5MDQyNywianRpIjoiYkExdHhKZW5VcU1OWHlseiIsInN1YiI6MiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyIsInJvbGUiOiJ1c2VyIn0.BrCFYrS_StVM_zryR1lPtDazBTYKlufehMUewHiSohY';
                 that.$store.dispatch('login', {
                     access_token: token,
                     refresh_token: '',
@@ -122,9 +122,10 @@
                     method: 'POST',
                     url: '/daily-data/store',
                     data: {
-                        orgnization_id: 27,
+                        orgnization_id: 9,
                         module_name: 'rubbish',
-                        date: "2022-12-01",
+                        date: "2022-12-07",
+                        type: 'save',
                         values: JSON.stringify([
                             {
                                 "dcs_standard_id": 1,
@@ -133,8 +134,8 @@
                             },
                             {
                                 "dcs_standard_id": 2,
-                                "cn_name":"炉温2",
-                                "value": 950
+                                "cn_name":"发电量",
+                                "value": 9500
                             }
                         ])
                     },
