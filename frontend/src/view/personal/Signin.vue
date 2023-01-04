@@ -111,7 +111,7 @@
             },
             test(){
                 let that = this;
-                let token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC93ZWNoYXQuY29tXC9hcGlcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNjcwMzkwNDI2LCJleHAiOjE2NzAzOTQwMjYsIm5iZiI6MTY3MDM5MDQyNywianRpIjoiYkExdHhKZW5VcU1OWHlseiIsInN1YiI6MiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyIsInJvbGUiOiJ1c2VyIn0.BrCFYrS_StVM_zryR1lPtDazBTYKlufehMUewHiSohY';
+                let token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC93ZWNoYXQuY29tXC9hcGlcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNjcxMDg5MzY3LCJleHAiOjE2NzEwOTI5NjcsIm5iZiI6MTY3MTA4OTM2NywianRpIjoiMFNUYm9aWkRmekFIRUdKUSIsInN1YiI6MiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyIsInJvbGUiOiJ1c2VyIn0._UjEaT2OZ0cgqKZdxwoA6TsVKKZeMLcGBoSskQxhdg0';
                 that.$store.dispatch('login', {
                     access_token: token,
                     refresh_token: '',
@@ -124,7 +124,7 @@
                     data: {
                         orgnization_id: 9,
                         module_name: 'rubbish',
-                        date: "2022-12-07",
+                        date: "2022-12-10",
                         type: 'save',
                         values: JSON.stringify([
                             {
