@@ -189,6 +189,6 @@ class UtilService
     }
 
     public function getKey($key, $constant){
-        return md5($key . 'MIS' . $constant);
+        return md5($key . 'WMHBDATA' . $constant);
     }
 }
