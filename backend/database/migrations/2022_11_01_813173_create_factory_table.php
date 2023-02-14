@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFactoryTable extends Migration
+class CreateFactoryTable813173 extends Migration
 {
     /**
      * Run the migrations.

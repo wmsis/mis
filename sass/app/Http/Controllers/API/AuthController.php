@@ -25,6 +25,7 @@ use MyCacheService;
 use App\Models\OperateLog;
 use App\Models\Permission;
 use App\Models\SIS\Orgnization;
+use App\Models\SIS\SysUserMap;
 
 /**
  * @OA\Info(
@@ -423,7 +424,8 @@ class AuthController extends Controller
             }
 
             $privileges = $this->get_permission($user); //获取用户菜单权限
-            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, compact('user', 'privileges'));
+            $switch = SysUserMap::where('basic_conn_name', 'mysql_sis')->where('basic_user_id', $user->id)->first();
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, compact('user', 'privileges', 'switch'));
         } catch (Exception $e) {
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }

@@ -210,6 +210,14 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:admin', 'jwt.auth
             'dcs-db-config' => DcsDbConfigController::class,
             'dcs-group' => DcsGroupController::class,
         ]);
+
+        //接口权限
+        Route::prefix('setting')->group(function () {
+            Route::get('sys-user-maps', 'SettingController@sysUserMaps');
+            Route::get('sys-user-list', 'SettingController@sysUserList');
+            Route::post('sys-user-map-store', 'SettingController@sysUserMapStore'); //创建用户组织保存
+            Route::post('sys-user-map-delete', 'SettingController@sysUserMapDelete');
+        });
     });
 });
 
