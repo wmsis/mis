@@ -426,9 +426,7 @@ class AuthController extends Controller
             $privileges = $this->get_permission($user); //获取用户菜单权限
             $switch = SysUserMap::where('basic_conn_name', 'mysql_sis')->where('basic_user_id', $user->id)->first();
 
-            Log::info('000000000000000');
-            Log::info(var_export($switch, true));
-            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, compact('user', 'privileges'));
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, compact('user', 'privileges', 'switch'));
         } catch (Exception $e) {
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
