@@ -78,8 +78,8 @@ class SettingController extends Controller
      *     path="/api/setting/sys-user-list",
      *     tags={"系统设置setting"},
      *     operationId="setting-sys-users",
-     *     summary="获取SIS系统用户列表",
-     *     description="使用说明：获取SIS系统用户列表",
+     *     summary="获取系统用户列表",
+     *     description="使用说明：获取系统用户列表",
      *     @OA\Parameter(
      *         description="token",
      *         in="query",
