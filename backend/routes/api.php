@@ -210,14 +210,6 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:admin', 'jwt.auth
             'dcs-db-config' => DcsDbConfigController::class,
             'dcs-group' => DcsGroupController::class,
         ]);
-
-        //接口权限
-        Route::prefix('setting')->group(function () {
-            Route::get('sys-user-maps', 'SettingController@sysUserMaps');
-            Route::get('sys-user-list', 'SettingController@sysUserList');
-            Route::post('sys-user-map-store', 'SettingController@sysUserMapStore'); //创建用户组织保存
-            Route::post('sys-user-map-delete', 'SettingController@sysUserMapDelete');
-        });
     });
 });
 
@@ -236,6 +228,16 @@ Route::group(['namespace' => 'App\Http\Controllers\API'], function () {
     // 地磅小分类上报数据接口
     Route::prefix('weighbridge-category')->group(function () {
         Route::post('store-small-multi', 'WeighbridgeCategoryController@storeSmallMulti');
+    });
+});
+
+Route::group(['namespace' => 'App\Http\Controllers\System'], function () {
+    //接口权限
+    Route::prefix('setting')->group(function () {
+        Route::get('sys-user-maps', 'SettingController@sysUserMaps');
+        Route::get('sys-user-list', 'SettingController@sysUserList');
+        Route::post('sys-user-map-store', 'SettingController@sysUserMapStore'); //创建用户组织保存
+        Route::post('sys-user-map-delete', 'SettingController@sysUserMapDelete');
     });
 });
 
