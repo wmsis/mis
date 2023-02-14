@@ -1,4 +1,0 @@
-[2023-02-14 14:15:26] local.ERROR: Trait 'App\Models\SIS\softDeletes' not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait 'App\\Models\\SIS\\softDeletes' not found at E:\\workspace\\mis\\sass\\app\\Models\\SIS\\SysUserMap.php:8)
-[stacktrace]
-#0 {main}
-"} 
