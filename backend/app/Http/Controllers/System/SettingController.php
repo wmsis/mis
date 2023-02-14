@@ -17,8 +17,8 @@ class SettingController extends Controller
      *     path="/api/setting/sys-user-maps",
      *     tags={"系统设置setting"},
      *     operationId="setting-sys-user-maps",
-     *     summary="获取系统映射关系列表",
-     *     description="使用说明：获取系统映射关系列表",
+     *     summary="分页获取系统映射关系列表",
+     *     description="使用说明：分页获取系统映射关系列表",
      *     @OA\Parameter(
      *         description="token",
      *         in="query",
