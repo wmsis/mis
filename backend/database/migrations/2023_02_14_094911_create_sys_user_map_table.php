@@ -20,11 +20,13 @@ class CreateSysUserMapTable extends Migration
             $table->string('basic_domian', 50)->nullable()->comment('基本系统域名');
             $table->integer('basic_user_id')->nullable()->comment('基本系统用户ID');
             $table->string('basic_login_path', 50)->nullable()->comment('基本系统登录路径');
+            $table->string('basic_token', 100)->nullable()->comment('基本系统token');
             $table->string('target_sys_name', 50)->nullable()->comment('目标系统名称');
             $table->string('target_conn_name', 50)->nullable()->comment('目标系统DB连接名称');
             $table->string('target_domian', 50)->nullable()->comment('目标系统域名');
             $table->integer('target_user_id')->nullable()->comment('目标系统用户ID');
             $table->string('target_login_path', 50)->nullable()->comment('目标系统登录路径');
+            $table->string('target_token', 100)->nullable()->comment('目标系统token');
 
             $table->timestamps();
             $table->softDeletes();

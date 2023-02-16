@@ -26,6 +26,7 @@ use App\Models\OperateLog;
 use App\Models\Permission;
 use App\Models\SIS\Orgnization;
 use App\Models\SIS\SysUserMap;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @OA\Info(
@@ -147,6 +148,13 @@ class AuthController extends Controller
                 $user->orgnizations = $orgnizations;
             }
             MyCacheService::setCache($key, $token, 3600);
+
+            //更新映射表中的token
+            $map = SysUserMap::where('basic_conn_name', 'mysql_sis')->where('basic_user_id', $user->id)->first();
+            if($map){
+                $map->basic_token = $token;
+                $map->save();
+            }
         } catch (JWTException $e) {
             Log::error($e);
             $res = UtilService::format_data(self::AJAX_FAIL, $e->getMessage(), '');
@@ -375,6 +383,13 @@ class AuthController extends Controller
             $key_orgnization = UtilService::getKey($user->id, 'ORGNIZATION' . $third);
             $data = Orgnization::find($user->last_login_orgnization)->toArray();
             MyCacheService::setCache($key_orgnization, $data, $expire);
+
+            //更新映射表中的token
+            $map = SysUserMap::where('basic_conn_name', 'mysql_sis')->where('basic_user_id', $user->id)->first();
+            if($map){
+                $map->basic_token = $token;
+                $map->save();
+            }
         }
 
         $res = UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, compact('token'));
@@ -423,10 +438,118 @@ class AuthController extends Controller
                 $user['type_name'] = '';
             }
 
+            //用户所在组织
+            if($user->type == 'admin'){
+                $orgnizations = Orgnization::where('level', 2)->orderBy('sort', 'asc')->get();
+            }
+            else{
+                $orgnizations = $user->orgnizations()->where('level', 2)->orderBy('sort', 'asc')->get();
+            }
+
             $privileges = $this->get_permission($user); //获取用户菜单权限
             $switch = SysUserMap::where('basic_conn_name', 'mysql_sis')->where('basic_user_id', $user->id)->first();
 
-            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, compact('user', 'privileges', 'switch'));
+            return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, compact('user', 'privileges', 'switch', 'orgnizations'));
+        } catch (Exception $e) {
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
+        }
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/auth/switch",
+     *     tags={"权限认证auth"},
+     *     operationId="switch",
+     *     summary="切换到报表系统",
+     *     description="使用说明：切换到报表系统",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="用户ID",
+     *         in="query",
+     *         name="userid",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="登录URL",
+     *         in="query",
+     *         name="url",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation",
+     *     )
+     * )
+     */
+    public function switch(Request $request)
+    {
+        $token = JWTAuth::getToken();
+        $userid = $request->input('userid');
+        $url = $request->input('url');
+        try {
+            $data = array(
+                'token'=>$token,
+                'userid'=>$userid
+            );
+            $res = UtilService::curl_post($url, $data);
+            if($res){
+                return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
+            }
+            else{
+                return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '请先关联用户');
+            }
+        } catch (Exception $e) {
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
+        }
+    }
+
+    public function loginBySystem(Request $request)
+    {
+        $token = $request->input('token');
+        $userid = $request->input('userid');
+        try {
+            $map = SysUserMap::where('target_token', $token)->where('basic_user_id', $userid)->first();
+            $user = User::where('id', $userid)->first();
+            if($map && $user){
+                $key = UtilService::getKey($user->mobile, 'TOKEN');
+                $current_token = MyCacheService::getCache($key);
+                if($current_token){
+                    //将老token加入黑名单
+                    JWTAuth::setToken($current_token)->invalidate(true);
+                }
+                $credentials = array(
+                    "mobile" => $user->mobile,
+                    "id" => $userid,
+                    "isopen" => 1
+                );
+                $token = auth('api')->attempt($credentials);
+
+                //更新映射表中的token
+                $map = SysUserMap::where('basic_sys_name', 'mysql_sis')->where('basic_user_id', $user->id)->first();
+                if($map){
+                    $map->basic_token = $token;
+                    $map->save();
+                }
+                MyCacheService::setCache($key, $token, 3600);
+                return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, compact('user', 'token'));
+            }
+            else{
+                return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '请先关联用户');
+            }
         } catch (Exception $e) {
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }

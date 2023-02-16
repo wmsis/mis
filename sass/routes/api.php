@@ -24,6 +24,8 @@ Route::group(['namespace' => 'App\Http\Controllers\API', 'prefix' => 'auth', 'mi
     Route::get('logout', 'AuthController@logout');
     Route::get('refresh', 'AuthController@refresh');
     Route::get('me', 'AuthController@me')->middleware(['jwt.role:user', 'jwt.auth']);
+    Route::post('switch', 'AuthController@switch')->middleware(['jwt.role:user', 'jwt.auth']);
+    Route::post('login-by-system', 'AuthController@loginBySystem');
 });
 
 ////用户 角色 权限 微信  历史数据库  组织  接口权限 电表  地磅 地磅垃圾分类  DCS映射关系 标准DCS 电表映射关系 抓斗数据库配置 电表数据库配置 历史数据库配置
