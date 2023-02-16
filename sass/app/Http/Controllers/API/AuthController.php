@@ -39,7 +39,7 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'refresh']]);
+        $this->middleware('auth:api', ['except' => ['login', 'refresh', 'loginBySystem']]);
     }
 
     /**
@@ -497,17 +497,20 @@ class AuthController extends Controller
      */
     public function switch(Request $request)
     {
-        $token = JWTAuth::getToken();
+        $user = auth('api')->user();
+        $key = UtilService::getKey($user->mobile, 'TOKEN');
+        $token = MyCacheService::getCache($key);
         $userid = $request->input('userid');
         $url = $request->input('url');
         try {
             $data = array(
-                'token'=>$token,
+                'type'=>'x-www-form-urlencoded',
+                'system_token'=>$token,
                 'userid'=>$userid
             );
             $res = UtilService::curl_post($url, $data);
-            if($res){
-                return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
+            if($res && $res['code'] == 0){
+                return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res['data']);
             }
             else{
                 return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '请先关联用户');
@@ -519,10 +522,10 @@ class AuthController extends Controller
 
     public function loginBySystem(Request $request)
     {
-        $token = $request->input('token');
+        $system_token = $request->input('system_token');
         $userid = $request->input('userid');
         try {
-            $map = SysUserMap::where('target_token', $token)->where('basic_user_id', $userid)->first();
+            $map = SysUserMap::where('target_token', $system_token)->where('basic_user_id', $userid)->first();
             $user = User::where('id', $userid)->first();
             if($map && $user){
                 $key = UtilService::getKey($user->mobile, 'TOKEN');
@@ -531,12 +534,7 @@ class AuthController extends Controller
                     //将老token加入黑名单
                     JWTAuth::setToken($current_token)->invalidate(true);
                 }
-                $credentials = array(
-                    "mobile" => $user->mobile,
-                    "id" => $userid,
-                    "isopen" => 1
-                );
-                $token = auth('api')->attempt($credentials);
+                $token = auth()->tokenById($user->id);
 
                 //更新映射表中的token
                 $map = SysUserMap::where('basic_sys_name', 'mysql_sis')->where('basic_user_id', $user->id)->first();

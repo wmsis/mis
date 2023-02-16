@@ -295,41 +295,6 @@
                 }
             }
         },
-        "/api/auth/login-by-system": {
-            "post": {
-                "tags": [
-                    "权限认证auth"
-                ],
-                "summary": "登录报表系统",
-                "description": "使用说明：登录报表系统",
-                "operationId": "login-by-system",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "description": "报表系统token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "userid",
-                        "in": "query",
-                        "description": "用户ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "successful operation"
-                    }
-                }
-            }
-        },
         "/api/data-analysis/total": {
             "get": {
                 "tags": [
