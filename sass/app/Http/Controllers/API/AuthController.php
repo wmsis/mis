@@ -508,6 +508,10 @@ class AuthController extends Controller
                 'system_token'=>$token,
                 'userid'=>$userid
             );
+
+            Log::info('99999999999999');
+            Log::info(var_export($data, true));
+
             $res = UtilService::curl_post($url, $data);
             Log::info('000000000000');
             Log::info(var_export($res, true));
