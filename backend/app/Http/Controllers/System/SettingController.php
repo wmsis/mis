@@ -111,7 +111,7 @@ class SettingController extends Controller
             $lists = User::where('type', '!=', 'admin')->get();
         }
         elseif($type == 'report'){
-            $lists = DB::connection('mysql_report')->table('users')->where('type', '!=', 'admin')->get();
+            $lists = DB::connection('mysql_report')->table('users')->where('type', '!=', 'admin')->whereNull('deleted_at')->get();
         }
         else{
             $lists = [];
