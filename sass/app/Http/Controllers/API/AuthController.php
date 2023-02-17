@@ -509,10 +509,13 @@ class AuthController extends Controller
                 'userid'=>$userid
             );
             $res = UtilService::curl_post($url, $data);
+            Log::info('000000000000');
             if($res && $res['code'] == 0){
+                Log::info('11111111111111');
                 return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res['data']);
             }
             else{
+                Log::info('222222222222222');
                 return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '请先关联用户');
             }
         } catch (Exception $e) {
