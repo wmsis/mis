@@ -510,6 +510,7 @@ class AuthController extends Controller
             );
             $res = UtilService::curl_post($url, $data);
             Log::info('000000000000');
+            Log::info(var_export($res, true));
             if($res && $res['code'] == 0){
                 Log::info('11111111111111');
                 return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res['data']);
