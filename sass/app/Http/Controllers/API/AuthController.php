@@ -504,7 +504,7 @@ class AuthController extends Controller
         $url = $request->input('url');
         try {
             $data = array(
-                'type'=>'json',
+                //'type'=>'x-www-form-urlencoded',
                 'system_token'=>$token,
                 'userid'=>$userid
             );
