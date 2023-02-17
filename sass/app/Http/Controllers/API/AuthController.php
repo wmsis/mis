@@ -510,6 +510,7 @@ class AuthController extends Controller
             );
 
             Log::info('99999999999999');
+            Log::info(var_export($url, true));
             Log::info(var_export($data, true));
 
             $res = UtilService::curl_post($url, $data);
