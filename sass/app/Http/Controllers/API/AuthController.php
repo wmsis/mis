@@ -504,24 +504,18 @@ class AuthController extends Controller
         $url = $request->input('url');
         try {
             $data = array(
-                //'type'=>'x-www-form-urlencoded',
                 'system_token'=>$token,
                 'userid'=>$userid
             );
-
-            Log::info('99999999999999');
-            Log::info(var_export($url, true));
-            Log::info(var_export($data, true));
-
-            $res = UtilService::curl_post($url, $data);
-            Log::info('000000000000');
-            Log::info(var_export($res, true));
-            if($res && $res['code'] == 0){
-                Log::info('11111111111111');
-                return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res['data']);
+            $response = UtilService::client_post_new($url, $data);
+            $code = $response->getStatusCode();
+            $body = $response->getBody();
+            $data = $body->getContents();
+            $json_data = json_decode($data, true);
+            if($response && $code == 200 &&  isset($json_data['code']) && $json_data['code'] == 0){
+                return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $json_data['data']);
             }
             else{
-                Log::info('222222222222222');
                 return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '请先关联用户');
             }
         } catch (Exception $e) {

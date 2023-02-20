@@ -119,6 +119,17 @@ class UtilService
         return $return;
     }
 
+    public function client_post_new($url, $params){
+        $client = new Client();
+        $options = json_encode($params, JSON_UNESCAPED_UNICODE);
+        $data = [
+            'body' => $options,
+            'headers' => ['content-type' => 'application/json']
+        ];
+         $return = $client->post($url, $data);
+        return $return;
+    }
+
     public function client_get($base_url, $path, $params){
         $client = new Client([
             'base_uri' => $base_url
