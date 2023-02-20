@@ -185,11 +185,11 @@ class SettingController extends Controller
                 $params['basic_sys_name'] = 'SIS系统';
                 $params['basic_conn_name'] = 'mysql_sis';
                 $params['basic_domian'] = 'http://sis.wm-mis.com';
-                $params['basic_login_path'] = 'http://10.99.99.99:5050/api/auth/login-by-system';
+                $params['basic_login_path'] = 'http://wmhbapi.wm-mis.com/api/auth/login-by-system';
                 $params['target_sys_name'] = '报表系统';
                 $params['target_conn_name'] = 'mysql_report';
                 $params['target_domian'] = 'http://rp.wm-mis.com';
-                $params['target_login_path'] = 'http://10.99.99.99:6060/api/auth/login-by-system';
+                $params['target_login_path'] = 'http://analysisapi.wm-mis.com/api/auth/login-by-system';
                 SysUserMap::create($params); //save 和 create 的不同之处在于 save 接收整个 Eloquent 模型实例而 create 接收原生 PHP 数组
             }
             return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
