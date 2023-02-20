@@ -517,7 +517,7 @@ class AuthController extends Controller
                 return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $json_data['data']);
             }
             else{
-                return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '请先关联用户');
+                return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '请先关联报表系统用户');
             }
         } catch (Exception $e) {
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
@@ -541,7 +541,7 @@ class AuthController extends Controller
                 $token = auth()->tokenById($user->id);
 
                 //更新映射表中的token
-                $map = SysUserMap::where('basic_sys_name', 'mysql_sis')->where('basic_user_id', $user->id)->first();
+                $map = SysUserMap::where('basic_conn_name', 'mysql_sis')->where('basic_user_id', $user->id)->first();
                 if($map){
                     $map->basic_token = $token;
                     $map->save();
