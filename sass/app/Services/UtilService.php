@@ -120,25 +120,13 @@ class UtilService
     }
 
     public function client_post_new($url, $params){
-        Log::info('EEEEEEEEEEE');
         $client = new Client();
-        Log::info('FFFFFFFFFFFFF');
         $options = json_encode($params, JSON_UNESCAPED_UNICODE);
-        Log::info('GGGGGGGGGGGGGGG');
         $data = [
             'body' => $options,
             'headers' => ['content-type' => 'application/json']
         ];
-        Log::info('HHHHHHHHHHHHHHHHH');
-        try {
-            Log::info('IIIIIIIIIIIIIIIIII');
-            $return = $client->post($url, $data);
-            Log::info('JJJJJJJJJJJJJJJJJJ');
-        } catch (Exception $e) {
-            Log::info('KKKKKKKKKKKKKK');
-            Log::info($e->getMessage());
-        }
-        Log::info('LLLLLLLLLLLLLLLLL');
+        $return = $client->post($url, $data);
         return $return;
     }
 
