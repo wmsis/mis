@@ -497,38 +497,26 @@ class AuthController extends Controller
      */
     public function switch(Request $request)
     {
-        Log::info('AAAAAAAAAAAAAAAAAAA');
         $user = auth('api')->user();
         $key = UtilService::getKey($user->mobile, 'TOKEN');
         $token = MyCacheService::getCache($key);
         $userid = $request->input('userid');
         $url = $request->input('url');
-        Log::info($token);
-        Log::info($userid);
-        Log::info($url);
 
         try {
-            Log::info('BBBBBBBBBBBBBBB');
             $data = array(
                 'system_token'=>$token,
                 'userid'=>$userid
             );
-            Log::info('CCCCCCCCCCCCCCC');
             $response = UtilService::client_post_new($url, $data);
-            Log::info('DDDDDDDDDDDDDDDDD');
-            Log::info(var_export($response, true));
             $code = $response->getStatusCode();
             $body = $response->getBody();
             $data = $body->getContents();
             $json_data = json_decode($data, true);
-            Log::info('000000000000');
-            Log::info(var_export($json_data, true));
             if($response && $code == 200 &&  isset($json_data['code']) && $json_data['code'] == 0){
-                Log::info('1111111111');
                 return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $json_data['data']);
             }
             else{
-                Log::info('2222222222');
                 return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '请先关联用户');
             }
         } catch (Exception $e) {
