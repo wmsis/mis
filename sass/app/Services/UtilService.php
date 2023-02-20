@@ -131,12 +131,14 @@ class UtilService
         ];
         Log::info('HHHHHHHHHHHHHHHHH');
         try {
-            $return = $client->post($url, $data);
-        } catch (Exception $e) {
             Log::info('IIIIIIIIIIIIIIIIII');
+            $return = $client->post($url, $data);
+            Log::info('JJJJJJJJJJJJJJJJJJ');
+        } catch (Exception $e) {
+            Log::info('KKKKKKKKKKKKKK');
             Log::info($e->getMessage());
         }
-        Log::info('JJJJJJJJJJJJJJJJJJ');
+        Log::info('LLLLLLLLLLLLLLLLL');
         return $return;
     }
 
