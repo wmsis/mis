@@ -130,8 +130,13 @@ class UtilService
             'headers' => ['content-type' => 'application/json']
         ];
         Log::info('HHHHHHHHHHHHHHHHH');
-        $return = $client->post($url, $data);
-        Log::info('IIIIIIIIIIIIIIIIII');
+        try {
+            $return = $client->post($url, $data);
+        } catch (Exception $e) {
+            Log::info('IIIIIIIIIIIIIIIIII');
+            Log::info($e->getMessage());
+        }
+        Log::info('JJJJJJJJJJJJJJJJJJ');
         return $return;
     }
 
