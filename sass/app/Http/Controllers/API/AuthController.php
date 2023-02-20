@@ -506,13 +506,15 @@ class AuthController extends Controller
         Log::info($token);
         Log::info($userid);
         Log::info($url);
-        
+
         try {
             $data = array(
                 'system_token'=>$token,
                 'userid'=>$userid
             );
             $response = UtilService::client_post_new($url, $data);
+            Log::info('BBBBBBBBBBBBBBB');
+            Log::info(var_export($response, true));
             $code = $response->getStatusCode();
             $body = $response->getBody();
             $data = $body->getContents();
