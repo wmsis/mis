@@ -535,18 +535,19 @@ class AuthController extends Controller
                 $key = UtilService::getKey($user->mobile, 'TOKEN');
                 $current_token = MyCacheService::getCache($key);
                 if($current_token){
-                    //将老token加入黑名单
-                    JWTAuth::setToken($current_token)->invalidate(true);
+                    $token = $current_token;
                 }
-                $token = auth()->tokenById($user->id);
+                else{
+                    $token = auth()->tokenById($user->id);
+                    MyCacheService::setCache($key, $token, 3600);
+                    //更新映射表中的token
+                    $map = SysUserMap::where('basic_conn_name', 'mysql_sis')->where('basic_user_id', $user->id)->first();
+                    if($map){
+                        $map->basic_token = $token;
+                        $map->save();
+                    }
+                }
 
-                //更新映射表中的token
-                $map = SysUserMap::where('basic_conn_name', 'mysql_sis')->where('basic_user_id', $user->id)->first();
-                if($map){
-                    $map->basic_token = $token;
-                    $map->save();
-                }
-                MyCacheService::setCache($key, $token, 3600);
                 return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, compact('user', 'token'));
             }
             else{
