@@ -503,6 +503,10 @@ class AuthController extends Controller
         $token = MyCacheService::getCache($key);
         $userid = $request->input('userid');
         $url = $request->input('url');
+        Log::info($token);
+        Log::info($userid);
+        Log::info($url);
+        
         try {
             $data = array(
                 'system_token'=>$token,
