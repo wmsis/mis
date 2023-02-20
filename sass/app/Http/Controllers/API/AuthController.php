@@ -497,6 +497,7 @@ class AuthController extends Controller
      */
     public function switch(Request $request)
     {
+        Log::info('AAAAAAAAAAAAAAAAAAA');
         $user = auth('api')->user();
         $key = UtilService::getKey($user->mobile, 'TOKEN');
         $token = MyCacheService::getCache($key);
