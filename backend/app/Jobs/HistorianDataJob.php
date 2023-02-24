@@ -17,7 +17,6 @@ use App\Models\SIS\DcsStandard;
 use Log;
 use Config;
 use HistorianService;
-use MongoDB\BSON\UTCDateTime;
 
 class HistorianDataJob implements ShouldQueue
 {
@@ -148,10 +147,9 @@ class HistorianDataJob implements ShouldQueue
 
         $begin = date('Y-m-d H:i', strtotime($this->datetime)) . ':00'; //获取一分钟内的数据
         $end = date('Y-m-d H:i', strtotime($this->datetime)) . ':59';
-        $start = new UTCDateTime(strtotime($begin)*1000);
-        $stop = new UTCDateTime(strtotime($end)*1000);
         $obj_hitorian_factory->select(['tag_name', 'datetime', 'value'])
-            ->whereBetween('datetime', array($start, $stop))
+            ->where('datetime', '>=', $begin)
+            ->where('datetime', '<=', $end)
             ->chunk(100, function ($rows) use ($obj_hitorian_local) {
 
             $params = [];
