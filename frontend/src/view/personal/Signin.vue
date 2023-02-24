@@ -23,6 +23,7 @@
     import {
         Button
     } from 'iview'
+    import { Configuration, OpenAIApi } from "openai";
 
     Vue.component('Button',Button);
 
@@ -147,12 +148,24 @@
                         that.showMessage(err.message,'error')
                     }
                 });
+            },
+
+            async chat() {
+                const configuration = new Configuration({
+                    organization: "org-UNhBcTs57LdLHcnphv7TI0Cg",
+                    apiKey: "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"
+                });
+                const openai = new OpenAIApi(configuration);
+                const response = await openai.listEngines();
+                console.log("000000000000000");
+                console.log(response);
             }
         },
         mounted(){
             console.log("login")
             this.$store.dispatch('logout')
-            this.test();
+            //this.test();
+            //this.chat();
         }
     }
 </script>

@@ -42,14 +42,4 @@ class DcsData extends Model
         'createdAt' => 'datetime:Y-m-d H:i:s',
         'updatedAt' => 'datetime:Y-m-d H:i:s'
     ];
-
-    public function findByDatetime($datetime){
-        $begin = date('Y-m-d H:i', strtotime($datetime) - 10 * 60) . ':00';
-        $end = date('Y-m-d H:i', strtotime($datetime)) . ':59';
-        $rows = self::where('datetime', '>=', $begin)
-            ->where('datetime', '<=', $end)
-            ->get();
-
-        return $rows;
-    }
 }
