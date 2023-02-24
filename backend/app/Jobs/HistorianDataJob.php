@@ -137,7 +137,6 @@ class HistorianDataJob implements ShouldQueue
 
     //从远程MongoDB获取数据（historian5.5读取不方便转为opc读取并转存到电厂本地MongoDB）
     protected function mongodb_data(){
-        Log::info('000000000000');
         try{
             $obj_hitorian_factory = (new DcsData())->setConnection($this->remote_conn);  //连接电厂内部数据库
             $obj_hitorian_local = (new HistorianData())->setConnection($this->tenement_mongo_conn)->setTable($this->local_data_table); //连接特定租户下面的本地数据库表
@@ -154,10 +153,9 @@ class HistorianDataJob implements ShouldQueue
         $obj_hitorian_factory->select(['tag_name', 'datetime', 'value'])
             ->whereBetween('datetime', array($start, $stop))
             ->chunk(100, function ($rows) use ($obj_hitorian_local) {
-                Log::info('11111111111111');
+
             $params = [];
             if($rows && count($rows) > 0){
-                Log::info('222222222222222');
                 foreach ($rows as $key => $item) {
                     $local_row = $obj_hitorian_local->findRowByTagAndTime($item->tag_name, $this->datetime);
                     if(!$local_row){
