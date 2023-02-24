@@ -155,8 +155,13 @@ class HistorianDataJob implements ShouldQueue
             ->chunk(100, function ($rows) use ($obj_hitorian_local) {
 
             $params = [];
+            $stack = [];
             if($rows && count($rows) > 0){
                 foreach ($rows as $key => $item) {
+                    if(in_array($item->tag_name, $stack)){
+                        continue;
+                    }
+                    $stack[] = $item->tag_name;
                     $local_row = $obj_hitorian_local->findRowByTagAndTime($item->tag_name, $this->datetime);
                     if(!$local_row){
                         //本地不存在则插入
