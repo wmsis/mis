@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;  //添加软删除
 use App\Models\SIS\HistorianTag;
 use App\Models\MIS\Notice;
 use App\Models\MIS\Task;
+use App\Models\MIS\ClassGroup;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -23,7 +24,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'desc', 'email', 'password', 'mobile', 'area', 'address', 'isopen', 'type', 'member_id', 'type', 'last_login_orgnization'
+        'name', 'desc', 'email', 'password', 'mobile', 'area', 'address', 'isopen', 'type', 'member_id', 'type', 'last_login_orgnization', 'class_group_id'
     ];
 
     /**
@@ -164,6 +165,10 @@ class User extends Authenticatable implements JWTSubject
             return 'App.Models.User.' . $this->last_login_orgnization . '.' . $this->id;
         }
         return 'App.Models.User.'.$this->id;
+    }
+
+    public function classGroup(){
+        return $this->belongsTo('App\Models\MIS\ClassGroup');
     }
 }
 

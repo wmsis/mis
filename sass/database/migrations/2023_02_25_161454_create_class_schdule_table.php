@@ -54,7 +54,17 @@ class CreateClassSchduleTable extends Migration
             $table->id();
             $table->integer('orgnization_id')->nullable()->comment('组织ID');
             $table->string('name', 30)->nullable()->comment('排班周期名称');
+            $table->integer('loop_days')->nullable()->comment('周期天数');
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
+        Schema::create('class_loop_detail', function (Blueprint $table) {
+            $table->id();
+            $table->integer('class_loop_id')->nullable()->comment('排班周期主键ID');
             $table->integer('sort')->nullable()->comment('排序号');
+            $table->string('class_define_name', 30)->nullable()->comment('排班班次名称');
+            $table->string('class_define_time', 30)->nullable()->comment('排班班次时间');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -71,5 +81,6 @@ class CreateClassSchduleTable extends Migration
         Schema::dropIfExists('class_define');
         Schema::dropIfExists('class_group');
         Schema::dropIfExists('class_loop');
+        Schema::dropIfExists('class_loop_detail');
     }
 }

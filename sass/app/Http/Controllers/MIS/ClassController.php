@@ -7,7 +7,13 @@ use Illuminate\Http\Request;
 use App\Models\MIS\ClassDefine;
 use App\Models\MIS\ClassGroup;
 use App\Models\MIS\ClassLoop;
+use App\Models\MIS\ClassLoopDetail;
 use App\Models\MIS\ClassSchdule;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests\MIS\ClassSchduleRequest;
+use UtilService;
+use Log;
 
 class ClassController extends Controller
 {
@@ -97,7 +103,7 @@ class ClassController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/class-define",
+     *     path="/api/class-define/store",
      *     tags={"排班管理class"},
      *     operationId="class-define-store",
      *     summary="新增单条数据",
@@ -425,7 +431,7 @@ class ClassController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/class-group",
+     *     path="/api/class-group/store",
      *     tags={"排班管理class"},
      *     operationId="class-group-store",
      *     summary="新增班组单条数据",
@@ -451,7 +457,7 @@ class ClassController extends Controller
      *     @OA\Parameter(
      *         description="值长用户ID",
      *         in="query",
-     *         name="班组",
+     *         name="charge_user_id",
      *         required=true,
      *         @OA\Schema(
      *             type="string"
@@ -474,20 +480,39 @@ class ClassController extends Controller
      */
     public function groupStore(Request $request)
     {
-        $input = $request->only(['name', 'charge_user_id', 'content', 'standard']);
+        $input = $request->only(['name', 'charge_user_id', 'user_ids']);
         //判断是否有其他相同的名称
         $data = ClassGroup::where('name', $input['name'])->first();
         if($data && $data->name){
             return UtilService::format_data(self::AJAX_FAIL, '班组名称已存在', '');
         }
 
+        DB::beginTransaction();
         try {
             $input['orgnization_id'] = $this->orgnization->id;
-            $res = ClassGroup::create($input);
+            $class_group = ClassGroup::create($input);
+
+            $charge_user = User::find($input['charge_user_id']);
+            if($charge_user){
+                $charge_user->class_group_id = $class_group->id;
+                $charge_user->save();
+            }
+            $user_id_arr = explode(',', $input['user_ids']);
+            if(!empty($user_id_arr)){
+                foreach ($user_id_arr as $key => $user_id) {
+                    $other_user = User::find($user_id);
+                    if($other_user){
+                        $other_user->class_group_id = $class_group->id;
+                        $other_user->save();
+                    }
+                }
+            }
+            DB::commit();
         } catch (QueryException $e) {
+            DB::rollback();
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
-        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $class_group);
     }
 
     /**
@@ -677,6 +702,124 @@ class ClassController extends Controller
 
     /**
      * @OA\Get(
+     *     path="/api/class-group/users",
+     *     tags={"排班管理class"},
+     *     operationId="class-group-users",
+     *     summary="获取班组用户列表",
+     *     description="使用说明：获取班组用户列表",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="班组ID，多个英文逗号隔开",
+     *         in="query",
+     *         name="id",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="succeed",
+     *     ),
+     * )
+     */
+    public function groupUsers(Request $request)
+    {
+        $final = [];
+        $id_arr = [];
+        $id = $request->input('id');
+        if($id){
+            $id_arr = explode(',', $id);
+        }
+        if(!empty($id_arr)){
+            $group_rows = ClassGroup::whereIn('id', $id_arr)->where('orgnization_id', $this->orgnization->id)->get();
+        }
+        else{
+            $group_rows = ClassGroup::where('orgnization_id', $this->orgnization->id)->get();
+        }
+
+        foreach ($group_rows as $key => $item) {
+            $user_id_arr = [];
+            if($item->user_ids){
+                $user_id_arr = explode(',', $item->user_ids);
+            }
+            if($item->charge_user_id){
+                $user_id_arr[] = $item->charge_user_id;
+            }
+
+            if(!empty($user_id_arr)){
+                $users = User::whereIn('id', $user_id_arr)->get();
+                if(count($users) > 0){
+                    $users = $users->toArray();
+                    $final = array_merge($final, $users);
+                }
+            }
+        }
+        if (empty($final)) {
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_NO_DATA_MSG, '');
+        }
+
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $final);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/class-group/lists",
+     *     tags={"排班管理class"},
+     *     operationId="class-group-lists",
+     *     summary="获取班组列表",
+     *     description="使用说明：获取班组列表",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="班组ID，多个英文逗号隔开",
+     *         in="query",
+     *         name="id",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="succeed",
+     *     ),
+     * )
+     */
+    public function groupLists(Request $request)
+    {
+        $id_arr = [];
+        $id = $request->input('id');
+        if($id){
+            $id_arr = explode(',', $id);
+        }
+        if(!empty($id_arr)){
+            $group_rows = ClassGroup::whereIn('id', $id_arr)->where('orgnization_id', $this->orgnization->id)->get();
+        }
+        else{
+            $group_rows = ClassGroup::where('orgnization_id', $this->orgnization->id)->get();
+        }
+
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $group_rows);
+    }
+
+    /**
+     * @OA\Get(
      *     path="/api/class-loop/page",
      *     tags={"排班管理class"},
      *     operationId="class-loop-page",
@@ -745,7 +888,7 @@ class ClassController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/class-loop",
+     *     path="/api/class-loop/store",
      *     tags={"排班管理class"},
      *     operationId="class-loop-store",
      *     summary="新增排班周期单条数据",
@@ -769,9 +912,18 @@ class ClassController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="序号",
+     *         description="周期天数",
      *         in="query",
-     *         name="sort",
+     *         name="loop_days",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="详情 json数据[{'sort': 1, 'class_define_name': '早班', 'class_define_time': '07:30-16:00'}, {'sort': 2, 'class_define_name': '中班', 'class_define_time': '16:00-23:00'}]",
+     *         in="query",
+     *         name="detail",
      *         required=true,
      *         @OA\Schema(
      *             type="string"
@@ -785,11 +937,27 @@ class ClassController extends Controller
      */
     public function loopStore(Request $request)
     {
-        $input = $request->only(['name', 'sort']);
+        $input = $request->only(['name', 'loop_days']);
+        $detail = $request->input('detail');
+        $detail = json_decode($detail, true);
+        DB::beginTransaction();
         try {
             $input['orgnization_id'] = $this->orgnization->id;
             $res = ClassLoop::create($input);
+            if($detail && count($detail) > 0){
+                foreach ($detail as $key => $item) {
+                    $param = [
+                        'class_loop_id' => $res->id,
+                        'sort' => $item['sort'],
+                        'class_define_name' => $item['class_define_name'],
+                        'class_define_time' => $item['class_define_time'],
+                    ];
+                    ClassLoopDetail::create($param);
+                }
+            }
+            DB::commit();
         } catch (QueryException $e) {
+            DB::rollback();
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $res);
@@ -882,6 +1050,24 @@ class ClassController extends Controller
      *             type="string"
      *         )
      *     ),
+     *     @OA\Parameter(
+     *         description="周期天数",
+     *         in="query",
+     *         name="loop_days",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="详情 json数据[{'sort': 1, 'class_define_name': '早班', 'class_define_time': '07:30-16:00'}, {'sort': 2, 'class_define_name': '中班', 'class_define_time': '16:00-23:00'}]",
+     *         in="query",
+     *         name="detail",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="update succeed",
@@ -890,6 +1076,8 @@ class ClassController extends Controller
      */
     public function loopUpdate(Request $request, $id)
     {
+        $detail = $request->input('detail');
+        $detail = json_decode($detail, true);
         $row = ClassLoop::find($id);
         if (!$row) {
             return response()->json(UtilService::format_data(self::AJAX_FAIL, self::AJAX_NO_DATA_MSG, ''));
@@ -899,17 +1087,32 @@ class ClassController extends Controller
         }
 
         $input = $request->input();
-        $allowField = ['name', 'show'];
-        foreach ($allowField as $field) {
-            if (key_exists($field, $input)) {
-                $inputValue = $input[$field];
-                $row[$field] = $inputValue;
-            }
-        }
+        $allowField = ['name', 'show', 'loop_days'];
+        DB::beginTransaction();
         try {
+            foreach ($allowField as $field) {
+                if (key_exists($field, $input)) {
+                    $inputValue = $input[$field];
+                    $row[$field] = $inputValue;
+                }
+            }
             $row->save();
-            $row->refresh();
+
+            ClassLoopDetail::where('class_loop_id', $id)->forceDelete();
+            if($detail && count($detail) > 0){
+                foreach ($detail as $key => $item) {
+                    $param = [
+                        'class_loop_id' => $id,
+                        'sort' => $item['sort'],
+                        'class_define_name' => $item['class_define_name'],
+                        'class_define_time' => $item['class_define_time'],
+                    ];
+                    ClassLoopDetail::create($param);
+                }
+            }
+            DB::commit();
         } catch (Exception $ex) {
+            DB::rollback();
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, $ex->getMessage());
         }
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $row);
@@ -956,11 +1159,433 @@ class ClassController extends Controller
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
         }
 
+        DB::beginTransaction();
         try {
             $row->delete();
+            ClassLoopDetail::where('class_loop_id', $id)->delete();
+            DB::commit();
         } catch (Exception $e) {
+            DB::rollback();
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/class-loop/lists",
+     *     tags={"排班管理class"},
+     *     operationId="class-loop-lists",
+     *     summary="获取班组周期列表",
+     *     description="使用说明：获取班组周期列表",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="班组ID，多个英文逗号隔开",
+     *         in="query",
+     *         name="id",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="succeed",
+     *     ),
+     * )
+     */
+    public function groupLoopLists(Request $request)
+    {
+        $id_arr = [];
+        $id = $request->input('id');
+        if($id){
+            $id_arr = explode(',', $id);
+        }
+        if(!empty($id_arr)){
+            $group_rows = ClassLoop::whereIn('id', $id_arr)->where('orgnization_id', $this->orgnization->id)->get();
+        }
+        else{
+            $group_rows = ClassLoop::where('orgnization_id', $this->orgnization->id)->get();
+        }
+
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $group_rows);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/class-schdule/setting",
+     *     tags={"排班管理class"},
+     *     operationId="class-schdule-setting",
+     *     summary="排班设置",
+     *     description="使用说明：排班设置",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="日期类型 按天排班或按周期排班  single或multi",
+     *         in="query",
+     *         name="date_type",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="array",
+     *             default="single",
+     *             @OA\Items(
+     *                 type="string",
+     *                 enum = {"single", "multi"},
+     *             )
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="排班类型 按人排班或按班组排班  person或group",
+     *         in="query",
+     *         name="class_type",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="array",
+     *             default="person",
+     *             @OA\Items(
+     *                 type="string",
+     *                 enum = {"person", "group"},
+     *             )
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="开始日期",
+     *         in="query",
+     *         name="date",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="排班周期ID date_type为multi时",
+     *         in="query",
+     *         name="class_loop_id",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="排班班次名称 date_type为single时",
+     *         in="query",
+     *         name="class_define_name",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="用户ID 按人排class_type为person班时",
+     *         in="query",
+     *         name="user_id",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="用户ID 按班组排class_type为group班时",
+     *         in="query",
+     *         name="class_group_name",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="update succeed",
+     *     ),
+     * )
+     */
+    public function schduleSetting(ClassSchduleRequest $request)
+    {
+        //参数
+        $date_type = $request->input('date_type');
+        $class_type = $request->input('class_type');
+        $date = $request->input('date');
+        $class_define_name = $request->input('class_define_name');
+        $class_loop_id = $request->input('class_loop_id');
+        $user_id = $request->input('user_id');
+        $class_group_name = $request->input('class_group_name');
+        $params = $request->only(['date_type', 'class_type', 'date', 'class_define_name', 'class_loop_id', 'user_id', 'class_group_name']);
+
+        $user = $user_id ? User::find($user_id) : null;
+        $class_group = $user ? $user->classGroup : null;
+        $class = $this->getClassInfoByName($class_define_name);
+        $params['start'] = $class['start'];
+        $params['end'] = $class['end'];
+        $params['user_class_group'] = $class_group;
+
+        if($params['date_type'] == 'single'){
+            if(!$class_define_name){
+                return UtilService::format_data(self::AJAX_FAIL, '班次不能为空', '');
+            }
+        }
+        else{
+            if(!$class_loop_id){
+                return UtilService::format_data(self::AJAX_FAIL, '排班周期ID不能为空', '');
+            }
+        }
+
+        if($params['class_type'] == 'person'){
+            //按人排班
+            if(!$user_id){
+                return UtilService::format_data(self::AJAX_FAIL, '用户ID不能为空', '');
+            }
+
+            $this->setClassByUser($params);
+        }
+        else{
+            //按班组排班
+            if(!$class_group_name){
+                return UtilService::format_data(self::AJAX_FAIL, '班组名称不能为空', '');
+            }
+
+            $this->setClassByGroup($params);
+        }
+
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/class-schdule/lists",
+     *     tags={"排班管理class"},
+     *     operationId="class-schdule-lists",
+     *     summary="排班列表",
+     *     description="使用说明：排班列表",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="排班类型 按天排班或按周期排班  person或group",
+     *         in="query",
+     *         name="class_type",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="array",
+     *             default="person",
+     *             @OA\Items(
+     *                 type="string",
+     *                 enum = {"person", "group"},
+     *             )
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="月份",
+     *         in="query",
+     *         name="month",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="update succeed",
+     *     ),
+     * )
+     */
+    public function schduleLists(Request $request)
+    {
+        //参数
+        $class_type = $request->input('class_type');
+        $month = $request->input('month');
+
+        $start = $month . '-01';
+        $end = date('Y-m-t', strtotime($start));
+        if($class_type == 'person'){
+            $lists = ClassSchdule::where('date', '>=', $start)
+                ->where('date', '<=', $end)
+                ->orderBy('class_group_name', 'ASC')
+                ->get();
+        }
+        else{
+            $lists = ClassSchdule::where('date', '>=', $start)
+                ->where('date', '<=', $end)
+                ->orderBy('class_group_name', 'ASC')
+                ->groupBY('class_group_name')
+                ->distinct('class_group_name')
+                ->get(['class_group_name']);
+        }
+
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $lists);
+    }
+
+    //根据用户设置排班
+    private function setClassByUser($params){
+        //只排一天班
+        if($params['date_type'] == 'single'){
+            $where = [
+                'orgnization_id'=>$this->orgnization->id,
+                'user_id'=>$params['user_id'],
+                'date'=>$params['date']
+            ];
+            $values = [
+                'class_define_name'=>$params['class_define_name'],
+                'start'=>$params['start'],
+                'end'=>$params['end'],
+                'class_group_name'=>$params['user_class_group'] ? $params['user_class_group']->name : ''
+            ];
+            ClassSchdule::updateOrCreate($where, $values);
+        }
+        //周期排班
+        else{
+            $loop = ClassLoop::find($params['class_loop_id']);
+            if($loop){
+                $loop_detail = $loop->detail()->orderBy('sort', 'ASC')->get();
+                $last_date = date('Y-m-t', strtotime($params['date']));
+                $timestamp = strtotime($params['date']);
+                DB::beginTransaction();
+                try {
+                    //循环排班到月底
+                    if($loop_detail && count($loop_detail) > 0){
+                        $loop_detail = $loop_detail->toArray();
+                        $index = 0;
+                        while($timestamp <= strtotime($last_date)){
+                            $yushu = $index%8; //求余
+                            $class_detail = $loop_detail[$yushu];
+                            $class = $this->getClassInfoByName($class_detail['class_define_name']);
+                            $params['start'] = $class['start'];
+                            $params['end'] = $class['end'];
+                            $params['class_define_name'] = $class_detail['class_define_name'];
+
+                            $date_str = date('Y-m-d', $timestamp);
+                            $where = [
+                                'orgnization_id'=>$this->orgnization->id,
+                                'user_id'=>$params['user_id'],
+                                'date'=>$date_str
+                            ];
+                            $values = [
+                                'class_define_name'=>$params['class_define_name'],
+                                'start'=>$params['start'],
+                                'end'=>$params['end'],
+                                'class_group_name'=>$params['user_class_group'] ? $params['user_class_group']->name : ''
+                            ];
+                            ClassSchdule::updateOrCreate($where, $values);
+                            $index++;
+                            $timestamp = $timestamp + 24 * 60 * 60;
+                        }
+                    }
+                    DB::commit();
+                } catch (QueryException $e) {
+                    DB::rollback();
+                }
+            }
+        }
+    }
+
+    //根据班组设置排班
+    private function setClassByGroup($params){
+        $class_group = ClassGroup::where('name', $params['class_group_name'])->first();
+        $user_id_arr = explode(',', $class_group->user_ids);
+
+        DB::beginTransaction();
+        try {
+            //整个班组成员排班
+            if(!empty($user_id_arr)){
+                $loop = ClassLoop::find($params['class_loop_id']);
+                $loop_detail = $loop ? $loop->detail()->orderBy('sort', 'ASC')->get() : null;
+                if($loop && $loop_detail){
+                    $loop_detail = $loop_detail->toArray();
+                    if($loop_detail && count($loop_detail) > 0){
+                        foreach ($user_id_arr as $k8 => $user_id) {
+                            //只排一天班
+                            if($params['date_type'] == 'single'){
+                                $where = [
+                                    'orgnization_id'=>$this->orgnization->id,
+                                    'user_id'=>$user_id,
+                                    'date'=>$params['date']
+                                ];
+                                $values = [
+                                    'class_define_name'=>$params['class_define_name'],
+                                    'start'=>$params['start'],
+                                    'end'=>$params['end'],
+                                    'class_group_name'=>$params['class_group_name']
+                                ];
+                                ClassSchdule::updateOrCreate($where, $values);
+                            }
+                            //周期排班
+                            else{
+                                $index = 0;
+                                $last_date = date('Y-m-t', strtotime($params['date']));
+                                $timestamp = strtotime($params['date']);
+                                //循环排班到月底
+                                while($timestamp <= strtotime($last_date)){
+                                    $yushu = $index%8; //求余
+                                    $class_detail = $loop_detail[$yushu];
+                                    $class = $this->getClassInfoByName($class_detail['class_define_name']);//班次信息
+                                    $params['start'] = $class['start'];
+                                    $params['end'] = $class['end'];
+                                    $params['class_define_name'] = $class_detail['class_define_name'];
+
+                                    $date_str = date('Y-m-d', $timestamp);
+                                    $where = [
+                                        'orgnization_id'=>$this->orgnization->id,
+                                        'user_id'=>$user_id,
+                                        'date'=>$date_str
+                                    ];
+                                    $values = [
+                                        'class_define_name'=>$params['class_define_name'],
+                                        'start'=>$params['start'],
+                                        'end'=>$params['end'],
+                                        'class_group_name'=>$params['class_group_name']
+                                    ];
+                                    ClassSchdule::updateOrCreate($where, $values);
+                                    $index++;
+                                    $timestamp = $timestamp + 24 * 60 * 60;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            DB::commit();
+        } catch (QueryException $e) {
+            DB::rollback();
+        }
+    }
+
+    //获取班次详细信息
+    private function getClassInfoByName($class_define_name){
+        $start = null;
+        $end = null;
+        $classes = config('class.cass_define');
+        foreach ($classes as $key => $class) {
+            if($class_define_name == $class['name'] && $class['time']){
+                $time_arr = explode('-', $class['time']);
+                $start = $time_arr[0];
+                $end = $time_arr[1];
+                break;
+            }
+        }
+
+        return array(
+            'start' => $start,
+            'end' => $end
+        );
     }
 }

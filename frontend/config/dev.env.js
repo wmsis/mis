@@ -9,8 +9,8 @@ module.exports = merge(prodEnv, {
   // VUE_APP_HOST: '"http://10.99.99.88:8090"'
   // VUE_APP_BASE_URL: '"http://mis.com:8888/api"',
   // VUE_APP_HOST: '"http://mis.com:8888"',
-  VUE_APP_BASE_URL: '"http://wechat.com/api"',
-  VUE_APP_HOST: '"http://wechat.com"',
+  VUE_APP_BASE_URL: '"http://wmhb.mis.com/api"',
+  VUE_APP_HOST: '"http://wmhb.mis.com"',
   // VUE_APP_BASE_URL: '"http://analysisapi.wm-mis.com/api"',
   // VUE_APP_HOST: '"http://analysisapi.wm-mis.com"',
 

@@ -5,21 +5,21 @@ namespace App\Models\MIS;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\MIS\ClassLoopDetail;
+use App\Models\MIS\ClassLoop;
 
-class ClassLoop extends Model
+class ClassLoopDetail extends Model
 {
     use HasFactory, softDeletes;
-    protected $table = 'class_loop';
-    protected $fillable = ['orgnization_id', 'name', 'loop_days'];
+    protected $table = 'class_loop_detail';
+    protected $fillable = ['class_loop_id', 'class_define_name', 'sort', 'class_define_time'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',
         'updated_at' => 'datetime:Y-m-d H:i:s'
     ];
 
-    public function detail()
+    public function classloop()
     {
-        return $this->hasMany(ClassLoopDetail::class);
+        return $this->belongsTo(ClassLoop::class);
     }
 }

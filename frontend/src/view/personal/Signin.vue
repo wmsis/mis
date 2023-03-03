@@ -111,37 +111,65 @@
                 });
             },
             test(){
+                console.log('0000000000000');
                 let that = this;
-                let token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC93ZWNoYXQuY29tXC9hcGlcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNjcxMDg5MzY3LCJleHAiOjE2NzEwOTI5NjcsIm5iZiI6MTY3MTA4OTM2NywianRpIjoiMFNUYm9aWkRmekFIRUdKUSIsInN1YiI6MiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyIsInJvbGUiOiJ1c2VyIn0._UjEaT2OZ0cgqKZdxwoA6TsVKKZeMLcGBoSskQxhdg0';
+                let token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC93bWhiLm1pcy5jb21cL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2Nzc4MTQwMjgsImV4cCI6MTY3NzgxNzYyOCwibmJmIjoxNjc3ODE0MDI4LCJqdGkiOiJCZ1dSMGVWUk0zcmZCTzRoIiwic3ViIjoyLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3Iiwicm9sZSI6InVzZXIifQ.Tr9hC74KgkRLRzi_MflG29ETY_ITB_JDeufjQZDWqdg';
                 that.$store.dispatch('login', {
                     access_token: token,
                     refresh_token: '',
                     expiresIn: 3500
                 });
-
                 that.ajax({
                     method: 'POST',
-                    url: '/daily-data/store',
+                    url: '/class-loop/store',
                     data: {
-                        orgnization_id: 9,
-                        module_name: 'rubbish',
-                        date: "2022-12-10",
-                        type: 'save',
-                        values: JSON.stringify([
+                        name : 'rubbish',
+                        loop_days: 8,
+                        detail: JSON.stringify([
                             {
-                                "dcs_standard_id": 1,
-                                "cn_name":"炉温",
-                                "value": 850
+                                "class_define_name": '早班',
+                                "class_define_time":"07:30-16:00",
+                                "sort": 1
                             },
                             {
-                                "dcs_standard_id": 2,
-                                "cn_name":"发电量",
-                                "value": 9500
+                                "class_define_name": '白班',
+                                "class_define_time":"16:30-23:00",
+                                "sort": 2
+                            },
+                            {
+                                "class_define_name": '中班',
+                                "class_define_time":"23:30-07:30",
+                                "sort": 3
+                            },
+                            {
+                                "class_define_name": '休息',
+                                "class_define_time":"",
+                                "sort": 4
+                            },
+                            {
+                                "class_define_name": '早班',
+                                "class_define_time":"07:30-16:00",
+                                "sort": 5
+                            },
+                            {
+                                "class_define_name": '中班',
+                                "class_define_time":"23:00-07:30",
+                                "sort": 6
+                            },
+                            {
+                                "class_define_name": '白班',
+                                "class_define_time":"16:30-23:00",
+                                "sort": 7
+                            },
+                            {
+                                "class_define_name": '休息',
+                                "class_define_time": "",
+                                "sort": 8
                             }
                         ])
                     },
                     success(response) {
-                        console.log('0000000000000');
+                        console.log('111111111111111111');
                         console.log(response);
                     },
                     fail(err){
@@ -164,7 +192,7 @@
         mounted(){
             console.log("login")
             this.$store.dispatch('logout')
-            //this.test();
+            this.test();
             //this.chat();
         }
     }
