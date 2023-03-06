@@ -184,7 +184,7 @@ class HistorianDataJob implements ShouldQueue
                 //Log::info($this->datetime . '历史数据库没有数据插入');
             }
         });
-
+        Log::info('888888888888888');
         $this->historian_format_data();
     }
 
@@ -237,7 +237,7 @@ class HistorianDataJob implements ShouldQueue
                 }
                 else{
                     foreach ($tag_key_values as $tag_name => $tag) {
-                        $val = (float)$tag['value']; //取第一个tag的值
+                        $val = $tag['value']; //取第一个tag的值
                         break;
                     }
                 }
