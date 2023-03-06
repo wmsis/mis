@@ -66,7 +66,6 @@ class HistorianDataJob implements ShouldQueue
         else{
             $this->mongodb_data(); //若数据库historian为7.0以下，则从opcserver读取数据，OPC读取后转存到电厂本地MongoDB数据库
         }
-        Log::info('ZZZZZZZZZZZZZZZZZZZZZZZ');
     }
 
     //从远程historian7.0获取数据
@@ -148,15 +147,14 @@ class HistorianDataJob implements ShouldQueue
         }
 
         $begin = date('Y-m-d H:i', strtotime($this->datetime)) . ':00'; //获取10秒内的数据
-        $end = date('Y-m-d H:i', strtotime($this->datetime)) . ':10';
+        $end = date('Y-m-d H:i', strtotime($this->datetime)) . ':30';
         $start = new UTCDateTime(strtotime($begin)*1000);
         $stop = new UTCDateTime(strtotime($end)*1000);
         Log::info('GGGGGGGGGGGGGGGGGGG');
         $obj_hitorian_factory->select(['tag_name', 'datetime', 'value'])
             ->whereBetween('datetime', array($start, $stop))
             ->chunk(100, function ($rows) use ($obj_hitorian_local) {
-                Log::info('HHHHHHHHHHHHHHHHHHHH');
-                Log::info(count($rows));
+                Log::info('HHHHHHHHHHHHHHHHHHHH<==>'.count($rows));
             $params = [];
             $stack = [];
             if($rows && count($rows) > 0){
