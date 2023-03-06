@@ -146,15 +146,14 @@ class HistorianDataJob implements ShouldQueue
             Log::info(var_export($ex, true));
         }
 
-        $begin = date('Y-m-d H:i', strtotime($this->datetime)) . ':00'; //获取10秒内的数据
-        $end = date('Y-m-d H:i', strtotime($this->datetime)) . ':10';
+        $begin = date('Y-m-d H:i', strtotime($this->datetime)) . ':00'; //获取一分钟内的数据
+        $end = date('Y-m-d H:i', strtotime($this->datetime)) . ':59';
         $start = new UTCDateTime(strtotime($begin)*1000);
         $stop = new UTCDateTime(strtotime($end)*1000);
-        Log::info('GGGGGGGGGGGGGGGGGGG');
         $obj_hitorian_factory->select(['tag_name', 'datetime', 'value'])
             ->whereBetween('datetime', array($start, $stop))
             ->chunk(100, function ($rows) use ($obj_hitorian_local) {
-                Log::info('HHHHHHHHHHHHHHHHHHHH<==>'.count($rows));
+
             $params = [];
             $stack = [];
             if($rows && count($rows) > 0){
@@ -163,11 +162,6 @@ class HistorianDataJob implements ShouldQueue
                         continue;
                     }
                     $stack[] = $item->tag_name;
-
-                    if($item->tag_name == 'Applications.GuoLu1.TE208'){
-                        Log::info('000000000000000');
-                        Log::info($item->value);
-                    }
                     $local_row = $obj_hitorian_local->findRowByTagAndTime($item->tag_name, $this->datetime);
                     if(!$local_row){
                         //本地不存在则插入
@@ -181,6 +175,7 @@ class HistorianDataJob implements ShouldQueue
                     }
                 }
             }
+
             if($params && count($params) > 0){
                 $obj_hitorian_local->insertMany($params);
                 //Log::info($this->datetime . '历史数据库数据插入成功'.count($params).'条');
@@ -188,16 +183,13 @@ class HistorianDataJob implements ShouldQueue
             else{
                 //Log::info($this->datetime . '历史数据库没有数据插入');
             }
-            Log::info('JJJJJJJJJJJJJJJJJJJ');
         });
-        Log::info('KKKKKKKKKKKKKKKKKKKKKK');
+
         $this->historian_format_data();
-        Log::info('LLLLLLLLLLLLLLLL');
     }
 
     //根据DCS标准名称格式化获取到的数据
     protected function historian_format_data(){
-        Log::info('11111111111111111');
         //获取映射关系
         //本租户下面某个电厂的DCS映射关系
         $map_lists = (new DcsMap())->setConnection($this->tenement_conn)->where('orgnization_id', $this->cfgdb['orgnization_id'])->get();
@@ -221,15 +213,9 @@ class HistorianDataJob implements ShouldQueue
                 $obj_hitorian_local = (new HistorianData())->setConnection($this->tenement_mongo_conn)->setTable($this->local_data_table);
                 $tags_data = $obj_hitorian_local->whereIn('tag_name', $tagname_arr)->where('datetime', $this->datetime)->get();
                 foreach ($tags_data as $key => $tag) {
-                    if($tag->tag_name == 'Applications.GuoLu1.TE208'){
-                        Log::info('22222222222222222222');
-                        Log::info($tag->datetime);
-                        Log::info($tag->value);
-                    }
-
-                    if(strpos($tag->value, '.') !== false){
-                        $tag->value = number_format($tag->value, 2);
-                    }
+                    // if(strpos($tag->value, '.') !== false){
+                    //     $tag->value = number_format($tag->value, 2);
+                    // }
 
                     $tag_key_values[$tag->tag_name] = array(
                         'value' => $tag->value
@@ -250,12 +236,7 @@ class HistorianDataJob implements ShouldQueue
                 }
                 else{
                     foreach ($tag_key_values as $tag_name => $tag) {
-                        $val = $tag['value']; //取第一个tag的值
-                        if($tag_name == 'Applications.GuoLu1.TE208'){
-                            Log::info('33333333333333333333333');
-                            Log::info($tag['value']);
-                            Log::info($val);
-                        }
+                        $val = (float)$tag['value']; //取第一个tag的值
                         break;
                     }
                 }
