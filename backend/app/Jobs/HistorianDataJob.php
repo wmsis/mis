@@ -147,8 +147,8 @@ class HistorianDataJob implements ShouldQueue
             Log::info(var_export($ex, true));
         }
 
-        $begin = date('Y-m-d H:i', strtotime($this->datetime)) . ':00'; //获取一分钟内的数据
-        $end = date('Y-m-d H:i', strtotime($this->datetime)) . ':59';
+        $begin = date('Y-m-d H:i', strtotime($this->datetime)) . ':00'; //获取10秒内的数据
+        $end = date('Y-m-d H:i', strtotime($this->datetime)) . ':10';
         $start = new UTCDateTime(strtotime($begin)*1000);
         $stop = new UTCDateTime(strtotime($end)*1000);
         Log::info('GGGGGGGGGGGGGGGGGGG');
