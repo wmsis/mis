@@ -66,6 +66,7 @@ class HistorianDataJob implements ShouldQueue
         else{
             $this->mongodb_data(); //若数据库historian为7.0以下，则从opcserver读取数据，OPC读取后转存到电厂本地MongoDB数据库
         }
+        Log::info('ZZZZZZZZZZZZZZZZZZZZZZZ');
     }
 
     //从远程historian7.0获取数据
@@ -155,6 +156,7 @@ class HistorianDataJob implements ShouldQueue
             ->whereBetween('datetime', array($start, $stop))
             ->chunk(100, function ($rows) use ($obj_hitorian_local) {
                 Log::info('HHHHHHHHHHHHHHHHHHHH');
+                Log::info(count($rows));
             $params = [];
             $stack = [];
             if($rows && count($rows) > 0){
