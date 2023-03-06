@@ -7,15 +7,15 @@ return [
     //非DCS
     'cass_define' => array(
         array(
-            'name' => '早班',
+            'name' => '白班',
             'time' => '07:30-16:00',
         ),
         array(
-            'name' => '白班',
+            'name' => '中班',
             'time' => '16:00-23:00',
         ),
         array(
-            'name' => '中班',
+            'name' => '早班',
             'time' => '23:00-07:30',
         ),
         array(
