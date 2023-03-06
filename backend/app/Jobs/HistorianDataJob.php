@@ -60,10 +60,12 @@ class HistorianDataJob implements ShouldQueue
      */
     public function handle()
     {
+        Log::info('CCCCCCCCCCCCC');
         if($this->db_type == 'historiandb'){
             $this->historiandb_data(); //读取historian7.0以上数据库的数据
         }
         else{
+            Log::info('DDDDDDDDDDDDDDDDDDDD');
             $this->mongodb_data(); //若数据库historian为7.0以下，则从opcserver读取数据，OPC读取后转存到电厂本地MongoDB数据库
         }
     }
@@ -137,6 +139,10 @@ class HistorianDataJob implements ShouldQueue
 
     //从远程MongoDB获取数据（historian5.5读取不方便转为opc读取并转存到电厂本地MongoDB）
     protected function mongodb_data(){
+        Log::info('EEEEEEEEEEEEEEEEEEEE');
+        Log::info($this->remote_conn);
+        Log::info($this->tenement_mongo_conn);
+        Log::info($this->local_data_table);
         try{
             $obj_hitorian_factory = (new DcsData())->setConnection($this->remote_conn);  //连接电厂内部数据库
             $obj_hitorian_local = (new HistorianData())->setConnection($this->tenement_mongo_conn)->setTable($this->local_data_table); //连接特定租户下面的本地数据库表
@@ -145,15 +151,17 @@ class HistorianDataJob implements ShouldQueue
             Log::info('连接电厂历史数据库异常');
             Log::info(var_export($ex, true));
         }
-
+        Log::info('FFFFFFFFFFFFFFFFFF');
+        Log::info($this->datetime);
         $begin = date('Y-m-d H:i', strtotime($this->datetime)) . ':00'; //获取一分钟内的数据
         $end = date('Y-m-d H:i', strtotime($this->datetime)) . ':59';
         $start = new UTCDateTime(strtotime($begin)*1000);
         $stop = new UTCDateTime(strtotime($end)*1000);
+        Log::info('GGGGGGGGGGGGGGGGGGG');
         $obj_hitorian_factory->select(['tag_name', 'datetime', 'value'])
             ->whereBetween('datetime', array($start, $stop))
             ->chunk(100, function ($rows) use ($obj_hitorian_local) {
-
+                Log::info('HHHHHHHHHHHHHHHHHHHH');
             $params = [];
             $stack = [];
             if($rows && count($rows) > 0){
@@ -162,6 +170,11 @@ class HistorianDataJob implements ShouldQueue
                         continue;
                     }
                     $stack[] = $item->tag_name;
+
+                    if($item->tag_name == 'Applications.GuoLu1.TE208'){
+                        Log::info('000000000000000');
+                        Log::info($item->value);
+                    }
                     $local_row = $obj_hitorian_local->findRowByTagAndTime($item->tag_name, $this->datetime);
                     if(!$local_row){
                         //本地不存在则插入
@@ -190,6 +203,7 @@ class HistorianDataJob implements ShouldQueue
 
     //根据DCS标准名称格式化获取到的数据
     protected function historian_format_data(){
+        Log::info('000000000000000');
         //获取映射关系
         //本租户下面某个电厂的DCS映射关系
         $map_lists = (new DcsMap())->setConnection($this->tenement_conn)->where('orgnization_id', $this->cfgdb['orgnization_id'])->get();
@@ -213,6 +227,11 @@ class HistorianDataJob implements ShouldQueue
                 $obj_hitorian_local = (new HistorianData())->setConnection($this->tenement_mongo_conn)->setTable($this->local_data_table);
                 $tags_data = $obj_hitorian_local->whereIn('tag_name', $tagname_arr)->where('datetime', $this->datetime)->get();
                 foreach ($tags_data as $key => $tag) {
+                    if($tag->tag_name == 'Applications.GuoLu1.TE208'){
+                        Log::info('11111111111111111111');
+                        Log::info($tag->value);
+                    }
+
                     if(strpos($tag->value, '.') !== false){
                         $tag->value = number_format($tag->value, 2);
                     }
@@ -237,6 +256,11 @@ class HistorianDataJob implements ShouldQueue
                 else{
                     foreach ($tag_key_values as $tag_name => $tag) {
                         $val = (float)$tag['value']; //取第一个tag的值
+                        if($tag_name == 'Applications.GuoLu1.TE208'){
+                            Log::info('2222222222222222222222');
+                            Log::info($tag['value']);
+                            Log::info($val);
+                        }
                         break;
                     }
                 }
