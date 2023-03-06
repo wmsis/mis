@@ -181,7 +181,7 @@ class HistorianDataJob implements ShouldQueue
                     }
                 }
             }
-
+            Log::info('IIIIIIIIIIIIIIIIIIIIII');
             if($params && count($params) > 0){
                 $obj_hitorian_local->insertMany($params);
                 //Log::info($this->datetime . '历史数据库数据插入成功'.count($params).'条');
@@ -189,10 +189,11 @@ class HistorianDataJob implements ShouldQueue
             else{
                 //Log::info($this->datetime . '历史数据库没有数据插入');
             }
+            Log::info('JJJJJJJJJJJJJJJJJJJ');
         });
-        Log::info('JJJJJJJJJJJJJJJJJJJ');
-        $this->historian_format_data();
         Log::info('KKKKKKKKKKKKKKKKKKKKKK');
+        $this->historian_format_data();
+        Log::info('LLLLLLLLLLLLLLLL');
     }
 
     //根据DCS标准名称格式化获取到的数据
