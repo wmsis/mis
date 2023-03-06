@@ -190,6 +190,7 @@ class HistorianDataJob implements ShouldQueue
 
     //根据DCS标准名称格式化获取到的数据
     protected function historian_format_data(){
+        Log::info('99999999999999999999');
         //获取映射关系
         //本租户下面某个电厂的DCS映射关系
         $map_lists = (new DcsMap())->setConnection($this->tenement_conn)->where('orgnization_id', $this->cfgdb['orgnization_id'])->get();
