@@ -197,13 +197,14 @@ class HistorianDataJob implements ShouldQueue
                 //Log::info($this->datetime . '历史数据库没有数据插入');
             }
         });
-
+        Log::info('JJJJJJJJJJJJJJJJJJJ');
         $this->historian_format_data();
+        Log::info('KKKKKKKKKKKKKKKKKKKKKK');
     }
 
     //根据DCS标准名称格式化获取到的数据
     protected function historian_format_data(){
-        Log::info('000000000000000');
+        Log::info('11111111111111111');
         //获取映射关系
         //本租户下面某个电厂的DCS映射关系
         $map_lists = (new DcsMap())->setConnection($this->tenement_conn)->where('orgnization_id', $this->cfgdb['orgnization_id'])->get();
@@ -228,7 +229,7 @@ class HistorianDataJob implements ShouldQueue
                 $tags_data = $obj_hitorian_local->whereIn('tag_name', $tagname_arr)->where('datetime', $this->datetime)->get();
                 foreach ($tags_data as $key => $tag) {
                     if($tag->tag_name == 'Applications.GuoLu1.TE208'){
-                        Log::info('11111111111111111111');
+                        Log::info('22222222222222222222');
                         Log::info($tag->value);
                     }
 
