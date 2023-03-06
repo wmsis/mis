@@ -60,12 +60,10 @@ class HistorianDataJob implements ShouldQueue
      */
     public function handle()
     {
-        Log::info('CCCCCCCCCCCCC');
         if($this->db_type == 'historiandb'){
             $this->historiandb_data(); //读取historian7.0以上数据库的数据
         }
         else{
-            Log::info('DDDDDDDDDDDDDDDDDDDD');
             $this->mongodb_data(); //若数据库historian为7.0以下，则从opcserver读取数据，OPC读取后转存到电厂本地MongoDB数据库
         }
     }
@@ -139,10 +137,6 @@ class HistorianDataJob implements ShouldQueue
 
     //从远程MongoDB获取数据（historian5.5读取不方便转为opc读取并转存到电厂本地MongoDB）
     protected function mongodb_data(){
-        Log::info('EEEEEEEEEEEEEEEEEEEE');
-        Log::info($this->remote_conn);
-        Log::info($this->tenement_mongo_conn);
-        Log::info($this->local_data_table);
         try{
             $obj_hitorian_factory = (new DcsData())->setConnection($this->remote_conn);  //连接电厂内部数据库
             $obj_hitorian_local = (new HistorianData())->setConnection($this->tenement_mongo_conn)->setTable($this->local_data_table); //连接特定租户下面的本地数据库表
@@ -151,8 +145,7 @@ class HistorianDataJob implements ShouldQueue
             Log::info('连接电厂历史数据库异常');
             Log::info(var_export($ex, true));
         }
-        Log::info('FFFFFFFFFFFFFFFFFF');
-        Log::info($this->datetime);
+
         $begin = date('Y-m-d H:i', strtotime($this->datetime)) . ':00'; //获取一分钟内的数据
         $end = date('Y-m-d H:i', strtotime($this->datetime)) . ':59';
         $start = new UTCDateTime(strtotime($begin)*1000);
