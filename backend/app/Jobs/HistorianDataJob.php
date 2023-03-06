@@ -250,9 +250,9 @@ class HistorianDataJob implements ShouldQueue
                 }
                 else{
                     foreach ($tag_key_values as $tag_name => $tag) {
-                        $val = (float)$tag['value']; //取第一个tag的值
+                        $val = $tag['value']; //取第一个tag的值
                         if($tag_name == 'Applications.GuoLu1.TE208'){
-                            Log::info('2222222222222222222222');
+                            Log::info('33333333333333333333333');
                             Log::info($tag['value']);
                             Log::info($val);
                         }
