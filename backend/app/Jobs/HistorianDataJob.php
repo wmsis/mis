@@ -147,7 +147,7 @@ class HistorianDataJob implements ShouldQueue
         }
 
         $begin = date('Y-m-d H:i', strtotime($this->datetime)) . ':00'; //获取一分钟内的数据
-        $end = date('Y-m-d H:i', strtotime($this->datetime)) . ':20';
+        $end = date('Y-m-d H:i', strtotime($this->datetime)) . ':15';
         $start = new UTCDateTime(strtotime($begin)*1000);
         $stop = new UTCDateTime(strtotime($end)*1000);
         $obj_hitorian_factory->select(['tag_name', 'datetime', 'value'])
