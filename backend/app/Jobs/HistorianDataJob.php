@@ -147,7 +147,7 @@ class HistorianDataJob implements ShouldQueue
         }
 
         $begin = date('Y-m-d H:i', strtotime($this->datetime)) . ':00'; //获取10秒内的数据
-        $end = date('Y-m-d H:i', strtotime($this->datetime)) . ':30';
+        $end = date('Y-m-d H:i', strtotime($this->datetime)) . ':10';
         $start = new UTCDateTime(strtotime($begin)*1000);
         $stop = new UTCDateTime(strtotime($end)*1000);
         Log::info('GGGGGGGGGGGGGGGGGGG');
@@ -181,7 +181,6 @@ class HistorianDataJob implements ShouldQueue
                     }
                 }
             }
-            Log::info('IIIIIIIIIIIIIIIIIIIIII');
             if($params && count($params) > 0){
                 $obj_hitorian_local->insertMany($params);
                 //Log::info($this->datetime . '历史数据库数据插入成功'.count($params).'条');
@@ -224,6 +223,7 @@ class HistorianDataJob implements ShouldQueue
                 foreach ($tags_data as $key => $tag) {
                     if($tag->tag_name == 'Applications.GuoLu1.TE208'){
                         Log::info('22222222222222222222');
+                        Log::info($tag->datetime);
                         Log::info($tag->value);
                     }
 
