@@ -10,7 +10,7 @@ class ClassDefine extends Model
 {
     use HasFactory, softDeletes;
     protected $table = 'class_define';
-    protected $fillable = ['name', 'orgnization_id', 'user_ids'];
+    protected $fillable = ['name', 'orgnization_id', 'start', 'end'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',
