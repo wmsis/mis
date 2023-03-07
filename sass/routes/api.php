@@ -204,25 +204,25 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
         Route::prefix('class-define')->group(function () {
             Route::get('page', 'ClassController@definePage');
             Route::post('store', 'ClassController@defineStore');
-            Route::get('{id}', 'ClassController@defineShow');
-            Route::put('{id}', 'ClassController@defineUpdate');
-            Route::delete('{id}', 'ClassController@defineDestroy');
+            Route::get('show/{id}', 'ClassController@defineShow');
+            Route::put('update/{id}', 'ClassController@defineUpdate');
+            Route::delete('destroy/{id}', 'ClassController@defineDestroy');
         });
         Route::prefix('class-group')->group(function () {
             Route::get('page', 'ClassController@groupPage');
             Route::post('store', 'ClassController@groupStore');
-            Route::get('{id}', 'ClassController@groupShow');
-            Route::put('{id}', 'ClassController@groupUpdate');
-            Route::delete('{id}', 'ClassController@groupDestroy');
+            Route::get('show/{id}', 'ClassController@groupShow');
+            Route::put('update/{id}', 'ClassController@groupUpdate');
+            Route::delete('destroy/{id}', 'ClassController@groupDestroy');
             Route::get('users', 'ClassController@groupUsers');
             Route::get('lists', 'ClassController@groupLists');
         });
         Route::prefix('class-loop')->group(function () {
             Route::get('page', 'ClassController@loopPage');
             Route::post('store', 'ClassController@loopStore');
-            Route::get('{id}', 'ClassController@loopShow');
-            Route::put('{id}', 'ClassController@loopUpdate');
-            Route::delete('{id}', 'ClassController@loopDestroy');
+            Route::get('show/{id}', 'ClassController@loopShow');
+            Route::put('update/{id}', 'ClassController@loopUpdate');
+            Route::delete('destroy/{id}', 'ClassController@loopDestroy');
             Route::get('lists', 'ClassController@groupLoopLists');
         });
         Route::prefix('class-schdule')->group(function () {

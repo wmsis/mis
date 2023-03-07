@@ -2656,7 +2656,7 @@
                 }
             }
         },
-        "/api/class-define/{id}": {
+        "/api/class-define/show/{id}": {
             "get": {
                 "tags": [
                     "排班管理class"
@@ -2689,7 +2689,9 @@
                         "description": "succeed"
                     }
                 }
-            },
+            }
+        },
+        "/api/class-define/update/{id}": {
             "put": {
                 "tags": [
                     "排班管理class"
@@ -2758,7 +2760,9 @@
                         "description": "update succeed"
                     }
                 }
-            },
+            }
+        },
+        "/api/class-define/destroy/{id}": {
             "delete": {
                 "tags": [
                     "排班管理class"
@@ -2901,7 +2905,7 @@
                 }
             }
         },
-        "/api/class-group/{id}": {
+        "/api/class-group/show/{id}": {
             "get": {
                 "tags": [
                     "排班管理class"
@@ -2934,7 +2938,9 @@
                         "description": "succeed"
                     }
                 }
-            },
+            }
+        },
+        "/api/class-group/update/{id}": {
             "put": {
                 "tags": [
                     "排班管理class"
@@ -2994,7 +3000,9 @@
                         "description": "update succeed"
                     }
                 }
-            },
+            }
+        },
+        "/api/class-group/destroy/{id}": {
             "delete": {
                 "tags": [
                     "排班管理class"
@@ -3207,7 +3215,7 @@
                 }
             }
         },
-        "/api/class-loop/{id}": {
+        "/api/class-loop/show/{id}": {
             "get": {
                 "tags": [
                     "排班管理class"
@@ -3240,7 +3248,9 @@
                         "description": "succeed"
                     }
                 }
-            },
+            }
+        },
+        "/api/class-loop/update/{id}": {
             "put": {
                 "tags": [
                     "排班管理class"
@@ -3309,7 +3319,9 @@
                         "description": "update succeed"
                     }
                 }
-            },
+            }
+        },
+        "/api/class-loop/destroy/{id}": {
             "delete": {
                 "tags": [
                     "排班管理class"
@@ -3365,10 +3377,10 @@
                     {
                         "name": "id",
                         "in": "query",
-                        "description": "班组ID，多个英文逗号隔开",
+                        "description": "周期ID，多个英文逗号隔开",
                         "required": false,
                         "schema": {
-                            "type": "integer"
+                            "type": "string"
                         }
                     }
                 ],

@@ -170,7 +170,7 @@ class ClassController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/class-define/{id}",
+     *     path="/api/class-define/show/{id}",
      *     tags={"排班管理class"},
      *     operationId="class-define-show",
      *     summary="获取详班次细信息",
@@ -214,7 +214,7 @@ class ClassController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/class-define/{id}",
+     *     path="/api/class-define/update/{id}",
      *     tags={"排班管理class"},
      *     operationId="class-define-update",
      *     summary="修改班次",
@@ -314,7 +314,7 @@ class ClassController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/class-define/{id}",
+     *     path="/api/class-define/destroy/{id}",
      *     tags={"排班管理class"},
      *     operationId="class-define-destroy",
      *     summary="删除班次单条数据",
@@ -517,7 +517,7 @@ class ClassController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/class-group/{id}",
+     *     path="/api/class-group/show/{id}",
      *     tags={"排班管理class"},
      *     operationId="class-group-show",
      *     summary="获取班组详细信息",
@@ -561,7 +561,7 @@ class ClassController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/class-group/{id}",
+     *     path="/api/class-group/update/{id}",
      *     tags={"排班管理class"},
      *     operationId="class-group-update",
      *     summary="班组修改",
@@ -653,7 +653,7 @@ class ClassController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/class-group/{id}",
+     *     path="/api/class-group/destroy/{id}",
      *     tags={"排班管理class"},
      *     operationId="class-group-destroy",
      *     summary="删除班组单条数据",
@@ -968,7 +968,7 @@ class ClassController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/class-loop/{id}",
+     *     path="/api/class-loop/show/{id}",
      *     tags={"排班管理class"},
      *     operationId="class-loop-show",
      *     summary="获取排班周期详细信息",
@@ -1012,7 +1012,7 @@ class ClassController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/class-loop/{id}",
+     *     path="/api/class-loop/update/{id}",
      *     tags={"排班管理class"},
      *     operationId="class-loop-update",
      *     summary="修改排班周期",
@@ -1123,7 +1123,7 @@ class ClassController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/class-loop/{id}",
+     *     path="/api/class-loop/destroy/{id}",
      *     tags={"排班管理class"},
      *     operationId="class-loop-destroy",
      *     summary="删除排班周期单条数据",
@@ -1191,12 +1191,12 @@ class ClassController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="班组ID，多个英文逗号隔开",
+     *         description="周期ID，多个英文逗号隔开",
      *         in="query",
      *         name="id",
      *         required=false,
      *         @OA\Schema(
-     *             type="integer"
+     *             type="string"
      *         )
      *     ),
      *     @OA\Response(
@@ -1212,6 +1212,7 @@ class ClassController extends Controller
         if($id){
             $id_arr = explode(',', $id);
         }
+
         if(!empty($id_arr)){
             $group_rows = ClassLoop::whereIn('id', $id_arr)->where('orgnization_id', $this->orgnization->id)->get();
         }
