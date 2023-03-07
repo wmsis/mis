@@ -883,6 +883,9 @@ class ClassController extends Controller
 
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
+        foreach ($rows as $key => $item) {
+            $detail = $item->detail;
+        }
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total, 'page' => $page, 'num' => $perPage]);
     }
 
@@ -1003,7 +1006,7 @@ class ClassController extends Controller
         elseif($row && $row->orgnization_id != $this->orgnization->id){
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
         }
-
+        $detail = $row->detail;
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $row);
     }
 
@@ -1214,6 +1217,10 @@ class ClassController extends Controller
         }
         else{
             $group_rows = ClassLoop::where('orgnization_id', $this->orgnization->id)->get();
+        }
+
+        foreach ($group_rows as $key => $item) {
+            $detail = $item->detail;
         }
 
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $group_rows);

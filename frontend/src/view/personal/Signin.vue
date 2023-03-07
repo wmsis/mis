@@ -113,7 +113,7 @@
             test(){
                 console.log('0000000000000');
                 let that = this;
-                let token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC93bWhiLm1pcy5jb21cL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2Nzc4MTQwMjgsImV4cCI6MTY3NzgxNzYyOCwibmJmIjoxNjc3ODE0MDI4LCJqdGkiOiJCZ1dSMGVWUk0zcmZCTzRoIiwic3ViIjoyLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3Iiwicm9sZSI6InVzZXIifQ.Tr9hC74KgkRLRzi_MflG29ETY_ITB_JDeufjQZDWqdg';
+                let token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMC45OS45OS45OTo2MDYwXC9hcGlcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNjc4MTY3Njk1LCJleHAiOjE2NzgxNzEyOTUsIm5iZiI6MTY3ODE2NzY5NSwianRpIjoiSkpEZW42Q3NHbUZNd1U3OCIsInN1YiI6MiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyIsInJvbGUiOiJ1c2VyIn0.gGZw7-7thuNddheLZQFOwyHGfuRXesWa3cYfmtxL6FQ';
                 that.$store.dispatch('login', {
                     access_token: token,
                     refresh_token: '',
@@ -127,43 +127,43 @@
                         loop_days: 8,
                         detail: JSON.stringify([
                             {
-                                "class_define_name": '早班',
+                                "class_define_name": '白班',
                                 "class_define_time":"07:30-16:00",
                                 "sort": 1
                             },
                             {
-                                "class_define_name": '白班',
+                                "class_define_name": '中班',
                                 "class_define_time":"16:30-23:00",
                                 "sort": 2
                             },
                             {
-                                "class_define_name": '中班',
-                                "class_define_time":"23:30-07:30",
+                                "class_define_name": '早班',
+                                "class_define_time":"23:00-07:30",
                                 "sort": 3
                             },
                             {
                                 "class_define_name": '休息',
-                                "class_define_time":"",
+                                "class_define_time":"00:00-23:59",
                                 "sort": 4
                             },
                             {
                                 "class_define_name": '早班',
-                                "class_define_time":"07:30-16:00",
+                                "class_define_time":"23:00-07:30",
                                 "sort": 5
                             },
                             {
-                                "class_define_name": '中班',
-                                "class_define_time":"23:00-07:30",
+                                "class_define_name": '白班',
+                                "class_define_time":"07:30-16:00",
                                 "sort": 6
                             },
                             {
-                                "class_define_name": '白班',
+                                "class_define_name": '中班',
                                 "class_define_time":"16:30-23:00",
                                 "sort": 7
                             },
                             {
                                 "class_define_name": '休息',
-                                "class_define_time": "",
+                                "class_define_time":"00:00-23:59",
                                 "sort": 8
                             }
                         ])
