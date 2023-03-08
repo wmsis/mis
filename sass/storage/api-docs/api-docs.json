@@ -3496,14 +3496,14 @@
                 }
             }
         },
-        "/api/class-schdule/lists": {
+        "/api/class-schdule/user-lists": {
             "get": {
                 "tags": [
                     "排班管理class"
                 ],
-                "summary": "排班列表",
-                "description": "使用说明：排班列表",
-                "operationId": "class-schdule-lists",
+                "summary": "用户排班列表",
+                "description": "使用说明：用户排班列表",
+                "operationId": "class-schdule-user-lists",
                 "parameters": [
                     {
                         "name": "token",
@@ -3515,26 +3515,80 @@
                         }
                     },
                     {
-                        "name": "class_type",
-                        "in": "query",
-                        "description": "排班类型 按天排班或按周期排班  person或group",
-                        "required": true,
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "string",
-                                "enum": [
-                                    "person",
-                                    "group"
-                                ]
-                            },
-                            "default": "person"
-                        }
-                    },
-                    {
                         "name": "month",
                         "in": "query",
                         "description": "月份",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "update succeed"
+                    }
+                }
+            }
+        },
+        "/api/class-schdule/date-lists": {
+            "get": {
+                "tags": [
+                    "排班管理class"
+                ],
+                "summary": "排班日期列表",
+                "description": "使用说明：排班日期列表",
+                "operationId": "class-schdule-date-lists",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "开始日期",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "结束日期",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "class_define_name",
+                        "in": "query",
+                        "description": "班次",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "class_group_name",
+                        "in": "query",
+                        "description": "班组",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "orgnization_id",
+                        "in": "query",
+                        "description": "组织ID",
                         "required": true,
                         "schema": {
                             "type": "string"

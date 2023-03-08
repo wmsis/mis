@@ -12,6 +12,7 @@ use App\Models\MIS\ClassSchdule;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\MIS\ClassSchduleRequest;
+use App\Models\SIS\Orgnization;
 use UtilService;
 use Log;
 
@@ -1374,11 +1375,11 @@ class ClassController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/class-schdule/lists",
+     *     path="/api/class-schdule/user-lists",
      *     tags={"排班管理class"},
-     *     operationId="class-schdule-lists",
-     *     summary="排班列表",
-     *     description="使用说明：排班列表",
+     *     operationId="class-schdule-user-lists",
+     *     summary="用户排班列表",
+     *     description="使用说明：用户排班列表",
      *     @OA\Parameter(
      *         description="token",
      *         in="query",
@@ -1387,20 +1388,6 @@ class ClassController extends Controller
      *         @OA\Schema(
      *             type="string"
      *         )
-     *     ),
-     *     @OA\Parameter(
-     *         description="排班类型 按天排班或按周期排班  person或group",
-     *         in="query",
-     *         name="class_type",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="array",
-     *             default="person",
-     *             @OA\Items(
-     *                 type="string",
-     *                 enum = {"person", "group"},
-     *             )
-     *         ),
      *     ),
      *     @OA\Parameter(
      *         description="月份",
@@ -1417,34 +1404,211 @@ class ClassController extends Controller
      *     ),
      * )
      */
-    public function schduleLists(Request $request)
+    public function schduleUserLists(Request $request)
     {
         //参数
         $class_type = $request->input('class_type');
         $month = $request->input('month');
+        $final = [];
 
         $start = $month . '-01';
         $end = date('Y-m-t', strtotime($start));
-        if($class_type == 'person'){
-            $lists = ClassSchdule::where('date', '>=', $start)
+        $user_lists = ClassSchdule::select(['user_id'])
+            ->where('date', '>=', $start)
+            ->where('date', '<=', $end)
+            ->groupBy('user_id')
+            ->get();
+
+        foreach ($user_lists as $k1 => $item) {
+            $schdule_lists = ClassSchdule::select(['date', 'class_define_name', 'start', 'end', 'class_group_name'])
+                ->where('date', '>=', $start)
                 ->where('date', '<=', $end)
-                ->orderBy('class_group_name', 'ASC')
+                ->where('user_id', $item['user_id'])
+                ->orderBy('date', 'ASC')
                 ->get();
-        }
-        else{
-            $lists = ClassSchdule::where('date', '>=', $start)
-                ->where('date', '<=', $end)
-                ->orderBy('class_group_name', 'ASC')
-                ->groupBY('class_group_name')
-                ->distinct('class_group_name')
-                ->get(['class_group_name']);
+
+            $format_data = [];
+            foreach ($schdule_lists as $k9 => $schdule) {
+                $date = $schdule['date'];
+                unset($schdule['date']);
+                $format_data[$date] = $schdule;
+            }
+
+            $user = User::select(['name', 'mobile'])->where('id', $item['user_id'])->first();
+            $final[] = [
+                'user'=>$user ? $user->toArray() : null,
+                'data' => $format_data
+            ];
         }
 
-        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $lists);
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $final);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/class-schdule/date-lists",
+     *     tags={"排班管理class"},
+     *     operationId="class-schdule-date-lists",
+     *     summary="排班日期列表",
+     *     description="使用说明：排班日期列表",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="开始日期",
+     *         in="query",
+     *         name="start",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="结束日期",
+     *         in="query",
+     *         name="end",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="班次",
+     *         in="query",
+     *         name="class_define_name",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="班组",
+     *         in="query",
+     *         name="class_group_name",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="组织ID",
+     *         in="query",
+     *         name="orgnization_id",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="update succeed",
+     *     ),
+     * )
+     */
+    public function schduleDateLists(Request $request)
+    {
+        $start = $request->input('start');
+        $end = $request->input('end');
+        $class_define_name = $request->input('class_define_name');
+        $class_group_name = $request->input('class_group_name');
+        $orgnization_id = $request->input('orgnization_id');
+        $final = [];
+        $cass_define = config('class.cass_define');
+
+        $timestamp = strtotime($start);
+        //按日期获取排班人员信息
+        while($timestamp <= strtotime($end)){
+            $date = date('Y-m-d', $timestamp);
+            foreach ($cass_define as $key => $class) {
+                //有传具体班次,只返回具体班次排班
+                if($class_define_name){
+                    if($class_define_name == $class['name']){
+                        $final[] = $this->getSchduleInfo($orgnization_id, $date, $class['name'], $class_group_name);
+                        break;
+                    }
+                }
+                //返回早白中班信息
+                else{
+                    if($class['name'] != '休息'){
+                        $final[] = $this->getSchduleInfo($orgnization_id, $date, $class['name'], $class_group_name);
+                    }
+                }
+            }
+
+            $timestamp = $timestamp + 24 * 60 * 60;
+        }
+
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $final);
+    }
+
+    //获取组织某天的排班信息
+    private function getSchduleInfo($orgnization_id, $date, $class_define_name, $class_group_name){
+        $orgnization = $orgnization_id ? Orgnization::find($orgnization_id) : null;
+        $charge_user = DB::table('users')
+            ->join('class_schdule', 'users.id', '=', 'class_schdule.user_id')
+            ->select(['users.name', 'class_schdule.class_group_name'])
+            ->where('class_schdule.date', $date)
+            ->where('class_schdule.class_define_name', $class_define_name)
+            ->where('class_schdule.is_charge', 1)
+            ->whereNull('class_schdule.deleted_at');
+
+        if($orgnization_id){
+            $charge_user = $charge_user->where('class_schdule.orgnization_id', $orgnization_id);
+        }
+
+        if($class_group_name){
+            $charge_user = $charge_user->where('class_schdule.class_group_name', $class_group_name);
+        }
+        $charge_user = $charge_user->first();
+
+        $other_users = DB::table('users')
+            ->join('class_schdule', 'users.id', '=', 'class_schdule.user_id')
+            ->select(['users.name'])
+            ->where('class_schdule.date', $date)
+            ->where('class_schdule.class_define_name', $class_define_name)
+            ->where('class_schdule.is_charge', 0)
+            ->whereNull('class_schdule.deleted_at');
+
+        if($orgnization_id){
+            $other_users = $other_users->where('class_schdule.orgnization_id', $orgnization_id);
+        }
+
+        if($class_group_name){
+            $other_users = $other_users->where('class_schdule.class_group_name', $class_group_name);
+        }
+        $other_users = $other_users->get();
+
+        $other_user_name_arr = [];
+        $other_user_names = '';
+        foreach ($other_users as $key => $other_user) {
+            $other_user_name_arr[] = $other_user->name;
+        }
+        $other_user_names = implode(',', $other_user_name_arr);
+
+        $data = [
+            'orgnization_name' => $orgnization ? $orgnization->name : '',
+            'date' => $date,
+            'class_define_name' => $class_define_name,
+            'class_group_name' => $charge_user ? $charge_user->class_group_name : '',
+            'charge_user_name' => $charge_user ? $charge_user->name : '',
+            'user_names' => $other_user_names
+        ];
+
+        return $data;
     }
 
     //根据用户设置排班
     private function setClassByUser($params){
+        $class_group = null;
+        if($params['user_class_group'] ){
+            $class_group = ClassGroup::where('name', $params['user_class_group']->name)->first();
+        }
         //只排一天班
         if($params['date_type'] == 'single'){
             $where = [
@@ -1456,6 +1620,7 @@ class ClassController extends Controller
                 'class_define_name'=>$params['class_define_name'],
                 'start'=>$params['start'],
                 'end'=>$params['end'],
+                'is_charge'=>$class_group && $class_group->charge_user_id == $params['user_id'] ? 1 : 0,//值长
                 'class_group_name'=>$params['user_class_group'] ? $params['user_class_group']->name : ''
             ];
             ClassSchdule::updateOrCreate($where, $values);
@@ -1491,6 +1656,7 @@ class ClassController extends Controller
                                 'class_define_name'=>$params['class_define_name'],
                                 'start'=>$params['start'],
                                 'end'=>$params['end'],
+                                'is_charge'=>$class_group && $class_group->charge_user_id == $params['user_id'] ? 1 : 0,//值长
                                 'class_group_name'=>$params['user_class_group'] ? $params['user_class_group']->name : ''
                             ];
                             ClassSchdule::updateOrCreate($where, $values);
@@ -1509,7 +1675,7 @@ class ClassController extends Controller
     //根据班组设置排班
     private function setClassByGroup($params){
         $class_group = ClassGroup::where('name', $params['class_group_name'])->first();
-        $user_id_arr = explode(',', $class_group->user_ids);
+        $user_id_arr = $class_group ? explode(',', $class_group->user_ids) : [];
 
         DB::beginTransaction();
         try {
@@ -1532,6 +1698,7 @@ class ClassController extends Controller
                                     'class_define_name'=>$params['class_define_name'],
                                     'start'=>$params['start'],
                                     'end'=>$params['end'],
+                                    'is_charge'=>$class_group->charge_user_id == $user_id ? 1 : 0,//值长
                                     'class_group_name'=>$params['class_group_name']
                                 ];
                                 ClassSchdule::updateOrCreate($where, $values);
@@ -1560,6 +1727,7 @@ class ClassController extends Controller
                                         'class_define_name'=>$params['class_define_name'],
                                         'start'=>$params['start'],
                                         'end'=>$params['end'],
+                                        'is_charge'=>$class_group->charge_user_id == $user_id ? 1 : 0,//值长
                                         'class_group_name'=>$params['class_group_name']
                                     ];
                                     ClassSchdule::updateOrCreate($where, $values);

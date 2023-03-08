@@ -10,7 +10,7 @@ class ClassSchdule extends Model
 {
     use HasFactory, softDeletes;
     protected $table = 'class_schdule';
-    protected $fillable = ['orgnization_id', 'user_id', 'date', 'class_define_name', 'start', 'end', 'class_group_name'];
+    protected $fillable = ['orgnization_id', 'user_id', 'date', 'class_define_name', 'start', 'end', 'class_group_name', 'is_charge'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',
