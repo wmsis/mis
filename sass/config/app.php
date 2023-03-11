@@ -7,6 +7,8 @@ use App\Facades\WechatServiceFacade;
 use App\Facades\WxpayServiceFacade;
 use App\Facades\MyCacheServiceFacade;
 use App\Facades\EconomyDailyServiceFacade;
+use App\Facades\CheckServiceFacade;
+
 use App\Providers\HistorianServiceProvider;
 use App\Providers\MiniServiceProvider;
 use App\Providers\UtilServiceProvider;
@@ -14,6 +16,7 @@ use App\Providers\WechatServiceProvider;
 use App\Providers\WxpayServiceProvider;
 use App\Providers\MyCacheServiceProvider;
 use App\Providers\EconomyDailyServiceProvider;
+use App\Providers\CheckServiceProvider;
 
 return [
 
@@ -204,6 +207,7 @@ return [
         L5Swagger\L5SwaggerServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        App\Providers\CheckServiceProvider::class,
 
     ],
 
@@ -273,6 +277,7 @@ return [
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
 
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'CheckService' => App\Facades\CheckServiceFacade::class,
 
     ],
 
