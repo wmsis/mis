@@ -229,6 +229,7 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
             Route::post('setting', 'ClassController@schduleSetting');
             Route::get('user-lists', 'ClassController@schduleUserLists');
             Route::get('date-lists', 'ClassController@schduleDateLists');
+            Route::post('clear', 'ClassController@schduleClear');
         });
     });
 

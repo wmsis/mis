@@ -12,8 +12,10 @@ use App\Models\MIS\ClassSchdule;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\MIS\ClassSchduleRequest;
+use App\Http\Requests\MIS\ClassSchduleClearRequest;
 use App\Models\SIS\Orgnization;
 use UtilService;
+use App\Repositories\ClassSchduleRepository;
 use Log;
 
 class ClassController extends Controller
@@ -1282,6 +1284,15 @@ class ClassController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
+     *         description="排班月数",
+     *         in="query",
+     *         name="month",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
      *         description="排班周期ID date_type为multi时",
      *         in="query",
      *         name="class_loop_id",
@@ -1309,7 +1320,7 @@ class ClassController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="用户ID 按班组排class_type为group班时",
+     *         description="班组名称 按班组排class_type为group班时",
      *         in="query",
      *         name="class_group_name",
      *         required=false,
@@ -1329,11 +1340,12 @@ class ClassController extends Controller
         $date_type = $request->input('date_type');
         $class_type = $request->input('class_type');
         $date = $request->input('date');
+        $month = $request->input('month');
         $class_define_name = $request->input('class_define_name');
         $class_loop_id = $request->input('class_loop_id');
         $user_id = $request->input('user_id');
         $class_group_name = $request->input('class_group_name');
-        $params = $request->only(['date_type', 'class_type', 'date', 'class_define_name', 'class_loop_id', 'user_id', 'class_group_name']);
+        $params = $request->only(['date_type', 'class_type', 'date', 'month', 'class_define_name', 'class_loop_id', 'user_id', 'class_group_name']);
 
         $user = $user_id ? User::find($user_id) : null;
         $class_group = $user ? $user->classGroup : null;
@@ -1350,6 +1362,9 @@ class ClassController extends Controller
         else{
             if(!$class_loop_id){
                 return UtilService::format_data(self::AJAX_FAIL, '排班周期ID不能为空', '');
+            }
+            if(!$month){
+                return UtilService::format_data(self::AJAX_FAIL, '排班月数不能为空', '');
             }
         }
 
@@ -1547,6 +1562,100 @@ class ClassController extends Controller
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $final);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/class-schdule/clear",
+     *     tags={"排班管理class"},
+     *     operationId="class-schdule-clear",
+     *     summary="排班清除",
+     *     description="使用说明：排班清除",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="开始日期",
+     *         in="query",
+     *         name="start",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="截止日期",
+     *         in="query",
+     *         name="end",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="排班类型 按人排班或按班组排班  person或group",
+     *         in="query",
+     *         name="class_type",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="array",
+     *             default="person",
+     *             @OA\Items(
+     *                 type="string",
+     *                 enum = {"person", "group"},
+     *             )
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="用户ID 按人排class_type为person班时",
+     *         in="query",
+     *         name="user_id",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="班组名称 按班组排class_type为group班时",
+     *         in="query",
+     *         name="class_group_name",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="update succeed",
+     *     ),
+     * )
+     */
+    public function schduleClear(ClassSchduleClearRequest $request)
+    {
+        $class_chdule_obj = new ClassSchduleRepository();
+        $params = $request->only(['class_type', 'start', 'end', 'user_id', 'class_group_name']);
+        if($params['class_type'] == 'person'){
+            //按人删除排班
+            if(!$params['user_id']){
+                return UtilService::format_data(self::AJAX_FAIL, '用户ID不能为空', '');
+            }
+            $class_chdule_obj->deleteByUser($params);
+        }
+        else{
+            //按班组删除排班
+            if(!$params['class_group_name']){
+                return UtilService::format_data(self::AJAX_FAIL, '班组名称不能为空', '');
+            }
+            $class_chdule_obj->deleteByGroup($params);
+        }
+
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
+    }
+
     //获取组织某天的排班信息
     private function getSchduleInfo($orgnization_id, $date, $class_define_name, $class_group_name){
         $orgnization = $orgnization_id ? Orgnization::find($orgnization_id) : null;
@@ -1630,7 +1739,13 @@ class ClassController extends Controller
             $loop = ClassLoop::find($params['class_loop_id']);
             if($loop){
                 $loop_detail = $loop->detail()->orderBy('sort', 'ASC')->get();
-                $last_date = date('Y-m-t', strtotime($params['date']));
+                if($params['month']){
+                    $temp_timestamp = strtotime($params['date']) + 30 * $params['month'] * 24 * 60 * 60;
+                    $last_date = date('Y-m-t', $temp_timestamp);
+                }
+                else{
+                    $last_date = date('Y-m-t', strtotime($params['date']));
+                }
                 $timestamp = strtotime($params['date']);
                 DB::beginTransaction();
                 try {
@@ -1706,7 +1821,14 @@ class ClassController extends Controller
                             //周期排班
                             else{
                                 $index = 0;
-                                $last_date = date('Y-m-t', strtotime($params['date']));
+                                if($params['month']){
+                                    $temp_timestamp = strtotime($params['date']) + 30 * $params['month'] * 24 * 60 * 60;
+                                    $last_date = date('Y-m-t', $temp_timestamp);
+                                }
+                                else{
+                                    $last_date = date('Y-m-t', strtotime($params['date']));
+                                }
+
                                 $timestamp = strtotime($params['date']);
                                 //循环排班到月底
                                 while($timestamp <= strtotime($last_date)){

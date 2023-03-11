@@ -3453,6 +3453,15 @@
                         }
                     },
                     {
+                        "name": "month",
+                        "in": "query",
+                        "description": "排班月数",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "class_loop_id",
                         "in": "query",
                         "description": "排班周期ID date_type为multi时",
@@ -3482,7 +3491,7 @@
                     {
                         "name": "class_group_name",
                         "in": "query",
-                        "description": "用户ID 按班组排class_type为group班时",
+                        "description": "班组名称 按班组排class_type为group班时",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -3590,6 +3599,85 @@
                         "in": "query",
                         "description": "组织ID",
                         "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "update succeed"
+                    }
+                }
+            }
+        },
+        "/api/class-schdule/clear": {
+            "post": {
+                "tags": [
+                    "排班管理class"
+                ],
+                "summary": "排班清除",
+                "description": "使用说明：排班清除",
+                "operationId": "class-schdule-clear",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "开始日期",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "截止日期",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "class_type",
+                        "in": "query",
+                        "description": "排班类型 按人排班或按班组排班  person或group",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "person",
+                                    "group"
+                                ]
+                            },
+                            "default": "person"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "用户ID 按人排class_type为person班时",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "class_group_name",
+                        "in": "query",
+                        "description": "班组名称 按班组排class_type为group班时",
+                        "required": false,
                         "schema": {
                             "type": "string"
                         }
