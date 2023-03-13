@@ -5,12 +5,14 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Console\Commands\AlarmData;
+use App\Console\Commands\CountUserPoint;
 
 class Kernel extends ConsoleKernel
 {
 
     protected $commands = [
-        AlarmData::class,
+        //AlarmData::class,
+        CountUserPoint::class,
     ];
 
     /**
@@ -21,7 +23,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('alarm:data')->everyMinute();
+        //$schedule->command('alarm:data')->everyMinute();
+        $schedule->command('count:userPoint --type=electricity')->everyMinute();
+        $schedule->command('count:userPoint --type=tag')->everyMinute();
     }
 
     /**
