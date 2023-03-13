@@ -30,7 +30,7 @@ class CreateCheckTable extends Migration
         Schema::create('check_tag', function (Blueprint $table) {
             $table->id();
             $table->integer('orgnization_id')->nullable()->comment('组织ID');
-            $table->integer('dcs_map_id')->nullable()->comment('标准映射关系ID');
+            $table->integer('dcs_standard_id')->nullable()->comment('标准名称ID');
             $table->string('remark', 100)->nullable()->comment('扣款标准明细');
             $table->integer('point_every_alarm')->nullable()->comment('每次报警扣多少发电量');
             $table->text('user_ids')->nullable()->comment('涉及考核人员ID列表');

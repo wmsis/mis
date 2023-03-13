@@ -7,7 +7,7 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Console\Commands\IEC104Data;
 use App\Console\Commands\GrabGarbageData;
 use App\Console\Commands\HistorianData;
-use App\Console\Commands\CountDayDcsData;
+//use App\Console\Commands\CountDayDcsData;
 use App\Console\Commands\CountDayElectricityData;
 use App\Console\Commands\CountDayGrabGarbageData;
 use App\Console\Commands\CountDayWeighBridgeData;
@@ -20,7 +20,7 @@ class Kernel extends ConsoleKernel
         IEC104Data::class,
         GrabGarbageData::class,
         HistorianData::class,
-        CountDayDcsData::class,
+        //CountDayDcsData::class,
         CountDayElectricityData::class,
         CountDayGrabGarbageData::class,
         CountDayWeighBridgeData::class,
@@ -45,7 +45,7 @@ class Kernel extends ConsoleKernel
 
         //每日累计数据
         $schedule->command('count:dayElectricityData')->everyMinute();
-        $schedule->command('count:dayDcsData')->everyMinute();
+        //$schedule->command('count:dayDcsData')->everyMinute();
         $schedule->command('count:dayGrabGarbageData')->everyMinute();
         $schedule->command('count:dayWeighBridgeData')->everyMinute();
         $schedule->command('count:dayPowerData')->everyMinute();
@@ -55,8 +55,8 @@ class Kernel extends ConsoleKernel
         $electricity_cmd = 'count:dayElectricityData --date=' . $yestoday;
         $schedule->command($electricity_cmd)->twiceDaily(1, 22);
 
-        $dcs_cmd = 'count:dayDcsData --date=' . $yestoday;
-        $schedule->command($dcs_cmd)->twiceDaily(1, 22);
+        //$dcs_cmd = 'count:dayDcsData --date=' . $yestoday;
+        //$schedule->command($dcs_cmd)->twiceDaily(1, 22);
 
         $grab_garbage_cmd = 'count:dayGrabGarbageData --date=' . $yestoday;
         $schedule->command($grab_garbage_cmd)->twiceDaily(2, 23);

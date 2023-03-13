@@ -15,15 +15,17 @@ class UserPointJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     protected $type;
+    protected $date;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($type=null)
+    public function __construct($type=null, $date=null)
     {
         $this->type = $type;
+        $this->date = $date;
     }
 
     /**
@@ -36,10 +38,16 @@ class UserPointJob implements ShouldQueue
         if($this->type == 'electricity'){
             $this->electricityData();
         }
+        else{
+            $this->tagData();
+        }
     }
 
     private function electricityData(){
-        $date = date('Y-m-d');
-        CheckService::userClassPoint($date);
+        CheckService::userClassPoint($this->date);
+    }
+
+    private function tagData(){
+        CheckService::userTagPoint($this->date);
     }
 }

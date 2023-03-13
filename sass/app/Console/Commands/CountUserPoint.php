@@ -13,7 +13,7 @@ class CountUserPoint extends Command
      *
      * @var string
      */
-    protected $signature = 'count:userPoint {--type=electricity}';
+    protected $signature = 'count:userPoint {--type=electricity} {--date=default}';
 
     /**
      * The console command description.
@@ -40,7 +40,9 @@ class CountUserPoint extends Command
     public function handle()
     {
         $type = $this->option('type');
-        dispatch(new UserPointJob($type));
+        $date = $this->option('date');
+        $date = $date != 'default' ? $date : date('Y-m-d');
+        dispatch(new UserPointJob($type, $date));
         return 0;
     }
 }

@@ -16,6 +16,7 @@ use App\Http\Requests\MIS\ClassSchduleClearRequest;
 use App\Models\SIS\Orgnization;
 use UtilService;
 use App\Repositories\ClassSchduleRepository;
+use Illuminate\Database\QueryException;
 use Log;
 
 class ClassController extends Controller
