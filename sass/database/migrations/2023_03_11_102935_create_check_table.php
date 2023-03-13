@@ -19,6 +19,7 @@ class CreateCheckTable extends Migration
             $table->integer('orgnization_id')->nullable()->comment('组织ID');
             $table->integer('user_id')->nullable()->comment('用户ID');
             $table->date('date')->nullable()->comment('考核日期');
+            $table->decimal('value', $precision = 20, $scale = 2)->nullable()->comment('累计值');
             $table->string('reason', 100)->nullable()->comment('具体原因');
             $table->enum('type', ['class', 'alarm', 'daily'])->nullable()->comment('考核类型 class上班 alarm报警 daily日常考核')->default('class');
             $table->integer('check_tag_detail_id')->nullable()->comment('考核班次报警详情ID');

@@ -10,7 +10,7 @@ class CheckPointDetail extends Model
 {
     use HasFactory, softDeletes;
     protected $table = 'check_point_detail';
-    protected $fillable = ['orgnization_id', 'user_id', 'date', 'reason', 'type', 'check_tag_detail_id'];
+    protected $fillable = ['orgnization_id', 'user_id', 'date', 'value', 'reason', 'type', 'check_tag_detail_id'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',

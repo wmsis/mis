@@ -23,7 +23,7 @@ class UserPointJob implements ShouldQueue
      */
     public function __construct($type=null)
     {
-        $this->type = $type ? $type : 'electricity';
+        $this->type = $type;
     }
 
     /**
@@ -40,9 +40,6 @@ class UserPointJob implements ShouldQueue
 
     private function electricityData(){
         $date = date('Y-m-d');
-        $final = CheckService::userClassPoint($date);
-
-        Log::info('22222222222222222');
-        Log::info(var_export($final, true));
+        CheckService::userClassPoint($date);
     }
 }
