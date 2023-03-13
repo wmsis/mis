@@ -305,7 +305,7 @@ class CheckController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/check/tag-delete/{id}",
+     *     path="/api/check/tag-destroy/{id}",
      *     tags={"考核check"},
      *     operationId="check-destroy",
      *     summary="删除单条数据",
@@ -334,7 +334,7 @@ class CheckController extends Controller
      *     ),
      * )
      */
-    public function destroy($id)
+    public function tagDestroy($id)
     {
         $row = CheckTag::find($id);
         if (!$row) {
@@ -350,5 +350,163 @@ class CheckController extends Controller
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/check/user-rank",
+     *     tags={"考核check"},
+     *     operationId="check-user-rank",
+     *     summary="用户得分排名",
+     *     description="使用说明：用户得分排名",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="开始时间",
+     *         in="query",
+     *         name="start",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="结束时间",
+     *         in="query",
+     *         name="end",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="班组名",
+     *         in="query",
+     *         name="class_group_name",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="succeed",
+     *     ),
+     * )
+     */
+    public function userRank(Request $request)
+    {
+        $final = [];
+        $start = $request->input('start');
+        $end = $request->input('end');
+        $class_group_name = $request->input('class_group_name');
+        $lists = CheckPointDetail::where('date', '>=', $start)
+            ->where('date', '<=', $end)
+            ->selectRaw('SUM(value) as val, user_id, date')
+            ->groupBy('user_id')
+            ->groupBy('date')
+            ->get();
+
+        if(count($lists) > 0){
+            $lists = $lists->toArray();
+            $lists = $this->bubbleSort($lists);
+            foreach ($lists as $k9 => $item) {
+                $user = User::find($item['user_id']);
+                $item['user_name'] = $user ? $user->name : '';
+                $final[] = $item;
+            }
+        }
+
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $final);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/check/group-rank",
+     *     tags={"考核check"},
+     *     operationId="check-group-rank",
+     *     summary="班组得分排名",
+     *     description="使用说明：班组得分排名",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="开始时间",
+     *         in="query",
+     *         name="start",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="结束时间",
+     *         in="query",
+     *         name="end",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="succeed",
+     *     ),
+     * )
+     */
+    public function groupRank(Request $request)
+    {
+        $final = [];
+        $start = $request->input('start');
+        $end = $request->input('end');
+        $lists = CheckPointDetail::where('date', '>=', $start)
+            ->where('date', '<=', $end)
+            ->selectRaw('SUM(value) as val, class_group_name, date')
+            ->groupBy('class_group_name')
+            ->groupBy('date')
+            ->get();
+
+        if(count($lists) > 0){
+            $lists = $lists->toArray();
+            $lists = $this->bubbleSort($lists);
+        }
+
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $lists);
+    }
+
+    //冒泡排序  sort最小的在前
+    private function bubbleSort($arr)
+    {
+        $len = count($arr);
+        for ($i = 0; $i < $len -1; $i++) {//循环对比的轮数
+            $isChange = false;
+            for ($j = 0; $j < $len - $i - 1; $j++) {//当前轮相邻元素循环对比
+                if ($arr[$j]['val'] > $arr[$j + 1]['val']) {//如果前边的大于后边的
+                    $tmp = $arr[$j];//交换数据
+                    $arr[$j] = $arr[$j + 1];
+                    $arr[$j + 1] = $tmp;
+                    $isChange = true;
+                }
+            }
+
+            //在一轮排序后，如果没有发生任何改变，说明已经是排序好了，不用在继续后面的循环
+            if(!$isChange){
+                break;
+            }
+        }
+        return $arr;
     }
 }

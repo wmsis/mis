@@ -231,6 +231,17 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
             Route::get('date-lists', 'ClassController@schduleDateLists');
             Route::post('clear', 'ClassController@schduleClear');
         });
+
+        //考核
+        Route::prefix('check')->group(function () {
+            Route::get('tag-page', 'CheckController@tagPage');
+            Route::post('tag-store', 'CheckController@tagStore');
+            Route::get('tag-show/{id}', 'CheckController@tagShow');
+            Route::put('tag-update/{id}', 'CheckController@tagUpdate');
+            Route::delete('tag-destroy/{id}', 'CheckController@tagDestroy');
+            Route::get('user-rank', 'CheckController@userRank');
+            Route::get('group-rank', 'CheckController@groupRank');
+        });
     });
 
     Route::group(['namespace' => 'App\Http\Controllers\DATA'], function () {
