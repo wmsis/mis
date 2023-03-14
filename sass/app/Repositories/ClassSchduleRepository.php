@@ -36,7 +36,7 @@ class ClassSchduleRepository extends BaseRepository
             $res = $res->where('user_id', $params['user_id']);
             $flag = true;
         }
-        $res = $flag ? $res->delete() : null;
+        $res = $flag ? $res->forceDelete() : null;
 
         return $res;
     }
@@ -58,7 +58,7 @@ class ClassSchduleRepository extends BaseRepository
             $res = $res->where('class_group_name', $params['class_group_name']);
             $flag = true;
         }
-        $res = $flag ? $res->delete() : null;
+        $res = $flag ? $res->forceDelete() : null;
 
         return $res;
     }

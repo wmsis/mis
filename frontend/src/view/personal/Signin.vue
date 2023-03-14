@@ -113,7 +113,7 @@
             test(){
                 console.log('0000000000000');
                 let that = this;
-                let token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMC45OS45OS45OTo2MDYwXC9hcGlcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNjc4MTY3Njk1LCJleHAiOjE2NzgxNzEyOTUsIm5iZiI6MTY3ODE2NzY5NSwianRpIjoiSkpEZW42Q3NHbUZNd1U3OCIsInN1YiI6MiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyIsInJvbGUiOiJ1c2VyIn0.gGZw7-7thuNddheLZQFOwyHGfuRXesWa3cYfmtxL6FQ';
+                let token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMC45OS45OS45OTo2MDYwXC9hcGlcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNjc4NzU4MjY0LCJleHAiOjE2Nzg3NjE4NjQsIm5iZiI6MTY3ODc1ODI2NCwianRpIjoiZmxmYXA2bTBORlFDZGZpNCIsInN1YiI6MiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyIsInJvbGUiOiJ1c2VyIn0.bNrMbXxBWegENRxKLRaSnrVgAgl7LcVfZFY7YWZXGfc';
                 that.$store.dispatch('login', {
                     access_token: token,
                     refresh_token: '',
