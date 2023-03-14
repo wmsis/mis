@@ -174,6 +174,22 @@ abstract class BaseRepository implements RepositoryContract
     }
 
     /**
+     * Delete one or more model records from the database.
+     *
+     * @return mixed
+     */
+    public function forceDelete()
+    {
+        $this->newQuery()->setClauses()->setScopes();
+
+        $result = $this->query->forceDelete();
+
+        $this->unsetClauses();
+
+        return $result;
+    }
+
+    /**
      * Delete the specified model record from the database.
      *
      * @param $id
