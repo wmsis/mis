@@ -31,7 +31,7 @@ class CheckService{
             $end = $date . ' ' . $user_schdule->end . ':00'; //上班结束时间
 
             //上班时间内及上班结束后半小时内的时间都运行计算
-            if(time() >= strtotime($start) && time() <= (strtotime($end) + 30 * 60)){
+            if($user_schdule->class_define_name != '休息' && time() >= strtotime($start) && time() <= (strtotime($end) + 30 * 60)){
                 $orgnization = Orgnization::find($user_schdule->orgnization_id);
                 if($orgnization){
                     $rangedata = $this->getRangeElectricity($orgnization, $start, $end);//获取发电量原始信息
@@ -175,7 +175,7 @@ class CheckService{
                 $end = $date . ' ' . $user_schdule->end . ':00'; //上班结束时间
 
                 //上班时间内及上班结束后半小时内的时间都运行计算
-                if(time() >= strtotime($start) && time() <= (strtotime($end) + 30 * 60)){
+                if($user_schdule->class_define_name != '休息' && time() >= strtotime($start) && time() <= (strtotime($end) + 30 * 60)){
                     $orgnization = Orgnization::find($user_schdule->orgnization_id);
                     if($orgnization){
                         $rangedata = $this->getRangeCheckValue($orgnization, $start, $end, $check_tag->dcs_standard_id);
