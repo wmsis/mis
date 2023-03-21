@@ -146,15 +146,17 @@ class HistorianDataJob implements ShouldQueue
             Log::info(var_export($ex, true));
         }
 
-        $begin = date('Y-m-d H:i', strtotime($this->datetime)) . ':00'; //获取一分钟内的数据
+        $begin = date('Y-m-d H:i', strtotime($this->datetime)) . ':00'; //获取15秒内的数据
         $end = date('Y-m-d H:i', strtotime($this->datetime)) . ':15';
         $start = new UTCDateTime(strtotime($begin)*1000);
         $stop = new UTCDateTime(strtotime($end)*1000);
         Log::info('00000000000000000000');
+        Log::info(time());
         $obj_hitorian_factory->select(['tag_name', 'datetime', 'value'])
             ->whereBetween('datetime', array($start, $stop))
-            ->chunk(1000, function ($rows) use ($obj_hitorian_local) {
-
+            ->chunk(200, function ($rows) use ($obj_hitorian_local) {
+                Log::info('1111111111111');
+                Log::info(time());
             $params = [];
             $stack = [];
             if($rows && count($rows) > 0){
@@ -185,7 +187,8 @@ class HistorianDataJob implements ShouldQueue
                 //Log::info($this->datetime . '历史数据库没有数据插入');
             }
         });
-        Log::info('111111111111111111');
+        Log::info('22222222222222222');
+        Log::info(time());
         $this->historian_format_data();
     }
 
