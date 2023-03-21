@@ -161,16 +161,16 @@ class HistorianDataJob implements ShouldQueue
             $params = [];
             $stack = [];
             if($rows && count($rows) > 0){
+                $i=0;
                 foreach ($rows as $key => $item) {
+                    $i++;
                     if(in_array($item->tag_name, $stack)){
                         continue;
                     }
-                    Log::info('0000000000000000');
+
                     $stack[] = $item->tag_name;
                     $local_row = $obj_hitorian_local->findRowByTagAndTime($item->tag_name, $this->datetime);
-                    Log::info('11111111111111111111');
                     if(!$local_row){
-                        Log::info('2222222222222');
                         //本地不存在则插入
                         $params[] = array(
                             'tag_name' => $item->tag_name,
@@ -180,7 +180,7 @@ class HistorianDataJob implements ShouldQueue
                             'updated_at' => date('Y-m-d H:i:s')
                         );
                     }
-                    Log::info('3333333333333333');
+                    Log::info($i);
                 }
                 Log::info('CCCCCCCCCCCCCCCCC');
             }
