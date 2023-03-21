@@ -156,6 +156,7 @@ class HistorianDataJob implements ShouldQueue
             ->whereBetween('datetime', array($start, $stop))->get();
             //->chunk(200, function ($rows) use ($obj_hitorian_local) {
                 Log::info('BBBBBBBBBBBBBBBBBBBBB');
+                Log::info(count($rows));
                 Log::info(time());
             $params = [];
             $stack = [];
@@ -164,9 +165,12 @@ class HistorianDataJob implements ShouldQueue
                     if(in_array($item->tag_name, $stack)){
                         continue;
                     }
+                    Log::info('0000000000000000');
                     $stack[] = $item->tag_name;
                     $local_row = $obj_hitorian_local->findRowByTagAndTime($item->tag_name, $this->datetime);
+                    Log::info('11111111111111111111');
                     if(!$local_row){
+                        Log::info('2222222222222');
                         //本地不存在则插入
                         $params[] = array(
                             'tag_name' => $item->tag_name,
@@ -176,6 +180,7 @@ class HistorianDataJob implements ShouldQueue
                             'updated_at' => date('Y-m-d H:i:s')
                         );
                     }
+                    Log::info('3333333333333333');
                 }
                 Log::info('CCCCCCCCCCCCCCCCC');
             }
@@ -190,7 +195,6 @@ class HistorianDataJob implements ShouldQueue
             }
         //});
         Log::info('EEEEEEEEEEEEEEEEEEEE');
-        Log::info(count($rows));
         Log::info(time());
         $this->historian_format_data();
     }
