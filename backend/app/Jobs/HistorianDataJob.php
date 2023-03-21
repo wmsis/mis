@@ -22,7 +22,7 @@ use MongoDB\BSON\UTCDateTime;
 class HistorianDataJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    public $timeout = 120;
+    public $timeout = 120; //队列超时时间
     protected $datetime;
     protected $tenement_conn; //租户连接
     protected $tenement_mongo_conn; //本地mongo连接
@@ -151,14 +151,11 @@ class HistorianDataJob implements ShouldQueue
         $end = date('Y-m-d H:i', strtotime($this->datetime)) . ':15';
         $start = new UTCDateTime(strtotime($begin)*1000);
         $stop = new UTCDateTime(strtotime($end)*1000);
-        Log::info('AAAAAAAAAAAAAAA');
-        Log::info(time());
-        $rows = $obj_hitorian_factory->select(['tag_name', 'datetime', 'value'])
-            ->whereBetween('datetime', array($start, $stop))->get();
-            //->chunk(200, function ($rows) use ($obj_hitorian_local) {
-                Log::info('BBBBBBBBBBBBBBBBBBBBB');
-                Log::info(count($rows));
-                Log::info(time());
+        Log::info('000000000000000');
+        $obj_hitorian_factory->select(['tag_name', 'datetime', 'value'])
+            ->whereBetween('datetime', array($start, $stop));
+            ->chunk(100, function ($rows) use ($obj_hitorian_local) {
+
             $params = [];
             $stack = [];
             if($rows && count($rows) > 0){
@@ -183,9 +180,7 @@ class HistorianDataJob implements ShouldQueue
                     }
                     Log::info($i);
                 }
-                Log::info('CCCCCCCCCCCCCCCCC');
             }
-            Log::info('DDDDDDDDDDDDDDDDDD');
 
             if($params && count($params) > 0){
                 $obj_hitorian_local->insertMany($params);
@@ -194,9 +189,8 @@ class HistorianDataJob implements ShouldQueue
             else{
                 //Log::info($this->datetime . '历史数据库没有数据插入');
             }
-        //});
-        Log::info('EEEEEEEEEEEEEEEEEEEE');
-        Log::info(time());
+        });
+        Log::info('1111111111111111');
         $this->historian_format_data();
     }
 
