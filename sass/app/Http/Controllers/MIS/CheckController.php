@@ -1266,16 +1266,19 @@ class CheckController extends Controller
                 ]);
 
                 $row = ClassGroupAllocation::where('orgnization_id', $this->orgnization->id)->where('class_group_name', $input['class_group_name'])->first();
-                $row->detail()->forceDelete();
-                foreach ($detail as $key => $item) {
-                    $param = [
-                        'class_group_allocation_id' => $row->id,
-                        'job_station_id' => $item['job_station_id'],
-                        'percent' => $item['percent']
-                    ];
-                    $sum = $sum + intval($item['percent']);
-                    ClassGroupAllocationDetail::create($param);
+                if($row){
+                    $row->detail()->forceDelete();
+                    foreach ($detail as $key => $item) {
+                        $param = [
+                            'class_group_allocation_id' => $row->id,
+                            'job_station_id' => $item['job_station_id'],
+                            'percent' => $item['percent']
+                        ];
+                        $sum = $sum + intval($item['percent']);
+                        ClassGroupAllocationDetail::create($param);
+                    }
                 }
+
                 if($sum > 100){
                     DB::rollback();
                     return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '分配比例不正确');

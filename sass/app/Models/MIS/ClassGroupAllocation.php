@@ -5,7 +5,7 @@ namespace App\Models\MIS;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\MIS\CheckRuleAllocationDetail;
+use App\Models\MIS\ClassGroupAllocationDetail;
 
 class ClassGroupAllocation extends Model
 {
@@ -20,6 +20,6 @@ class ClassGroupAllocation extends Model
 
     public function detail()
     {
-        return $this->hasMany(CheckRuleAllocationDetail::class);
+        return $this->hasMany(ClassGroupAllocationDetail::class);
     }
 }

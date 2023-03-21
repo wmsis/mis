@@ -32,13 +32,16 @@ class CheckService{
         foreach ($date_users_schdule as $key => $user_schdule) {
             $start = $date . ' ' . $user_schdule->start . ':00'; //上班开始时间
             $end = $date . ' ' . $user_schdule->end . ':00'; //上班结束时间
+            if(strtotime($start) > strtotime($end)){
+                $start = date('Y-m-d', strtotime($date) - 24 * 60 * 60) . ' ' . $user_schdule->start . ':00'; //上班开始时间
+            }
 
             //上班时间内及上班结束后半小时内的时间都运行计算
             if($user_schdule->class_define_name != config('constants.CLASS.REST') && time() >= strtotime($start) && time() <= (strtotime($end) + 30 * 60)){
                 $orgnization = Orgnization::find($user_schdule->orgnization_id);
                 //班组分配比例
                 $class_group_allocation = ClassGroupAllocation::where('class_group_name', $user_schdule->class_group_name)->first();
-                $class_group_allocation_detail = $class_group_allocation->detail;
+                $class_group_allocation_detail = $class_group_allocation ? $class_group_allocation->detail : null;
                 if($orgnization && $class_group_allocation_detail){
                     $rangedata = $this->getRangeElectricity($orgnization, $start, $end);//获取发电量原始信息
                     $powerdata = $this->getRangePower($rangedata);//计算上网电量信息
