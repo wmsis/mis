@@ -10,7 +10,7 @@ class CheckTagDetail extends Model
 {
     use HasFactory, softDeletes;
     protected $table = 'check_tag_detail';
-    protected $fillable = ['user_id', 'date', 'check_tag_id', 'first_alarm_num', 'second_alarm_num', 'class_alarm_num'];
+    protected $fillable = ['user_id', 'date', 'first_alarm_num', 'second_alarm_num', 'class_alarm_num'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',

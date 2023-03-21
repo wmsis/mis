@@ -2548,14 +2548,14 @@
                 }
             }
         },
-        "/api/check/rule-page": {
+        "/api/check/tag-page": {
             "get": {
                 "tags": [
                     "考核check"
                 ],
                 "summary": "分页获取考核指标数据列表",
                 "description": "使用说明：分页获取考核指标数据列表",
-                "operationId": "check-rule-page",
+                "operationId": "check-tag-page",
                 "parameters": [
                     {
                         "name": "token",
@@ -2603,14 +2603,14 @@
                 }
             }
         },
-        "/api/check/rule-store": {
+        "/api/check/tag-store": {
             "post": {
                 "tags": [
                     "考核check"
                 ],
-                "summary": "新增单条考核指标数据",
-                "description": "使用说明：新增单条考核指标数据",
-                "operationId": "check-rule-store",
+                "summary": "新增单条数据",
+                "description": "使用说明：新增单条数据",
+                "operationId": "check-tag-store",
                 "parameters": [
                     {
                         "name": "token",
@@ -2622,54 +2622,36 @@
                         }
                     },
                     {
-                        "name": "dcs_standard_ids",
+                        "name": "dcs_standard_id",
                         "in": "query",
-                        "description": "标准名称ID列表，多个英文逗号隔开",
+                        "description": "标准名称ID",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
                     },
                     {
-                        "name": "name",
+                        "name": "remark",
                         "in": "query",
-                        "description": "指标名称",
+                        "description": "备注",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
                     },
                     {
-                        "name": "value",
+                        "name": "point_every_alarm",
                         "in": "query",
-                        "description": "考核分",
+                        "description": "每个报警扣去的分数",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
                     },
                     {
-                        "name": "type",
+                        "name": "user_ids",
                         "in": "query",
-                        "description": "类型",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "check_rule_group_id",
-                        "in": "query",
-                        "description": "考核分组类ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "isopen",
-                        "in": "query",
-                        "description": "是否开启",
+                        "description": "用户ID列表，英文逗号隔开",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -2683,14 +2665,14 @@
                 }
             }
         },
-        "/api/check/rule-show/{id}": {
+        "/api/check/tag-show/{id}": {
             "get": {
                 "tags": [
                     "考核check"
                 ],
-                "summary": "获取考核指标详细信息",
-                "description": "使用说明：获取考核指标详细信息",
-                "operationId": "check-rule-show",
+                "summary": "获取详细信息",
+                "description": "使用说明：获取详细信息",
+                "operationId": "check-show",
                 "parameters": [
                     {
                         "name": "token",
@@ -2718,14 +2700,14 @@
                 }
             }
         },
-        "/api/check/rule-update/{id}": {
+        "/api/check/tag-update/{id}": {
             "put": {
                 "tags": [
                     "考核check"
                 ],
-                "summary": "修改考核指标",
-                "description": "使用说明：修改单条考核指标数据",
-                "operationId": "chack-rule-update",
+                "summary": "修改",
+                "description": "使用说明：修改单条数据",
+                "operationId": "chack-tag-update",
                 "parameters": [
                     {
                         "name": "token",
@@ -2746,54 +2728,36 @@
                         }
                     },
                     {
-                        "name": "dcs_standard_ids",
+                        "name": "dcs_standard_id",
                         "in": "query",
-                        "description": "标准名称ID列表，多个英文逗号隔开",
+                        "description": "标准名称ID",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
                     },
                     {
-                        "name": "name",
+                        "name": "remark",
                         "in": "query",
-                        "description": "指标名称",
+                        "description": "备注",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
                     },
                     {
-                        "name": "value",
+                        "name": "point_every_alarm",
                         "in": "query",
-                        "description": "考核分",
+                        "description": "每个报警扣去的分数",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
                     },
                     {
-                        "name": "type",
+                        "name": "user_ids",
                         "in": "query",
-                        "description": "类型",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "check_rule_group_id",
-                        "in": "query",
-                        "description": "考核分组类ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "isopen",
-                        "in": "query",
-                        "description": "是否开启",
+                        "description": "用户ID列表，英文逗号隔开",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -2807,13 +2771,13 @@
                 }
             }
         },
-        "/api/check/rule-destroy/{id}": {
+        "/api/check/tag-destroy/{id}": {
             "delete": {
                 "tags": [
                     "考核check"
                 ],
-                "summary": "删除单条考核指标数据",
-                "description": "使用说明：删除单条考核指标数据",
+                "summary": "删除单条数据",
+                "description": "使用说明：删除单条数据",
                 "operationId": "check-destroy",
                 "parameters": [
                     {
@@ -2838,912 +2802,6 @@
                 "responses": {
                     "200": {
                         "description": "detroy succeed"
-                    }
-                }
-            }
-        },
-        "/api/check/rule-job-allocation": {
-            "post": {
-                "tags": [
-                    "考核check"
-                ],
-                "summary": "保存考核指标岗位分配比例",
-                "description": "使用说明：保存考核指标岗位分配比例",
-                "operationId": "check-rule-job-allocation",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "description": "token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "id",
-                        "in": "query",
-                        "description": "考核指标ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "detail",
-                        "in": "query",
-                        "description": "岗位分配详情json数据[{'job_station_id': 1, 'percent': 25}, {'job_station_id': 2, 'percent': 30}]",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "successful operation"
-                    }
-                }
-            }
-        },
-        "/api/check/rule-group-page": {
-            "get": {
-                "tags": [
-                    "考核check"
-                ],
-                "summary": "分页获取考核指标分组数据列表",
-                "description": "使用说明：分页获取考核指标分组数据列表",
-                "operationId": "check-rule-group-page",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "description": "token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "num",
-                        "in": "query",
-                        "description": "每页数据量",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "default": 20
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "页数",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "default": 1
-                        }
-                    },
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "description": "关键字标题",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "succeed"
-                    }
-                }
-            }
-        },
-        "/api/check/rule-group-store": {
-            "post": {
-                "tags": [
-                    "考核check"
-                ],
-                "summary": "新增单条考核指标分组数据",
-                "description": "使用说明：新增单条考核指标分组数据",
-                "operationId": "check-rule-group-store",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "description": "token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "description": "指标名称",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "description",
-                        "in": "query",
-                        "description": "描述",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "store succeed"
-                    }
-                }
-            }
-        },
-        "/api/check/rule-roup-show/{id}": {
-            "get": {
-                "tags": [
-                    "考核check"
-                ],
-                "summary": "获取考核指标分组详细信息",
-                "description": "使用说明：获取考核指标分组详细信息",
-                "operationId": "check-rule-roup-show",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "description": "token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "主键",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "succeed"
-                    }
-                }
-            }
-        },
-        "/api/check/rule-roup-update/{id}": {
-            "put": {
-                "tags": [
-                    "考核check"
-                ],
-                "summary": "修改考核指标分组",
-                "description": "使用说明：修改单条考核指标分组数据",
-                "operationId": "chack-rule-roup-update",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "description": "token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "主键",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "dcs_standard_ids",
-                        "in": "query",
-                        "description": "标准名称ID列表，多个英文逗号隔开",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "description": "指标名称",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "value",
-                        "in": "query",
-                        "description": "考核分",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "type",
-                        "in": "query",
-                        "description": "类型",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "check_rule_group_id",
-                        "in": "query",
-                        "description": "考核分组类ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "isopen",
-                        "in": "query",
-                        "description": "是否开启",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "update succeed"
-                    }
-                }
-            }
-        },
-        "/api/check/rule-group-destroy/{id}": {
-            "delete": {
-                "tags": [
-                    "考核check"
-                ],
-                "summary": "删除单条考核分组数据",
-                "description": "使用说明：删除单条考核分组数据",
-                "operationId": "check-rule-group-destroy",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "description": "token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "主键",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "detroy succeed"
-                    }
-                }
-            }
-        },
-        "/api/check/job-page": {
-            "get": {
-                "tags": [
-                    "考核check"
-                ],
-                "summary": "分页获取岗位数据列表",
-                "description": "使用说明：分页获取岗位数据列表",
-                "operationId": "check-job-page",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "description": "token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "num",
-                        "in": "query",
-                        "description": "每页数据量",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "default": 20
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "页数",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "default": 1
-                        }
-                    },
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "description": "关键字标题",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "succeed"
-                    }
-                }
-            }
-        },
-        "/api/check/job-store": {
-            "post": {
-                "tags": [
-                    "考核check"
-                ],
-                "summary": "新增单条岗位数据",
-                "description": "使用说明：新增单条岗位数据",
-                "operationId": "check-job-store",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "description": "token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "description": "名称",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "description",
-                        "in": "query",
-                        "description": "描述",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "store succeed"
-                    }
-                }
-            }
-        },
-        "/api/check/job-show/{id}": {
-            "get": {
-                "tags": [
-                    "考核check"
-                ],
-                "summary": "获取岗位详细信息",
-                "description": "使用说明：获取岗位详细信息",
-                "operationId": "check-job-show",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "description": "token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "主键",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "succeed"
-                    }
-                }
-            }
-        },
-        "/api/check/job-update/{id}": {
-            "put": {
-                "tags": [
-                    "考核check"
-                ],
-                "summary": "修改岗位",
-                "description": "使用说明：修改单条岗位数据",
-                "operationId": "chack-job-update",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "description": "token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "主键",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "description": "名称",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "description",
-                        "in": "query",
-                        "description": "描述",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "update succeed"
-                    }
-                }
-            }
-        },
-        "/api/check/job-destroy/{id}": {
-            "delete": {
-                "tags": [
-                    "考核check"
-                ],
-                "summary": "删除单条岗位数据",
-                "description": "使用说明：删除单条岗位数据",
-                "operationId": "job-destroy",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "description": "token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "主键",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "detroy succeed"
-                    }
-                }
-            }
-        },
-        "/api/check/jobs": {
-            "get": {
-                "tags": [
-                    "考核check"
-                ],
-                "summary": "获取电厂所有岗位列表",
-                "description": "使用说明：获取电厂所有岗位列表",
-                "operationId": "check-jobs",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "description": "token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "succeed"
-                    }
-                }
-            }
-        },
-        "/api/check/class-group-allocation-page": {
-            "get": {
-                "tags": [
-                    "考核check"
-                ],
-                "summary": "分页获取班组收入分配数据列表",
-                "description": "使用说明：分页获取班组收入分配数据列表",
-                "operationId": "check-class-group-allocation--page",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "description": "token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "num",
-                        "in": "query",
-                        "description": "每页数据量",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "default": 20
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "页数",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "default": 1
-                        }
-                    },
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "description": "关键字标题",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "succeed"
-                    }
-                }
-            }
-        },
-        "/api/check/class-group-allocation-store": {
-            "post": {
-                "tags": [
-                    "考核check"
-                ],
-                "summary": "新增单条班组收入分配数据",
-                "description": "使用说明：新增单条班组收入分配数据",
-                "operationId": "check-class-group-allocation-store",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "description": "token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "class_group_name",
-                        "in": "query",
-                        "description": "班组名称",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "isopen",
-                        "in": "query",
-                        "description": "是否开启",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "isopen",
-                        "in": "query",
-                        "description": "是否开启",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "detail",
-                        "in": "query",
-                        "description": "岗位分配详情json数据[{'job_station_id': 1, 'percent': 25}, {'job_station_id': 2, 'percent': 30}]",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "store succeed"
-                    }
-                }
-            }
-        },
-        "/api/check/class-group-allocation-show/{id}": {
-            "get": {
-                "tags": [
-                    "考核check"
-                ],
-                "summary": "获取班组收入分配详细信息",
-                "description": "使用说明：获取班组收入分配详细信息",
-                "operationId": "check-class-group-allocation-show",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "description": "token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "主键",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "succeed"
-                    }
-                }
-            }
-        },
-        "/api/check/class-group-allocation-destroy/{id}": {
-            "delete": {
-                "tags": [
-                    "考核check"
-                ],
-                "summary": "删除单条班组分配",
-                "description": "使用说明：删除班组分配",
-                "operationId": "class-group-allocation-destroy",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "description": "token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "主键",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "detroy succeed"
-                    }
-                }
-            }
-        },
-        "/api/check/action-page": {
-            "get": {
-                "tags": [
-                    "考核check"
-                ],
-                "summary": "分页获取考核动作（打分）数据列表",
-                "description": "使用说明：分页获取考核动作（打分）数据列表",
-                "operationId": "check-action-page",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "description": "token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "num",
-                        "in": "query",
-                        "description": "每页数据量",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "default": 20
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "页数",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "default": 1
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "succeed"
-                    }
-                }
-            }
-        },
-        "/api/check/action-store": {
-            "post": {
-                "tags": [
-                    "考核check"
-                ],
-                "summary": "新增单条考核动作（打分）数据",
-                "description": "使用说明：新增单条考核动作（打分）数据",
-                "operationId": "check-action-store",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "description": "token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "date",
-                        "in": "query",
-                        "description": "日期",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "check_rule_id",
-                        "in": "query",
-                        "description": "考核指标ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "type",
-                        "in": "query",
-                        "description": "考核类型  个人personal或班组group",
-                        "required": true,
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "string",
-                                "enum": [
-                                    "personal",
-                                    "group"
-                                ]
-                            },
-                            "default": "personal"
-                        }
-                    },
-                    {
-                        "name": "class_group_name",
-                        "in": "query",
-                        "description": "班组名",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "user_id",
-                        "in": "query",
-                        "description": "用户名",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "detail",
-                        "in": "query",
-                        "description": "岗位分配详情json数据[{'job_station_id': 1, 'percent': 25}, {'job_station_id': 2, 'percent': 30}]",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "store succeed"
-                    }
-                }
-            }
-        },
-        "/api/check/action-show/{id}": {
-            "get": {
-                "tags": [
-                    "考核check"
-                ],
-                "summary": "获取考核动作（打分）详细信息",
-                "description": "使用说明：获取考核动作（打分）详细信息",
-                "operationId": "check-action-show",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "description": "token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "主键",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "succeed"
                     }
                 }
             }
@@ -7530,15 +6588,6 @@
                                 ]
                             },
                             "default": "instation"
-                        }
-                    },
-                    {
-                        "name": "job_station_id",
-                        "in": "query",
-                        "description": "岗位ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
                         }
                     }
                 ],

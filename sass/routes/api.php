@@ -200,7 +200,7 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
             'inspect-rule' => InspectRuleController::class,
         ]);
 
-        //排班
+        //班次管理
         Route::prefix('class-define')->group(function () {
             Route::get('page', 'ClassController@definePage');
             Route::post('store', 'ClassController@defineStore');
@@ -208,6 +208,8 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
             Route::put('update/{id}', 'ClassController@defineUpdate');
             Route::delete('destroy/{id}', 'ClassController@defineDestroy');
         });
+
+        //班组
         Route::prefix('class-group')->group(function () {
             Route::get('page', 'ClassController@groupPage');
             Route::post('store', 'ClassController@groupStore');
@@ -217,6 +219,8 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
             Route::get('users', 'ClassController@groupUsers');
             Route::get('lists', 'ClassController@groupLists');
         });
+
+        //班组循环
         Route::prefix('class-loop')->group(function () {
             Route::get('page', 'ClassController@loopPage');
             Route::post('store', 'ClassController@loopStore');
@@ -225,6 +229,8 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
             Route::delete('destroy/{id}', 'ClassController@loopDestroy');
             Route::get('lists', 'ClassController@groupLoopLists');
         });
+
+        //排班计划
         Route::prefix('class-schdule')->group(function () {
             Route::post('setting', 'ClassController@schduleSetting');
             Route::get('user-lists', 'ClassController@schduleUserLists');
@@ -234,11 +240,40 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
 
         //考核
         Route::prefix('check')->group(function () {
-            Route::get('tag-page', 'CheckController@tagPage');
-            Route::post('tag-store', 'CheckController@tagStore');
-            Route::get('tag-show/{id}', 'CheckController@tagShow');
-            Route::put('tag-update/{id}', 'CheckController@tagUpdate');
-            Route::delete('tag-destroy/{id}', 'CheckController@tagDestroy');
+            //考核指标
+            Route::get('rule-page', 'CheckController@rulePage');
+            Route::post('rule-store', 'CheckController@ruleStore');
+            Route::get('rule-show/{id}', 'CheckController@ruleShow');
+            Route::put('rule-update/{id}', 'CheckController@ruleUpdate');
+            Route::delete('rule-destroy/{id}', 'CheckController@ruleDestroy');
+            Route::post('rule-job-allocation', 'CheckController@ruleJobAllocation');
+
+            //考核指标分组
+            Route::get('rule-group-page', 'CheckController@ruleGroupPage');
+            Route::post('rule-group-store', 'CheckController@ruleGroupStore');
+            Route::get('rule-group-show/{id}', 'CheckController@ruleGroupShow');
+            Route::put('rule-group-update/{id}', 'CheckController@ruleGroupUpdate');
+            Route::delete('rule-group-destroy/{id}', 'CheckController@ruleGroupDestroy');
+
+            //工作岗位
+            Route::get('job-page', 'CheckController@jobPage');
+            Route::post('job-store', 'CheckController@jobStore');
+            Route::get('job-show/{id}', 'CheckController@jobShow');
+            Route::put('job-update/{id}', 'CheckController@jobUpdate');
+            Route::delete('job-destroy/{id}', 'CheckController@jobDestroy');
+            Route::get('jobs', 'CheckController@jobs');
+
+            //班组分配比例
+            Route::get('class-group-allocation-page', 'CheckController@classGroupAllocationPage');
+            Route::post('class-group-allocation-store', 'CheckController@classGroupAllocationStore');
+            Route::get('class-group-allocation-show/{id}', 'CheckController@classGroupAllocationShow');
+            Route::delete('class-group-allocation-destroy/{id}', 'CheckController@classGroupAllocationDestroy');
+
+            //考核动作（打分）
+            Route::get('action-page', 'CheckController@actionPage');
+            Route::post('action-store', 'CheckController@actionStore');
+            Route::get('action-show/{id}', 'CheckController@actionShow');
+
             Route::get('user-rank', 'CheckController@userRank');
             Route::get('group-rank', 'CheckController@groupRank');
         });

@@ -289,6 +289,15 @@ class UserController extends Controller
      *             )
      *         ),
      *     ),
+     *     @OA\Parameter(
+     *         description="岗位ID",
+     *         in="query",
+     *         name="job_station_id",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         ),
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="successful operation",
@@ -304,7 +313,7 @@ class UserController extends Controller
         $area = $request->input('area');
         $address = $request->input('address');
         $isopen = $request->input('isopen');
-        //$type = $request->input('type');
+        $job_station_id = $request->input('job_station_id');
 
         $obj = new User();
         $row = $obj->isMobileExist($mobile);
@@ -323,11 +332,11 @@ class UserController extends Controller
                     $user->area = $area;
                     $user->address = $address;
                     $user->isopen = $isopen;
-                    //$user->type = $type;
+                    $user->job_station_id = $job_station_id;
                     $user->save();
                 }
                 else {
-                    $params = request(['name', 'desc', 'email', 'type', 'mobile', 'area', 'address', 'isopen']);
+                    $params = request(['name', 'desc', 'email', 'type', 'mobile', 'area', 'address', 'isopen', 'job_station_id']);
                     $params['password'] = bcrypt('123456');
                     $params['type'] = 'instation'; //只能创建组织内部用户
                     $user = User::create($params); //save 和 create 的不同之处在于 save 接收整个 Eloquent 模型实例而 create 接收原生 PHP 数组

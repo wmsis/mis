@@ -2,8 +2,9 @@
 
 namespace App\Services;
 use App\Models\MIS\CheckPointDetail;
-use App\Models\MIS\CheckTag;
 use App\Models\MIS\CheckTagDetail;
+use App\Models\MIS\CheckRule;
+use App\Models\MIS\CheckRuleAllocation;
 use App\Models\MIS\ClassSchdule;
 use App\Models\SIS\Orgnization;
 use App\Models\SIS\Electricity;
@@ -14,6 +15,8 @@ use App\Models\MIS\ClassGroup;
 use App\Models\Mongo\HistorianFormatData;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
+use App\Models\MIS\ClassGroupAllocation;
+use App\Models\MIS\ClassGroupAllocationDetail;
 use App\Models\User;
 use Log;
 
@@ -31,20 +34,39 @@ class CheckService{
             $end = $date . ' ' . $user_schdule->end . ':00'; //上班结束时间
 
             //上班时间内及上班结束后半小时内的时间都运行计算
-            if($user_schdule->class_define_name != '休息' && time() >= strtotime($start) && time() <= (strtotime($end) + 30 * 60)){
+            if($user_schdule->class_define_name != config('constants.CLASS.REST') && time() >= strtotime($start) && time() <= (strtotime($end) + 30 * 60)){
                 $orgnization = Orgnization::find($user_schdule->orgnization_id);
-                if($orgnization){
+                //班组分配比例
+                $class_group_allocation = ClassGroupAllocation::where('class_group_name', $user_schdule->class_group_name)->first();
+                $class_group_allocation_detail = $class_group_allocation->detail;
+                if($orgnization && $class_group_allocation_detail){
                     $rangedata = $this->getRangeElectricity($orgnization, $start, $end);//获取发电量原始信息
                     $powerdata = $this->getRangePower($rangedata);//计算上网电量信息
+                    $value = 0;
+                    $user = User::find($user_schdule->user_id);
+                    //获取用户岗位分配比例
+                    foreach ($class_group_allocation_detail as $k999 => $item) {
+                        if($item['job_station_id'] == $user->job_station_id){
+                            $value = (float)$item['percent'] * (float)$powerdata * 0.01;
+                            break;
+                        }
+                    }
+
                     $final[$user_schdule->user_id] = [
-                        'value' => $powerdata,
+                        'value' => $value,
                         'orgnization_id' => $user_schdule->orgnization_id
                     ];
                 }
             }
+            elseif($user_schdule->class_define_name == config('constants.CLASS.REST') && time() >= strtotime($start) && time() <= (strtotime($start) + 10 * 60)){
+                $final[$user_schdule->user_id] = [
+                    'value' => 0,
+                    'orgnization_id' => $user_schdule->orgnization_id
+                ];
+            }
         }
 
-        //保存
+        //保存用户上班期间的发电量
         foreach ($final as $user_id => $item) {
             $user = User::find($user_id);
             $class_group = ClassGroup::find($user->class_group_id);
@@ -164,37 +186,54 @@ class CheckService{
     */
     public function userTagPoint($date){
         $final = [];
-        $check_tags = CheckTag::all();
+        $check_rules = CheckRule::where('type', 'technology')->get();
+        //步骤1、遍历所有技术类考核指标
+        foreach ($check_rules as $k1 => $check_rule) {
+            $orgnization = Orgnization::find($check_rule->orgnization_id);
+            $date_users_schdule = ClassSchdule::where('date', $date)->whereIn('orgnization_id', $check_rule->orgnization_id)->get();//组织排班列表
+            if($orgnization && $date_users_schdule && count($date_users_schdule) > 0){
+                //步骤2、循环遍历每人的排班计划，计算其上班期间的考核指标
+                foreach ($date_users_schdule as $k3 => $user_schdule) {
+                    //步骤3、员工分配比例和岗位相匹配
+                    $user = User::find($user_schdule->user_id);
+                    if($user){
+                        $percent = 0;  //初始化用户分配比例
+                        $allocation = $check_rule->allocation;//岗位分配比例
+                        foreach ($allocation as $k4 => $item) {
+                            if($item['job_station_id'] == $user->job_station_id){
+                                $percent = $item['percent'];
+                                break;
+                            }
+                        }
 
-        foreach ($check_tags as $k1 => $check_tag) {
-            $user_id_arr = explode(',', $check_tag->user_ids);
-            $date_users_schdule = ClassSchdule::where('date', $date)->whereIn('user_id', $user_id_arr)->get();
-            //循环遍历每人的排班计划，计算其上班期间的考核指标
-            foreach ($date_users_schdule as $k1 => $user_schdule) {
-                $start = $date . ' ' . $user_schdule->start . ':00'; //上班开始时间
-                $end = $date . ' ' . $user_schdule->end . ':00'; //上班结束时间
-
-                //上班时间内及上班结束后半小时内的时间都运行计算
-                if($user_schdule->class_define_name != '休息' && time() >= strtotime($start) && time() <= (strtotime($end) + 30 * 60)){
-                    $orgnization = Orgnization::find($user_schdule->orgnization_id);
-                    if($orgnization){
-                        $rangedata = $this->getRangeCheckValue($orgnization, $start, $end, $check_tag->dcs_standard_id);
-                        $final[$user_schdule->user_id] = [
-                            'count' => $rangedata[$check_tag->dcs_standard_id]['val'] * $check_tag->point_every_alarm,
-                            'min' => $rangedata[$check_tag->dcs_standard_id]['min'],
-                            'max' => $rangedata[$check_tag->dcs_standard_id]['max'],
-                            'val' => $rangedata[$check_tag->dcs_standard_id]['val'],
-                            'orgnization_id' => $user_schdule->orgnization_id,
-                            'check_tag_id' => $check_tag->id
-                        ];
+                        //步骤4、循环遍历统一标准名列表
+                        $dcs_standard_id_arr = explode(',', $check_rule->dcs_standard_ids);
+                        foreach ($dcs_standard_id_arr as $k2 => $dcs_standard_id) {
+                            //步骤5、计算指标值，班时间内及上班结束后半小时内的时间都运行计算
+                            $start = $date . ' ' . $user_schdule->start . ':00'; //上班开始时间
+                            $end = $date . ' ' . $user_schdule->end . ':00';     //上班结束时间
+                            if($user_schdule->class_define_name != config('constants.CLASS.REST') && time() >= strtotime($start) && time() <= (strtotime($end) + 30 * 60)){
+                                $rangedata = $this->getRangeCheckValue($orgnization, $start, $end, $dcs_standard_id); //获取时间段内考核指标值的数据
+                                $final[$user_schdule->user_id] = [
+                                    'count' => $rangedata[$dcs_standard_id]['val'] * (float)$check_rule->value * $percent * 0.01,
+                                    'min' => $rangedata[$dcs_standard_id]['min'],
+                                    'max' => $rangedata[$dcs_standard_id]['max'],
+                                    'val' => $rangedata[$dcs_standard_id]['val'],
+                                    'orgnization_id' => $check_rule->orgnization_id,
+                                    'check_rule_id' => $check_rule->id,
+                                    'check_rule_name' => $check_rule->name,
+                                    'class_group_name' => $user_schdule->class_group_name
+                                ];
+                            }
+                        }
                     }
                 }
             }
         }
 
+        //步骤6、保存用户技术类指标扣分项和详情
         DB::beginTransaction();
         try {
-            //保存
             foreach ($final as $user_id => $item) {
                 $user = User::find($user_id);
                 $class_group = ClassGroup::find($user->class_group_id);
@@ -207,10 +246,10 @@ class CheckService{
                         'date'=>$date
                     ],
                     [
-                        'class_group_name' => $class_group->name,
-                        'check_tag_id'=>$item['check_tag_id'],
+                        'class_group_name' => $item['class_group_name'],
+                        'foreign_key'=>$item['check_rule_id'],
                         'value'=>$item['count'],
-                        'reason'=> '考勤指标扣分',
+                        'reason'=> $item['check_rule_name'] . '考勤指标扣分',
                         'type'=> 'alarm'
                     ]
                 );
@@ -218,7 +257,6 @@ class CheckService{
                 //考勤详情
                 CheckTagDetail::updateOrCreate(
                     [
-                        'check_tag_id'=>$item['check_tag_id'],
                         'user_id'=>$user_id,
                         'date'=>$date
                     ],
