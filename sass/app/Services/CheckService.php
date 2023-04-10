@@ -41,7 +41,7 @@ class CheckService{
                 $orgnization = Orgnization::find($user_schdule->orgnization_id);
                 //班组分配比例
                 $class_group_allocation = ClassGroupAllocation::where('class_group_name', $user_schdule->class_group_name)->first();
-                $class_group_allocation_detail = $class_group_allocation ? $class_group_allocation->detail : null;
+                $class_group_allocation_detail = $class_group_allocation && isset($class_group_allocation->detail) ? $class_group_allocation->detail : null;
                 if($orgnization && $class_group_allocation_detail){
                     $rangedata = $this->getRangeElectricity($orgnization, $start, $end);//获取发电量原始信息
                     $powerdata = $this->getRangePower($rangedata);//计算上网电量信息
