@@ -88,7 +88,11 @@ class ClassController extends Controller
 
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
-        
+        foreach ($rows as $key => $item) {
+            $orgnization = Orgnization::find($this->orgnization->id);
+            $rows[$key]['orgnization'] = $orgnization ? $orgnization->toArray() : null;
+        }
+
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total, 'page' => $page, 'num' => $perPage]);
     }
 
@@ -417,6 +421,16 @@ class ClassController extends Controller
 
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
+        foreach ($rows as $key => $item) {
+            $orgnization = Orgnization::find($this->orgnization->id);
+            $rows[$key]['orgnization'] = $orgnization ? $orgnization->toArray() : null;
+            $charge_user = User::find($item->charge_user_id);
+            $rows[$key]['charge_user'] = $charge_user ? $charge_user->toArray() : null;
+            $user_id_arr = $item->user_ids ? explode(',', $item->user_ids) : [];
+            $other_user = User::whereIn('id', $user_id_arr)->get();
+            $rows[$key]['other_user'] = $other_user && count($other_user) > 0 ? $other_user->toArray() : [];
+        }
+
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total, 'page' => $page, 'num' => $perPage]);
     }
 
@@ -806,6 +820,16 @@ class ClassController extends Controller
             $group_rows = ClassGroup::where('orgnization_id', $this->orgnization->id)->get();
         }
 
+        foreach ($group_rows as $key => $item) {
+            $orgnization = Orgnization::find($this->orgnization->id);
+            $group_rows[$key]['orgnization'] = $orgnization ? $orgnization->toArray() : null;
+            $charge_user = User::find($item->charge_user_id);
+            $group_rows[$key]['charge_user'] = $charge_user ? $charge_user->toArray() : null;
+            $user_id_arr = $item->user_ids ? explode(',', $item->user_ids) : [];
+            $other_user = User::whereIn('id', $user_id_arr)->get();
+            $group_rows[$key]['other_user'] = $other_user && count($other_user) > 0 ? $other_user->toArray() : [];
+        }
+
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $group_rows);
     }
 
@@ -875,6 +899,8 @@ class ClassController extends Controller
         $total = $rows->count();
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
         foreach ($rows as $key => $item) {
+            $orgnization = Orgnization::find($this->orgnization->id);
+            $rows[$key]['orgnization'] = $orgnization ? $orgnization->toArray() : null;
             $detail = $item->detail;
         }
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total, 'page' => $page, 'num' => $perPage]);
@@ -1212,6 +1238,8 @@ class ClassController extends Controller
         }
 
         foreach ($group_rows as $key => $item) {
+            $orgnization = Orgnization::find($this->orgnization->id);
+            $group_rows[$key]['orgnization'] = $orgnization ? $orgnization->toArray() : null;
             $detail = $item->detail;
         }
 
