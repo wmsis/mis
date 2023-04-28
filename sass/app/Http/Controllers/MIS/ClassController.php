@@ -149,7 +149,7 @@ class ClassController extends Controller
     {
         $input = $request->only(['name', 'start', 'end']);
         //判断是否有其他相同的名称
-        $data = ClassDefine::where('name', $input['name'])->first();
+        $data = ClassDefine::where('name', $input['name'])->where('orgnization_id', $this->orgnization->id)->first();
         if($data && $data->name){
             return UtilService::format_data(self::AJAX_FAIL, '班次名称已存在', '');
         }
@@ -286,7 +286,7 @@ class ClassController extends Controller
 
         $input = $request->input();
         //判断是否有其他相同的名称
-        $data = ClassDefine::where('name', $input['name'])->first();
+        $data = ClassDefine::where('name', $input['name'])->where('orgnization_id', $this->orgnization->id)->first();
         if($data && $data->id != $id){
             return UtilService::format_data(self::AJAX_FAIL, '班次名称已存在', '');
         }
@@ -487,7 +487,7 @@ class ClassController extends Controller
     {
         $input = $request->only(['name', 'charge_user_id', 'user_ids']);
         //判断是否有其他相同的名称
-        $data = ClassGroup::where('name', $input['name'])->first();
+        $data = ClassGroup::where('name', $input['name'])->where('orgnization_id', $this->orgnization->id)->first();
         if($data && $data->name){
             return UtilService::format_data(self::AJAX_FAIL, '班组名称已存在', '');
         }
@@ -635,7 +635,7 @@ class ClassController extends Controller
         $input = $request->input();
 
         //判断是否有其他相同的名称
-        $data = ClassGroup::where('name', $input['name'])->first();
+        $data = ClassGroup::where('name', $input['name'])->where('orgnization_id', $this->orgnization->id)->first();
         if($data && $data->id != $id){
             return UtilService::format_data(self::AJAX_FAIL, '班组名称已存在', '');
         }
@@ -902,6 +902,9 @@ class ClassController extends Controller
             $orgnization = Orgnization::find($this->orgnization->id);
             $rows[$key]['orgnization'] = $orgnization ? $orgnization->toArray() : null;
             $detail = $item->detail;
+            if($detail && count($detail) > 0){
+
+            }
         }
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total, 'page' => $page, 'num' => $perPage]);
     }
