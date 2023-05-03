@@ -1424,7 +1424,7 @@ class ClassController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="月份",
+     *         description="月份如 2023-05",
      *         in="query",
      *         name="month",
      *         required=true,
@@ -1496,18 +1496,9 @@ class ClassController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="开始日期",
+     *         description="月份如 2023-05",
      *         in="query",
-     *         name="start",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="string"
-     *         )
-     *     ),
-     *     @OA\Parameter(
-     *         description="结束日期",
-     *         in="query",
-     *         name="end",
+     *         name="month",
      *         required=true,
      *         @OA\Schema(
      *             type="string"
@@ -1539,8 +1530,9 @@ class ClassController extends Controller
      */
     public function schduleDateLists(Request $request)
     {
-        $start = $request->input('start');
-        $end = $request->input('end');
+        $month = $request->input('month');
+        $start = $month . '-01';
+        $end = date('Y-m-t', strtotime($start));
         $class_define_name = $request->input('class_define_name');
         $class_group_name = $request->input('class_group_name');
         $final = [];
