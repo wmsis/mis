@@ -1450,6 +1450,7 @@ class ClassController extends Controller
         $user_lists = ClassSchdule::select(['user_id'])
             ->where('date', '>=', $start)
             ->where('date', '<=', $end)
+            ->where('orgnization_id', $this->orgnization->id)
             ->groupBy('user_id')
             ->get();
 
@@ -1468,7 +1469,7 @@ class ClassController extends Controller
                 $format_data[$date] = $schdule;
             }
 
-            $user = User::select(['name', 'mobile'])->where('id', $item['user_id'])->first();
+            $user = User::select(['id', 'name', 'mobile'])->where('id', $item['user_id'])->first();
             $final[] = [
                 'user'=>$user ? $user->toArray() : null,
                 'data' => $format_data
@@ -1530,15 +1531,6 @@ class ClassController extends Controller
      *             type="string"
      *         )
      *     ),
-     *     @OA\Parameter(
-     *         description="组织ID",
-     *         in="query",
-     *         name="orgnization_id",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="string"
-     *         )
-     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="update succeed",
@@ -1551,7 +1543,6 @@ class ClassController extends Controller
         $end = $request->input('end');
         $class_define_name = $request->input('class_define_name');
         $class_group_name = $request->input('class_group_name');
-        $orgnization_id = $request->input('orgnization_id');
         $final = [];
         $cass_define = config('class.cass_define');
 
@@ -1563,14 +1554,14 @@ class ClassController extends Controller
                 //有传具体班次,只返回具体班次排班
                 if($class_define_name){
                     if($class_define_name == $class['name']){
-                        $final[] = $this->getSchduleInfo($orgnization_id, $date, $class['name'], $class_group_name);
+                        $final[] = $this->getSchduleInfo($this->orgnization->id, $date, $class['name'], $class_group_name);
                         break;
                     }
                 }
                 //返回早白中班信息
                 else{
                     if($class['name'] != '休息'){
-                        $final[] = $this->getSchduleInfo($orgnization_id, $date, $class['name'], $class_group_name);
+                        $final[] = $this->getSchduleInfo($this->orgnization->id, $date, $class['name'], $class_group_name);
                     }
                 }
             }
