@@ -4823,7 +4823,7 @@
                     {
                         "name": "month",
                         "in": "query",
-                        "description": "月份",
+                        "description": "月份如 2023-05",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -4856,18 +4856,9 @@
                         }
                     },
                     {
-                        "name": "start",
+                        "name": "month",
                         "in": "query",
-                        "description": "开始日期",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "end",
-                        "in": "query",
-                        "description": "结束日期",
+                        "description": "月份如 2023-05",
                         "required": true,
                         "schema": {
                             "type": "string"
