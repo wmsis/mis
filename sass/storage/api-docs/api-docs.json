@@ -4890,15 +4890,6 @@
                         "schema": {
                             "type": "string"
                         }
-                    },
-                    {
-                        "name": "orgnization_id",
-                        "in": "query",
-                        "description": "组织ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
                     }
                 ],
                 "responses": {
