@@ -1716,6 +1716,8 @@ class ClassController extends Controller
 
     //根据用户设置排班
     private function setClassByUser($params){
+        Log::info('0000000000000000');
+        Log::info(var_export($params, true));
         $class_group = null;
         if($params['user_class_group'] ){
             $class_group = ClassGroup::where('name', $params['user_class_group']->name)->first();
@@ -1754,6 +1756,8 @@ class ClassController extends Controller
                     //循环排班到月底
                     if($loop_detail && count($loop_detail) > 0){
                         $loop_detail = $loop_detail->toArray();
+                        Log::info('11111111111');
+                        Log::info(var_export($loop_detail, true));
                         $index = 0;
                         while($timestamp <= strtotime($last_date)){
                             $yushu = $index%8; //求余
