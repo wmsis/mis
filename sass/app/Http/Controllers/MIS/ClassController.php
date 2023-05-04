@@ -647,10 +647,30 @@ class ClassController extends Controller
                 $row[$field] = $inputValue;
             }
         }
+
+        DB::beginTransaction();
         try {
             $row->save();
-            $row->refresh();
+
+            $charge_user = User::find($input['charge_user_id']);
+            if($charge_user){
+                $charge_user->class_group_id = $row->id;
+                $charge_user->save();
+            }
+            $user_id_arr = explode(',', $input['user_ids']);
+            if(!empty($user_id_arr)){
+                foreach ($user_id_arr as $key => $user_id) {
+                    $other_user = User::find($user_id);
+                    if($other_user){
+                        $other_user->class_group_id = $row->id;
+                        $other_user->save();
+                    }
+                }
+            }
+
+            DB::commit();
         } catch (Exception $ex) {
+            DB::rollback();
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, $ex->getMessage());
         }
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $row);
