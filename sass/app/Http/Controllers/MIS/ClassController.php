@@ -1564,7 +1564,10 @@ class ClassController extends Controller
         $class_define_name = $request->input('class_define_name');
         $class_group_name = $request->input('class_group_name');
         $final = [];
-        $cass_define = config('class.cass_define');
+
+        $cass_define_db = ClassDefine::where('orgnization_id', $this->orgnization->id)->get();
+        $cass_define_cfg = config('class.cass_define');
+        $cass_define = $cass_define_db && count($cass_define_db) > 0 ? $cass_define_db->toArray() : $cass_define_cfg;
 
         $timestamp = strtotime($start);
         //按日期获取排班人员信息
@@ -1901,7 +1904,10 @@ class ClassController extends Controller
     private function getClassInfoByName($class_define_name){
         $start = null;
         $end = null;
-        $classes = config('class.cass_define');
+        $cass_define_db = ClassDefine::where('orgnization_id', $this->orgnization->id)->get();
+        $cass_define_cfg = config('class.cass_define');
+        $classes = $cass_define_db && count($cass_define_db) > 0 ? $cass_define_db->toArray() : $cass_define_cfg;
+
         foreach ($classes as $key => $class) {
             if($class_define_name == $class['name'] && $class['time']){
                 $time_arr = explode('-', $class['time']);
