@@ -1562,10 +1562,10 @@ class ClassController extends Controller
             $cass_groups = ClassGroup::where('orgnization_id', $this->orgnization->id)->get();
         }
 
-        $timestamp = strtotime($start);
         //按日期获取排班人员信息
         foreach ($cass_groups as $key => $cass_group) {
             $format_data = [];
+            $timestamp = strtotime($start);
             while($timestamp <= strtotime($end)){
                 $date = date('Y-m-d', $timestamp);
                 $format_data[$date] = $this->getSchduleInfo($this->orgnization->id, $date, $cass_group->name);
