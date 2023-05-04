@@ -1579,25 +1579,30 @@ class ClassController extends Controller
 
         $timestamp = strtotime($start);
         //按日期获取排班人员信息
-        while($timestamp <= strtotime($end)){
-            $date = date('Y-m-d', $timestamp);
-            foreach ($classes as $key => $class) {
+        foreach ($classes as $key => $class) {
+            $format_data = [];
+            while($timestamp <= strtotime($end)){
+                $date = date('Y-m-d', $timestamp);
                 //有传具体班次,只返回具体班次排班
                 if($class_define_name){
                     if($class_define_name == $class['name']){
-                        $final[] = $this->getSchduleInfo($this->orgnization->id, $date, $class['name'], $class_group_name);
+                        $format_data[$date] = $this->getSchduleInfo($this->orgnization->id, $date, $class['name'], $class_group_name);
                         break;
                     }
                 }
                 //返回早白中班信息
                 else{
                     if($class['name'] != '休息' && $class['name'] != '休'){
-                        $final[] = $this->getSchduleInfo($this->orgnization->id, $date, $class['name'], $class_group_name);
+                        $format_data[$date] = $this->getSchduleInfo($this->orgnization->id, $date, $class['name'], $class_group_name);
                     }
                 }
-            }
 
-            $timestamp = $timestamp + 24 * 60 * 60;
+                $timestamp = $timestamp + 24 * 60 * 60;
+            }
+            $final[] = [
+                'group'=>$class,
+                'data' => $format_data
+            ];
         }
 
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $final);
