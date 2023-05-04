@@ -1811,30 +1811,30 @@ class ClassController extends Controller
         try {
             //整个班组成员排班
             if(!empty($user_id_arr)){
-                $loop = ClassLoop::find($params['class_loop_id']);
-                $loop_detail = $loop ? $loop->detail()->orderBy('sort', 'ASC')->get() : null;
-                if($loop && $loop_detail){
-                    $loop_detail = $loop_detail->toArray();
-                    if($loop_detail && count($loop_detail) > 0){
-                        foreach ($user_id_arr as $k8 => $user_id) {
-                            //只排一天班
-                            if($params['date_type'] == 'single'){
-                                $where = [
-                                    'orgnization_id'=>$this->orgnization->id,
-                                    'user_id'=>$user_id,
-                                    'date'=>$params['date']
-                                ];
-                                $values = [
-                                    'class_define_name'=>$params['class_define_name'],
-                                    'start'=>$params['start'],
-                                    'end'=>$params['end'],
-                                    'is_charge'=>$class_group->charge_user_id == $user_id ? 1 : 0,//值长
-                                    'class_group_name'=>$params['class_group_name']
-                                ];
-                                ClassSchdule::updateOrCreate($where, $values);
-                            }
-                            //周期排班
-                            else{
+                foreach ($user_id_arr as $k8 => $user_id) {
+                    //只排一天班
+                    if($params['date_type'] == 'single'){
+                        $where = [
+                            'orgnization_id'=>$this->orgnization->id,
+                            'user_id'=>$user_id,
+                            'date'=>$params['date']
+                        ];
+                        $values = [
+                            'class_define_name'=>$params['class_define_name'],
+                            'start'=>$params['start'],
+                            'end'=>$params['end'],
+                            'is_charge'=>$class_group->charge_user_id == $user_id ? 1 : 0,//值长
+                            'class_group_name'=>$params['class_group_name']
+                        ];
+                        ClassSchdule::updateOrCreate($where, $values);
+                    }
+                    //周期排班
+                    else{
+                        $loop = ClassLoop::find($params['class_loop_id']);
+                        $loop_detail = $loop ? $loop->detail()->orderBy('sort', 'ASC')->get() : null;
+                        if($loop && $loop_detail){
+                            $loop_detail = $loop_detail->toArray();
+                            if($loop_detail && count($loop_detail) > 0){
                                 $index = 0;
                                 if($params['month']){
                                     $temp_timestamp = strtotime($params['date']) + 30 * $params['month'] * 24 * 60 * 60;
@@ -1847,7 +1847,7 @@ class ClassController extends Controller
                                 $timestamp = strtotime($params['date']);
                                 //循环排班到月底
                                 while($timestamp <= strtotime($last_date)){
-                                    $yushu = $index%8; //求余
+                                    $yushu = $index%(count($loop_detail)); //求余 8天一个周期
                                     $class_detail = $loop_detail[$yushu];
                                     $class = $this->getClassInfoByName($class_detail['class_define_name']);//班次信息
                                     $params['start'] = $class['start'];
