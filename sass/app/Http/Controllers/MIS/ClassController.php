@@ -1580,7 +1580,7 @@ class ClassController extends Controller
                 }
                 //返回早白中班信息
                 else{
-                    if($class['name'] != '休息'){
+                    if($class['name'] != '休息' && $class['name'] != '休'){
                         $final[] = $this->getSchduleInfo($this->orgnization->id, $date, $class['name'], $class_group_name);
                     }
                 }
