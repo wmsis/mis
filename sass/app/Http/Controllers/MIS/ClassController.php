@@ -1566,14 +1566,22 @@ class ClassController extends Controller
         $final = [];
 
         $cass_define_db = ClassDefine::where('orgnization_id', $this->orgnization->id)->get();
-        $cass_define_cfg = config('class.cass_define');
-        $cass_define = $cass_define_db && count($cass_define_db) > 0 ? $cass_define_db->toArray() : $cass_define_cfg;
+        if($cass_define_db && count($cass_define_db) > 0){
+            $cass_define_db = $cass_define_db->toArray();
+            foreach ($cass_define_db as $key => $item) {
+                $cass_define_db[$key]['time'] = $item['start'] . '-' . $item['end'];
+            }
+            $classes = $cass_define_db;
+        }
+        else{
+            $classes = config('class.cass_define');
+        }
 
         $timestamp = strtotime($start);
         //按日期获取排班人员信息
         while($timestamp <= strtotime($end)){
             $date = date('Y-m-d', $timestamp);
-            foreach ($cass_define as $key => $class) {
+            foreach ($classes as $key => $class) {
                 //有传具体班次,只返回具体班次排班
                 if($class_define_name){
                     if($class_define_name == $class['name']){
@@ -1905,8 +1913,16 @@ class ClassController extends Controller
         $start = null;
         $end = null;
         $cass_define_db = ClassDefine::where('orgnization_id', $this->orgnization->id)->get();
-        $cass_define_cfg = config('class.cass_define');
-        $classes = $cass_define_db && count($cass_define_db) > 0 ? $cass_define_db->toArray() : $cass_define_cfg;
+        if($cass_define_db && count($cass_define_db) > 0){
+            $cass_define_db = $cass_define_db->toArray();
+            foreach ($cass_define_db as $key => $item) {
+                $cass_define_db[$key]['time'] = $item['start'] . '-' . $item['end'];
+            }
+            $classes = $cass_define_db;
+        }
+        else{
+            $classes = config('class.cass_define');
+        }
 
         foreach ($classes as $key => $class) {
             if($class_define_name == $class['name'] && $class['time']){
