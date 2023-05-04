@@ -1367,11 +1367,19 @@ class ClassController extends Controller
         $params = $request->only(['date_type', 'class_type', 'date', 'month', 'class_define_name', 'class_loop_id', 'user_id', 'class_group_name']);
 
         $user = $user_id ? User::find($user_id) : null;
+        Log::info('aaaaaaaaaaaaa');
+        Log::info(var_export($user, true));
         $class_group = $user ? $user->classGroup : null;
+        if(!$class_group){
+            return UtilService::format_data(self::AJAX_FAIL, '请为用户绑定班组', '');
+        }
+
         $class = $this->getClassInfoByName($class_define_name);
         $params['start'] = $class['start'];
         $params['end'] = $class['end'];
         $params['user_class_group'] = $class_group;
+        Log::info('bbbbbbbbbbbbbbbb');
+        Log::info(var_export($class_group, true));
 
         if($params['date_type'] == 'single'){
             if(!$class_define_name){
