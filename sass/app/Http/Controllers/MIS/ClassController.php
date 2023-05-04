@@ -983,6 +983,10 @@ class ClassController extends Controller
         $input = $request->only(['name', 'loop_days']);
         $detail = $request->input('detail');
         $detail = json_decode($detail, true);
+        if(!$detail || count($detail) != 8){
+            return UtilService::format_data(self::AJAX_FAIL, '请设置8天班组周期', '');
+        }
+
         DB::beginTransaction();
         try {
             $input['orgnization_id'] = $this->orgnization->id;
@@ -1387,8 +1391,6 @@ class ClassController extends Controller
         $params = $request->only(['date_type', 'class_type', 'date', 'month', 'class_define_name', 'class_loop_id', 'user_id', 'class_group_name']);
 
         $user = $user_id ? User::find($user_id) : null;
-        Log::info('aaaaaaaaaaaaa');
-        Log::info(var_export($user, true));
         $class_group = $user ? $user->classGroup : null;
         if(!$class_group){
             return UtilService::format_data(self::AJAX_FAIL, '请为用户绑定班组', '');
@@ -1398,8 +1400,6 @@ class ClassController extends Controller
         $params['start'] = $class['start'];
         $params['end'] = $class['end'];
         $params['user_class_group'] = $class_group;
-        Log::info('bbbbbbbbbbbbbbbb');
-        Log::info(var_export($class_group, true));
 
         if($params['date_type'] == 'single'){
             if(!$class_define_name){
@@ -1612,7 +1612,7 @@ class ClassController extends Controller
      *         description="开始日期",
      *         in="query",
      *         name="start",
-     *         required=true,
+     *         required=false,
      *         @OA\Schema(
      *             type="string"
      *         )
@@ -1621,7 +1621,7 @@ class ClassController extends Controller
      *         description="截止日期",
      *         in="query",
      *         name="end",
-     *         required=true,
+     *         required=false,
      *         @OA\Schema(
      *             type="string"
      *         )
@@ -1744,8 +1744,6 @@ class ClassController extends Controller
 
     //根据用户设置排班
     private function setClassByUser($params){
-        Log::info('0000000000000000');
-        Log::info(var_export($params, true));
         $class_group = null;
         if($params['user_class_group'] ){
             $class_group = ClassGroup::where('name', $params['user_class_group']->name)->first();
@@ -1784,11 +1782,9 @@ class ClassController extends Controller
                     //循环排班到月底
                     if($loop_detail && count($loop_detail) > 0){
                         $loop_detail = $loop_detail->toArray();
-                        Log::info('11111111111');
-                        Log::info(var_export($loop_detail, true));
                         $index = 0;
                         while($timestamp <= strtotime($last_date)){
-                            $yushu = $index%8; //求余
+                            $yushu = $index%(count($loop_detail)); //求余  周期数
                             $class_detail = $loop_detail[$yushu];
                             $class = $this->getClassInfoByName($class_detail['class_define_name']);
                             $params['start'] = $class['start'];
