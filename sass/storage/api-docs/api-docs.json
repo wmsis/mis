@@ -4912,7 +4912,7 @@
                         "name": "start",
                         "in": "query",
                         "description": "开始日期",
-                        "required": true,
+                        "required": false,
                         "schema": {
                             "type": "string"
                         }
@@ -4921,7 +4921,7 @@
                         "name": "end",
                         "in": "query",
                         "description": "截止日期",
-                        "required": true,
+                        "required": false,
                         "schema": {
                             "type": "string"
                         }
