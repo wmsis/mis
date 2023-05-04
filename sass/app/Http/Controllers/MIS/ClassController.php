@@ -1680,7 +1680,7 @@ class ClassController extends Controller
         //值长
         $charge_user = DB::table('users')
             ->join('class_schdule', 'users.id', '=', 'class_schdule.user_id')
-            ->select(['users.name', 'class_schdule.class_group_name'])
+            ->select(['users.name', 'class_schdule.class_group_name', 'class_schdule.class_define_name'])
             ->where('class_schdule.date', $date)
             ->where('class_schdule.class_group_name', $class_group_name)
             ->where('class_schdule.is_charge', 1)
