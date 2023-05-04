@@ -1533,15 +1533,6 @@ class ClassController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         description="班次",
-     *         in="query",
-     *         name="class_define_name",
-     *         required=false,
-     *         @OA\Schema(
-     *             type="string"
-     *         )
-     *     ),
-     *     @OA\Parameter(
      *         description="班组",
      *         in="query",
      *         name="class_group_name",
@@ -1561,46 +1552,27 @@ class ClassController extends Controller
         $month = $request->input('month');
         $start = $month . '-01';
         $end = date('Y-m-t', strtotime($start));
-        $class_define_name = $request->input('class_define_name');
         $class_group_name = $request->input('class_group_name');
         $final = [];
 
-        $cass_define_db = ClassDefine::where('orgnization_id', $this->orgnization->id)->get();
-        if($cass_define_db && count($cass_define_db) > 0){
-            $cass_define_db = $cass_define_db->toArray();
-            foreach ($cass_define_db as $key => $item) {
-                $cass_define_db[$key]['time'] = $item['start'] . '-' . $item['end'];
-            }
-            $classes = $cass_define_db;
+        if($class_group_name){
+            $cass_groups = ClassGroup::where('orgnization_id', $this->orgnization->id)->where('name', $class_group_name)->get();
         }
         else{
-            $classes = config('class.cass_define');
+            $cass_groups = ClassGroup::where('orgnization_id', $this->orgnization->id)->get();
         }
 
         $timestamp = strtotime($start);
         //按日期获取排班人员信息
-        foreach ($classes as $key => $class) {
+        foreach ($cass_groups as $key => $cass_group) {
             $format_data = [];
             while($timestamp <= strtotime($end)){
                 $date = date('Y-m-d', $timestamp);
-                //有传具体班次,只返回具体班次排班
-                if($class_define_name){
-                    if($class_define_name == $class['name']){
-                        $format_data[$date] = $this->getSchduleInfo($this->orgnization->id, $date, $class['name'], $class_group_name);
-                        break;
-                    }
-                }
-                //返回早白中班信息
-                else{
-                    if($class['name'] != '休息' && $class['name'] != '休'){
-                        $format_data[$date] = $this->getSchduleInfo($this->orgnization->id, $date, $class['name'], $class_group_name);
-                    }
-                }
-
+                $format_data[$date] = $this->getSchduleInfo($this->orgnization->id, $date, $cass_group->name);
                 $timestamp = $timestamp + 24 * 60 * 60;
             }
             $final[] = [
-                'group'=>$class,
+                'group'=>$cass_group,
                 'data' => $format_data
             ];
         }
@@ -1703,13 +1675,14 @@ class ClassController extends Controller
     }
 
     //获取组织某天的排班信息
-    private function getSchduleInfo($orgnization_id, $date, $class_define_name, $class_group_name){
+    private function getSchduleInfo($orgnization_id, $date, $class_group_name){
         $orgnization = $orgnization_id ? Orgnization::find($orgnization_id) : null;
+        //值长
         $charge_user = DB::table('users')
             ->join('class_schdule', 'users.id', '=', 'class_schdule.user_id')
             ->select(['users.name', 'class_schdule.class_group_name'])
             ->where('class_schdule.date', $date)
-            ->where('class_schdule.class_define_name', $class_define_name)
+            ->where('class_schdule.class_group_name', $class_group_name)
             ->where('class_schdule.is_charge', 1)
             ->whereNull('class_schdule.deleted_at');
 
@@ -1717,16 +1690,14 @@ class ClassController extends Controller
             $charge_user = $charge_user->where('class_schdule.orgnization_id', $orgnization_id);
         }
 
-        if($class_group_name){
-            $charge_user = $charge_user->where('class_schdule.class_group_name', $class_group_name);
-        }
         $charge_user = $charge_user->first();
 
+        //组员
         $other_users = DB::table('users')
             ->join('class_schdule', 'users.id', '=', 'class_schdule.user_id')
             ->select(['users.name'])
             ->where('class_schdule.date', $date)
-            ->where('class_schdule.class_define_name', $class_define_name)
+            ->where('class_schdule.class_group_name', $class_group_name)
             ->where('class_schdule.is_charge', 0)
             ->whereNull('class_schdule.deleted_at');
 
@@ -1734,11 +1705,9 @@ class ClassController extends Controller
             $other_users = $other_users->where('class_schdule.orgnization_id', $orgnization_id);
         }
 
-        if($class_group_name){
-            $other_users = $other_users->where('class_schdule.class_group_name', $class_group_name);
-        }
         $other_users = $other_users->get();
 
+        //组员姓名
         $other_user_name_arr = [];
         $other_user_names = '';
         foreach ($other_users as $key => $other_user) {
@@ -1749,8 +1718,8 @@ class ClassController extends Controller
         $data = [
             'orgnization_name' => $orgnization ? $orgnization->name : '',
             'date' => $date,
-            'class_define_name' => $class_define_name,
-            'class_group_name' => $charge_user ? $charge_user->class_group_name : '',
+            'class_define_name' => $charge_user ? $charge_user->class_define_name : '',
+            'class_group_name' => $class_group_name,
             'charge_user_name' => $charge_user ? $charge_user->name : '',
             'user_names' => $other_user_names
         ];

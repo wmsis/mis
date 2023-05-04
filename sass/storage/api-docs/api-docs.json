@@ -4865,15 +4865,6 @@
                         }
                     },
                     {
-                        "name": "class_define_name",
-                        "in": "query",
-                        "description": "班次",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
                         "name": "class_group_name",
                         "in": "query",
                         "description": "班组",
