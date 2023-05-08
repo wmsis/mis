@@ -1380,8 +1380,8 @@ class ClassController extends Controller
     public function schduleSetting(ClassSchduleRequest $request)
     {
         //参数
-        $date_type = $request->input('date_type');
-        $class_type = $request->input('class_type');
+        $date_type = $request->input('date_type'); //按天排班或按周期排班
+        $class_type = $request->input('class_type'); //按人排班或按班组排班
         $date = $request->input('date');
         $month = $request->input('month');
         $class_define_name = $request->input('class_define_name');
@@ -1392,7 +1392,7 @@ class ClassController extends Controller
 
         $user = $user_id ? User::find($user_id) : null;
         $class_group = $user ? $user->classGroup : null;
-        if(!$class_group){
+        if($params['class_type'] == 'person' && !$class_group){
             return UtilService::format_data(self::AJAX_FAIL, '请为用户绑定班组', '');
         }
 
