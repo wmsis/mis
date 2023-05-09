@@ -4094,6 +4094,32 @@
                 }
             }
         },
+        "/api/class-define/names": {
+            "get": {
+                "tags": [
+                    "排班管理class"
+                ],
+                "summary": "排班名称列表",
+                "description": "使用说明：排班名称列表",
+                "operationId": "class-define-names",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
         "/api/class-group/page": {
             "get": {
                 "tags": [

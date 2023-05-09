@@ -358,6 +358,37 @@ class ClassController extends Controller
 
     /**
      * @OA\Get(
+     *     path="/api/class-define/names",
+     *     tags={"排班管理class"},
+     *     operationId="class-define-names",
+     *     summary="排班名称列表",
+     *     description="使用说明：排班名称列表",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="succeed",
+     *     ),
+     * )
+     */
+    public function defineNames(Request $request){
+        $lists = config('class.cass_define');
+        $final = [];
+        foreach ($lists as $key => $item) {
+            $final[] = $item['name'];
+        }
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $final);
+    }
+
+    /**
+     * @OA\Get(
      *     path="/api/class-group/page",
      *     tags={"排班管理class"},
      *     operationId="class-group-page",

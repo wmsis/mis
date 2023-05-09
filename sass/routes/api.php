@@ -207,6 +207,7 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
             Route::get('show/{id}', 'ClassController@defineShow');
             Route::put('update/{id}', 'ClassController@defineUpdate');
             Route::delete('destroy/{id}', 'ClassController@defineDestroy');
+            Route::get('names', 'ClassController@defineNames');
         });
 
         //班组
