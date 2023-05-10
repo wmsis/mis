@@ -2019,7 +2019,7 @@ class ClassController extends Controller
                 foreach ($schdule_lists as $k9 => $schdule) {
                     $date = $schdule['date'];
                     unset($schdule['date']);
-                    $format_data[$date] = $schdule;
+                    $format_data[$date] = $schdule->toArray();
                 }
 
                 $user = User::select(['id', 'name', 'mobile'])->where('id', $item['user_id'])->first();
@@ -2041,14 +2041,13 @@ class ClassController extends Controller
                     $timestamp = $timestamp + 24 * 60 * 60;
                 }
                 $final[] = [
-                    'group'=>$cass_group,
+                    'group'=>$cass_group ? $cass_group->toArray() : null,
                     'data' => $format_data
                 ];
             }
         }
 
         $excel = $this->excelGenerate($final);
-
         return Excel::download($excel['excel'], $excel['bookname']);
     }
 
@@ -2061,8 +2060,8 @@ class ClassController extends Controller
         $bookname = '伟明集团电厂排班表_' . date('YmdHis') . '.xlsx';
         $sheetname = '伟明集团电厂排班表';
 
-        $date = [date('Y-m-d')];
-        if(isset($datalist['group'])){
+        $date_header = [date('Y-m-d')];
+        if(isset($datalist[0]['group'])){
             $headings = ['序号', '班组'];
             $sub_headings = ['', ''];
             $item_num = 2;//指标个数
@@ -2091,7 +2090,7 @@ class ClassController extends Controller
         foreach ($datalist as $k8 => $factoryItems) {
             $temp = [];
             $temp[] = $num;  //序号
-            if(isset($datalist['group'])){
+            if(isset($factoryItems['group'])){
                 $temp[] = $factoryItems['group']['name'];
             }
             else{
@@ -2109,7 +2108,7 @@ class ClassController extends Controller
             $num++;
         }
 
-        array_unshift($final_data, $title, $date, $headings, $sub_headings);
+        array_unshift($final_data, $title, $date_header, $headings, $sub_headings);
         $excel = new BaseExport($final_data, $author='猫小鱼', $sheetname=$sheetname);
         //合并单元格
         $map = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH', 'AI', 'AJ', 'AK', 'AL', 'AM', 'AN', 'AO', 'AP', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AV', 'AW', 'AX', 'AY', 'AZ');
@@ -2118,9 +2117,10 @@ class ClassController extends Controller
         $merge_cell_arr[] = 'A2:'. $map[$item_num-1] . '2';
         $merge_cell_arr[] = 'A3:A4';
         $merge_cell_arr[] = 'B3:B4';
-        if(isset($datalist['person'])){
+        if(isset($datalist[0]['user'])){
             $merge_cell_arr[] = 'C3:C4';
         }
+
         $excel->setMergeCells($merge_cell_arr);
         //行高
         $cell_height_arr = [];
@@ -2133,7 +2133,7 @@ class ClassController extends Controller
         $columnWidth = [];
         $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH', 'AI'];
         foreach ($columns as $key=>$column) {
-            $width = 15;
+            $width = 12;
             $columnWidth[$column] = $width;
         }
         $excel->setColumnWidth($columnWidth);
@@ -2177,7 +2177,7 @@ class ClassController extends Controller
                 $weekday = '星期六';
                 break;
             case 7:
-                $weekday = '星期一日';
+                $weekday = '星期日';
                 break;
             default:
                 $weekday = '';
