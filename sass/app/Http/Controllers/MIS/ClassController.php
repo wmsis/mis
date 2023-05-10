@@ -2096,7 +2096,10 @@ class ClassController extends Controller
             }
             else{
                 $temp[] = $factoryItems['user']['name'];
-                $temp[] = $factoryItems['data'][0]['class_group_name'];
+                foreach ($factoryItems['data'] as $key => $item) {
+                    $temp[] = $item['class_group_name'];
+                    break;
+                }
             }
 
             foreach ($factoryItems['data'] as $key => $item) {
@@ -2152,7 +2155,6 @@ class ClassController extends Controller
             'bookname' => $bookname
         );
     }
-
 
     private function computer_week($day){
         switch($day){
