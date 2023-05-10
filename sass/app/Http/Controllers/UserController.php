@@ -103,8 +103,9 @@ class UserController extends Controller
 
         $obj = DB::table('users')
             ->join('user_orgnization', 'users.id', '=', 'user_orgnization.user_id')
+            ->join('orgnization', 'orgnization.id', '=', 'user_orgnization.orgnization_id')
             ->select('users.*')
-            ->where('user_orgnization.orgnization_id',  $this->orgnization->id)
+            ->where('orgnization.ancestor_id',  $this->orgnization->id)
             ->whereNull('users.deleted_at');;
 
         $total = $obj->whereIn('users.type', $type_array);
