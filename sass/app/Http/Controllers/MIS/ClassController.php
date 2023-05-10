@@ -1947,7 +1947,7 @@ class ClassController extends Controller
     }
 
     /**
-     * @OA\Post(
+     * @OA\Get(
      *     path="/api/class-schdule/download",
      *     tags={"排班管理class"},
      *     operationId="class-schdule-download",
