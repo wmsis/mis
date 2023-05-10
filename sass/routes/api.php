@@ -237,6 +237,7 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
             Route::get('user-lists', 'ClassController@schduleUserLists');
             Route::get('date-lists', 'ClassController@schduleDateLists');
             Route::post('clear', 'ClassController@schduleClear');
+            Route::post('download', 'ClassController@schduleDownload');
         });
 
         //考核

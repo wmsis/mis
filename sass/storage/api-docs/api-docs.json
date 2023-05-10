@@ -4986,6 +4986,58 @@
                 }
             }
         },
+        "/api/class-schdule/download": {
+            "post": {
+                "tags": [
+                    "排班管理class"
+                ],
+                "summary": "导出排班列表",
+                "description": "使用说明：导出排班列表",
+                "operationId": "class-schdule-download",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "类型 person按人  group按班组",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "person",
+                                    "group"
+                                ]
+                            },
+                            "default": "person"
+                        }
+                    },
+                    {
+                        "name": "month",
+                        "in": "query",
+                        "description": "月份如 2023-05",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succeed"
+                    }
+                }
+            }
+        },
         "/api/device/lists": {
             "get": {
                 "tags": [

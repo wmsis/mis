@@ -17,6 +17,8 @@ use App\Models\SIS\Orgnization;
 use UtilService;
 use App\Repositories\ClassSchduleRepository;
 use Illuminate\Database\QueryException;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\BaseExport;
 use Log;
 
 class ClassController extends Controller
@@ -1942,5 +1944,244 @@ class ClassController extends Controller
             'start' => $start,
             'end' => $end
         );
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/class-schdule/download",
+     *     tags={"排班管理class"},
+     *     operationId="class-schdule-download",
+     *     summary="导出排班列表",
+     *     description="使用说明：导出排班列表",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="类型 person按人  group按班组",
+     *         in="query",
+     *         name="type",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="array",
+     *             default="person",
+     *             @OA\Items(
+     *                 type="string",
+     *                 enum = {"person", "group"},
+     *             )
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="月份如 2023-05",
+     *         in="query",
+     *         name="month",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="succeed",
+     *     ),
+     * )
+     */
+    public function schduleDownload(Request $request){
+        ini_set('memory_limit', -1);
+        $type = $request->input('type');
+        $month = $request->input('month');
+        $start = $month . '-01';
+        $end = date('Y-m-t', strtotime($start));
+        $final = [];
+
+        if($type == 'person'){
+            $user_lists = ClassSchdule::select(['user_id'])
+                ->where('date', '>=', $start)
+                ->where('date', '<=', $end)
+                ->where('orgnization_id', $this->orgnization->id)
+                ->groupBy('user_id')
+                ->get();
+
+            foreach ($user_lists as $k1 => $item) {
+                $schdule_lists = ClassSchdule::select(['date', 'class_define_name', 'start', 'end', 'class_group_name'])
+                    ->where('date', '>=', $start)
+                    ->where('date', '<=', $end)
+                    ->where('user_id', $item['user_id'])
+                    ->orderBy('date', 'ASC')
+                    ->get();
+
+                $format_data = [];
+                foreach ($schdule_lists as $k9 => $schdule) {
+                    $date = $schdule['date'];
+                    unset($schdule['date']);
+                    $format_data[$date] = $schdule;
+                }
+
+                $user = User::select(['id', 'name', 'mobile'])->where('id', $item['user_id'])->first();
+                $final[] = [
+                    'user'=>$user ? $user->toArray() : null,
+                    'data' => $format_data
+                ];
+            }
+        }
+        else{
+            $cass_groups = ClassGroup::where('orgnization_id', $this->orgnization->id)->get();
+            //按日期获取排班人员信息
+            foreach ($cass_groups as $key => $cass_group) {
+                $format_data = [];
+                $timestamp = strtotime($start);
+                while($timestamp <= strtotime($end)){
+                    $date = date('Y-m-d', $timestamp);
+                    $format_data[$date] = $this->getSchduleInfo($this->orgnization->id, $date, $cass_group->name);
+                    $timestamp = $timestamp + 24 * 60 * 60;
+                }
+                $final[] = [
+                    'group'=>$cass_group,
+                    'data' => $format_data
+                ];
+            }
+        }
+
+        $excel = $this->excelGenerate($final);
+
+        return Excel::download($excel['excel'], $excel['bookname']);
+    }
+
+    private function excelGenerate($datalist){
+        $data_num = count($datalist); //电厂数量
+
+        //报表表头定义
+        $title = ['伟明集团电厂排班表'];
+        //$sub_title = ['伟明集团验收时间统计表'];
+        $bookname = '伟明集团电厂排班表_' . date('YmdHis') . '.xlsx';
+        $sheetname = '伟明集团电厂排班表';
+
+        $date = [date('Y-m-d')];
+        if(isset($datalist['group'])){
+            $headings = ['序号', '班组'];
+            $sub_headings = ['', ''];
+            $item_num = 2;//指标个数
+        }
+        else{
+            $headings = ['序号', '员工', '所属班组'];
+            $sub_headings = ['', '', ''];
+            $item_num = 3;//指标个数
+        }
+
+        //计算表头
+        foreach ($datalist as $k1 => $factoryItems) {
+            foreach ($factoryItems['data'] as $date => $item) {
+                $day = date('N', strtotime($date));
+                $weekday = $this->computer_week($day);
+                $headings[] = $weekday;
+                $sub_headings[] = $date;
+                $item_num++;
+            }
+            break;
+        }
+
+        //数据
+        $final_data = [];
+        $num = 1;
+        foreach ($datalist as $k8 => $factoryItems) {
+            $temp = [];
+            $temp[] = $num;  //序号
+            if(isset($datalist['group'])){
+                $temp[] = $factoryItems['group']['name'];
+            }
+            else{
+                $temp[] = $factoryItems['user']['name'];
+                $temp[] = $factoryItems['data'][0]['class_group_name'];
+            }
+
+            foreach ($factoryItems['data'] as $key => $item) {
+                $temp[] = $item['class_define_name'];
+            }
+            $final_data[] = $temp;
+            $num++;
+        }
+
+        array_unshift($final_data, $title, $date, $headings, $sub_headings);
+        $excel = new BaseExport($final_data, $author='猫小鱼', $sheetname=$sheetname);
+        //合并单元格
+        $map = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH', 'AI', 'AJ', 'AK', 'AL', 'AM', 'AN', 'AO', 'AP', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AV', 'AW', 'AX', 'AY', 'AZ');
+        $merge_cell_arr = array();
+        $merge_cell_arr[] = 'A1:'. $map[$item_num-1] . '1';
+        $merge_cell_arr[] = 'A2:'. $map[$item_num-1] . '2';
+        $merge_cell_arr[] = 'A3:A4';
+        $merge_cell_arr[] = 'B3:B4';
+        if(isset($datalist['person'])){
+            $merge_cell_arr[] = 'C3:C4';
+        }
+        $excel->setMergeCells($merge_cell_arr);
+        //行高
+        $cell_height_arr = [];
+        for($i=1; $i<=1; $i++){
+            $cell_height_arr[$i] = 30;
+        }
+        $excel->setRowHeight($cell_height_arr);
+
+        //设置单元格宽度
+        $columnWidth = [];
+        $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH', 'AI'];
+        foreach ($columns as $key=>$column) {
+            $width = 15;
+            $columnWidth[$column] = $width;
+        }
+        $excel->setColumnWidth($columnWidth);
+
+        //换行
+        $wrap_cells = array();
+        $wrap_cells[] = 'C3:' . $map[$item_num-1] . '3';
+        $excel->setWrapText($wrap_cells);
+        //居右
+        $excel->setRightCells(['A2:'. $map[$item_num-1] . '2']);
+        //边框
+        $excel->setBorders(['A1:' . $map[$item_num-1] . ($data_num+4) => '#000000']);
+        //字体大小
+        $excel->setFontSize(['A1:' . $map[$item_num-1] . '1' => 18, 'A2:'. $map[$item_num-1] . '2' => 12]);
+        $excel->setBold(['A1:' . $map[$item_num-1] . '1' => true, 'A2:' . $map[$item_num-1] . '2' => true, 'A3:' . $map[$item_num-1] . '3' => true, 'A4:' . $map[$item_num-1] . '4' => true]);
+
+        return array(
+            'excel' => $excel,
+            'bookname' => $bookname
+        );
+    }
+
+
+    private function computer_week($day){
+        switch($day){
+            case 1:
+                $weekday = '星期一';
+                break;
+            case 2:
+                $weekday = '星期二';
+                break;
+            case 3:
+                $weekday = '星期三';
+                break;
+            case 4:
+                $weekday = '星期四';
+                break;
+            case 5:
+                $weekday = '星期五';
+                break;
+            case 6:
+                $weekday = '星期六';
+                break;
+            case 7:
+                $weekday = '星期一日';
+                break;
+            default:
+                $weekday = '';
+                break;
+        }
+
+        return $weekday;
     }
 }
