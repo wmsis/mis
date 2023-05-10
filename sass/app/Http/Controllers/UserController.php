@@ -128,8 +128,8 @@ class UserController extends Controller
             $users = $users->whereIn('users.id', $idarray);
         }
 
-        $total = $total->count();
-        $users = $users->orderBy('users.id', 'desc')
+        $total = $total->distinct()->count();
+        $users = $users->distinct()->orderBy('users.id', 'desc')
             ->offset($offset)
             ->limit($num)
             ->get();
