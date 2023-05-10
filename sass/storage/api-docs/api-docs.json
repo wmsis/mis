@@ -4987,7 +4987,7 @@
             }
         },
         "/api/class-schdule/download": {
-            "post": {
+            "get": {
                 "tags": [
                     "排班管理class"
                 ],
