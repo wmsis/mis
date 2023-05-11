@@ -520,7 +520,7 @@ class AuthController extends Controller
                 return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '请先关联报表系统用户');
             }
         } catch (Exception $e) {
-            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, $e->getMessage());
         }
     }
 
@@ -554,7 +554,7 @@ class AuthController extends Controller
                 return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '请先关联用户');
             }
         } catch (Exception $e) {
-            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
+            return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, $e->getMessage());
         }
     }
 }
