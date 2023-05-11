@@ -504,7 +504,6 @@ class AuthController extends Controller
         $url = $request->input('url');
 
         try {
-            Log::info('000000000000000');
             $data = array(
                 'system_token'=>$token,
                 'userid'=>$userid
@@ -515,15 +514,12 @@ class AuthController extends Controller
             $data = $body->getContents();
             $json_data = json_decode($data, true);
             if($response && $code == 200 &&  isset($json_data['code']) && $json_data['code'] == 0){
-                Log::info('1111111111111');
                 return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $json_data['data']);
             }
             else{
-                Log::info('222222222222222');
                 return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '请先关联报表系统用户');
             }
         } catch (Exception $e) {
-            Log::info('33333333333333');
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, $e->getMessage());
         }
     }
