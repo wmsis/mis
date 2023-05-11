@@ -126,7 +126,7 @@ return [
         'mysql_report' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
-            'host' => '127.0.0.1',
+            'host' => '10.99.99.96',
             'port' => '3306',
             'database' => 'wmhb_analysis',
             'username' => 'root',
