@@ -113,7 +113,7 @@
             test(){
                 console.log('0000000000000');
                 let that = this;
-                let token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMC45OS45OS45OTo2MDYwXC9hcGlcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNjc4NzU4MjY0LCJleHAiOjE2Nzg3NjE4NjQsIm5iZiI6MTY3ODc1ODI2NCwianRpIjoiZmxmYXA2bTBORlFDZGZpNCIsInN1YiI6MiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyIsInJvbGUiOiJ1c2VyIn0.bNrMbXxBWegENRxKLRaSnrVgAgl7LcVfZFY7YWZXGfc';
+                let token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMC45OS4xMDAuOTY6NTA1MFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTY4NTQyNjQ4OCwiZXhwIjoxNjg1NDMwMDg4LCJuYmYiOjE2ODU0MjY0ODgsImp0aSI6IlpHUzlxd2czaWdFeXNBbHYiLCJzdWIiOjIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjciLCJyb2xlIjoidXNlciJ9.XerGK3rcN5Augq-jl1QJu2DK15FlZoioF1ne9TR37q8';
                 that.$store.dispatch('login', {
                     access_token: token,
                     refresh_token: '',
@@ -121,52 +121,19 @@
                 });
                 that.ajax({
                     method: 'POST',
-                    url: '/class-loop/store',
+                    url: '/daily-data/import',
                     data: {
-                        name : 'rubbish',
-                        loop_days: 8,
-                        detail: JSON.stringify([
-                            {
-                                "class_define_name": '白班',
-                                "class_define_time":"07:30-16:00",
-                                "sort": 1
-                            },
-                            {
-                                "class_define_name": '中班',
-                                "class_define_time":"16:30-23:00",
-                                "sort": 2
-                            },
-                            {
-                                "class_define_name": '早班',
-                                "class_define_time":"23:00-07:30",
-                                "sort": 3
-                            },
-                            {
-                                "class_define_name": '休息',
-                                "class_define_time":"00:00-23:59",
-                                "sort": 4
-                            },
-                            {
-                                "class_define_name": '早班',
-                                "class_define_time":"23:00-07:30",
-                                "sort": 5
-                            },
-                            {
-                                "class_define_name": '白班',
-                                "class_define_time":"07:30-16:00",
-                                "sort": 6
-                            },
-                            {
-                                "class_define_name": '中班',
-                                "class_define_time":"16:30-23:00",
-                                "sort": 7
-                            },
-                            {
-                                "class_define_name": '休息',
-                                "class_define_time":"00:00-23:59",
-                                "sort": 8
-                            }
-                        ])
+                        time : '2023-05',
+                        orgnization_id: 49,
+                        json: JSON.stringify({
+                            'header':['cn_name', 'value'],
+                            'results': [
+                                {
+                                    'cn_name': '属地生活垃圾量',
+                                    'value': 62
+                                }
+                            ]
+                        })
                     },
                     success(response) {
                         console.log('111111111111111111');
