@@ -74,8 +74,8 @@ class ScreenController extends Controller
         $electricityObj = new ElectricityDayDataRepository();
         $grabGarbageObj = new GrabGarbageDayDataReposotory();
         $weighBridgeObj = new WeighBridgeDayDataReposotory();
-        $begin_timestamp = $start ? strtotime($start) : time() - 10 * 24 * 60 * 60;
-        $end_timestamp = $end ? strtotime($end) : time() - 24 * 60 * 60;
+        $begin_timestamp = $start ? strtotime($start) : strtotime(date('Y-m-d') . " 00:00:00");
+        $end_timestamp = $end ? strtotime($end) : strtotime(date('Y-m-d') . " 23:59:59");
         $start_date = date('Y-m-d', $begin_timestamp);
         $end_date = date('Y-m-d', $end_timestamp);
 
