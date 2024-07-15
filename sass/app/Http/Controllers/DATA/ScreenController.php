@@ -71,7 +71,6 @@ class ScreenController extends Controller
         $end = $request->input('end');
 
         //初始化参数
-        $final = [];
         $electricityObj = new ElectricityDayDataRepository();
         $grabGarbageObj = new GrabGarbageDayDataReposotory();
         $weighBridgeObj = new WeighBridgeDayDataReposotory();
@@ -89,34 +88,90 @@ class ScreenController extends Controller
             $factories = Orgnization::where('level', 2)->whereIn('id', $idarr)->get();
         }
 
+        $datalist = array(
+            "electricity" => [],
+            "grab_garbage" => [],
+            "weigh_bridge" => []
+        );
         if($factories && count($factories) > 0){
-            $month_electricity = [];
-            $month_grab_garbage = [];
-            $month_weigh_bridge = [];
-            $datelist = array();
-            for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
-                $date = date('Y-m-d', $i);
-                $datelist[$date] = 0; //初始值
-            }
-
-            //获取各个电厂的曲线数据
+            $electricity_keys = [];
+            $grab_garbage_keys = [];
+            $weigh_bridge_keys = [];
+            //获取各个电厂的数据
             foreach ($factories as $kf => $factory) {
                 if($factory->code){
-                    $month_electricity[$factory->code] = $electricityObj->countData($start_date, $end_date, $factory->code);  //用电量
-                    $month_grab_garbage[$factory->code] = $grabGarbageObj->countData($start_date, $end_date, $factory->code);  //垃圾入炉量
-                    $month_weigh_bridge[$factory->code] = $weighBridgeObj->countData($start_date, $end_date, $factory->code);  //垃圾入库量
+                    $datalist['electricity'][$factory->code] = $electricityObj->countData($start_date, $end_date, $factory->code);  //用电量
+                    $datalist['grab_garbage'][$factory->code] = $grabGarbageObj->countData($start_date, $end_date, $factory->code);  //垃圾入炉量
+                    $datalist['weigh_bridge'][$factory->code] = $weighBridgeObj->countData($start_date, $end_date, $factory->code);  //垃圾入库量
                 }
             }
 
+            $final = [
+                'electricity'=> [],
+                'grab_garbage'=> [],
+                'weigh_bridge'=> []
+            ];
 
+            //各个电厂数据累计，键值相同的累计
+            $i=0;
+            foreach($datalist['electricity'] as $factory=>$factory_values){
+                foreach ($factory_values as $k2 => $dcs_value) {
+                    if($i == 0){
+                        $final['electricity'][$dcs_value['en_name']] = $dcs_value;
+                    }
+                    else{
+                        $final['electricity'][$dcs_value['en_name']]['value'] += $dcs_value['value'];
+                    }
+                }
+                $i++;
+            }
+
+            $j=0;
+            foreach($datalist['grab_garbage'] as $k1=>$factory_values){
+                foreach ($factory_values as $k2 => $dcs_value) {
+                    if($j == 0){
+                        $final['grab_garbage'][$dcs_value['en_name']] = $dcs_value;
+                    }
+                    else{
+                        $final['grab_garbage'][$dcs_value['en_name']]['value'] += $dcs_value['value'];
+                    }
+                }
+                $j++;
+            }
+
+            $k=0;
+            foreach($datalist['weigh_bridge'] as $k1=>$factory_values){
+                foreach ($factory_values as $k2 => $dcs_value) {
+                    if($k == 0){
+                        $final['weigh_bridge'][$dcs_value['en_name']] = $dcs_value;
+                    }
+                    else{
+                        $final['weigh_bridge'][$dcs_value['en_name']]['value'] += $dcs_value['value'];
+                    }
+                }
+                $k++;
+            }
+
+            $final['electricity'] = array_values($final['electricity']);
+            $final['grab_garbage'] = array_values($final['grab_garbage']);
+            $final['weigh_bridge'] = array_values($final['weigh_bridge']);
         }
 
-        $datalist = [];
-        foreach ($final as $key => $item) {
-            $datalist[] = $item;
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $final);
+    }
+
+    private function in_array($key, $array){
+        $flag = false;
+        if(count($array) > 0) {
+            foreach ($array as $item) {
+                if ($item == $key) {
+                    $flag = true;
+                    break;
+                }
+            }
         }
 
-        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $datalist);
+        return $flag;
     }
 
     /**
