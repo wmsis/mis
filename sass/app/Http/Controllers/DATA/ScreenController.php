@@ -160,20 +160,6 @@ class ScreenController extends Controller
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $final);
     }
 
-    private function in_array($key, $array){
-        $flag = false;
-        if(count($array) > 0) {
-            foreach ($array as $item) {
-                if ($item == $key) {
-                    $flag = true;
-                    break;
-                }
-            }
-        }
-
-        return $flag;
-    }
-
     /**
      * @OA\Get(
      *     path="/api/screen/chart",
