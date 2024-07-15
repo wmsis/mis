@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WechatController;
-use App\Http\Controllers\WxpayController;
 use App\Http\Controllers\HistorianController;
 
 /*
@@ -22,10 +21,6 @@ Route::get('/', function () {
 
 
 Route::any('wechat/main', [WechatController::class, 'main']);
-Route::get('wxpay/product', [WxpayController::class, 'product']);
-Route::get('wxpay/notify', [WxpayController::class, 'notify']);
-Route::post('wxpay/notify', [WxpayController::class, 'notify']);
-Route::post('wxpay/prepay', [WxpayController::class, 'prepay']);
 Route::get('flush', [WechatController::class, 'ilovethisgame']);
 
 

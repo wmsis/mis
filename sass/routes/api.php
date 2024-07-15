@@ -284,6 +284,7 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
     Route::group(['namespace' => 'App\Http\Controllers\DATA'], function () {
         //大数据大屏
         Route::prefix('screen')->group(function () {
+            Route::get('total', 'ScreenController@total');
             Route::get('chart', 'ScreenController@chart');
             Route::get('boiler-temperature', 'ScreenController@boilerTemperature');
         });
