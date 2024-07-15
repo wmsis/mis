@@ -106,21 +106,17 @@ class ScreenController extends Controller
                 }
             }
 
-            $final = [
-                'electricity'=> [],
-                'grab_garbage'=> [],
-                'weigh_bridge'=> []
-            ];
+            $final = [];
 
             //各个电厂数据累计，键值相同的累计
             $i=0;
             foreach($datalist['electricity'] as $factory=>$factory_values){
                 foreach ($factory_values as $k2 => $dcs_value) {
                     if($i == 0){
-                        $final['electricity'][$dcs_value['en_name']] = $dcs_value;
+                        $final[$dcs_value['en_name']] = $dcs_value;
                     }
                     else{
-                        $final['electricity'][$dcs_value['en_name']]['value'] += $dcs_value['value'];
+                        $final[$dcs_value['en_name']]['value'] += $dcs_value['value'];
                     }
                 }
                 $i++;
@@ -130,10 +126,10 @@ class ScreenController extends Controller
             foreach($datalist['grab_garbage'] as $k1=>$factory_values){
                 foreach ($factory_values as $k2 => $dcs_value) {
                     if($j == 0){
-                        $final['grab_garbage'][$dcs_value['en_name']] = $dcs_value;
+                        $final[$dcs_value['en_name']] = $dcs_value;
                     }
                     else{
-                        $final['grab_garbage'][$dcs_value['en_name']]['value'] += $dcs_value['value'];
+                        $final[$dcs_value['en_name']]['value'] += $dcs_value['value'];
                     }
                 }
                 $j++;
@@ -143,18 +139,16 @@ class ScreenController extends Controller
             foreach($datalist['weigh_bridge'] as $k1=>$factory_values){
                 foreach ($factory_values as $k2 => $dcs_value) {
                     if($k == 0){
-                        $final['weigh_bridge'][$dcs_value['en_name']] = $dcs_value;
+                        $final[$dcs_value['en_name']] = $dcs_value;
                     }
                     else{
-                        $final['weigh_bridge'][$dcs_value['en_name']]['value'] += $dcs_value['value'];
+                        $final[$dcs_value['en_name']]['value'] += $dcs_value['value'];
                     }
                 }
                 $k++;
             }
 
-            $final['electricity'] = array_values($final['electricity']);
-            $final['grab_garbage'] = array_values($final['grab_garbage']);
-            $final['weigh_bridge'] = array_values($final['weigh_bridge']);
+            $final = array_values($final);
         }
 
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $final);
