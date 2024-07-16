@@ -70,27 +70,4 @@ class WeighBridgeDayDataReposotory extends BaseRepository
         return $final;
     }
 
-    public function chartType($start, $end, $factory)
-    {
-        $final = [];
-        $table = 'weighbridge_day_data_' . $factory;
-        $weighBridgeObj = (new WeighBridgeDayData())->setTable($table);
-
-        //获取日期范围内具体数据
-        $datalist = $weighBridgeObj->where('date', '>=', $start)
-            ->where('date', '<=', $end)
-            ->selectRaw('SUM(value) as val, date')
-            ->groupBy('date')
-            ->get();
-
-        foreach ($datalist as $key => $item) {
-            $datalist[$key]['val'] = (float)($item->val/1000);
-        }
-        $final['datalist'] = $datalist;
-        $final['en_name'] = config('standard.not_dcs.ljrkl.en_name');
-        $final['cn_name'] = config('standard.not_dcs.ljrkl.cn_name');
-        $final['messure'] = '吨';
-
-        return $final;
-    }
 }
