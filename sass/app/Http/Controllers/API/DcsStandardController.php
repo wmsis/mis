@@ -81,8 +81,10 @@ class DcsStandardController extends Controller
         $group_name = $request->input('group_name');
         $lists = DB::table('dcs_standard')
             ->leftJoin('dcs_group', 'dcs_standard.dcs_group_id', '=', 'dcs_group.id')
+            ->leftJoin('dcs_map', 'dcs_standard.id', '=', 'dcs_map.dcs_standard_id')
             ->select('dcs_standard.*', 'dcs_group.name AS group_name')
-            ->where('dcs_standard.type',  'dcs')
+            ->where('dcs_standard.type', 'dcs')
+            ->where('dcs_map.orgnization_id', $this->orgnization->id)//配置过映射关系的
             ->orderBy('dcs_standard.sort', 'ASC');
 
         if($cn_name){
