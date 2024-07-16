@@ -86,7 +86,7 @@ class DcsStandardController extends Controller
             ->where('dcs_standard.type', 'dcs')
             ->where('dcs_map.orgnization_id', $this->orgnization->id)//配置过映射关系的
             ->orderBy('dcs_standard.sort', 'ASC')
-            ->orderBy('dcs_standard.created_at', 'ASC');
+            ->orderBy('dcs_standard.id', 'ASC');
 
         if($cn_name){
             $lists = $lists->where('dcs_standard.cn_name', 'like', "%{$cn_name}%");
