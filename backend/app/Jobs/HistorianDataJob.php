@@ -62,11 +62,9 @@ class HistorianDataJob implements ShouldQueue
     public function handle()
     {
         if($this->db_type == 'historiandb'){
-            Log::info('0000000000');
             $this->historiandb_data(); //读取historian7.0以上数据库的数据
         }
         else{
-            Log::info('11111111111111');
             $this->mongodb_data(); //若数据库historian为7.0以下，则从opcserver读取数据，OPC读取后转存到电厂本地MongoDB数据库
         }
     }
@@ -159,15 +157,11 @@ class HistorianDataJob implements ShouldQueue
 
             $params = [];
             $stack = [];
-            Log::info('222222222222222222222');
             if($rows && count($rows) > 0){
-                Log::info('333333333333333333');
                 foreach ($rows as $key => $item) {
-                    Log::info('44444444444444444444');
                     if(in_array($item->tag_name, $stack)){
                         continue;
                     }
-                    Log::info('555555555555555555555555');
 
                     $stack[] = $item->tag_name;
                     $local_row = $obj_hitorian_local->findRowByTagAndTime($item->tag_name, $this->datetime);
