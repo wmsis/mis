@@ -126,8 +126,8 @@ class HomeController extends Controller
         $weighBridgeObj = new WeighBridgeDayDataReposotory();
 
         //近30天曲线图
-        $begin_timestamp = time() - 10 * 24 * 60 * 60;
-        $end_timestamp = time() - 24 * 60 * 60;
+        $begin_timestamp = time() - 14 * 24 * 60 * 60;
+        $end_timestamp = time();
         $start = date('Y-m-d', $begin_timestamp);
         $end = date('Y-m-d', $end_timestamp);
         $datelist = array();
