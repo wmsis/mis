@@ -119,8 +119,6 @@ class WeighBridgeDayDataReposotory extends BaseRepository
             //获取日期范围内具体数据
             $season_value = $weighBridgeObj->where('date', '>=', $season_start)
                 ->where('date', '<=', $season_end)
-                ->selectRaw('SUM(value) as val, date')
-                ->groupBy('date')
                 ->sum('value');
 
             $final['datalist'][$season] = (float)sprintf("%01.2f", $season_value/1000);
