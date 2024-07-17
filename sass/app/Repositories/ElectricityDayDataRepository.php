@@ -76,7 +76,7 @@ class ElectricityDayDataRepository extends BaseRepository
                 ->get();
 
             foreach ($datalist as $key => $value) {
-                $datalist[$key]['val'] = (float)sprintf("%01.2f", (float)($value->val)/10000);
+                $datalist[$key]->val = (float)sprintf("%01.2f", (float)($value->val/10000));
             }
 
             $temp['datalist'] = $datalist;
