@@ -357,7 +357,7 @@ class ScreenController extends Controller
 
         $datalist = [];
         foreach ($final as $k1 => $item) {
-            $type = config('standard.not_dcs.ljrkl.en_name');
+            $type = config('standard.not_dcs.ljrk_type.en_name');
             if($item['en_name'] != $type){
                 //非垃圾类别的去处第一条数据
                 $i = 0 ;
