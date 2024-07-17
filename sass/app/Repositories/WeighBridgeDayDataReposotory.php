@@ -121,7 +121,7 @@ class WeighBridgeDayDataReposotory extends BaseRepository
                 ->where('date', '<=', $season_end)
                 ->sum('value');
 
-            $final['datalist'][$season] = (float)sprintf("%01.2f", $season_value/1000);
+            $final['datalist'][$season] = (float)sprintf("%01.2f", $season_value/10000000);
 
             //下个季度的某一天
             $next_season_one_day = $timestamp + 3*32*24*60*60; //3*32天之后，肯定是下个季度第一个月
@@ -131,7 +131,7 @@ class WeighBridgeDayDataReposotory extends BaseRepository
         }
         $final['en_name'] = config('standard.not_dcs.ljrk_season.en_name');
         $final['cn_name'] = config('standard.not_dcs.ljrk_season.cn_name');
-        $final['messure'] = '吨';
+        $final['messure'] = '万吨';
 
         return $final;
     }
