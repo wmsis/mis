@@ -52,7 +52,7 @@ class ElectricityDayDataRepository extends BaseRepository
                 'cn_name' => $item->cn_name,
                 'en_name' => $item->en_name,
                 'value' => (float)sprintf("%01.2f", (float)$sum_value/10000),
-                'messure' => '万度'
+                'messure' => '万度',
             );
         }
 
@@ -83,6 +83,7 @@ class ElectricityDayDataRepository extends BaseRepository
             $temp['en_name'] = $item->en_name;
             $temp['cn_name'] = $item->cn_name;
             $temp['messure'] = '万度';
+            $temp['canRatio'] = true;
             $final[] = $temp;
         }
 

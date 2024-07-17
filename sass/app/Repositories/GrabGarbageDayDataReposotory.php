@@ -65,6 +65,7 @@ class GrabGarbageDayDataReposotory extends BaseRepository
         $final['en_name'] = config('standard.not_dcs.ljrll.en_name');
         $final['cn_name'] = config('standard.not_dcs.ljrll.cn_name');
         $final['messure'] = '吨';
+        $final['canRatio'] = true;
 
         return $final;
     }
