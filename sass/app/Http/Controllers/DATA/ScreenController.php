@@ -215,7 +215,7 @@ class ScreenController extends Controller
         $electricityObj = new ElectricityDayDataRepository();
         $grabGarbageObj = new GrabGarbageDayDataReposotory();
         $weighBridgeObj = new WeighBridgeDayDataReposotory();
-        $begin_timestamp = $start ? strtotime($start) : time() - 14 * 24 * 60 * 60;
+        $begin_timestamp = $start ? (strtotime($start)-24*60*60) : time() - 15 * 24 * 60 * 60;
         $end_timestamp = $end ? strtotime($end) : time();
         $start_date = date('Y-m-d', $begin_timestamp);
         $end_date = date('Y-m-d', $end_timestamp);
@@ -241,13 +241,13 @@ class ScreenController extends Controller
             }
 
             //获取各个电厂的曲线数据
-            $the_day_before_start_date = date('Y-m-d', $begin_timestamp-24*60*60);
+            $the_day_after_start_date = date('Y-m-d', $begin_timestamp+24*60*60);
             foreach ($factories as $kf => $factory) {
                 if($factory->code){
-                    $month_electricity[$factory->code] = $electricityObj->chartData($the_day_before_start_date, $end_date, $factory->code);  //用电量
-                    $month_grab_garbage[$factory->code] = $grabGarbageObj->chartData($the_day_before_start_date, $end_date, $factory->code);  //垃圾入炉量
-                    $month_weigh_bridge[$factory->code] = $weighBridgeObj->chartData($the_day_before_start_date, $end_date, $factory->code);  //垃圾入库量
-                    $type_weigh_bridge[$factory->code] = $weighBridgeObj->chartType($start_date, $end_date, $factory->code);  //垃圾入库类别统计
+                    $month_electricity[$factory->code] = $electricityObj->chartData($start_date, $end_date, $factory->code);  //用电量
+                    $month_grab_garbage[$factory->code] = $grabGarbageObj->chartData($start_date, $end_date, $factory->code);  //垃圾入炉量
+                    $month_weigh_bridge[$factory->code] = $weighBridgeObj->chartData($start_date, $end_date, $factory->code);  //垃圾入库量
+                    $type_weigh_bridge[$factory->code] = $weighBridgeObj->chartType($the_day_after_start_date, $end_date, $factory->code);  //垃圾入库类别统计
                 }
             }
 
