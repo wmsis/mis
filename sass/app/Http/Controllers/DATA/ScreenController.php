@@ -231,6 +231,7 @@ class ScreenController extends Controller
 
         if($factories && count($factories) > 0){
             $month_electricity = [];
+            $season_electricity = [];
             $month_grab_garbage = [];
             $month_weigh_bridge = [];
             $type_weigh_bridge = [];
@@ -246,7 +247,8 @@ class ScreenController extends Controller
             foreach ($factories as $kf => $factory) {
                 if($factory->code){
                     $year = date("Y");
-                    $month_electricity[$factory->code] = $electricityObj->chartData($start_date, $end_date, $factory->code);  //用电量
+                    $month_electricity[$factory->code] = $electricityObj->chartData($start_date, $end_date, $factory->code);   //用电量
+                    $season_electricity[$factory->code] = $electricityObj->season($year, $factory->code);                      //用电量
                     $month_grab_garbage[$factory->code] = $grabGarbageObj->chartData($start_date, $end_date, $factory->code);  //垃圾入炉量
                     $month_weigh_bridge[$factory->code] = $weighBridgeObj->chartData($start_date, $end_date, $factory->code);  //垃圾入库量
                     $type_weigh_bridge[$factory->code] = $weighBridgeObj->chartType($the_day_after_start_date, $end_date, $factory->code);  //垃圾入库类别统计
@@ -264,6 +266,8 @@ class ScreenController extends Controller
                             'cn_name' => $itemlist['cn_name'],
                             'messure' => $itemlist['messure'],
                             'datalist' => $datelist,
+                            'no_hb' => false,
+                            'hb' => $datelist
                         );
                     }
 
@@ -283,6 +287,31 @@ class ScreenController extends Controller
                 }
             }
 
+            //上网电量和厂用电量 各个电厂累计
+            foreach ($season_electricity as $code => $factory_weigh_bridge) {
+                if(!isset($final[$factory_weigh_bridge['en_name']])){
+                    $final[$factory_weigh_bridge['en_name']] = array(
+                        'en_name' => $factory_weigh_bridge['en_name'],
+                        'cn_name' => $factory_weigh_bridge['cn_name'],
+                        'messure' => $factory_weigh_bridge['messure'],
+                        'datalist' => [],
+                        'no_hb' => true
+                    );
+                }
+
+                if($factory_weigh_bridge['datalist'] && count($factory_weigh_bridge['datalist']) > 0){
+                    foreach ($factory_weigh_bridge['datalist'] as $season => $value) {
+                        if(isset($final[$factory_weigh_bridge['en_name']]['datalist'][$season])){
+                            $final[$factory_weigh_bridge['en_name']]['datalist'][$season] = (float)$value + $final[$factory_weigh_bridge['en_name']]['datalist'][$season];
+                        }
+                        else{
+                            $final[$factory_weigh_bridge['en_name']]['datalist'][$season] = (float)$value;
+                        }
+                        $final[$factory_weigh_bridge['en_name']]['datalist'][$season] = (float)sprintf("%01.2f", $final[$factory_weigh_bridge['en_name']]['datalist'][$season]);
+                    }
+                }
+            }
+
             //垃圾入炉量 各个电厂累计
             foreach ($month_grab_garbage as $code => $factory_grab_garbage) {
                 //不存在则赋初始值
@@ -292,6 +321,8 @@ class ScreenController extends Controller
                         'cn_name' => $factory_grab_garbage['cn_name'],
                         'messure' => $factory_grab_garbage['messure'],
                         'datalist' => $datelist,
+                        'no_hb' => false,
+                        'hb' => $datelist
                     );
                 }
 
@@ -317,7 +348,8 @@ class ScreenController extends Controller
                         'cn_name' => $factory_weigh_bridge['cn_name'],
                         'messure' => $factory_weigh_bridge['messure'],
                         'datalist' => $datelist,
-                        'hb' => $datelist,
+                        'no_hb' => false,
+                        'hb' => $datelist
                     );
                 }
 
@@ -342,6 +374,7 @@ class ScreenController extends Controller
                         'cn_name' => $factory_weigh_bridge['cn_name'],
                         'messure' => $factory_weigh_bridge['messure'],
                         'datalist' => [],
+                        'no_hb' => true
                     );
                 }
 
@@ -366,6 +399,7 @@ class ScreenController extends Controller
                         'cn_name' => $factory_weigh_bridge['cn_name'],
                         'messure' => $factory_weigh_bridge['messure'],
                         'datalist' => [],
+                        'no_hb' => true
                     );
                 }
 

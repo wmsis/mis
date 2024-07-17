@@ -133,8 +133,7 @@ class ElectricityDayDataRepository extends BaseRepository
                 'cn_name' => '季度' . $item->cn_name,
                 'en_name' => $item->en_name,
                 'datalist' => $seasondata,
-                'messure' => '万度',
-                'no_hb' => true
+                'messure' => '万度'
             );
         }
 

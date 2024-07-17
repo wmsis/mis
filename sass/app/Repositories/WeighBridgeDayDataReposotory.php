@@ -99,7 +99,6 @@ class WeighBridgeDayDataReposotory extends BaseRepository
         $final['en_name'] = config('standard.not_dcs.ljrk_type.en_name');
         $final['cn_name'] = config('standard.not_dcs.ljrk_type.cn_name');
         $final['messure'] = '吨';
-        $final['no_hb'] = true;
 
         return $final;
     }
@@ -133,7 +132,6 @@ class WeighBridgeDayDataReposotory extends BaseRepository
         $final['en_name'] = config('standard.not_dcs.ljrk_season.en_name');
         $final['cn_name'] = config('standard.not_dcs.ljrk_season.cn_name');
         $final['messure'] = '万吨';
-        $final['no_hb'] = true;
 
         return $final;
     }
