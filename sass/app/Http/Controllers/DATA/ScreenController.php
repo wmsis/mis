@@ -256,6 +256,9 @@ class ScreenController extends Controller
                 }
             }
 
+            Log::info("00000000000");
+            Log::info(var_export($season_electricity, true));
+
             //上网电量和厂用电量 各个电厂累计
             foreach ($month_electricity as $code => $factory_electricity) {
                 foreach ($factory_electricity as $k1 => $itemlist) {
