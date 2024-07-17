@@ -366,7 +366,7 @@ class ScreenController extends Controller
                 $preValue = 0;
                 foreach ($item['datalist'] as $date => $value) {
                     if($i != 0){
-                        $lists[$date] = $value;
+                        $lists[$date] = (float)sprintf("%01.2f", $value);
                         $ratio = $preValue ? 100 * ($value - $preValue)/$preValue : 0;
                         $ratio = strpos($ratio, '.') !== false ? (float)sprintf("%01.2f", $ratio) : $ratio;
                         $hb[$date] = $ratio;
