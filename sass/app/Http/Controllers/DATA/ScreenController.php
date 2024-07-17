@@ -342,7 +342,12 @@ class ScreenController extends Controller
 
                 if($factory_weigh_bridge['datalist'] && count($factory_weigh_bridge['datalist']) > 0){
                     foreach ($factory_weigh_bridge['datalist'] as $k2 => $item) {
-                        $final[$factory_weigh_bridge['en_name']]['datalist'][$item->name] = (float)$item->val + $final[$factory_weigh_bridge['en_name']]['datalist'][$item->name];
+                        if(isset($final[$factory_weigh_bridge['en_name']]['datalist'][$item->name])){
+                            $final[$factory_weigh_bridge['en_name']]['datalist'][$item->name] = (float)$item->val + $final[$factory_weigh_bridge['en_name']]['datalist'][$item->name];
+                        }
+                        else{
+                            $final[$factory_weigh_bridge['en_name']]['datalist'][$item->name] = (float)$item->val;
+                        }
                     }
                 }
             }
