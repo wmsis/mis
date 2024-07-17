@@ -67,6 +67,7 @@ class WeighBridgeDayDataReposotory extends BaseRepository
         $final['en_name'] = config('standard.not_dcs.ljrkl.en_name');
         $final['cn_name'] = config('standard.not_dcs.ljrkl.cn_name');
         $final['messure'] = '吨';
+        $final['canRatio'] = true;
 
         return $final;
     }
@@ -98,6 +99,7 @@ class WeighBridgeDayDataReposotory extends BaseRepository
         $final['en_name'] = config('standard.not_dcs.ljrk_type.en_name');
         $final['cn_name'] = config('standard.not_dcs.ljrk_type.cn_name');
         $final['messure'] = '吨';
+        $final['canRatio'] = false;
 
         return $final;
     }

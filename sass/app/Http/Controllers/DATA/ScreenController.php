@@ -215,7 +215,7 @@ class ScreenController extends Controller
         $electricityObj = new ElectricityDayDataRepository();
         $grabGarbageObj = new GrabGarbageDayDataReposotory();
         $weighBridgeObj = new WeighBridgeDayDataReposotory();
-        $begin_timestamp = $start ? strtotime($start) : time() - 14 * 24 * 60 * 60;
+        $begin_timestamp = $start ? (strtotime($start)-24*60*60) : time() - 14 * 24 * 60 * 60;
         $end_timestamp = $end ? strtotime($end) : time();
         $start_date = date('Y-m-d', $begin_timestamp);
         $end_date = date('Y-m-d', $end_timestamp);
@@ -353,7 +353,28 @@ class ScreenController extends Controller
             }
         }
 
-        $datalist = array_values($final);
+        foreach ($final as $k1 => $item) {
+            if($item['canRatio']){
+                $final[$k1]['ratio'] = [];
+                $firstKey = array_key_first($item['datalist']);
+                $firstValue = $item['datalist'][$firstKey];         //关联数组第一条数据
+                unset(($final[$k1]['datalist'][$firstKey]);         //删除第一条数据
+                $i = 0;
+                foreach ($final[$k1]['datalist'] as $date => $data) {
+                    if($i==0){
+                        $ratio = ((float)$firstValue) ? 100 * ((float)$data - (float)$firstValue)/((float)$firstValue) : 0;
+                    }
+                    else{
+                        $yestoday = date('Y-m-d', (strtotime($date)-24*60*60));
+                        $ratio = ((float)($final[$k1]['datalist'][$yestoday])) ? 100 * ((float)$data - ((float)($final[$k1]['datalist'][$yestoday])))/((float)($final[$k1]['datalist'][$yestoday])) : 0;
+                    }
+                    $ratio = strpos($ratio, '.') !== false ? (float)sprintf("%01.2f", $ratio) : $ratio;
+                    $final[$k1]['ratio'][$date] = $ratio;
+                    $i++;
+                }
+            }
+            unset(($final[$k1]['canRatio'];
+        }
 
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $datalist);
     }
