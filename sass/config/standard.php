@@ -19,6 +19,10 @@ return [
             'cn_name' => '垃圾类别', //数据库中定义的中文名
             'en_name' => 'ljrk_type' //数据库中定义的英文名，如需修改，必须与数据库中一致
         ),
+        'ljrk_season' => array(
+            'cn_name' => '季度垃圾量', //数据库中定义的中文名
+            'en_name' => 'ljrk_season' //数据库中定义的英文名，如需修改，必须与数据库中一致
+        ),
         'cydl' => array(
             'cn_name' => '厂用电量',
             'en_name' => 'cydl'

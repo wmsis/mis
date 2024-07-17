@@ -234,6 +234,7 @@ class ScreenController extends Controller
             $month_grab_garbage = [];
             $month_weigh_bridge = [];
             $type_weigh_bridge = [];
+            $season_weigh_bridge = [];
             $datelist = array();
             for($i=$begin_timestamp; $i<=$end_timestamp; $i=$i+24*60*60){
                 $date = date('Y-m-d', $i);
@@ -244,10 +245,12 @@ class ScreenController extends Controller
             $the_day_after_start_date = date('Y-m-d', $begin_timestamp+24*60*60);
             foreach ($factories as $kf => $factory) {
                 if($factory->code){
+                    $year = date("Y");
                     $month_electricity[$factory->code] = $electricityObj->chartData($start_date, $end_date, $factory->code);  //用电量
                     $month_grab_garbage[$factory->code] = $grabGarbageObj->chartData($start_date, $end_date, $factory->code);  //垃圾入炉量
                     $month_weigh_bridge[$factory->code] = $weighBridgeObj->chartData($start_date, $end_date, $factory->code);  //垃圾入库量
                     $type_weigh_bridge[$factory->code] = $weighBridgeObj->chartType($the_day_after_start_date, $end_date, $factory->code);  //垃圾入库类别统计
+                    $season_weigh_bridge[$factory->code] = $weighBridgeObj->season($year, $factory->code);  //垃圾入库季度统计
                 }
             }
 
@@ -354,12 +357,37 @@ class ScreenController extends Controller
                     }
                 }
             }
+
+            //季度垃圾入库 各个电厂累计
+            foreach ($season_weigh_bridge as $code => $factory_weigh_bridge) {
+                if(!isset($final[$factory_weigh_bridge['en_name']])){
+                    $final[$factory_weigh_bridge['en_name']] = array(
+                        'en_name' => $factory_weigh_bridge['en_name'],
+                        'cn_name' => $factory_weigh_bridge['cn_name'],
+                        'messure' => $factory_weigh_bridge['messure'],
+                        'datalist' => [],
+                    );
+                }
+
+                if($factory_weigh_bridge['datalist'] && count($factory_weigh_bridge['datalist']) > 0){
+                    foreach ($factory_weigh_bridge['datalist'] as $season => $value) {
+                        if(isset($final[$factory_weigh_bridge['en_name']]['datalist'][$season])){
+                            $final[$factory_weigh_bridge['en_name']]['datalist'][$season] = (float)$value + $final[$factory_weigh_bridge['en_name']]['datalist'][$season];
+                        }
+                        else{
+                            $final[$factory_weigh_bridge['en_name']]['datalist'][$season] = (float)$value;
+                        }
+                        $final[$factory_weigh_bridge['en_name']]['datalist'][$season] = (float)sprintf("%01.2f", $final[$factory_weigh_bridge['en_name']]['datalist'][$season]);
+                    }
+                }
+            }
         }
 
         $datalist = [];
         foreach ($final as $k1 => $item) {
-            $type = config('standard.not_dcs.ljrk_type.en_name');
-            if($item['en_name'] != $type){
+            $type1 = config('standard.not_dcs.ljrk_type.en_name');
+            $type2 = config('standard.not_dcs.ljrk_season.en_name');
+            if($item['en_name'] != $type1 && $item['en_name'] != $type2){
                 //非垃圾类别的去处第一条数据
                 $i = 0 ;
                 $lists = [];
