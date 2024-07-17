@@ -251,7 +251,7 @@ class ScreenController extends Controller
             }
 
             Log::info("00000000000000");
-            Log::info(var_export($type_weigh_bridge, true);
+            Log::info(var_export($type_weigh_bridge, true));
 
             //上网电量和厂用电量
             foreach ($month_electricity as $code => $factory_electricity) {
