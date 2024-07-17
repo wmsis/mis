@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use JasonGuru\LaravelMakeRepository\Repository\BaseRepository;
 use App\Models\SIS\WeighBridgeDayData;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class WeighBridgeDayDataReposotory.
@@ -70,4 +71,34 @@ class WeighBridgeDayDataReposotory extends BaseRepository
         return $final;
     }
 
+    public function chartType($start, $end, $factory)
+    {
+        $final = [];
+        $table = 'weighbridge_day_data_' . $factory;
+        $weighBridgeObj = (new WeighBridgeDayData())->setTable($table);
+
+        //获取日期范围内具体数据
+        $datalist = $weighBridgeObj->where('date', '>=', $start)
+            ->where('date', '<=', $end)
+            ->selectRaw('SUM(value) as val, weighbridge_cate_small_id')
+            ->groupBy('weighbridge_cate_small_id')
+            ->get();
+
+        foreach ($datalist as $key => $item) {
+            $datalist[$key]['val'] = (float)($item->val/1000);
+            $cate_big = DB::table('weighbridge_cate_small')
+                ->join('weighbridge_cate_big', 'weighbridge_cate_big.id', '=', 'weighbridge_cate_small.weighbridge_cate_big_id')
+                ->select(['weighbridge_cate_big.id', 'weighbridge_cate_big.name', 'weighbridge_cate_small.name as small_name'])
+                ->where('weighbridge_cate_small.id', $item->weighbridge_cate_small_id)
+                ->first();
+            $datalist[$key]['name'] = $cate_big ? $cate_big->name : '';
+            $datalist[$key]['id'] = $cate_big ? $cate_big->id : '';
+        }
+        $final['datalist'] = $datalist;
+        $final['en_name'] = config('standard.not_dcs.ljrk_type.en_name');
+        $final['cn_name'] = config('standard.not_dcs.ljrk_type.cn_name');
+        $final['messure'] = '吨';
+
+        return $final;
+    }
 }
