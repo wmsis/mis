@@ -82,14 +82,14 @@ class WeighBridgeDayDataReposotory extends BaseRepository
             ->where('date', '<=', $end)
             ->selectRaw('SUM(value) as val, weighbridge_cate_small_id')
             ->groupBy('weighbridge_cate_small_id')
-            ->get();
+            ->get()->toArray();
 
         foreach ($datalist as $key => $item) {
-            $datalist[$key]['val'] = (float)($item->val/1000);
+            $datalist[$key]['val'] = (float)($item['val']/1000);
             $cate_big = DB::table('weighbridge_cate_small')
                 ->join('weighbridge_cate_big', 'weighbridge_cate_big.id', '=', 'weighbridge_cate_small.weighbridge_cate_big_id')
                 ->select(['weighbridge_cate_big.id', 'weighbridge_cate_big.name', 'weighbridge_cate_small.name as small_name'])
-                ->where('weighbridge_cate_small.id', $item->weighbridge_cate_small_id)
+                ->where('weighbridge_cate_small.id', $item['weighbridge_cate_small_id'])
                 ->first();
             $datalist[$key]['name'] = $cate_big ? $cate_big->name : '';
             $datalist[$key]['id'] = $cate_big ? $cate_big->id : '';
