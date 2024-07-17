@@ -441,6 +441,7 @@ class ScreenController extends Controller
                 $item['datalist'] = $lists;
                 $item['hb'] = $hb;
             }
+            unset($item['no_hb']);
             $datalist[] = $item;
         }
 
