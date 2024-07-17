@@ -289,27 +289,27 @@ class ScreenController extends Controller
 
             //上网电量和厂用电量 各个电厂累计
             foreach ($season_electricity as $code => $factory_electricity) {
-                Log::info("00000000000");
-                Log::info(var_export($factory_electricity, true));
-                if(!isset($final[$factory_electricity['en_name']])){
-                    $final[$factory_electricity['en_name']] = array(
-                        'en_name' => $factory_electricity['en_name'],
-                        'cn_name' => $factory_electricity['cn_name'],
-                        'messure' => $factory_electricity['messure'],
-                        'datalist' => [],
-                        'no_hb' => true
-                    );
-                }
+                foreach ($factory_electricity as $k1 => $itemlist) {
+                    if(!isset($final[$itemlist['en_name']])){
+                        $final[$itemlist['en_name']] = array(
+                            'en_name' => $itemlist['en_name'],
+                            'cn_name' => $itemlist['cn_name'],
+                            'messure' => $itemlist['messure'],
+                            'datalist' => [],
+                            'no_hb' => true
+                        );
+                    }
 
-                if($factory_electricity['datalist'] && count($factory_electricity['datalist']) > 0){
-                    foreach ($factory_electricity['datalist'] as $season => $value) {
-                        if(isset($final[$factory_electricity['en_name']]['datalist'][$season])){
-                            $final[$factory_electricity['en_name']]['datalist'][$season] = (float)$value + $final[$factory_electricity['en_name']]['datalist'][$season];
+                    if($itemlist['datalist'] && count($itemlist['datalist']) > 0){
+                        foreach ($itemlist['datalist'] as $season => $value) {
+                            if(isset($final[$itemlist['en_name']]['datalist'][$season])){
+                                $final[$itemlist['en_name']]['datalist'][$season] = (float)$value + $final[$itemlist['en_name']]['datalist'][$season];
+                            }
+                            else{
+                                $final[$itemlist['en_name']]['datalist'][$season] = (float)$value;
+                            }
+                            $final[$itemlist['en_name']]['datalist'][$season] = (float)sprintf("%01.2f", $final[$itemlist['en_name']]['datalist'][$season]);
                         }
-                        else{
-                            $final[$factory_electricity['en_name']]['datalist'][$season] = (float)$value;
-                        }
-                        $final[$factory_electricity['en_name']]['datalist'][$season] = (float)sprintf("%01.2f", $final[$factory_electricity['en_name']]['datalist'][$season]);
                     }
                 }
             }
