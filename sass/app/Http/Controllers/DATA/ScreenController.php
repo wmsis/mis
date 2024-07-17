@@ -350,6 +350,7 @@ class ScreenController extends Controller
                         else{
                             $final[$factory_weigh_bridge['en_name']]['datalist'][$item['name']] = (float)$item['val'];
                         }
+                        $final[$factory_weigh_bridge['en_name']]['datalist'][$item['name']] = (float)sprintf("%01.2f", $final[$factory_weigh_bridge['en_name']]['datalist'][$item['name']]);
                     }
                 }
             }

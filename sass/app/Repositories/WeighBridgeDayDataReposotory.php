@@ -86,7 +86,7 @@ class WeighBridgeDayDataReposotory extends BaseRepository
             ->get()->toArray();
 
         foreach ($datalist as $key => $item) {
-            $datalist[$key]['val'] = (float)sprintf("%01.2f", $item['val']/1000);
+            $datalist[$key]['val'] = $item['val']/1000;
             $cate_big = DB::table('weighbridge_cate_small')
                 ->join('weighbridge_cate_big', 'weighbridge_cate_big.id', '=', 'weighbridge_cate_small.weighbridge_cate_big_id')
                 ->select(['weighbridge_cate_big.id', 'weighbridge_cate_big.name', 'weighbridge_cate_small.name as small_name'])
