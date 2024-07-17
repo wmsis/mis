@@ -358,7 +358,7 @@ class ScreenController extends Controller
                 $final[$k1]['ratio'] = [];
                 $firstKey = array_key_first($item['datalist']);
                 $firstValue = $item['datalist'][$firstKey];         //关联数组第一条数据
-                unset(($final[$k1]['datalist'][$firstKey]));         //删除第一条数据
+                unset($final[$k1]['datalist'][$firstKey]);         //删除第一条数据
                 $i = 0;
                 foreach ($final[$k1]['datalist'] as $date => $data) {
                     if($i==0){
@@ -373,7 +373,7 @@ class ScreenController extends Controller
                     $i++;
                 }
             }
-            unset(($final[$k1]['canRatio']));
+            unset($final[$k1]['canRatio']);
         }
 
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $datalist);
