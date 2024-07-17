@@ -288,26 +288,26 @@ class ScreenController extends Controller
             }
 
             //上网电量和厂用电量 各个电厂累计
-            foreach ($season_electricity as $code => $factory_weigh_bridge) {
-                if(!isset($final[$factory_weigh_bridge['en_name']])){
-                    $final[$factory_weigh_bridge['en_name']] = array(
-                        'en_name' => $factory_weigh_bridge['en_name'],
-                        'cn_name' => $factory_weigh_bridge['cn_name'],
-                        'messure' => $factory_weigh_bridge['messure'],
+            foreach ($season_electricity as $code => $factory_electricity) {
+                if(!isset($final[$factory_electricity['en_name']])){
+                    $final[$factory_electricity['en_name']] = array(
+                        'en_name' => $factory_electricity['en_name'],
+                        'cn_name' => $factory_electricity['cn_name'],
+                        'messure' => $factory_electricity['messure'],
                         'datalist' => [],
                         'no_hb' => true
                     );
                 }
 
-                if($factory_weigh_bridge['datalist'] && count($factory_weigh_bridge['datalist']) > 0){
-                    foreach ($factory_weigh_bridge['datalist'] as $season => $value) {
-                        if(isset($final[$factory_weigh_bridge['en_name']]['datalist'][$season])){
-                            $final[$factory_weigh_bridge['en_name']]['datalist'][$season] = (float)$value + $final[$factory_weigh_bridge['en_name']]['datalist'][$season];
+                if($factory_electricity['datalist'] && count($factory_electricity['datalist']) > 0){
+                    foreach ($factory_electricity['datalist'] as $season => $value) {
+                        if(isset($final[$factory_electricity['en_name']]['datalist'][$season])){
+                            $final[$factory_electricity['en_name']]['datalist'][$season] = (float)$value + $final[$factory_electricity['en_name']]['datalist'][$season];
                         }
                         else{
-                            $final[$factory_weigh_bridge['en_name']]['datalist'][$season] = (float)$value;
+                            $final[$factory_electricity['en_name']]['datalist'][$season] = (float)$value;
                         }
-                        $final[$factory_weigh_bridge['en_name']]['datalist'][$season] = (float)sprintf("%01.2f", $final[$factory_weigh_bridge['en_name']]['datalist'][$season]);
+                        $final[$factory_electricity['en_name']]['datalist'][$season] = (float)sprintf("%01.2f", $final[$factory_electricity['en_name']]['datalist'][$season]);
                     }
                 }
             }
