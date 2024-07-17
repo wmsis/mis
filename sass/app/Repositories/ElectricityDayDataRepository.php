@@ -51,8 +51,8 @@ class ElectricityDayDataRepository extends BaseRepository
             $final[] = array(
                 'cn_name' => $item->cn_name,
                 'en_name' => $item->en_name,
-                'value' => $sum_value,
-                'messure' => 'KWH'
+                'value' => (float)sprintf("%01.2f", (float)$sum_value/10000),
+                'messure' => '万度'
             );
         }
 
@@ -75,10 +75,14 @@ class ElectricityDayDataRepository extends BaseRepository
                 ->groupBy('power_day_data_' . $factory . '.date')
                 ->get();
 
+            foreach ($datalist as $key => $value) {
+                $datalist[$key]['val'] = (float)sprintf("%01.2f", (float)$value['val']/10000);
+            }
+
             $temp['datalist'] = $datalist;
             $temp['en_name'] = $item->en_name;
             $temp['cn_name'] = $item->cn_name;
-            $temp['messure'] = 'KWH';
+            $temp['messure'] = '万度';
             $final[] = $temp;
         }
 
