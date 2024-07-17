@@ -250,7 +250,7 @@ class ScreenController extends Controller
                 }
             }
 
-            //上网电量和厂用电量
+            //上网电量和厂用电量 各个电厂累计
             foreach ($month_electricity as $code => $factory_electricity) {
                 foreach ($factory_electricity as $k1 => $itemlist) {
                     //不存在则赋初始值
@@ -279,7 +279,7 @@ class ScreenController extends Controller
                 }
             }
 
-            //垃圾入炉量
+            //垃圾入炉量 各个电厂累计
             foreach ($month_grab_garbage as $code => $factory_grab_garbage) {
                 //不存在则赋初始值
                 if(!isset($final[$factory_grab_garbage['en_name']])){
@@ -304,7 +304,7 @@ class ScreenController extends Controller
                 }
             }
 
-            //垃圾入库量
+            //垃圾入库量 各个电厂累计
             foreach ($month_weigh_bridge as $code => $factory_weigh_bridge) {
                 //不存在则赋初始值
                 if(!isset($final[$factory_weigh_bridge['en_name']])){
@@ -329,7 +329,7 @@ class ScreenController extends Controller
                 }
             }
 
-            //垃圾入库类别
+            //垃圾入库类别 各个电厂累计
             foreach ($type_weigh_bridge as $code => $factory_weigh_bridge) {
                 if(!isset($final[$factory_weigh_bridge['en_name']])){
                     $final[$factory_weigh_bridge['en_name']] = array(
@@ -353,10 +353,7 @@ class ScreenController extends Controller
             }
         }
 
-        $datalist = [];
-        foreach ($final as $key => $item) {
-            $datalist[] = $item;
-        }
+        $datalist = array_values($final);
 
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $datalist);
     }
