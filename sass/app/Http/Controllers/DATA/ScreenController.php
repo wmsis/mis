@@ -215,7 +215,7 @@ class ScreenController extends Controller
         $electricityObj = new ElectricityDayDataRepository();
         $grabGarbageObj = new GrabGarbageDayDataReposotory();
         $weighBridgeObj = new WeighBridgeDayDataReposotory();
-        $begin_timestamp = $start ? (strtotime($start)-24*60*60) : time() - 14 * 24 * 60 * 60;
+        $begin_timestamp = $start ? strtotime($start) : time() - 14 * 24 * 60 * 60;
         $end_timestamp = $end ? strtotime($end) : time();
         $start_date = date('Y-m-d', $begin_timestamp);
         $end_date = date('Y-m-d', $end_timestamp);
@@ -241,11 +241,12 @@ class ScreenController extends Controller
             }
 
             //获取各个电厂的曲线数据
+            $the_day_before_start_date = date('Y-m-d', $begin_timestamp-24*60*60);
             foreach ($factories as $kf => $factory) {
                 if($factory->code){
-                    $month_electricity[$factory->code] = $electricityObj->chartData($start_date, $end_date, $factory->code);  //用电量
-                    $month_grab_garbage[$factory->code] = $grabGarbageObj->chartData($start_date, $end_date, $factory->code);  //垃圾入炉量
-                    $month_weigh_bridge[$factory->code] = $weighBridgeObj->chartData($start_date, $end_date, $factory->code);  //垃圾入库量
+                    $month_electricity[$factory->code] = $electricityObj->chartData($the_day_before_start_date, $end_date, $factory->code);  //用电量
+                    $month_grab_garbage[$factory->code] = $grabGarbageObj->chartData($the_day_before_start_date, $end_date, $factory->code);  //垃圾入炉量
+                    $month_weigh_bridge[$factory->code] = $weighBridgeObj->chartData($the_day_before_start_date, $end_date, $factory->code);  //垃圾入库量
                     $type_weigh_bridge[$factory->code] = $weighBridgeObj->chartType($start_date, $end_date, $factory->code);  //垃圾入库类别统计
                 }
             }
@@ -313,6 +314,7 @@ class ScreenController extends Controller
                         'cn_name' => $factory_weigh_bridge['cn_name'],
                         'messure' => $factory_weigh_bridge['messure'],
                         'datalist' => $datelist,
+                        'hb' => $datelist,
                     );
                 }
 
@@ -353,27 +355,31 @@ class ScreenController extends Controller
             }
         }
 
-        // foreach ($final as $k1 => $item) {
-        //     $final[$k1]['ratio'] = [];
-        //     $firstKey = array_key_first($item['datalist']);
-        //     $firstValue = $item['datalist'][$firstKey];         //关联数组第一条数据
-        //     unset(($final[$k1]['datalist'][$firstKey]);         //删除第一条数据
-        //     $i = 0;
-        //     foreach ($final[$k1]['datalist'] as $date => $data) {
-        //         if($i==0){
-        //             $ratio = ((float)$firstValue) ? 100 * ((float)$data - (float)$firstValue)/((float)$firstValue) : 0;
-        //         }
-        //         else{
-        //             $yestoday = date('Y-m-d', (strtotime($date)-24*60*60));
-        //             $ratio = ((float)($final[$k1]['datalist'][$yestoday])) ? 100 * ((float)$data - ((float)($final[$k1]['datalist'][$yestoday])))/((float)($final[$k1]['datalist'][$yestoday])) : 0;
-        //         }
-        //         $ratio = strpos($ratio, '.') !== false ? (float)sprintf("%01.2f", $ratio) : $ratio;
-        //         $final[$k1]['ratio'][$date] = $ratio;
-        //         $i++;
-        //     }
-        // }
+        $datalist = [];
+        foreach ($final as $k1 => $item) {
+            $type = config('standard.not_dcs.ljrkl.en_name');
+            if($item['en_name'] != $type){
+                //非垃圾类别的去处第一条数据
+                $i = 0 ;
+                $lists = [];
+                $hb = [];
+                $preValue = 0;
+                foreach ($item['datalist'] as $date => $value) {
+                    if($i != 0){
+                        $lists[$date] = $value;
+                        $ratio = $preValue ? 100 * ($value - $preValue)/$preValue : 0;
+                        $ratio = strpos($ratio, '.') !== false ? (float)sprintf("%01.2f", $ratio) : $ratio;
+                        $hb[$date] = $ratio;
+                    }
 
-        $datalist = array_values($final);
+                    $preValue = $value;
+                    $i++;
+                }
+                $item['datalist'] = $lists;
+                $item['hb'] = $hb;
+            }
+            $datalist[] = $item;
+        }
 
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $datalist);
     }

@@ -54,32 +54,17 @@ class WeighBridgeDayDataReposotory extends BaseRepository
         $weighBridgeObj = (new WeighBridgeDayData())->setTable($table);
 
         //获取日期范围内具体数据
-        $start = date("Y-m-d", strtotime($start)-24*60*60);
-        $temp = $weighBridgeObj->where('date', '>=', $start)
+        $datalist = $weighBridgeObj->where('date', '>=', $start)
             ->where('date', '<=', $end)
             ->selectRaw('SUM(value) as val, date')
             ->groupBy('date')
             ->orderBy('date', 'ASC')
             ->get();
 
-        $i = 0 ;
-        $datalist = [];
-        $hblist = [];
-        $preValue = 0;
-        foreach ($temp as $key => $item) {
-            $currentValue = (float)($item->val/1000);
-            if($i != 0){
-                $datalist[] = $item;
-                $ratio = $preValue ? 100 * ($currentValue - $preValue)/$preValue : 0;
-                $ratio = strpos($ratio, '.') !== false ? (float)sprintf("%01.2f", $ratio) : $ratio;
-                $hblist[] = $ratio;
-            }
-
-            $preValue = $currentValue;
-            $i++;
+        foreach ($datalist as $key => $item) {
+            $datalist[$key]['val'] = (float)($item->val/1000);
         }
         $final['datalist'] = $datalist;
-        $final['hb'] = $hblist;
         $final['en_name'] = config('standard.not_dcs.ljrkl.en_name');
         $final['cn_name'] = config('standard.not_dcs.ljrkl.cn_name');
         $final['messure'] = '吨';
@@ -114,7 +99,6 @@ class WeighBridgeDayDataReposotory extends BaseRepository
         $final['en_name'] = config('standard.not_dcs.ljrk_type.en_name');
         $final['cn_name'] = config('standard.not_dcs.ljrk_type.cn_name');
         $final['messure'] = '吨';
-        $final['ratio'] = false;
 
         return $final;
     }
