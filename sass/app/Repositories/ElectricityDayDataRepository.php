@@ -83,7 +83,6 @@ class ElectricityDayDataRepository extends BaseRepository
             $temp['en_name'] = $item->en_name;
             $temp['cn_name'] = $item->cn_name;
             $temp['messure'] = '万度';
-            $temp['canRatio'] = true;
             $final[] = $temp;
         }
 
