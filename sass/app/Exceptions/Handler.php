@@ -16,6 +16,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use GuzzleHttp\Exception\ConnectException;
 use Illuminate\Auth\AuthenticationException;
+use App\Exceptions\CustomException;
 use UtilService;
 use Log;
 
@@ -29,6 +30,7 @@ class Handler extends ExceptionHandler
     const AJAX_TOKEN_BLACKLISTED = 80002;
     const AJAX_TOKEN_INVALID = 80003;
     const AJAX_TOKEN_NOT_PROVIDE = 80004;
+    const CUSTOM_EXCEPTION = 90001;
 
     /**
      * A list of the exception types that are not reported.
@@ -104,6 +106,10 @@ class Handler extends ExceptionHandler
         }
         elseif($exception instanceof ConnectException){
             $res = UtilService::format_data(self::AJAX_CONN_ERROR, '连接异常', '');
+            return response()->json($res);
+        }
+        elseif($exception instanceof CustomException){
+            $res = UtilService::format_data(self::CUSTOM_EXCEPTION, $exception->message, '');
             return response()->json($res);
         }
         else{

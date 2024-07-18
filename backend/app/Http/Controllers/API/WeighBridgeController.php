@@ -238,7 +238,7 @@ class WeighBridgeController extends Controller
                         "weighid" => $item['weighid'],
                         "weighbridge_cate_small_id" => $row_samll_cate['id'],
                         'updated_at' => date('Y-m-d H:i:s')
-                    )
+                    );
                 }
                 else{
                     //添加到新增数据
