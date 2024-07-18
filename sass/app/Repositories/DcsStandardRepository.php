@@ -24,7 +24,7 @@ class DcsStandardRepository extends BaseRepository
         return HistorianFormatData::class;
     }
 
-    public function countData($start, $end, $factory, $tenement_mongo_conn=null)
+    public function rangeData($start, $end, $factory, $tenement_mongo_conn=null)
     {
         $final = [];
         $range = array(
