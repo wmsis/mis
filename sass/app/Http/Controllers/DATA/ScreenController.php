@@ -515,10 +515,14 @@ class ScreenController extends Controller
         //获取电厂组织
         $factory = Orgnization::where('id', $factory_id)->first();
         if($factory){
+            Log::info("000000000000");
             $datalist = $dcsStandardObj->countData($start_datetime, $end_datetime, $factory, $this->mongo_conn);
+            Log::info("88888888888");
+            Log::info(var_export($datalist, true));
             return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $datalist);
         }
         else{
+            Log::info("999999999999999");
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, []);
         }
     }
