@@ -131,7 +131,7 @@ class ElectricityDayDataRepository extends BaseRepository
 
             $final[] = array(
                 'cn_name' => '季度' . $item->cn_name,
-                'en_name' => 'season_' . $item->en_name,
+                'en_name' => .$item->en_name . '_season',
                 'datalist' => $seasondata,
                 'messure' => '万度'
             );
