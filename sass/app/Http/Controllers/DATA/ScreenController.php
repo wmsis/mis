@@ -503,6 +503,9 @@ class ScreenController extends Controller
         $factory_id = $request->input('factory_id');
         $start = $request->input('start');
         $end = $request->input('end');
+        if(!$factory_id){
+            return UtilService::format_data(self::AJAX_FAIL, '电厂ID不能为空', '');
+        }
 
         //初始化参数
         $final = [];
