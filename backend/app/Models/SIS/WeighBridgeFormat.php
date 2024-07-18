@@ -58,4 +58,19 @@ class WeighBridgeFormat extends Model
     public function insertMany($params){
         return self::insert($params);
     }
+
+    public function updateOne($params, $where){
+        $i = 0;
+        $obj = null;
+        foreach ($where as $key => $value) {
+            if($i == 0){
+                $obj = self::where($key, $value);
+            }
+            else{
+                $obj = $obj->where($key, $value);
+            }
+            $i++;
+        }
+        return $obj->update($params);
+    }
 }

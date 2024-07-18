@@ -52,6 +52,10 @@ class WeighBridge extends Model
         return self::where('weighid', $id)->first();
     }
 
+    public function destroyByWeighId($id){
+        return self::where('weighid', $id)->delete();
+    }
+
 }
 
 /**

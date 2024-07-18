@@ -191,8 +191,10 @@ class WeighBridgeController extends Controller
         }
         else{
             $datelist = [];
-            $formatlist = [];
+            $insertlist = [];
+            $insertFormatList = [];
             $updatelist = [];
+            $updateFormatList = [];
             $deletelist = [];
             $datalist = json_decode($params['input'], true);
             foreach ($datalist[0] as $key => $value) {
@@ -207,7 +209,7 @@ class WeighBridgeController extends Controller
             $WeighBridgeFormatObj = (new WeighBridgeFormat())->setConnection($tenement)->setTable($tb_format);
             $WeighBridgeCateSmallObj = (new WeighbridgeCateSmall())->setConnection($tenement);
 
-            //查询数据是否存在，不存在则增加
+            //查询数据是否存在，不存在则增加，存在则更新
             foreach ($datalist as $key => $item) {
                 $date = date('Y-m-d', strtotime($item['taredatetime']));
                 if(!in_array($date, $datelist)){
@@ -224,14 +226,25 @@ class WeighBridgeController extends Controller
                     ]);
                 }
 
-                //查询是否有数据，有则更新
+                //查询是否有数据，有则更新，否则新增
                 $local_row = $WeighBridgeObj->findByWeighId($item['weighid']);
                 if($local_row && isset($local_row->id)){
+                    //添加到更新数据
                     $updatelist[] = $datalist[$key];
-                    unset($datalist[$key]);
+                    $updateFormatList[] = array(
+                        "grossdatetime" => $item['grossdatetime'],
+                        "taredatetime" => $item['taredatetime'],
+                        "net" => $item['net'],
+                        "weighid" => $item['weighid'],
+                        "weighbridge_cate_small_id" => $row_samll_cate['id'],
+                        'updated_at' => date('Y-m-d H:i:s')
+                    )
                 }
                 else{
-                    $formatlist[] = array(
+                    //添加到新增数据
+                    $insertlist[] = $datalist[$key];
+                    //添加到格式化数据
+                    $insertFormatList[] = array(
                         'grossdatetime' => $item['grossdatetime'],
                         'taredatetime' => $item['taredatetime'],
                         'net' => $item['net'],
@@ -243,19 +256,22 @@ class WeighBridgeController extends Controller
                 }
             }
 
-            if(!empty($datalist)){
+            if(!empty($insertlist)){
                 DB::beginTransaction();
                 try {
-                    $WeighBridgeObj->insertMany($datalist);
-                    $WeighBridgeFormatObj->insertMany($formatlist);
+                    $WeighBridgeObj->insertMany($insertlist);
+                    $WeighBridgeFormatObj->insertMany($insertFormatList);
                     foreach ($updatelist as $key => $item) {
                         $where = array(
                             "weighid" => $item['weighid']
                         );
                         $WeighBridgeObj->updateOne($updatelist[$key], $where);
+                        $WeighBridgeFormatObj->updateOne($updateFormatList[$key], $where);
 
-                        if($item['datastatus'] == 0){
+                        //数据状态为删除时，删除数据
+                        if($item['datastatus'] == 9){
                             $WeighBridgeObj->destroyByWeighId($item['weighid']);
+                            $WeighBridgeFormatObj->destroyByWeighId($item['weighid']);
                         }
                     }
                     DB::commit();
