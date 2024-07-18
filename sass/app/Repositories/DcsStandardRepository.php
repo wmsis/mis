@@ -30,8 +30,8 @@ class DcsStandardRepository extends BaseRepository
         $range = array(
             0, 800, 850, 860, 870, 880, 890,
             900, 910, 920, 930, 940, 950, 960, 970, 980, 990,
-            1000, 1110, 1120, 1130, 1140, 1150, 1160, 1170, 1180, 1190,
-            1200, 1250, 1300, 1400
+            1000, 1010, 1020, 1030, 1040, 1050, 1060, 1070, 1080, 1090,
+            1100, 1150, 1200, 1300
         );
         $cfg = config('standard.boiler.GL1_LTSBWD_L');
         $standard = DcsStandard::where('type', 'dcs')->where('en_name', $cfg['en_name'])->first();
