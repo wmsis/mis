@@ -514,6 +514,9 @@ class ScreenController extends Controller
 
         //获取电厂组织
         $factory = Orgnization::where('id', $factory_id)->first();
+        Log::info("AAAAAAAAAAAAAAA");
+        Log::info(var_export($factory_id, true));
+        Log::info(var_export($factory, true));
         if($factory){
             Log::info("000000000000");
             $datalist = $dcsStandardObj->countData($start_datetime, $end_datetime, $factory, $this->mongo_conn);
