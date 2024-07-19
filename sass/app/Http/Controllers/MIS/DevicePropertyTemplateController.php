@@ -385,7 +385,7 @@ class DevicePropertyTemplateController extends Controller
                 if($row && $row->orgnization_id != $this->orgnization->id){
                     return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
                 }
-                elseif($row){
+                elseif($row && $properties){
                     $row->device_property_templates()->forceDelete();
                 }
 
