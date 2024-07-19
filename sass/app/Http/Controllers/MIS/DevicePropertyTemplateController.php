@@ -407,7 +407,8 @@ class DevicePropertyTemplateController extends Controller
                                 'type' => $property['type'],
                                 'name' => $property['name'],
                                 'value' => $property['value'],
-                                'default_value' => $property['default_value']
+                                'default_value' => $property['default_value'],
+                                'orgnization_id' => $this->orgnization->id
                             ]);
                         }
                     }
