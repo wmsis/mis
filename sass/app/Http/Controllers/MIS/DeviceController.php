@@ -483,6 +483,9 @@ class DeviceController extends Controller
                 if($row && $row->orgnization_id != $this->orgnization->id){
                     return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
                 }
+                elseif($row && $properties){
+                    $row->device_properties()->forceDelete();  //先删除以前的属性
+                }
 
                 $row->name = $name;
                 $row->code = $code;
@@ -502,7 +505,6 @@ class DeviceController extends Controller
                 $row->save();
 
                 //自定义属性
-                $row->device_properties()->forceDelete();  //先删除以前的属性
                 if($properties && !empty($properties) && count($properties) > 0){
                     foreach ($properties as $key => $property) {
                         if(isset($property['device_property_template_id']) && isset($property['value'])){
