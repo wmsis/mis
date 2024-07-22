@@ -9,6 +9,7 @@ use Illuminate\Database\QueryException;
 use UtilService;
 use App\Models\MIS\DevicePropertyTemplate;
 use App\Models\MIS\DeviceTemplate;
+use App\Models\MIS\DeviceProperty;
 use Log;
 
 class DevicePropertyTemplateController extends Controller
@@ -383,10 +384,20 @@ class DevicePropertyTemplateController extends Controller
             if ($id) {
                 $row = DeviceTemplate::find($id);
                 if($row && $row->orgnization_id != $this->orgnization->id){
+                    DB::rollback();
                     return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
                 }
                 elseif($row && $properties){
+                    $devicePropertyRow = DeviceProperty::where("device_property_template_id", $id)->first();
+                    if($devicePropertyRow){
+                        DB::rollback();
+                        return UtilService::format_data(self::AJAX_FAIL, "模板已被使用，不允许编辑属性", "");
+                    }
                     $row->device_property_templates()->forceDelete();
+                }
+                elseif(!$row){
+                    DB::rollback();
+                    return UtilService::format_data(self::AJAX_FAIL, "模板不存在", "");
                 }
 
                 $row->name = $name;
