@@ -388,11 +388,21 @@ class DevicePropertyTemplateController extends Controller
                     return UtilService::format_data(self::AJAX_FAIL, self::AJAX_ILLEGAL_MSG, '');
                 }
                 elseif($row && $properties){
-                    $devicePropertyRow = DeviceProperty::where("device_property_template_id", $id)->first();
-                    if($devicePropertyRow){
+                    //判断模板是否被使用
+                    $flag = false;
+                    foreach ($row->device_property_templates as $key => $device_property_template) {
+                        $devicePropertyRow = DeviceProperty::where("device_property_template_id", $device_property_template->id)->first();
+                        if($devicePropertyRow){
+                            $flag = true;
+                            break;
+                        }
+                    }
+
+                    if($flag){
                         DB::rollback();
                         return UtilService::format_data(self::AJAX_FAIL, "模板已被使用，不允许编辑属性", "");
                     }
+
                     $row->device_property_templates()->forceDelete();
                 }
                 elseif(!$row){
