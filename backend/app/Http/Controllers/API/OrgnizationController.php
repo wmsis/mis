@@ -183,6 +183,11 @@ class OrgnizationController extends Controller
                     'parent_id' => $item->parent_id,
                     'level' => $item->level,
                     'description' => $item->description,
+                    'longitude' => $item->longitude,
+                    'latitude' => $item->latitude,
+                    'address' => $item->address,
+                    'status' => $item->status,
+                    'electricity_ability' => $item->electricity_ability,
                     'children' => $this->children($item->id, $level)
                 );
             }
@@ -214,6 +219,11 @@ class OrgnizationController extends Controller
                 'parent_id' => $item->parent_id,
                 'level' => $item->level,
                 'description' => $item->description,
+                'longitude' => $item->longitude,
+                'latitude' => $item->latitude,
+                'address' => $item->address,
+                'status' => $item->status,
+                'electricity_ability' => $item->electricity_ability,
                 'children' => $children
             );
         }
@@ -300,6 +310,56 @@ class OrgnizationController extends Controller
      *             type="integer"
      *         ),
      *     ),
+     *     @OA\Parameter(
+     *         description="经度",
+     *         in="query",
+     *         name="longitude",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="纬度",
+     *         in="query",
+     *         name="latitude",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="地址",
+     *         in="query",
+     *         name="address",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="状态 normal正常运行, under_construction在建, closed关停",
+     *         in="query",
+     *         name="status",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="array",
+     *             default="normal",
+     *             @OA\Items(
+     *                 type="string",
+     *                 enum = {"normal", "under_construction", "closed"},
+     *             )
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         description="设计日发电能力 单位MW",
+     *         in="query",
+     *         name="electricity_ability",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="successful operation",
@@ -315,6 +375,11 @@ class OrgnizationController extends Controller
         $level = 1;
         $parent_id = $request->input('parent_id');
         $sort = $request->input('sort');
+        $longitude = $request->input('longitude');
+        $latitude = $request->input('latitude');
+        $address = $request->input('address');
+        $status = $request->input('status');
+        $electricity_ability = $request->input('electricity_ability');
 
         DB::beginTransaction();
         try {
@@ -331,6 +396,11 @@ class OrgnizationController extends Controller
                 $row->sub_title = $sub_title;
                 $row->parent_id = $parent_id;
                 $row->sort = $sort;
+                $row->longitude = $longitude;
+                $row->latitude = $latitude;
+                $row->address = $address;
+                $row->status = $status ? $status : 'normal';
+                $row->electricity_ability = $electricity_ability ? $electricity_ability : 0;
                 if($parent){
                     if($parent->level == 1){
                         //如果父组织是一级组织，祖先ID就为该组织ID
@@ -346,12 +416,14 @@ class OrgnizationController extends Controller
                 $row->save();
             }
             else {
-                $params = request(['name', 'code', 'description', 'sub_title', 'parent_id', 'sort']);
+                $params = request(['name', 'code', 'description', 'sub_title', 'parent_id', 'sort', 'longitude', 'latitude', 'address', 'status', 'electricity_ability']);
                 if($parent_id){
                     $parent = Orgnization::find($parent_id);
                     $level = $parent && $parent->level ? $parent->level + 1 : 1;
                 }
                 $params['level'] = $level;
+                $params['status'] = $params['status'] ? $params['status'] : 'normal';
+                $params['electricity_ability'] = $params['electricity_ability'] ? $params['electricity_ability'] : 0;
                 $row = Orgnization::create($params); //save 和 create 的不同之处在于 save 接收整个 Eloquent 模型实例而 create 接收原生 PHP 数组
                 if($parent){
                     if($parent->level == 1){

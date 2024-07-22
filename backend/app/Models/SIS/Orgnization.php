@@ -9,7 +9,7 @@ class Orgnization extends Model
 {
     use softDeletes;
     protected $table = 'orgnization';
-    protected $fillable = ['name', 'description', 'parent_id', 'level', 'sort', 'code', 'sub_title', 'ancestor_id'];
+    protected $fillable = ['name', 'description', 'parent_id', 'level', 'sort', 'code', 'sub_title', 'ancestor_id', 'longitude', 'latitude', 'address', 'status', 'electricity_ability'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',
@@ -98,6 +98,26 @@ class Orgnization extends Model
  *     @OA\Property(
  *         property="level",
  *         type="integer"
+ *     ),
+ *     @OA\Property(
+ *         property="longitude",
+ *         type="string"
+ *     ),
+ *     @OA\Property(
+ *         property="latitude",
+ *         type="string"
+ *     ),
+ *     @OA\Property(
+ *         property="address",
+ *         type="string"
+ *     ),
+ *     @OA\Property(
+ *         property="status",
+ *         type="string"
+ *     ),
+ *     @OA\Property(
+ *         property="electricity_ability",
+ *         type="string"
  *     )
  * )
  */

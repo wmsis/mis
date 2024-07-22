@@ -98,6 +98,26 @@ class Orgnization extends Model
  *     @OA\Property(
  *         property="level",
  *         type="integer"
+ *     ),
+ *     @OA\Property(
+ *         property="longitude",
+ *         type="string"
+ *     ),
+ *     @OA\Property(
+ *         property="latitude",
+ *         type="string"
+ *     ),
+ *     @OA\Property(
+ *         property="address",
+ *         type="string"
+ *     ),
+ *     @OA\Property(
+ *         property="status",
+ *         type="string"
+ *     ),
+ *     @OA\Property(
+ *         property="electricity_ability",
+ *         type="string"
  *     )
  * )
  */
