@@ -38,7 +38,7 @@ class DataAnalysisController extends Controller
     {
         $electricityObj = new ElectricityDayDataRepository();
         $key_values = array();
-        
+
         //2、昨日累计值
         $start = date('Y-m-d', time() - 24 * 60 * 60);
         $end = $start;
@@ -178,7 +178,7 @@ class DataAnalysisController extends Controller
                 $date = date('Y-m-d', $i);
                 foreach ($month_grab_garbage['datalist'] as $k2 => $item) {
                     if($item->date == $date){
-                        $grab_garbage_datalist[$date] = (float)$item->val;
+                        $grab_garbage_datalist[$date] = (float)sprintf("%01.2f", $item->val);
                         break;
                     }
                 }
