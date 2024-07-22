@@ -199,7 +199,7 @@ class InspectRuleController extends Controller
      */
     public function store(InspectRuleStoreRequest $request)
     {
-        $input = $request->only(['name', 'device_property_id', 'content', 'standard']);
+        $input = $request->only(['name','device_id', 'device_property_id', 'content', 'standard']);
         //判断是否有其他相同的名称
         $data = InspectRule::where('name', $input['name'])->first();
         if($data && $data->name){

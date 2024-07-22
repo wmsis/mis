@@ -11,6 +11,7 @@ use App\Models\MIS\Task;
 use App\Events\TaskEvent;
 use App\Models\User;
 use App\Http\Requests\API\TaskStoreRequest;
+use Illuminate\Support\Facades\DB;
 
 class TaskController extends Controller
 {
@@ -245,18 +246,24 @@ class TaskController extends Controller
      */
     public function store(TaskStoreRequest $request)
     {
-        $input = $request->only(['name', 'type', 'begin', 'end', 'user_id', 'device_id', 'content']);
+        $input = $request->only(['name', 'type', 'begin', 'end', 'user_id', 'device_id', 'content', 'inspect_rule_id']);
+        DB::beginTransaction();
         try {
             $publisher = auth('api')->user();
             $input['orgnization_id'] = $this->orgnization->id;
             $input['status'] = 'init';
             $input['publish_user_id'] = $publisher->id;
             $task = Task::create($input);
+            if($input['type'] == 'inspect' && $input['inspect_rule_id']){
+                $task->inspect_rules()->attach($input['inspect_rule_id']);
+            }
+            DB::commit();
 
             //事件发生调度
             $user = User::find($input['user_id']);
             TaskEvent::dispatch($user, $task, $this->tenement_conn);
         } catch (QueryException $e) {
+            DB::rollback();
             return UtilService::format_data(self::AJAX_FAIL, self::AJAX_FAIL_MSG, '');
         }
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $task);

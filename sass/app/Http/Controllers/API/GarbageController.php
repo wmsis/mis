@@ -172,8 +172,8 @@ class GarbageController extends Controller
         $datalist = $datalist->get();
         $key_values = [];
         foreach ($datalist as $k9 => $data) {
-            //$short_datetime = substr($data->datetime, 11, 5);
-            $key_values[$data->datetime] = $data->value;
+            $short_datetime = substr($data->datetime, 11, 5);
+            $key_values[$short_datetime] = $data->value;
         }
 
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $key_values);
