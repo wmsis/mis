@@ -39,7 +39,7 @@ use App\Models\MIS\DeviceTemplate;
  *     @OA\Property(
  *         property="orgnization_id",
  *         type="integer"
- *     ),
+ *     )
  * )
  */
 class DevicePropertyTemplate extends Model
