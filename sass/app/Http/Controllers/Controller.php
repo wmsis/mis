@@ -36,6 +36,7 @@ class Controller extends BaseController
             $this->orgnization = Orgnization::find($user->last_login_orgnization);
 
             $domain = $_SERVER['HTTP_HOST'];
+            Log::info($domain);
             $third = UtilService::third_domain($domain);
             if($third && strpos($domain, '10.99.99.88') === false && strpos($domain, '10.99.99.99') === false){ //没查询到10.99.99.88  排除测试环境
                 Log::info("22222222222");
