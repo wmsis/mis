@@ -421,10 +421,10 @@ class ScreenController extends Controller
 
         $datalist = [];
         foreach ($final as $k1 => $item) {
+            $lists = [];
             if(!isset($item['no_hb']) || (isset($item['no_hb']) && !$item['no_hb'])){
                 //非垃圾类别的去处第一条数据
                 $i = 0 ;
-                $lists = [];
                 $hb = [];
                 $preValue = 0;
                 foreach ($item['datalist'] as $date => $value) {
@@ -438,16 +438,14 @@ class ScreenController extends Controller
                     $preValue = $value;
                     $i++;
                 }
-                $item['datalist'] = $lists;
                 $item['hb'] = $hb;
             }
             else{
-                $lists = [];
                 foreach ($item['datalist'] as $date => $value) {
                     $lists[$date] = (float)sprintf("%01.0f", $value);
                 }
-                $item['datalist'] = $lists;
             }
+            $item['datalist'] = $lists;
             unset($item['no_hb']);
             $datalist[] = $item;
         }
