@@ -9,7 +9,6 @@ use Illuminate\Routing\Controller as BaseController;
 use UtilService;
 use App\Models\SIS\Orgnization;
 use Illuminate\Support\Facades\DB;
-use Log;
 
 class Controller extends BaseController
 {
@@ -29,30 +28,26 @@ class Controller extends BaseController
     protected $mongo_conn;
 
     public function __construct(){
+        $domain = $_SERVER['HTTP_HOST'];
+        $third = UtilService::third_domain($domain);
+        $third = str_replace("api", "", $third);
         $user = auth('api')->user();
-        Log::info("000000000000");
         if($user && isset($user->last_login_orgnization) && $user->last_login_orgnization){
-            Log::info("1111111111111111");
             $this->orgnization = Orgnization::find($user->last_login_orgnization);
-
-            $domain = $_SERVER['HTTP_HOST'];
-            Log::info($domain);
-            $third = UtilService::third_domain($domain);
             if($third && strpos($domain, '10.99.99.88') === false && strpos($domain, '10.99.99.99') === false){ //没查询到10.99.99.88  排除测试环境
-                Log::info("22222222222");
-                Log::info($third);
                 $tenement = DB::connection('mysql_mis')->table('tenement')->where('code', $third)->first();
                 $this->mongo_conn = $tenement && isset($tenement->code) ? $tenement->code . '_mongo': 'wmhb_mongo';
                 $this->tenement_conn = $tenement && isset($tenement->code) ? $tenement->code: 'wmhb';
             }
             else{
-                Log::info("3333333333333333");
                 $this->mongo_conn = 'wmhb_mongo';
                 $this->tenement_conn = 'wmhb';
             }
         }
-        else{
-            Log::info("99999999999999");
+        elseif($user){
+            $tenement = DB::connection('mysql_mis')->table('tenement')->where('code', $third)->first();
+            $this->mongo_conn = $tenement && isset($tenement->code) ? $tenement->code . '_mongo': 'wmhb_mongo';
+            $this->tenement_conn = $tenement && isset($tenement->code) ? $tenement->code: 'wmhb';
         }
     }
 }
