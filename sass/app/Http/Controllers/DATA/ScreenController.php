@@ -308,7 +308,7 @@ class ScreenController extends Controller
                             else{
                                 $final[$itemlist['en_name']]['datalist'][$season] = (float)$value;
                             }
-                            $final[$itemlist['en_name']]['datalist'][$season] = (float)sprintf("%01.2f", $final[$itemlist['en_name']]['datalist'][$season]);
+                            $final[$itemlist['en_name']]['datalist'][$season] = (float)sprintf("%01.1f", $final[$itemlist['en_name']]['datalist'][$season]);
                         }
                     }
                 }
@@ -429,9 +429,9 @@ class ScreenController extends Controller
                 $preValue = 0;
                 foreach ($item['datalist'] as $date => $value) {
                     if($i != 0){
-                        $lists[$date] = (float)sprintf("%01.2f", $value);
+                        $lists[$date] = (float)sprintf("%01.0f", $value);
                         $ratio = $preValue ? 100 * ($value - $preValue)/$preValue : 0;
-                        $ratio = strpos($ratio, '.') !== false ? (float)sprintf("%01.2f", $ratio) : $ratio;
+                        $ratio = strpos($ratio, '.') !== false ? (float)sprintf("%01.1f", $ratio) : $ratio;
                         $hb[$date] = $ratio;
                     }
 
