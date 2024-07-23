@@ -441,6 +441,13 @@ class ScreenController extends Controller
                 $item['datalist'] = $lists;
                 $item['hb'] = $hb;
             }
+            else{
+                $lists = [];
+                foreach ($item['datalist'] as $date => $value) {
+                    $lists[$date] = (float)sprintf("%01.0f", $value);
+                }
+                $item['datalist'] = $lists;
+            }
             unset($item['no_hb']);
             $datalist[] = $item;
         }
