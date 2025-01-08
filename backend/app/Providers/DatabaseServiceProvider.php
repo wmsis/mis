@@ -7,6 +7,7 @@ use Log;
 use Illuminate\Support\Facades\DB;
 use App\Models\SIS\ConfigGarbageDB;
 use App\Models\SIS\ConfigHistorianDB;
+use App\Models\SIS\ConfigAvsDB;
 
 class DatabaseServiceProvider extends ServiceProvider
 {
@@ -113,6 +114,28 @@ class DatabaseServiceProvider extends ServiceProvider
                     $new2[$conn_name] = $final;
                 }
             }
+
+            //地磅数据库连接
+            $obj_config_avs_db = (new ConfigAvsDB())->setConnection($item->code);
+            $avs_db_list = $obj_config_avs_db->whereNull("deleted_at")->get();
+            foreach ($avs_db_list as $k9 => $db) {
+                $conn = array (
+                    'driver' => 'sqlsrv',
+                    'url' => env('DATABASE_URL'),
+                    'host' => $db->ip,
+                    'port' => $db->port,
+                    'database' => $db->db_name,
+                    'username' => $db->user,
+                    'password' => $db->password,
+                    'charset' => 'utf8',
+                    'prefix' => '',
+                    'prefix_indexes' => true,
+                );
+                $final = array_merge($base, $conn);
+                $conn_name = 'avs_' . $item->id . '_' . $db->id;
+                $new2[$conn_name] = $final;
+            }
+
         }
 
         $this->app['config']['database.connections'] = array_merge($this->app['config']['database.connections'], $new2);
