@@ -58,7 +58,7 @@ class GrabGarbageDataJob implements ShouldQueue
             $timestamp = $latest_row->time;
         }
         else{
-            $timestamp = time() - 365 * 24 * 60 * 60;
+            $timestamp = time() - 30 * 24 * 60 * 60;
         }
 
         $obj_grab_garbage_factory->select(['*'])

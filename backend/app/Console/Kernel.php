@@ -12,6 +12,7 @@ use App\Console\Commands\CountDayElectricityData;
 use App\Console\Commands\CountDayGrabGarbageData;
 use App\Console\Commands\CountDayWeighBridgeData;
 use App\Console\Commands\CountDayPowerData;
+use App\Console\Commands\AvsDataCmd;
 
 class Kernel extends ConsoleKernel
 {
@@ -25,6 +26,7 @@ class Kernel extends ConsoleKernel
         CountDayGrabGarbageData::class,
         CountDayWeighBridgeData::class,
         CountDayPowerData::class,
+        AvsDataCmd::class
     ];
 
     /**
@@ -36,12 +38,10 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         //收集采集数据
-        $yestoday = date('Y-m-d', time() - 24 * 60 * 60);
-        $yestoday_cmd = 'collect:grabGarbageData --date=' . $yestoday;
         $schedule->command('collect:iec104data')->everyFiveMinutes();
-        $schedule->command('collect:grabGarbageData')->hourlyAt(30);//当天的数据  每小时第30分钟
-        $schedule->command($yestoday_cmd)->twiceDaily(1, 22);//前一天的数据
+        $schedule->command('collect:grabGarbageData')->hourlyAt(30);//当天的地磅数据  每小时第30分钟
         $schedule->command('collect:historianData')->everyFiveMinutes();
+        $schedule->command('collect avsdata')->hourlyAt(30);//当天的地磅数据  每小时第30分钟
 
         //每日累计数据
         $schedule->command('count:dayElectricityData')->everyMinute();
