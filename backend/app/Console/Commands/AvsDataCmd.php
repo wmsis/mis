@@ -62,13 +62,10 @@ class AvsDataCmd extends Command
             //循环电厂
             $factories = $orgObj->where('level', 2)->get();
             foreach ($factories as $k2 => $factory) {
-                Log::info("00000000000");
                 if($factory->code){
                     //具体电厂的抓斗数据库配置信息
-                    Log::info("11111111111111");
                     $row = $configDB->where('orgnization_id', $factory->id)->first();
                     if($row){
-                        Log::info("2222222222222222");
                         $remote_conn =  'avs_' . $tenement->id . '_' . $row->id;   //电厂地磅数据库连接名称
                         $local_table = 'weighbridge_' . $factory->code;            //本地存储数据库表名称
                         $local_format_table = 'weighbridge_format_' . $factory->code;            //本地存储数据库表名称

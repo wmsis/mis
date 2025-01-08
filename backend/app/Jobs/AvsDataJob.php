@@ -44,7 +44,6 @@ class AvsDataJob implements ShouldQueue
      */
     public function __construct($date=null, $tenement_conn=null, $remote_conn=null, $local_table=null, $avs_type=null, $local_format_table=null)
     {
-        Log::info("333333333333");
         $this->date = $date;
         $this->tenement_conn = $tenement_conn;
         $this->remote_conn = $remote_conn;
@@ -60,7 +59,6 @@ class AvsDataJob implements ShouldQueue
      */
     public function handle()
     {
-        Log::info("44444444444444444");
         try{
             $factoryAvsData = (new FactoryAvsData())->setConnection($this->remote_conn);  //连接电厂内部数据库（永强二期品牌地磅）
             $factoryWeighData = (new FactoryWeighData())->setConnection($this->remote_conn);  //连接电厂内部数据库（托利多）
@@ -75,7 +73,6 @@ class AvsDataJob implements ShouldQueue
             }
 
             if($this->avs_type == 'toledo'){
-                Log::info("555555555");
                 $rows = $factoryWeighData->select(['*'])
                 ->where('taredatetime', '>=',date("Y-m-d H:i:s", $timestamp))
                 ->whereNotNull("net")
@@ -84,7 +81,6 @@ class AvsDataJob implements ShouldQueue
                 ->get();
             }
             else{
-                Log::info("6666666666666");
                 $rows = $factoryAvsData->select(['*'])
                 ->where('TimeWeightingT', '>=',date("Y-m-d H:i:s", $timestamp))
                 ->whereNotNull("WeightNet")
@@ -95,11 +91,9 @@ class AvsDataJob implements ShouldQueue
             
             $params = [];
             if($rows && count($rows) > 0){
-                Log::info("77777777777777");
                 foreach ($rows as $key => $item) {
                     //本地不存在则插入
                     if($this->avs_type == 'toledo'){
-                        Log::info("8888888888888");
                         $params[] = array(
                             'truckno'=>$item['truckno'],
                             'productcode'=>$item['productcode'],
@@ -123,7 +117,6 @@ class AvsDataJob implements ShouldQueue
                         );
                     }
                     else{
-                        Log::info("99999999999999");
                         $params[] = array(
                             'truckno'=>$item['VehicleNo'],
                             'productcode'=>$item['GarbageType'],
@@ -140,7 +133,7 @@ class AvsDataJob implements ShouldQueue
                             'gross'=>$item['WeightGross'],
                             'tare'=>$item['WeightTare'],
                             'net'=>$item['WeightNet'],
-                            'datastatus'=>$item['RecordStatus'],
+                            'datastatus'=>$item['RecordStatus'] ? $item['RecordStatus'] : 1,
                             'weighid'=>$item['Id'],
                             'created_at' => $item['TimeWeightingT'],
                             'updated_at' => date('Y-m-d H:i:s')
@@ -176,13 +169,10 @@ class AvsDataJob implements ShouldQueue
 
         //查询数据是否存在，不存在则增加，存在则更新
         foreach ($params as $key => $item) {
-            Log::info("AAAAAAAAAAAAA");
             $date = date('Y-m-d', strtotime($item['taredatetime']));
             if(!in_array($date, $datelist)){
                 $datelist[] = $date;
             }
-            $params[$key]['created_at'] = date('Y-m-d H:i:s');
-            $params[$key]['updated_at'] = date('Y-m-d H:i:s');
 
             //判断小分类是否存在，不存在则新增
             $row_samll_cate = $WeighBridgeCateSmallObj->where('name', $item['product'])->first();
@@ -195,7 +185,6 @@ class AvsDataJob implements ShouldQueue
             //查询是否有数据，有则更新，否则新增
             $local_row = $WeighBridgeObj->findByWeighId($item['weighid']);
             if($local_row && isset($local_row->id)){
-                Log::info("BBBBBBBBBBBBBBBBBB");
                 //添加到更新数据
                 $updatelist[] = $params[$key];
                 $updateFormatList[] = array(
@@ -208,7 +197,6 @@ class AvsDataJob implements ShouldQueue
                 );
             }
             else{
-                Log::info("CCCCCCCCCCCCCCCCCC");
                 //添加到新增数据
                 $insertlist[] = $params[$key];
                 //添加到格式化数据
