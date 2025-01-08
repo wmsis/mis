@@ -66,87 +66,89 @@ class AvsDataJob implements ShouldQueue
         
             $latest_row = $localAvsData->findLatestReport();
             if($latest_row){
-                $datetime = $latest_row->taredatetime;
+                $timestamp = strtotime($latest_row->taredatetime);
             }
             else{
-                $datetime = date('Y-m-d H:i:s', time() - 365 * 24 * 60 * 60);
+                $timestamp = time() - 24 * 60 * 60;
             }
 
             if($this->avs_type == 'toledo'){
-                $dbObj = $factoryWeighData->select(['*'])
+                $rows = $factoryAvsData->select(['*'])
+                ->where('taredatetime', '>=',date("Y-m-d H:i:s", $timestamp))
                 ->whereNotNull("net")
-                ->where('taredatetime', '>=', $datetime)
-                ->orderBy("taredatetime", "ASC");
+                ->orderBy("taredatetime", "ASC")
+                ->limit(50)
+                ->get();
             }
             else{
-                $dbObj = $factoryAvsData->select(['*'])
+                $rows = $factoryAvsData->select(['*'])
+                ->where('TimeWeightingT', '>=',date("Y-m-d H:i:s", $timestamp))
                 ->whereNotNull("WeightNet")
-                ->where('TimeWeightingT', '>=', $datetime)
-                ->orderBy("TimeWeightingT", "ASC");
+                ->orderBy("TimeWeightingT", "ASC")
+                ->limit(50)
+                ->get();
             }
             
-            $dbObj->chunk(100, function ($rows) use ($localAvsData) {
-                $params = [];
-                if($rows && count($rows) > 0){
-                    foreach ($rows as $key => $item) {
-                        //本地不存在则插入
-                        if($this->avs_type == 'toledo'){
-                            $params[] = array(
-                                'truckno'=>$item['truckno'],
-                                'productcode'=>$item['productcode'],
-                                'product'=>$item['product'],
-                                'firstweight'=>$item['firstweight'],
-                                'secondweight'=>$item['secondweight'],
-                                'firstdatetime'=>$item['firstdatetime'],
-                                'seconddatetime'=>$item['seconddatetime'],
-                                'grossdatetime'=>$item['grossdatetime'],
-                                'taredatetime'=>$item['taredatetime'],
-                                'sender'=>$item['sender'],
-                                'transporter'=>$item['transporter'],
-                                'receiver'=>$item['receiver'],
-                                'gross'=>$item['gross'],
-                                'tare'=>$item['tare'],
-                                'net'=>$item['net'],
-                                'datastatus'=>$item['datastatus'],
-                                'weighid'=>$item['id'],
-                                'created_at' => $item['taredatetime'],
-                                'updated_at' => date('Y-m-d H:i:s')
-                            );
-                        }
-                        else{
-                            $params[] = array(
-                                'truckno'=>$item['VehicleNo'],
-                                'productcode'=>$item['GarbageType'],
-                                'product'=>$item['GarbageType'],
-                                'firstweight'=>$item['WeightGross'],
-                                'secondweight'=>$item['WeightTare'],
-                                'firstdatetime'=>$item['TimeWeightingG'],
-                                'seconddatetime'=>$item['TimeWeightingT'],
-                                'grossdatetime'=>$item['TimeWeightingG'],
-                                'taredatetime'=>$item['TimeWeightingT'],
-                                'sender'=>$item['Source'],
-                                'transporter'=>$item['TransDept'],
-                                'receiver'=>$item['DepartmentSTA'],
-                                'gross'=>$item['WeightGross'],
-                                'tare'=>$item['WeightTare'],
-                                'net'=>$item['WeightNet'],
-                                'datastatus'=>$item['RecordStatus'],
-                                'weighid'=>$item['Id'],
-                                'created_at' => $item['TimeWeightingT'],
-                                'updated_at' => date('Y-m-d H:i:s')
-                            );
-                        }
+            $params = [];
+            if($rows && count($rows) > 0){
+                foreach ($rows as $key => $item) {
+                    //本地不存在则插入
+                    if($this->avs_type == 'toledo'){
+                        $params[] = array(
+                            'truckno'=>$item['truckno'],
+                            'productcode'=>$item['productcode'],
+                            'product'=>$item['product'],
+                            'firstweight'=>$item['firstweight'],
+                            'secondweight'=>$item['secondweight'],
+                            'firstdatetime'=>$item['firstdatetime'],
+                            'seconddatetime'=>$item['seconddatetime'],
+                            'grossdatetime'=>$item['grossdatetime'],
+                            'taredatetime'=>$item['taredatetime'],
+                            'sender'=>$item['sender'],
+                            'transporter'=>$item['transporter'],
+                            'receiver'=>$item['receiver'],
+                            'gross'=>$item['gross'],
+                            'tare'=>$item['tare'],
+                            'net'=>$item['net'],
+                            'datastatus'=>$item['datastatus'],
+                            'weighid'=>$item['id'],
+                            'created_at' => $item['taredatetime'],
+                            'updated_at' => date('Y-m-d H:i:s')
+                        );
+                    }
+                    else{
+                        $params[] = array(
+                            'truckno'=>$item['VehicleNo'],
+                            'productcode'=>$item['GarbageType'],
+                            'product'=>$item['GarbageType'],
+                            'firstweight'=>$item['WeightGross'],
+                            'secondweight'=>$item['WeightTare'],
+                            'firstdatetime'=>$item['TimeWeightingG'],
+                            'seconddatetime'=>$item['TimeWeightingT'],
+                            'grossdatetime'=>$item['TimeWeightingG'],
+                            'taredatetime'=>$item['TimeWeightingT'],
+                            'sender'=>$item['Source'],
+                            'transporter'=>$item['TransDept'],
+                            'receiver'=>$item['DepartmentSTA'],
+                            'gross'=>$item['WeightGross'],
+                            'tare'=>$item['WeightTare'],
+                            'net'=>$item['WeightNet'],
+                            'datastatus'=>$item['RecordStatus'],
+                            'weighid'=>$item['Id'],
+                            'created_at' => $item['TimeWeightingT'],
+                            'updated_at' => date('Y-m-d H:i:s')
+                        );
                     }
                 }
+            }
 
-                if($params && count($params) > 0){
-                    $this->formatData($params);
-                    Log::info($this->date . '地磅数据插入成功'.count($params).'条');
-                }
-                else{
-                    Log::info($this->date . '地磅没有数据插入');
-                }
-            });
+            if($params && count($params) > 0){
+                $this->formatData($params);
+                Log::info($this->date . '地磅数据插入成功'.count($params).'条');
+            }
+            else{
+                Log::info($this->date . '地磅没有数据插入');
+            }
         }
         catch(ErrorException $ex){
             Log::info('连接电厂地磅数据库异常');
