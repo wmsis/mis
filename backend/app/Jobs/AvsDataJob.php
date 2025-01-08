@@ -181,8 +181,8 @@ class AvsDataJob implements ShouldQueue
             if(!in_array($date, $datelist)){
                 $datelist[] = $date;
             }
-            $datalist[$key]['created_at'] = date('Y-m-d H:i:s');
-            $datalist[$key]['updated_at'] = date('Y-m-d H:i:s');
+            $params[$key]['created_at'] = date('Y-m-d H:i:s');
+            $params[$key]['updated_at'] = date('Y-m-d H:i:s');
 
             //判断小分类是否存在，不存在则新增
             $row_samll_cate = $WeighBridgeCateSmallObj->where('name', $item['product'])->first();
@@ -197,7 +197,7 @@ class AvsDataJob implements ShouldQueue
             if($local_row && isset($local_row->id)){
                 Log::info("BBBBBBBBBBBBBBBBBB");
                 //添加到更新数据
-                $updatelist[] = $datalist[$key];
+                $updatelist[] = $params[$key];
                 $updateFormatList[] = array(
                     "grossdatetime" => $item['grossdatetime'],
                     "taredatetime" => $item['taredatetime'],
@@ -210,7 +210,7 @@ class AvsDataJob implements ShouldQueue
             else{
                 Log::info("CCCCCCCCCCCCCCCCCC");
                 //添加到新增数据
-                $insertlist[] = $datalist[$key];
+                $insertlist[] = $params[$key];
                 //添加到格式化数据
                 $insertFormatList[] = array(
                     'grossdatetime' => $item['grossdatetime'],
