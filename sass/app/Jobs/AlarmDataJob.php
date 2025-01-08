@@ -68,7 +68,7 @@ class AlarmDataJob implements ShouldQueue
                 ->first();
 
             if($latest_historian_data && $latest_historian_data->value){
-                //判断是否报警
+                //判断是否报警，大于最大值或小于最小值触发报警
                 if($latest_historian_data->value >= $item->max_value || $latest_historian_data->value <= $item->min_value){
                     if(($latest_alarm_record && $latest_alarm_record->end_time) || !$latest_alarm_record){
                         //有报警记录，并且报警结束时间不为空,或，或者没有报警记录，创建报警记录，记录报警开始时间
@@ -80,32 +80,41 @@ class AlarmDataJob implements ShouldQueue
                             "orgnization_id" => $this->factory->id
                         ]);
                     }
+                    elseif($latest_alarm_record && !$latest_alarm_record->end_time){
+                        //有报警记录，并且没有报警结束时间，如果大于报警周期，也触发报警
+                        $this->alarmMessage($latest_alarm_record, $item, $alarm_obj, $latest_historian_data);
+                    }
                 }
                 else{
-                    //有报警并且没有记录报警结束时间，记录报警结束时间
+                    //当前值没有达到报警阈值，报警结束，有报警并且没有记录报警结束时间，记录报警结束时间
                     if($latest_alarm_record && !$latest_alarm_record->end_time){
-                        $latest_alarm_record->end_time = date('Y-m-d H:i:s');
-                        $latest_alarm_record->save();
-
-                        $time_diff = time() - (int)strtotime($latest_alarm_record->start_time);
-                        $set_alarm_sustain = $item->period * $item->sustain;
-                        //报警时长大于设置的时长，需要报警，否则不需要
-                        if($time_diff > $set_alarm_sustain){
-                            $min = intval($time_diff/60);
-                            $content = '报警上限值为' . $item->max_value . '，下限值为' . $item->min_value . '，已经持续报警了' . $min . '分钟，当前值为' . $latest_historian_data->value;
-                            $alarm = $alarm_obj->create([
-                                "alarm_rule_id" => $item->id,
-                                "status" => 'init',
-                                "content" => $content,
-                                "orgnization_id" => $this->factory->id
-                            ]);
-
-                            //事件发生调度
-                            AlarmEvent::dispatch($alarm, $this->tenement_conn);
-                        }
+                        $this->alarmMessage($latest_alarm_record, $item, $alarm_obj, $latest_historian_data);
                     }
                 }
             }
+        }
+    }
+
+    private function alarmMessage($latest_alarm_record, $alarm_rule, $alarm_obj, $latest_historian_data){
+        $time_diff = time() - (int)strtotime($latest_alarm_record->start_time);
+        $set_alarm_sustain = $alarm_rule->period * $alarm_rule->sustain;//周期单位为秒
+        //报警时长大于设置的时长，需要报警，否则不需要
+        if($time_diff > $set_alarm_sustain){
+            //关闭当前报警
+            $latest_alarm_record->end_time = date('Y-m-d H:i:s');
+            $latest_alarm_record->save();
+
+            $min = intval($time_diff/60);
+            $content = '报警上限值为' . $alarm_rule->max_value . '，下限值为' . $alarm_rule->min_value . '，已经持续报警了' . $min . '分钟，当前值为' . round($latest_historian_data->value);
+            $alarm = $alarm_obj->create([
+                "alarm_rule_id" => $alarm_rule->id,
+                "status" => 'init',
+                "content" => $content,
+                "orgnization_id" => $this->factory->id
+            ]);
+
+            //事件发生调度
+            AlarmEvent::dispatch($alarm, $this->tenement_conn);
         }
     }
 }

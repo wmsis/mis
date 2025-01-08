@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use ErrorException;
 use App\Models\Factory\GrabGarbage as GrabGarbageFactoryModel;  //电厂数据模型
 use App\Models\SIS\GrabGarbage as GrabGarbageLocalModel;        //本地数据模型
 use Log;
@@ -43,45 +44,57 @@ class GrabGarbageDataJob implements ShouldQueue
      */
     public function handle()
     {
-        $params = [];
         try{
             $obj_grab_garbage_factory = (new GrabGarbageFactoryModel())->setConnection($this->remote_conn);  //连接电厂内部数据库
             $obj_grab_garbage_local = (new GrabGarbageLocalModel())->setConnection($this->tenement_conn)->setTable($this->local_table); //连接特定租户下面的本地数据库表
         }
-        catch(Exception $ex){
+        catch(ErrorException $ex){
             Log::info('连接电厂抓斗数据库异常');
             Log::info(var_export($ex, true));
         }
 
-        $rows = $obj_grab_garbage_factory->findByDate($this->date);
-        if($rows && count($rows) > 0){
-            foreach ($rows as $key => $item) {
-                $local_row = $obj_grab_garbage_local->findRowBySn($item->sn);
-                if(!$local_row){
-                    //本地不存在则插入
-                    $params[] = array(
-                        'allsn'=>$item['allsn'],
-                        'sn'=>$item['sn'],
-                        'time'=>$item['time'],
-                        'che'=>$item['che'],
-                        'dou'=>$item['dou'],
-                        'liao'=>$item['liao'],
-                        'code'=>$item['code'],
-                        'lost'=>$item['lost'],
-                        'hev'=>$item['hev'],
-                        'created_at' => date('Y-m-d H:i:s', intval($item['time'])),
-                        'updated_at' => date('Y-m-d H:i:s')
-                    );
-                }
-            }
-        }
-
-        if($params && count($params) > 0){
-            $res = $obj_grab_garbage_local->insertMany($params);
-            Log::info($this->date . '恩倍力抓斗数据插入成功'.count($params).'条');
+        $latest_row = $obj_grab_garbage_local->findLatestReport();
+        if($latest_row){
+            $timestamp = $latest_row->time;
         }
         else{
-            Log::info($this->date . '恩倍力抓斗没有数据插入');
+            $timestamp = time() - 365 * 24 * 60 * 60;
         }
+
+        $obj_grab_garbage_factory->select(['*'])
+            ->where('time', '>=',$timestamp)
+            ->orderBy("time", "ASC")
+            ->chunk(100, function ($rows) use ($obj_grab_garbage_local) {
+                $params = [];
+                if($rows && count($rows) > 0){
+                    foreach ($rows as $key => $item) {
+                        $local_row = $obj_grab_garbage_local->findRowBySn($item->sn);
+                        if(!$local_row){
+                            //本地不存在则插入
+                            $params[] = array(
+                                'allsn'=>$item['allsn'],
+                                'sn'=>$item['sn'],
+                                'time'=>$item['time'],
+                                'che'=>$item['che'],
+                                'dou'=>$item['dou'],
+                                'liao'=>$item['liao'],
+                                'code'=>$item['code'],
+                                'lost'=>$item['lost'],
+                                'hev'=>$item['hev'],
+                                'created_at' => date('Y-m-d H:i:s', intval($item['time'])),
+                                'updated_at' => date('Y-m-d H:i:s')
+                            );
+                        }
+                    }
+                }
+
+                if($params && count($params) > 0){
+                    $obj_grab_garbage_local->insertMany($params);
+                    Log::info($this->date . '恩倍力抓斗数据插入成功'.count($params).'条');
+                }
+                else{
+                    Log::info($this->date . '恩倍力抓斗没有数据插入');
+                }
+        });
     }
 }

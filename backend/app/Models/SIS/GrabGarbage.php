@@ -35,6 +35,10 @@ class GrabGarbage extends Model
     public function findRowBySn($sn){
         return self::where('sn', $sn)->first();
     }
+
+    public function findLatestReport(){
+        return self::orderBy("time", "DESC")->first();
+    }
 }
 
 /**

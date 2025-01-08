@@ -9,6 +9,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Database\QueryException;
 use App\Models\SIS\Electricity;
+use ErrorException;
 use Log;
 
 class IEC104DataJob implements ShouldQueue
@@ -47,8 +48,13 @@ class IEC104DataJob implements ShouldQueue
     {
         try {
             $this->start('master');
-        } catch (Exception $e) {
-            $this->start('slave');
+        } catch (ErrorException $e) {
+            try {
+                $this->start('slave');
+            } catch (ErrorException $e) {
+                sleep(10);
+                $this->start('master');
+            }
         }
     }
 

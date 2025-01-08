@@ -141,6 +141,7 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
         Route::prefix('dcs-standard')->group(function () {
             Route::get('lists', 'DcsStandardController@lists');
             Route::get('datalists', 'DcsStandardController@datalists');
+            Route::get('currentdata', 'DcsStandardController@currentdata');
         });
 
         //首页统计
@@ -198,6 +199,7 @@ Route::group(['middleware' => ['permission', 'cors', 'jwt.role:user', 'jwt.auth'
             'announcement' => AnnouncementController::class,
             'task' => TaskController::class,
             'inspect-rule' => InspectRuleController::class,
+            'inspect-point' => InspectPointController::class,
         ]);
 
         //班次管理

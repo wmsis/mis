@@ -18,6 +18,7 @@ use Log;
 use Config;
 use HistorianService;
 use MongoDB\BSON\UTCDateTime;
+use ErrorException;
 
 class HistorianDataJob implements ShouldQueue
 {
@@ -75,7 +76,7 @@ class HistorianDataJob implements ShouldQueue
             $obj_hitorian_factory = (new HistorianTag())->setConnection($this->tenement_conn)->setTable($this->local_tag_table);  //连接电厂数据库
             $obj_hitorian_local = (new HistorianData())->setConnection($this->tenement_mongo_conn)->setTable($this->local_data_table); //连接特定租户下面的本地数据库表
         }
-        catch(Exception $ex){
+        catch(ErrorException $ex){
             Log::info('连接电厂历史数据库异常');
             Log::info(var_export($ex, true));
         }
@@ -142,13 +143,13 @@ class HistorianDataJob implements ShouldQueue
             $obj_hitorian_factory = (new DcsData())->setConnection($this->remote_conn);  //连接电厂内部数据库
             $obj_hitorian_local = (new HistorianData())->setConnection($this->tenement_mongo_conn)->setTable($this->local_data_table); //连接特定租户下面的本地数据库表
         }
-        catch(Exception $ex){
+        catch(ErrorException $ex){
             Log::info('连接电厂历史数据库异常');
             Log::info(var_export($ex, true));
         }
 
-        $begin = date('Y-m-d H:i', strtotime($this->datetime)) . ':00'; //获取2min内的数据
-        $end = date('Y-m-d H:i', strtotime($this->datetime)) . ':15';
+        $begin = date('Y-m-d H:i', strtotime($this->datetime)) . ':00'; //获取1min内的数据
+        $end = date('Y-m-d H:i', strtotime($this->datetime)) . ':59';
         $start = new UTCDateTime(strtotime($begin)*1000);
         $stop = new UTCDateTime(strtotime($end)*1000);
         $obj_hitorian_factory->select(['tag_name', 'datetime', 'value'])

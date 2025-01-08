@@ -981,6 +981,60 @@
                         "schema": {
                             "type": "integer"
                         }
+                    },
+                    {
+                        "name": "longitude",
+                        "in": "query",
+                        "description": "经度",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "latitude",
+                        "in": "query",
+                        "description": "纬度",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "address",
+                        "in": "query",
+                        "description": "地址",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "状态 normal正常运行, under_construction在建, closed关停",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "normal",
+                                    "under_construction",
+                                    "closed"
+                                ]
+                            },
+                            "default": "normal"
+                        }
+                    },
+                    {
+                        "name": "electricity_ability",
+                        "in": "query",
+                        "description": "设计日发电能力 单位MW",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
@@ -9356,6 +9410,9 @@
                 "properties": {
                     "id": {
                         "description": "创建数据模型",
+                        "type": "integer"
+                    },
+                    "device_id": {
                         "type": "integer"
                     },
                     "device_property_id": {

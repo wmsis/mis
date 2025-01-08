@@ -18,6 +18,7 @@ use App\Models\User;
 use App\Models\SIS\Orgnization;
 use App\Models\SIS\ConfigHistorianDB;
 use App\Models\Factory\DcsData;
+use MongoDB\BSON\UTCDateTime;
 use Log;
 
 class HistorianTagController extends Controller
@@ -446,15 +447,16 @@ class HistorianTagController extends Controller
         set_time_limit(0);
         $org = Orgnization::where('code', $factory)->first()->toArray();
         $cfg = ConfigHistorianDB::where('orgnization_id', $org['id'])->first()->toArray(); //电厂的数据库配置信息
-        $start = date('Y-m-d', time()-24*60*60) . ' 00:00:00';
-        $end = date('Y-m-d', time()-24*60*60) . ' 00:59:59';
+        $begin = date('Y-m-d H:i:s', time()-10*60);
+        $end = date('Y-m-d H:i:s', time());
+        $start = new UTCDateTime(strtotime($begin)*1000);
+        $stop = new UTCDateTime(strtotime($end)*1000);
         $factory_dcs_db_conn = 'historian_' . $this->tenement['id'] . '_' . $cfg['id']; //电厂MongoDB数据连接
         $tb = 'historian_tag_' . $factory;
         $historianTag = (new HistorianTag())->setTable($tb);  //保存tag的MongoDB集合
         $dcsData = (new DcsData())->setConnection($factory_dcs_db_conn); //电厂本地MongoDB数据集合
         $dcsData->select(['tag_name'])
-                ->where('datetime', '>=', $start)
-                ->where('datetime', '<=', $end)
+                ->whereBetween('datetime', array($start, $stop))
                 ->groupBy('tag_name')
                 ->chunk(100, function ($tagslist) use ($historianTag) {
                     foreach ($tagslist as $key => $tag) {

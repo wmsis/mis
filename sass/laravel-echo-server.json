@@ -1,5 +1,5 @@
 {
-	"authHost": "http://socket.wm-mis.com",
+	"authHost": "http://61.153.33.106",
 	"authEndpoint": "/broadcasting/auth",
 	"clients": [],
 	"database": "redis",

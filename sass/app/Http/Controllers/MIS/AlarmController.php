@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use UtilService;
 use App\Models\MIS\Alarm;
 use App\Models\MIS\AlarmRule;
+use App\Models\SIS\DcsStandard;
+use App\Models\MIS\Device;
+use App\Models\MIS\AlarmGrade;
 
 class AlarmController extends Controller
 {
@@ -74,9 +77,16 @@ class AlarmController extends Controller
             $rows = $rows->where('content', 'like', "%{$content}%");
         }
         $total = $rows->count();
-        $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
+        $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->orderBy('id', 'DESC')->get();
         foreach ($rows as $key => $item) {
-            $item->alarm_rule;
+            $alarm_rule = $item->alarm_rule;
+            if($alarm_rule){
+                $alarm_rule->device = Device::find($alarm_rule->device_id);
+                $alarm_rule->dcsStandard = DcsStandard::find($alarm_rule->dcs_standard_id);
+                $alarm_rule->alarmGrade = AlarmGrade::find($alarm_rule->alarm_grade_id);
+                $alarm_rule->typeName = $alarm_rule->type == 'scene' ? '现场' : '通信';
+                $item->alarm_rule = $alarm_rule;
+            }
         }
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, ['data' => $rows, 'total' => $total, 'page' => $page, 'num' => $perPage]);
     }

@@ -44,6 +44,7 @@ class DatabaseServiceProvider extends ServiceProvider
         //租户数据库
         $tenements = DB::connection('mysql_mis')->table('tenement')->get();
         foreach ($tenements as $key => $item) {
+            //租户连接
             $conn = array (
                 'host' => $item->ip,
                 'database' => $item->db_name,
@@ -53,7 +54,7 @@ class DatabaseServiceProvider extends ServiceProvider
             $final = array_merge($conn, $base);
             $new[$item->code] = $final;
 
-            //本地MongoDB
+            //本地MongoDB连接
             $final_mongo = array (
                 'host' => $item->ip,
                 'database' => $item->db_name,
@@ -64,10 +65,16 @@ class DatabaseServiceProvider extends ServiceProvider
             );
             $conn_name_mongo = $item->code . '_mongo';
             $new[$conn_name_mongo] = $final_mongo;
+        }
 
-            //抓斗数据库
+        $this->app['config']['database.connections'] = array_merge($this->app['config']['database.connections'], $new);
+
+        //租户下面电厂数据库配置的连接，依赖租户本地连接
+        $new2 = [];
+        foreach ($tenements as $key => $item) {
+            //抓斗数据库连接
             $obj_config_garbage_db = (new ConfigGarbageDB())->setConnection($item->code);
-            $garbage_db_list = $obj_config_garbage_db->all();
+            $garbage_db_list = $obj_config_garbage_db->whereNull("deleted_at")->get();
             foreach ($garbage_db_list as $k9 => $db) {
                 if($db && $db->type && $db->type=='mysql'){
                     $conn = array (
@@ -85,29 +92,29 @@ class DatabaseServiceProvider extends ServiceProvider
                     );
                     $final = array_merge($base, $conn);
                     $conn_name = 'garbage_' . $item->id . '_' . $db->id;
-                    $new[$conn_name] = $final;
+                    $new2[$conn_name] = $final;
                 }
             }
 
             //historian 5.5数据库 转存于MongoDB
             $obj_config_historian_db = (new ConfigHistorianDB())->setConnection($item->code);
-            $historian_db_list = $obj_config_historian_db->all();
+            $historian_db_list = $obj_config_historian_db->whereNull("deleted_at")->get();
             foreach ($historian_db_list as $k9 => $db) {
                 if($db && $db->version && $db->version < 7){
                     $final = array (
                         'host' => $db->ip,
                         'database' => $db->db_name,
-                        'username' => $db->user,
-                        'password' => $db->password,
+                        //'username' => $db->user,
+                        //'password' => $db->password,
                         'port' => $db->port,
                         'driver' => 'mongodb'
                     );
                     $conn_name = 'historian_' . $item->id . '_' . $db->id;
-                    $new[$conn_name] = $final;
+                    $new2[$conn_name] = $final;
                 }
             }
         }
 
-        $this->app['config']['database.connections'] = array_merge($this->app['config']['database.connections'], $new);
+        $this->app['config']['database.connections'] = array_merge($this->app['config']['database.connections'], $new2);
     }
 }

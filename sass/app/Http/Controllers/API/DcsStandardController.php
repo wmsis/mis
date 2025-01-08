@@ -95,7 +95,7 @@ class DcsStandardController extends Controller
         if($group_name){
             $lists = $lists->where('dcs_group.name', 'like', "%{$group_name}%");
         }
-        $lists = $lists->whereNull('dcs_standard.deleted_at')->get();
+        $lists = $lists->whereNull('dcs_standard.deleted_at')->whereNull('dcs_map.deleted_at')->whereNull('dcs_group.deleted_at')->get();
 
         //格式化数据
         $key_values = [];
@@ -198,7 +198,12 @@ class DcsStandardController extends Controller
                 $key_values = [];
                 foreach ($datalist as $k9 => $data) {
                     $short_datetime = substr($data->datetime, 11, 5);
-                    $key_values[$short_datetime] = $data->value;
+                    if(strpos($data->value, '.') !== false){
+                        $key_values[$short_datetime] = round($data->value);
+                    }
+                    else{
+                        $key_values[$short_datetime] = $data->value;
+                    }
                 }
 
                 $lists[$key]['datalist'] = $key_values;
@@ -206,5 +211,63 @@ class DcsStandardController extends Controller
         }
 
         return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $lists);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/dcs-standard/currentdata",
+     *     tags={"DCS标准命名dcs-standard"},
+     *     operationId="dcs-standard-currentdata",
+     *     summary="获取配置文件的最新数据列表",
+     *     description="使用说明：获取配置文件的最新数据列表",
+     *     @OA\Parameter(
+     *         description="token",
+     *         in="query",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="succeed",
+     *     ),
+     * )
+     */
+    public function currentdata(Request $request)
+    {
+        $datalist = [];
+        $ids = config('blackbox.ids');;
+        $id_arr = explode(',', $ids);
+        $lists = DcsStandard::whereIn('id', $id_arr)->get();
+        if($lists && count($lists) > 0){
+            $local_data_table = 'historian_format_data_' . $this->orgnization->code;
+            $obj_hitorian_format_local = (new HistorianFormatData())->setConnection($this->mongo_conn)->setTable($local_data_table);
+            foreach ($lists as $key => $item) {
+                $data = $obj_hitorian_format_local->select("*")
+                    ->where('dcs_standard_id', $item->id)
+                    ->orderBy('datetime', 'DESC')
+                    ->first();
+
+                if($data){
+                    if(strpos($data->value, '.') !== false){
+                        $currentValue = round($data->value);
+                    }
+                    else{
+                        $currentValue = $data->value;
+                    }
+
+                    $datalist[] = array(
+                        "value"=>$currentValue,
+                        "cn_name"=>$item->cn_name,
+                        "en_name"=>$item->en_name,
+                        "messure"=>$item->messure
+                    );
+                }
+            }
+        }
+
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, $datalist);
     }
 }

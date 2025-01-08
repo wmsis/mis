@@ -11,7 +11,7 @@ class Kernel extends ConsoleKernel
 {
 
     protected $commands = [
-        //AlarmData::class,
+        AlarmData::class,
         CountUserPoint::class,
     ];
 
@@ -23,7 +23,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        //$schedule->command('alarm:data')->everyMinute();
+        $schedule->command('alarm:data')->everyMinute();
         $schedule->command('count:userPoint --type=electricity')->everyMinute();
         $schedule->command('count:userPoint --type=tag')->everyMinute();
     }
