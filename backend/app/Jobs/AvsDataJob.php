@@ -44,6 +44,7 @@ class AvsDataJob implements ShouldQueue
      */
     public function __construct($date=null, $tenement_conn=null, $remote_conn=null, $local_table=null, $avs_type=null, $local_format_table=null)
     {
+        Log::info("333333333333");
         $this->date = $date;
         $this->tenement_conn = $tenement_conn;
         $this->remote_conn = $remote_conn;
@@ -59,6 +60,7 @@ class AvsDataJob implements ShouldQueue
      */
     public function handle()
     {
+        Log::info("44444444444444444");
         try{
             $factoryAvsData = (new FactoryAvsData())->setConnection($this->remote_conn);  //连接电厂内部数据库（永强二期品牌地磅）
             $factoryWeighData = (new FactoryWeighData())->setConnection($this->remote_conn);  //连接电厂内部数据库（托利多）
@@ -73,7 +75,8 @@ class AvsDataJob implements ShouldQueue
             }
 
             if($this->avs_type == 'toledo'){
-                $rows = $factoryAvsData->select(['*'])
+                Log::info("555555555");
+                $rows = $factoryWeighData->select(['*'])
                 ->where('taredatetime', '>=',date("Y-m-d H:i:s", $timestamp))
                 ->whereNotNull("net")
                 ->orderBy("taredatetime", "ASC")
@@ -81,6 +84,7 @@ class AvsDataJob implements ShouldQueue
                 ->get();
             }
             else{
+                Log::info("6666666666666");
                 $rows = $factoryAvsData->select(['*'])
                 ->where('TimeWeightingT', '>=',date("Y-m-d H:i:s", $timestamp))
                 ->whereNotNull("WeightNet")
@@ -91,6 +95,7 @@ class AvsDataJob implements ShouldQueue
             
             $params = [];
             if($rows && count($rows) > 0){
+                Log::info("77777777777777");
                 foreach ($rows as $key => $item) {
                     //本地不存在则插入
                     if($this->avs_type == 'toledo'){
