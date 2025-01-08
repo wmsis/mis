@@ -168,6 +168,7 @@ class WeighBridgeController extends Controller
      */
     public function store_multi(Request $request)
     {
+        return UtilService::format_data(self::AJAX_SUCCESS, self::AJAX_SUCCESS_MSG, '');
         $fillable = ['truckno', 'productcode', 'product', 'firstweight', 'secondweight', 'firstdatetime', 'seconddatetime', 'grossdatetime', 'taredatetime',
         'sender', 'transporter', 'receiver', 'gross', 'tare', 'net', 'datastatus', 'weighid'];
         $factory = $request['factory'];

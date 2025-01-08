@@ -99,6 +99,7 @@ class AvsDataJob implements ShouldQueue
                 foreach ($rows as $key => $item) {
                     //本地不存在则插入
                     if($this->avs_type == 'toledo'){
+                        Log::info("8888888888888");
                         $params[] = array(
                             'truckno'=>$item['truckno'],
                             'productcode'=>$item['productcode'],
@@ -122,6 +123,7 @@ class AvsDataJob implements ShouldQueue
                         );
                     }
                     else{
+                        Log::info("99999999999999");
                         $params[] = array(
                             'truckno'=>$item['VehicleNo'],
                             'productcode'=>$item['GarbageType'],
@@ -174,6 +176,7 @@ class AvsDataJob implements ShouldQueue
 
         //查询数据是否存在，不存在则增加，存在则更新
         foreach ($params as $key => $item) {
+            Log::info("AAAAAAAAAAAAA");
             $date = date('Y-m-d', strtotime($item['taredatetime']));
             if(!in_array($date, $datelist)){
                 $datelist[] = $date;
@@ -192,6 +195,7 @@ class AvsDataJob implements ShouldQueue
             //查询是否有数据，有则更新，否则新增
             $local_row = $WeighBridgeObj->findByWeighId($item['weighid']);
             if($local_row && isset($local_row->id)){
+                Log::info("BBBBBBBBBBBBBBBBBB");
                 //添加到更新数据
                 $updatelist[] = $datalist[$key];
                 $updateFormatList[] = array(
@@ -204,6 +208,7 @@ class AvsDataJob implements ShouldQueue
                 );
             }
             else{
+                Log::info("CCCCCCCCCCCCCCCCCC");
                 //添加到新增数据
                 $insertlist[] = $datalist[$key];
                 //添加到格式化数据
