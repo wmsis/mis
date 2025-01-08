@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\MIS\DevicePropertyTemplate;
+use App\Models\MIS\DeviceInspectionTemplate;
 
 /**
  * 创建数据模型
@@ -60,6 +61,11 @@ class DeviceTemplate extends Model
     public function device_property_templates()
     {
         return $this->hasMany(DevicePropertyTemplate::class);
+    }
+
+    public function device_inspection_templates()
+    {
+        return $this->hasMany(DeviceInspectionTemplate::class);
     }
 
     public function roots($orgnization_id)

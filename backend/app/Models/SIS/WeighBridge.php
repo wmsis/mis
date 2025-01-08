@@ -56,6 +56,10 @@ class WeighBridge extends Model
         return self::where('weighid', $id)->delete();
     }
 
+    public function findLatestReport(){
+        return self::orderBy("taredatetime", "DESC")->first();
+    }
+
 }
 
 /**

@@ -40,7 +40,7 @@ class SendEmail extends Notification implements ShouldQueue
     }
 
     /**
-     * 发送指定频道.
+     * 发送指定频道.决定了通知会在哪个频道上发送
      *
      * @param  mixed  $notifiable
      * @return array
