@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\SIS\Orgnization;
 use App\Models\SIS\ConfigGarbageDB;
 use App\Models\Factory\GrabGarbage;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 class GrabGarbageData extends Command
 {

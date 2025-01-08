@@ -16,7 +16,7 @@ use App\Models\SIS\WeighBridgeFormat;
 use App\Models\SIS\WeighbridgeCateSmall;
 use Illuminate\Support\Facades\Artisan;
 use ErrorException;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 /**
  * 从电厂获取地磅数据并保存到本地
