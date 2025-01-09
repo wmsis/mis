@@ -56,41 +56,42 @@ class GrabGarbageDataJob implements ShouldQueue
                 $timestamp = time() - 30 * 24 * 60 * 60;
             }
 
-            $obj_grab_garbage_factory->select(['*'])
+            $rows = $obj_grab_garbage_factory->select(['*'])
                 ->where('time', '>=',$timestamp)
                 ->orderBy("time", "ASC")
-                ->chunk(100, function ($rows) use ($obj_grab_garbage_local) {
-                    $params = [];
-                    if($rows && count($rows) > 0){
-                        foreach ($rows as $key => $item) {
-                            $local_row = $obj_grab_garbage_local->findRowBySn($item->sn);
-                            if(!$local_row){
-                                //本地不存在则插入
-                                $params[] = array(
-                                    'allsn'=>$item['allsn'],
-                                    'sn'=>$item['sn'],
-                                    'time'=>$item['time'],
-                                    'che'=>$item['che'],
-                                    'dou'=>$item['dou'],
-                                    'liao'=>$item['liao'],
-                                    'code'=>$item['code'],
-                                    'lost'=>$item['lost'],
-                                    'hev'=>$item['hev'],
-                                    'created_at' => date('Y-m-d H:i:s', intval($item['time'])),
-                                    'updated_at' => date('Y-m-d H:i:s')
-                                );
-                            }
-                        }
-                    }
+                ->limit(50)
+                ->get();
 
-                    if($params && count($params) > 0){
-                        $obj_grab_garbage_local->insertMany($params);
-                        Log::info($this->date . '恩倍力抓斗数据插入成功'.count($params).'条');
+            $params = [];
+            if($rows && count($rows) > 0){
+                foreach ($rows as $key => $item) {
+                    $local_row = $obj_grab_garbage_local->findRowBySn($item->sn);
+                    if(!$local_row){
+                        //本地不存在则插入
+                        $params[] = array(
+                            'allsn'=>$item['allsn'],
+                            'sn'=>$item['sn'],
+                            'time'=>$item['time'],
+                            'che'=>$item['che'],
+                            'dou'=>$item['dou'],
+                            'liao'=>$item['liao'],
+                            'code'=>$item['code'],
+                            'lost'=>$item['lost'],
+                            'hev'=>$item['hev'],
+                            'created_at' => date('Y-m-d H:i:s', intval($item['time'])),
+                            'updated_at' => date('Y-m-d H:i:s')
+                        );
                     }
-                    else{
-                        Log::info($this->date . '恩倍力抓斗没有数据插入');
-                    }
-            });
+                }
+            }
+
+            if($params && count($params) > 0){
+                $obj_grab_garbage_local->insertMany($params);
+                Log::info($this->date . '恩倍力抓斗数据插入成功'.count($params).'条');
+            }
+            else{
+                Log::info($this->date . '恩倍力抓斗没有数据插入');
+            }
         }
         catch(ErrorException $ex){
             Log::info('连接电厂抓斗数据库异常');
