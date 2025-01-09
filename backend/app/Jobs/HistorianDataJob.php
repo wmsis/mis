@@ -33,7 +33,7 @@ class HistorianDataJob implements ShouldQueue
     protected $local_format_data_table; //本地保存的格式化后的数据集合
     protected $db_type; //数据库类型mongo或者historian
     protected $cfgdb;//数据库配置信息
-    public $tries = 2;
+    public $tries = 1;
 
     /**
     * @param datetime 获取数据的日期时间
