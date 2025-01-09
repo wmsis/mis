@@ -16,6 +16,7 @@ use Config;
 class GrabGarbageDataJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    public $timeout = 150; //队列超时时间
     protected $date;
     protected $tenement_conn;
     protected $remote_conn;
