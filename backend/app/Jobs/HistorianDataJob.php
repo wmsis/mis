@@ -14,7 +14,7 @@ use App\Models\SIS\HistorianTag;    //本地数据标签模型
 use App\Models\Mongo\HistorianFormatData; //本地格式化数据模型
 use App\Models\SIS\DcsMap;
 use App\Models\SIS\DcsStandard;
-use Log;
+use Illuminate\Support\Facades\Log;
 use Config;
 use HistorianService;
 use MongoDB\BSON\UTCDateTime;
@@ -23,7 +23,7 @@ use ErrorException;
 class HistorianDataJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    public $timeout = 180; //队列超时时间
+    public $timeout = 240; //队列超时时间
     protected $datetime;
     protected $tenement_conn; //租户连接
     protected $tenement_mongo_conn; //本地mongo连接
@@ -142,52 +142,53 @@ class HistorianDataJob implements ShouldQueue
         try{
             $obj_hitorian_factory = (new DcsData())->setConnection($this->remote_conn);  //连接电厂内部数据库
             $obj_hitorian_local = (new HistorianData())->setConnection($this->tenement_mongo_conn)->setTable($this->local_data_table); //连接特定租户下面的本地数据库表
+        
+
+            $begin = date('Y-m-d H:i', strtotime($this->datetime)) . ':00'; //获取1min内的数据
+            $end = date('Y-m-d H:i', strtotime($this->datetime)) . ':59';
+            $start = new UTCDateTime(strtotime($begin)*1000);
+            $stop = new UTCDateTime(strtotime($end)*1000);
+            $obj_hitorian_factory->select(['tag_name', 'datetime', 'value'])
+                ->whereBetween('datetime', array($start, $stop))
+                ->chunk(200, function ($rows) use ($obj_hitorian_local) {
+
+                $params = [];
+                $stack = [];
+                if($rows && count($rows) > 0){
+                    foreach ($rows as $key => $item) {
+                        if(in_array($item->tag_name, $stack)){
+                            continue;
+                        }
+
+                        $stack[] = $item->tag_name;
+                        $local_row = $obj_hitorian_local->findRowByTagAndTime($item->tag_name, $this->datetime);
+                        if(!$local_row){
+                            //本地不存在则插入
+                            $params[] = array(
+                                'tag_name' => $item->tag_name,
+                                'value'=> $item->value,
+                                'datetime'=> $this->datetime,
+                                'created_at' => $this->datetime,
+                                'updated_at' => date('Y-m-d H:i:s')
+                            );
+                        }
+                    }
+                }
+
+                if($params && count($params) > 0){
+                    $obj_hitorian_local->insertMany($params);
+                    //Log::info($this->datetime . '历史数据库数据插入成功'.count($params).'条');
+                }
+                else{
+                    //Log::info($this->datetime . '历史数据库没有数据插入');
+                }
+            });
+            $this->historian_format_data();
         }
         catch(ErrorException $ex){
             Log::info('连接电厂历史数据库异常');
             Log::info(var_export($ex, true));
         }
-
-        $begin = date('Y-m-d H:i', strtotime($this->datetime)) . ':00'; //获取1min内的数据
-        $end = date('Y-m-d H:i', strtotime($this->datetime)) . ':59';
-        $start = new UTCDateTime(strtotime($begin)*1000);
-        $stop = new UTCDateTime(strtotime($end)*1000);
-        $obj_hitorian_factory->select(['tag_name', 'datetime', 'value'])
-            ->whereBetween('datetime', array($start, $stop))
-            ->chunk(100, function ($rows) use ($obj_hitorian_local) {
-
-            $params = [];
-            $stack = [];
-            if($rows && count($rows) > 0){
-                foreach ($rows as $key => $item) {
-                    if(in_array($item->tag_name, $stack)){
-                        continue;
-                    }
-
-                    $stack[] = $item->tag_name;
-                    $local_row = $obj_hitorian_local->findRowByTagAndTime($item->tag_name, $this->datetime);
-                    if(!$local_row){
-                        //本地不存在则插入
-                        $params[] = array(
-                            'tag_name' => $item->tag_name,
-                            'value'=> $item->value,
-                            'datetime'=> $this->datetime,
-                            'created_at' => $this->datetime,
-                            'updated_at' => date('Y-m-d H:i:s')
-                        );
-                    }
-                }
-            }
-
-            if($params && count($params) > 0){
-                $obj_hitorian_local->insertMany($params);
-                //Log::info($this->datetime . '历史数据库数据插入成功'.count($params).'条');
-            }
-            else{
-                //Log::info($this->datetime . '历史数据库没有数据插入');
-            }
-        });
-        $this->historian_format_data();
     }
 
     //根据DCS标准名称格式化获取到的数据

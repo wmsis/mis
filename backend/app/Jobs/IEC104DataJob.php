@@ -10,7 +10,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Database\QueryException;
 use App\Models\SIS\Electricity;
 use ErrorException;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 class IEC104DataJob implements ShouldQueue
 {
