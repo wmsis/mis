@@ -88,10 +88,10 @@ class GrabGarbageDataJob implements ShouldQueue
 
             if($params && count($params) > 0){
                 $obj_grab_garbage_local->insertMany($params);
-                Log::info($this->date . '恩倍力抓斗数据插入成功'.count($params).'条');
+                Log::info($this->date . '恩倍力抓斗数据表'.$this->local_table.'插入成功'.count($params).'条');
             }
             else{
-                Log::info($this->date . '恩倍力抓斗没有数据插入');
+                Log::info($this->date . '恩倍力抓斗数据表'.$this->local_table.'没有数据插入');
             }
         }
         catch(ErrorException $ex){

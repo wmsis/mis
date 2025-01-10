@@ -144,10 +144,10 @@ class AvsDataJob implements ShouldQueue
 
             if($params && count($params) > 0){
                 $this->formatData($params);
-                Log::info($this->date . '地磅数据插入成功'.count($params).'条');
+                Log::info($this->date . '地磅数据表'.$this->local_table.'插入成功'.count($params).'条');
             }
             else{
-                Log::info($this->date . '地磅没有数据插入');
+                Log::info($this->date . '地磅数据表'.$this->local_table.'没有数据插入');
             }
         }
         catch(ErrorException $ex){
