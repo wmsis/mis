@@ -149,6 +149,8 @@ class HistorianDataJob implements ShouldQueue
             $stop = new UTCDateTime(strtotime($end)*1000);
             $obj_hitorian_factory->select(['tag_name', 'datetime', 'value'])
                 ->whereBetween('datetime', array($start, $stop))
+                ->groupBy("tag_name")
+                ->orderBy("datetime", "desc")
                 ->chunk(200, function ($rows) use ($obj_hitorian_local) {
                 $params = [];
                 $stack = [];
