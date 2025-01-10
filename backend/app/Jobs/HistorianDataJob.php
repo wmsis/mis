@@ -53,6 +53,9 @@ class HistorianDataJob implements ShouldQueue
         $this->local_format_data_table = $params && isset($params['local_format_data_table']) ? $params['local_format_data_table'] : '';
         $this->db_type = $params && isset($params['db_type']) ? $params['db_type'] : '';
         $this->cfgdb = $params && isset($params['cfgdb']) ? $params['cfgdb'] : '';
+
+        Log::info('00000000000000000');
+        Log::info(var_export($params, true));
     }
 
     /**
@@ -62,10 +65,13 @@ class HistorianDataJob implements ShouldQueue
      */
     public function handle()
     {
+        Log::info('1111111111111');
         if($this->db_type == 'historiandb'){
+            Log::info('22222222222');
             $this->historiandb_data(); //读取historian7.0以上数据库的数据
         }
         else{
+            Log::info('33333333333');
             $this->mongodb_data(); //若数据库historian为7.0以下，则从opcserver读取数据，OPC读取后转存到电厂本地MongoDB数据库
         }
     }
@@ -139,6 +145,7 @@ class HistorianDataJob implements ShouldQueue
 
     //从远程MongoDB获取数据（historian5.5读取不方便转为opc读取并转存到电厂本地MongoDB）
     protected function mongodb_data(){
+        Log::info('4444444444444444');
         try{
             $obj_hitorian_factory = (new DcsData())->setConnection($this->remote_conn);  //连接电厂内部数据库
             $obj_hitorian_local = (new HistorianData())->setConnection($this->tenement_mongo_conn)->setTable($this->local_data_table); //连接特定租户下面的本地数据库表
@@ -155,6 +162,7 @@ class HistorianDataJob implements ShouldQueue
             $params = [];
             $stack = [];
             if($rows && count($rows) > 0){
+                Log::info('5555555555555555');
                 foreach ($rows as $key => $item) {
                     if(in_array($item->tag_name, $stack)){
                         continue;
@@ -193,6 +201,7 @@ class HistorianDataJob implements ShouldQueue
 
     //根据DCS标准名称格式化获取到的数据
     protected function historian_format_data(){
+        Log::info('99999999999999999');
         //获取映射关系
         //本租户下面某个电厂的DCS映射关系
         $map_lists = (new DcsMap())->setConnection($this->tenement_conn)->where('orgnization_id', $this->cfgdb['orgnization_id'])->get();
