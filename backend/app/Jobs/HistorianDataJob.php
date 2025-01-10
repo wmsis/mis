@@ -166,6 +166,8 @@ class HistorianDataJob implements ShouldQueue
                 if($rows && count($rows) > 0){
                     Log::info('5555555555555555');
                     foreach ($rows as $key => $item) {
+                        Log::info('66666666666');
+                        Log::info($item->tag_name);
                         if(in_array($item->tag_name, $stack)){
                             continue;
                         }
