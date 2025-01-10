@@ -51,7 +51,7 @@ class ElectricityDayDataRepository extends BaseRepository
             $final[] = array(
                 'cn_name' => $item->cn_name,
                 'en_name' => $item->en_name,
-                'value' => (float)sprintf("%01.2f", (float)$sum_value/10000),
+                'value' => (float)sprintf("%01.1f", (float)$sum_value/10000),
                 'messure' => '万度',
             );
         }
@@ -76,7 +76,7 @@ class ElectricityDayDataRepository extends BaseRepository
                 ->get();
 
             foreach ($datalist as $key => $value) {
-                $datalist[$key]->val = (float)sprintf("%01.2f", (float)($value->val/10000));
+                $datalist[$key]->val = (float)sprintf("%01.1f", (float)($value->val/10000));
             }
 
             $temp['datalist'] = $datalist;
@@ -120,7 +120,7 @@ class ElectricityDayDataRepository extends BaseRepository
                         ->sum('power_day_data_' . $factory . '.value');
                 }
 
-                $seasondata[$season] = (float)sprintf("%01.2f", $sum_value/10000);
+                $seasondata[$season] = (float)sprintf("%01.1f", $sum_value/10000);
 
                 //下个季度的某一天
                 $next_season_one_day = $timestamp + 3*32*24*60*60; //3*32天之后，肯定是下个季度第一个月

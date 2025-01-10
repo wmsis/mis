@@ -59,7 +59,7 @@ class GrabGarbageDayDataReposotory extends BaseRepository
             ->get();
 
         foreach ($datalist as $key => $item) {
-            $datalist[$key]['val'] = (float)($item->val/1000);
+            $datalist[$key]['val'] = (float)sprintf("%01.1f", (float)($item->val/1000));
         }
         $final['datalist'] = $datalist;
         $final['en_name'] = config('standard.not_dcs.ljrll.en_name');
