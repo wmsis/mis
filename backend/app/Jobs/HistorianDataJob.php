@@ -148,17 +148,19 @@ class HistorianDataJob implements ShouldQueue
         Log::info('4444444444444444');
         try{
             $obj_hitorian_factory = (new DcsData())->setConnection($this->remote_conn);  //连接电厂内部数据库
+            Log::info('AAAAAAAAA');
             $obj_hitorian_local = (new HistorianData())->setConnection($this->tenement_mongo_conn)->setTable($this->local_data_table); //连接特定租户下面的本地数据库表
         
-
+            Log::info('BBBBBBBBBBBBB');
             $begin = date('Y-m-d H:i', strtotime($this->datetime)) . ':00'; //获取1min内的数据
             $end = date('Y-m-d H:i', strtotime($this->datetime)) . ':59';
             $start = new UTCDateTime(strtotime($begin)*1000);
             $stop = new UTCDateTime(strtotime($end)*1000);
+            Log::info('CCCCCCCCCCCCCCC');
             $obj_hitorian_factory->select(['tag_name', 'datetime', 'value'])
                 ->whereBetween('datetime', array($start, $stop))
                 ->chunk(200, function ($rows) use ($obj_hitorian_local) {
-                
+                    Log::info('DDDDDDDDDDDDDDDD');
                 $params = [];
                 $stack = [];
                 if($rows && count($rows) > 0){
@@ -191,6 +193,7 @@ class HistorianDataJob implements ShouldQueue
                     Log::info($this->datetime . '历史数据库表'.$this->local_data_table.'没有数据插入');
                 }
             });
+            Log::info('EEEEEEEEEEEEEEE');
 
             $this->historian_format_data();
         }
