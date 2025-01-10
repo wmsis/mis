@@ -91,6 +91,9 @@ class HistorianData extends Command
                             'cfgdb' => $cfg->toArray()
                         );
 
+                        Log::info('00000000000000000');
+                        Log::info(var_export($params, true));
+
                         dispatch(new HistorianDataJob($params));
                     }
                 }
