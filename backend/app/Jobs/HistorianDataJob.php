@@ -149,38 +149,38 @@ class HistorianDataJob implements ShouldQueue
             $stop = new UTCDateTime(strtotime($end)*1000);
             $rows = $obj_hitorian_factory->select(['tag_name', 'datetime', 'value'])
                 ->whereBetween('datetime', array($start, $stop))
-                ->get();
+                ->chunk(50, function ($rows) use ($obj_hitorian_local) {
+                $params = [];
+                $stack = [];
+                if($rows && count($rows) > 0){
+                    foreach ($rows as $key => $item) {
+                        if(in_array($item->tag_name, $stack)){
+                            continue;
+                        }
 
-            $params = [];
-            $stack = [];
-            if($rows && count($rows) > 0){
-                foreach ($rows as $key => $item) {
-                    if(in_array($item->tag_name, $stack)){
-                        continue;
-                    }
-
-                    $stack[] = $item->tag_name;
-                    $local_row = $obj_hitorian_local->findRowByTagAndTime($item->tag_name, $this->datetime);
-                    if(!$local_row){
-                        //本地不存在则插入
-                        $params[] = array(
-                            'tag_name' => $item->tag_name,
-                            'value'=> $item->value,
-                            'datetime'=> $this->datetime,
-                            'created_at' => $this->datetime,
-                            'updated_at' => date('Y-m-d H:i:s')
-                        );
+                        $stack[] = $item->tag_name;
+                        $local_row = $obj_hitorian_local->findRowByTagAndTime($item->tag_name, $this->datetime);
+                        if(!$local_row){
+                            //本地不存在则插入
+                            $params[] = array(
+                                'tag_name' => $item->tag_name,
+                                'value'=> $item->value,
+                                'datetime'=> $this->datetime,
+                                'created_at' => $this->datetime,
+                                'updated_at' => date('Y-m-d H:i:s')
+                            );
+                        }
                     }
                 }
-            }
 
-            if($params && count($params) > 0){
-                $obj_hitorian_local->insertMany($params);
-                Log::info($this->datetime . '历史数据库表'.$this->local_data_table.'数据插入成功'.count($params).'条');
-            }
-            else{
-                Log::info($this->datetime . '历史数据库表'.$this->local_data_table.'没有数据插入');
-            }
+                if($params && count($params) > 0){
+                    $obj_hitorian_local->insertMany($params);
+                    Log::info($this->datetime . '历史数据库表'.$this->local_data_table.'数据插入成功'.count($params).'条');
+                }
+                else{
+                    Log::info($this->datetime . '历史数据库表'.$this->local_data_table.'没有数据插入');
+                }
+            });
 
             $this->historian_format_data();
         }
