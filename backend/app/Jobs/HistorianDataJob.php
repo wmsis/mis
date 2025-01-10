@@ -23,7 +23,7 @@ use ErrorException;
 class HistorianDataJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    public $timeout = 580; //队列超时时间
+    public $timeout = 3000; //队列超时时间
     protected $datetime;
     protected $tenement_conn; //租户连接
     protected $tenement_mongo_conn; //本地mongo连接
