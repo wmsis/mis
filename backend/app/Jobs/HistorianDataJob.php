@@ -19,7 +19,6 @@ use Config;
 use HistorianService;
 use MongoDB\BSON\UTCDateTime;
 use ErrorException;
-use App\Jobs\DateTime;
 
 class HistorianDataJob implements ShouldQueue
 {
@@ -149,7 +148,7 @@ class HistorianDataJob implements ShouldQueue
             $start = new UTCDateTime(strtotime($begin)*1000);
             $stop = new UTCDateTime(strtotime($end)*1000);
             $obj_hitorian_factory->select(['tag_name', 'datetime', 'value'])
-                //->whereBetween('datetime', array($start, $stop))
+                ->whereBetween('datetime', array($start, $stop))
                 ->groupBy("tag_name")
                 ->orderBy("datetime", "desc")
                 ->chunk(100, function ($rows) use ($obj_hitorian_local) {
@@ -162,15 +161,14 @@ class HistorianDataJob implements ShouldQueue
                         }
 
                         $stack[] = $item->tag_name;
-                        $datetime = date("Y-m-d H:i:s", strtotime($item->datetime));
-                        $local_row = $obj_hitorian_local->findRowByTagAndTime($item->tag_name, $datetime);
+                        $local_row = $obj_hitorian_local->findRowByTagAndTime($item->tag_name, $this->datetime);
                         if(!$local_row){
                             //本地不存在则插入
                             $params[] = array(
                                 'tag_name' => $item->tag_name,
                                 'value'=> $item->value,
-                                'datetime'=> $datetime,
-                                'created_at' => $datetime,
+                                'datetime'=> $this->datetime,
+                                'created_at' => $this->datetime,
                                 'updated_at' => date('Y-m-d H:i:s')
                             );
                         }
