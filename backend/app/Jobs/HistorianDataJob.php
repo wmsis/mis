@@ -151,7 +151,7 @@ class HistorianDataJob implements ShouldQueue
                 ->whereBetween('datetime', array($start, $stop))
                 ->groupBy("tag_name")
                 ->orderBy("datetime", "desc")
-                ->chunk(200, function ($rows) use ($obj_hitorian_local) {
+                ->chunk(300, function ($rows) use ($obj_hitorian_local) {
                 $params = [];
                 $stack = [];
                 if($rows && count($rows) > 0){
