@@ -39,7 +39,7 @@ class Kernel extends ConsoleKernel
     {
         //收集采集数据
         $schedule->command('collect:iec104data')->everyFiveMinutes();
-        $schedule->command('collect:grabGarbageData')->hourlyAt(17);//当天的地磅数据  每小时第17分钟
+        $schedule->command('collect:grabGarbageData')->hourlyAt(37);//当天的地磅数据  每小时第37分钟
         $schedule->command('collect:historianData')->everyFiveMinutes();
         $schedule->command('collect:avsdata')->hourlyAt(17);//当天的地磅数据  每小时第17分钟
 
