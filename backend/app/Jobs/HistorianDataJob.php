@@ -19,7 +19,7 @@ use Config;
 use HistorianService;
 use MongoDB\BSON\UTCDateTime;
 use ErrorException;
-use Carbon\Carbon;
+use App\Jobs\DateTime;
 
 class HistorianDataJob implements ShouldQueue
 {
@@ -162,7 +162,7 @@ class HistorianDataJob implements ShouldQueue
                         }
 
                         $stack[] = $item->tag_name;
-                        $datetime = ($item->datetime)->toDateTime()->format('Y-m-d H:i:s');
+                        $datetime = date("Y-m-d H:i:s", strtotime($item->datetime));
                         $local_row = $obj_hitorian_local->findRowByTagAndTime($item->tag_name, $datetime);
                         if(!$local_row){
                             //本地不存在则插入
