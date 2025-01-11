@@ -69,7 +69,7 @@ class AvsDataJob implements ShouldQueue
                 $timestamp = strtotime($latest_row->taredatetime);
             }
             else{
-                $timestamp = time() - 24 * 60 * 60;
+                $timestamp = time() - 30 * 24 * 60 * 60;
             }
 
             if($this->avs_type == 'toledo'){
