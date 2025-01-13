@@ -196,7 +196,7 @@ class AvsDataJob implements ShouldQueue
                     'updated_at' => date('Y-m-d H:i:s')
                 );
             }
-            else{
+            else if(!$local_row){
                 //添加到新增数据
                 $insertlist[] = $params[$key];
                 //添加到格式化数据
