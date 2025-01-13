@@ -215,8 +215,22 @@ class AvsDataJob implements ShouldQueue
         if(!empty($insertlist)){
             DB::beginTransaction();
             try {
-                $WeighBridgeObj->insertMany($insertlist);
-                $WeighBridgeFormatObj->insertMany($insertFormatList);
+                foreach($insertlist as $item){
+                    $weighid = $item['weighid'];
+                    unset($item['weighid']);
+                    $WeighBridgeObj->updateOrCreate([
+                        "weighid" => $weighid
+                    ], $item);
+                }
+                
+                foreach($insertFormatList as $item){
+                    $weighid = $item['weighid'];
+                    unset($item['weighid']);
+                    $WeighBridgeFormatObj->updateOrCreate([
+                        "weighid" => $weighid
+                    ], $item);
+                }
+
                 foreach ($updatelist as $key => $item) {
                     $where = array(
                         "weighid" => $item['weighid']
