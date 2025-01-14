@@ -25,13 +25,14 @@ class AvsDataJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $timeout = 150; //队列超时时间
     protected $date;
     protected $tenement_conn;
     protected $remote_conn;
     protected $local_table;
     protected $avs_type;
     protected $local_format_table;
-    public $tries = 3;
+    public $tries = 1;
 
     /**
      * Create a new job instance.
