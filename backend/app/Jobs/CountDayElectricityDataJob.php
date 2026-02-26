@@ -85,17 +85,14 @@ class CountDayElectricityDataJob implements ShouldQueue
             //保存累计值
             foreach ($max_key_val as $key => $val) {
                 if(isset($min_key_val[$key])){
-                    Log::info("11111111111111" . $this->date);
                     $row = $electricity_day_data->where('date', $this->date)->where('electricity_map_id', $key)->first();
                     if($row && $row->id){
-                        Log::info("22222222222222");
                         $row->electricity_map_id = $key;
                         $row->date = $this->date;
                         $row->value = $max_key_val[$key] - $min_key_val[$key];
                         $row->save();
                     }
                     else{
-                        Log::info("3333333333333333");
                         $electricity_day_data->create([
                             'electricity_map_id' => $key,
                             'date' => $this->date,
