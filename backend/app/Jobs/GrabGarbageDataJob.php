@@ -8,6 +8,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use ErrorException;
+use PDOException;
+use Illuminate\Database\QueryException;
 use App\Models\Factory\GrabGarbage as GrabGarbageFactoryModel;  //电厂数据模型
 use App\Models\SIS\GrabGarbage as GrabGarbageLocalModel;        //本地数据模型
 use Illuminate\Support\Facades\Log;
@@ -97,6 +99,12 @@ class GrabGarbageDataJob implements ShouldQueue
         catch(ErrorException $ex){
             Log::info('连接电厂抓斗数据库异常');
             Log::info(var_export($ex, true));
+        }
+        catch (QueryException $ex) {
+
+        }
+        catch (PDOException $e) {
+            
         }
     }
 }
