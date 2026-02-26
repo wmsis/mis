@@ -8,7 +8,6 @@ use App\Models\SIS\ConfigElectricityDB;
 use App\Models\SIS\Orgnization;
 use App\Models\SIS\ElectricityMap;
 use App\Models\SIS\Electricity;
-use Log;
 
 class RemoveElectricityData extends Command
 {

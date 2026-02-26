@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 use App\Models\SIS\Orgnization;
 use Illuminate\Support\Facades\DB;
 use App\Jobs\CountDayPowerDataJob;
-use Log;
 
 class CountDayPowerData extends Command
 {
