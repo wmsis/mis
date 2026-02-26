@@ -41,7 +41,6 @@ class CountDayElectricityDataJob implements ShouldQueue
      */
     public function handle()
     {
-        Log::info("000000000000" . $this->date);
         if(strtotime($this->date . ' 00:00:00') < time()){
             if($this->date == date('Y-m-d')){
                 //today
@@ -53,18 +52,15 @@ class CountDayElectricityDataJob implements ShouldQueue
                 $start = $this->date . ' 00:00:00';
                 $end = $this->date . ' 23:59:59';
             }
-            Log::info($start . "11111111111111" . $end);
 
             $electricity = (new Electricity())->setConnection($this->tenement_conn)->setTable($this->electricity_table); //连接特定租户下面的标准DCS名称表
             $electricity_day_data = (new ElectricityDayData())->setConnection($this->tenement_conn)->setTable($this->electricity_day_data_table);//连接特定租户下面的格式化后的历史数据表
-            //查询当日最大值
             $electricity_max = $electricity->where('created_at', '>=', $start)
                 ->where('created_at', '<=', $end)
                 ->selectRaw('MAX(actual_value) as val, electricity_map_id')
                 ->groupBy('electricity_map_id')
                 ->get();
 
-            //查询当日最小值
             $electricity_min = $electricity->where('created_at', '>=', $start)
                 ->where('created_at', '<=', $end)
                 ->selectRaw('MIN(actual_value) as val, electricity_map_id')
