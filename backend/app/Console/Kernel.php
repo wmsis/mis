@@ -46,7 +46,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('collect:avsdata')->hourlyAt(17);//当天的地磅数据  每小时第17分钟
 
         //每日累计数据
-        $schedule->command('count:dayElectricityData')->everyMinute();
+        //$schedule->command('count:dayElectricityData')->everyMinute();
         //$schedule->command('count:dayDcsData')->everyMinute();
         $schedule->command('count:dayGrabGarbageData')->everyMinute();
         $schedule->command('count:dayWeighBridgeData')->everyMinute();
@@ -55,7 +55,7 @@ class Kernel extends ConsoleKernel
         //累计前一天的数据
         $yestoday = date('Y-m-d', time() - 24 * 60 * 60);
         $electricity_cmd = 'count:dayElectricityData --date=' . $yestoday;
-        $schedule->command($electricity_cmd)->twiceDaily(1, 22);
+        //$schedule->command($electricity_cmd)->twiceDaily(1, 22);
 
         //$dcs_cmd = 'count:dayDcsData --date=' . $yestoday;
         //$schedule->command($dcs_cmd)->twiceDaily(1, 22);
