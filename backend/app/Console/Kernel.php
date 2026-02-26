@@ -13,6 +13,7 @@ use App\Console\Commands\CountDayGrabGarbageData;
 use App\Console\Commands\CountDayWeighBridgeData;
 use App\Console\Commands\CountDayPowerData;
 use App\Console\Commands\AvsDataCmd;
+use App\Console\Commands\RemoveElectricityData;
 
 class Kernel extends ConsoleKernel
 {
@@ -26,7 +27,8 @@ class Kernel extends ConsoleKernel
         CountDayGrabGarbageData::class,
         CountDayWeighBridgeData::class,
         CountDayPowerData::class,
-        AvsDataCmd::class
+        AvsDataCmd::class,
+        RemoveElectricityData::class
     ];
 
     /**
@@ -66,6 +68,8 @@ class Kernel extends ConsoleKernel
 
         $power_cmd = 'count:dayPowerData --date=' . $yestoday;
         $schedule->command($power_cmd)->twiceDaily(2, 23);
+
+        $schedule->command('remove:electricityData')->hourlyAt(27);
     }
 
     /**
