@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 use App\Models\SIS\Orgnization;
 use Illuminate\Support\Facades\DB;
 use App\Jobs\CountDayElectricityDataJob;
-use Log;
 
 class CountDayElectricityData extends Command
 {
@@ -48,7 +47,6 @@ class CountDayElectricityData extends Command
         else{
             $date = date('Y-m-d');
         }
-        Log::info("AAAAAAAAAAAAAAAA" . $date);
 
         $tenements = DB::connection('mysql_mis')->table('tenement')->get();
         //循环租户
@@ -68,8 +66,6 @@ class CountDayElectricityData extends Command
                         'electricity_table' => $electricity_table,
                         'electricity_day_data_table' => $electricity_day_data_table
                     );
-
-                    Log::info("BBBBBBBBBBBBB" . $date);
 
                     dispatch(new CountDayElectricityDataJob($params));
                 }
