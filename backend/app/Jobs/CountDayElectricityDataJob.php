@@ -52,15 +52,18 @@ class CountDayElectricityDataJob implements ShouldQueue
                 $start = $this->date . ' 00:00:00';
                 $end = $this->date . ' 23:59:59';
             }
+            Log::info($start . "000000000000" . $end);
 
             $electricity = (new Electricity())->setConnection($this->tenement_conn)->setTable($this->electricity_table); //连接特定租户下面的标准DCS名称表
             $electricity_day_data = (new ElectricityDayData())->setConnection($this->tenement_conn)->setTable($this->electricity_day_data_table);//连接特定租户下面的格式化后的历史数据表
+            //查询当日最大值
             $electricity_max = $electricity->where('created_at', '>=', $start)
                 ->where('created_at', '<=', $end)
                 ->selectRaw('MAX(actual_value) as val, electricity_map_id')
                 ->groupBy('electricity_map_id')
                 ->get();
 
+            //查询当日最小值
             $electricity_min = $electricity->where('created_at', '>=', $start)
                 ->where('created_at', '<=', $end)
                 ->selectRaw('MIN(actual_value) as val, electricity_map_id')
@@ -82,14 +85,17 @@ class CountDayElectricityDataJob implements ShouldQueue
             //保存累计值
             foreach ($max_key_val as $key => $val) {
                 if(isset($min_key_val[$key])){
+                    Log::info("11111111111111" . $this->date);
                     $row = $electricity_day_data->where('date', $this->date)->where('electricity_map_id', $key)->first();
                     if($row && $row->id){
+                        Log::info("22222222222222");
                         $row->electricity_map_id = $key;
                         $row->date = $this->date;
                         $row->value = $max_key_val[$key] - $min_key_val[$key];
                         $row->save();
                     }
                     else{
+                        Log::info("3333333333333333");
                         $electricity_day_data->create([
                             'electricity_map_id' => $key,
                             'date' => $this->date,

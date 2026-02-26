@@ -43,11 +43,9 @@ class RemoveElectricityData extends Command
      */
     public function handle()
     {
-        Log::info("0000000000000");
         $tenements = DB::connection('mysql_mis')->table('tenement')->get();
         //循环租户
         foreach ($tenements as $k1 => $tenement) {
-            Log::info("11111111111111");
             $tenement_conn = $tenement->code; //租户数据库连接名称
             $config_electricity = (new ConfigElectricityDB())->setConnection($tenement_conn); //连接特定租户下面的历史数据库配置表
             $electricity_map = (new ElectricityMap())->setConnection($tenement_conn);
@@ -55,19 +53,15 @@ class RemoveElectricityData extends Command
             //循环电厂
             $factories = $orgObj->where('level', 2)->get();
             foreach ($factories as $k2 => $factory) {
-                Log::info("2222222222222222");
                 if($factory->code){
-                    Log::info("3333333333333333333");
                     //具体电厂的历史数据库配置信息
                     $cfg = $config_electricity->where('orgnization_id', $factory->id)->first();
                     $map = $electricity_map->where('orgnization_id', $factory->id)->get();
                     if($cfg && $map){
-                        Log::info("44444444444444");
                         $local_data_table = 'electricity_' . $factory->code; //本地存储数据库表名称
                         $electricity = (new Electricity())->setConnection($tenement_conn)->setTable($local_data_table);
                         $compare_date = date('Y-m-d H:i:s', time() - 30 * 24 * 60 * 60);
                         $electricity->where("created_at", "<=", $compare_date)->delete();
-                        Log::info("55555555555555");
                     }
                 }
             }
