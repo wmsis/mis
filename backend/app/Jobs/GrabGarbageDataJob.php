@@ -97,10 +97,14 @@ class GrabGarbageDataJob implements ShouldQueue
             }
         }
         catch(ErrorException $ex){
-            Log::info('连接电厂抓斗数据库异常');
+            Log::info('获取电厂抓斗数据库异常');
             Log::info(var_export($ex, true));
         }
-        catch (QueryException $ex) { }
-        catch (PDOException $e) { }
+        catch (QueryException $ex) { 
+            Log::info('连接电厂抓斗数据库异常');
+        }
+        catch (PDOException $e) { 
+            Log::info('查询电厂抓斗数据库异常');
+        }
     }
 }
