@@ -14,6 +14,7 @@ use App\Models\SIS\PowerMap;
 use App\Models\SIS\DcsStandard;
 use App\Models\SIS\PowerDayData;
 use Illuminate\Support\Facades\DB;
+use Log;
 
 class CountDayPowerDataJob implements ShouldQueue
 {
