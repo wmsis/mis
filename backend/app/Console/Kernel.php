@@ -69,7 +69,7 @@ class Kernel extends ConsoleKernel
         $power_cmd = 'count:dayPowerData --date=' . $yestoday;
         $schedule->command($power_cmd)->twiceDaily(2, 23);
 
-        $schedule->command('remove:electricityData')->hourlyAt(27);
+        $schedule->command('remove:electricityData')->hourlyAt(4);
     }
 
     /**
