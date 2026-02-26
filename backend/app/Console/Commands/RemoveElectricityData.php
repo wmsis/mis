@@ -65,7 +65,7 @@ class RemoveElectricityData extends Command
                         Log::info("44444444444444");
                         $local_data_table = 'electricity_' . $factory->code; //本地存储数据库表名称
                         $electricity = (new Electricity())->setConnection($tenement_conn)->setTable($local_data_table);
-                        $compare_date = date('Y-m-d H:i:s', $begin_timestamp - 30 * 24 * 60 * 60);
+                        $compare_date = date('Y-m-d H:i:s', time() - 30 * 24 * 60 * 60);
                         $electricity->where("created_at", "<=", $compare_date)->delete();
                         Log::info("55555555555555");
                     }
