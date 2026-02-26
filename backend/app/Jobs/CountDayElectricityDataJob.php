@@ -41,6 +41,7 @@ class CountDayElectricityDataJob implements ShouldQueue
      */
     public function handle()
     {
+        Log::info("000000000000" . $this->date);
         if(strtotime($this->date . ' 00:00:00') < time()){
             if($this->date == date('Y-m-d')){
                 //today
@@ -52,7 +53,7 @@ class CountDayElectricityDataJob implements ShouldQueue
                 $start = $this->date . ' 00:00:00';
                 $end = $this->date . ' 23:59:59';
             }
-            Log::info($start . "000000000000" . $end);
+            Log::info($start . "11111111111111" . $end);
 
             $electricity = (new Electricity())->setConnection($this->tenement_conn)->setTable($this->electricity_table); //连接特定租户下面的标准DCS名称表
             $electricity_day_data = (new ElectricityDayData())->setConnection($this->tenement_conn)->setTable($this->electricity_day_data_table);//连接特定租户下面的格式化后的历史数据表
