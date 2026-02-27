@@ -125,8 +125,8 @@ class HomeController extends Controller
         $electricityObj = new ElectricityDayDataRepository();
         $weighBridgeObj = new WeighBridgeDayDataReposotory();
 
-        //近365天曲线图
-        $begin_timestamp = time() - 365 * 24 * 60 * 60;
+        //近180天曲线图
+        $begin_timestamp = time() - 180 * 24 * 60 * 60;
         $end_timestamp = time();
         $start = date('Y-m-d', $begin_timestamp);
         $end = date('Y-m-d', $end_timestamp);
