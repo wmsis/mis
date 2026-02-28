@@ -126,6 +126,10 @@ class TaskController extends Controller
         $rows = $rows->offset(($page - 1) * $perPage)->limit($perPage)->get();
         foreach ($rows as $key => $item) {
             $device = $item->device;
+            $properties = $device->device_properties;
+            foreach ($properties as $k2 => $property) {
+                $inspect_rule = $property->inspect_rule;
+            }
             $user = $item->user;
             $publisher = $item->publisher;
             $rows[$key]['publish_user_name'] = $publisher ? $publisher['name'] : '';
