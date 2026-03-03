@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\DB;
 use App\Models\SIS\Orgnization;
 use App\Models\Mongo\HistorianData;
 use App\Models\Mongo\HistorianFormatData;
-use Log;
 
 class RemoveDcsData extends Command
 {
@@ -56,8 +55,7 @@ class RemoveDcsData extends Command
                     $local_format_data_table = 'historian_format_data_' . $factory->code; //本地存储数据库表名称
                     $obj_hitorian_local = (new HistorianData())->setConnection($tenement_mongo_conn)->setTable($local_data_table);
                     $obj_hitorian_format = (new HistorianFormatData())->setConnection($tenement_mongo_conn)->setTable($local_format_data_table);
-                    $oneDayAgo = date("Y-m-d H:i:s", now()->subDay()->timestamp); // 获取当前时间减去1天的时间点
-                    Log::info("00000000000000===>" . $oneDayAgo);
+                    $oneDayAgo = date("Y-m-d H:i:s", now()->subDays(3)->timestamp); // 获取当前时间减去3天的时间点
                     $obj_hitorian_local->where("datetime", "<=", $oneDayAgo)->orderBy("datetime", 'desc')->limit(1000)->delete();
                     $obj_hitorian_format->where("datetime", "<=", $oneDayAgo)->orderBy("datetime", 'desc')->limit(1000)->delete();
                 }
