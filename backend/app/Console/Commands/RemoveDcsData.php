@@ -56,9 +56,8 @@ class RemoveDcsData extends Command
                     $local_format_data_table = 'historian_format_data_' . $factory->code; //本地存储数据库表名称
                     $obj_hitorian_local = (new HistorianData())->setConnection($tenement_mongo_conn)->setTable($local_data_table);
                     $obj_hitorian_format = (new HistorianFormatData())->setConnection($tenement_mongo_conn)->setTable($local_format_data_table);
-                    $oneDayAgo = now()->subDay(); // 获取当前时间减去1天的时间点
-                    Log::info("00000000000000===>" . $local_data_table);
-                    Log::info("111111111111111===>" . $local_format_data_table);
+                    $oneDayAgo = date("Y-m-d H:i:s", now()->subDay()->timestamp); // 获取当前时间减去1天的时间点
+                    Log::info("00000000000000===>" . $oneDayAgo);
                     $obj_hitorian_local->where("datetime", "<=", $oneDayAgo)->orderBy("datetime", 'desc')->limit(1000)->delete();
                     $obj_hitorian_format->where("datetime", "<=", $oneDayAgo)->orderBy("datetime", 'desc')->limit(1000)->delete();
                 }
