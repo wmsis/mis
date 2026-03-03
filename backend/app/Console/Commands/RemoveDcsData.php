@@ -42,25 +42,23 @@ class RemoveDcsData extends Command
      */
     public function handle()
     {
-        Log::info("00000000000000");
         $tenements = DB::connection('mysql_mis')->table('tenement')->get();
         //循环租户
         foreach ($tenements as $k1 => $tenement) {
             $tenement_conn = $tenement->code; //租户数据库连接名称
             $tenement_mongo_conn =  $tenement->code . '_mongo'; //租户MongoDB数据库连接名称
-            Log::info("11111111111111");
             $orgObj = (new Orgnization())->setConnection($tenement_conn);
             //循环电厂
             $factories = $orgObj->where('level', 2)->get();
             foreach ($factories as $k2 => $factory) {
-                Log::info("22222222222222");
                 if($factory->code){
-                    Log::info("333333333333333333333");
                     $local_data_table = 'historian_data_' . $factory->code; //本地存储数据库表名称
                     $local_format_data_table = 'historian_format_data_' . $factory->code; //本地存储数据库表名称
                     $obj_hitorian_local = (new HistorianData())->setConnection($tenement_mongo_conn)->setTable($local_data_table);
                     $obj_hitorian_format = (new HistorianFormatData())->setConnection($tenement_mongo_conn)->setTable($local_format_data_table);
                     $oneDayAgo = now()->subDay(); // 获取当前时间减去1天的时间点
+                    Log::info("00000000000000===>" . $local_data_table);
+                    Log::info("111111111111111===>" . $local_format_data_table);
                     $obj_hitorian_local->where("datetime", "<=", $oneDayAgo)->orderBy("datetime", 'desc')->limit(1000)->delete();
                     $obj_hitorian_format->where("datetime", "<=", $oneDayAgo)->orderBy("datetime", 'desc')->limit(1000)->delete();
                 }
