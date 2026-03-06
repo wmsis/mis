@@ -225,6 +225,11 @@ class HistorianDataJob implements ShouldQueue
                         'value' => $tag->value
                     );
                 }
+
+                //没取到值，直接跳过
+                if(!$tags_data || count($tags_data) == 0){
+                    continue;
+                }
             }
 
             //取值成功
