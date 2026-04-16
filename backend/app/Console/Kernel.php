@@ -15,6 +15,7 @@ use App\Console\Commands\CountDayPowerData;
 use App\Console\Commands\AvsDataCmd;
 use App\Console\Commands\RemoveElectricityData;
 use App\Console\Commands\RemoveDcsData;
+use App\Console\Commands\NariDataCmd;
 
 class Kernel extends ConsoleKernel
 {
@@ -30,7 +31,8 @@ class Kernel extends ConsoleKernel
         CountDayPowerData::class,
         AvsDataCmd::class,
         RemoveElectricityData::class,
-        RemoveDcsData::class
+        RemoveDcsData::class,
+        NariDataCmd::class
     ];
 
     /**
@@ -43,6 +45,7 @@ class Kernel extends ConsoleKernel
     {
         //收集采集数据
         //$schedule->command('collect:iec104data')->everyFiveMinutes();
+        $schedule->command('collect:naridata')->everyMinute();
         $schedule->command('collect:grabGarbageData')->hourlyAt(37);//当天的地磅数据  每小时第37分钟
         $schedule->command('collect:historianData')->everyMinute();
         $schedule->command('collect:avsdata')->hourlyAt(17);//当天的地磅数据  每小时第17分钟
