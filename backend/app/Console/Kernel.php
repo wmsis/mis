@@ -42,7 +42,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         //收集采集数据
-        $schedule->command('collect:iec104data')->everyFiveMinutes();
+        //$schedule->command('collect:iec104data')->everyFiveMinutes();
         $schedule->command('collect:grabGarbageData')->hourlyAt(37);//当天的地磅数据  每小时第37分钟
         $schedule->command('collect:historianData')->everyMinute();
         $schedule->command('collect:avsdata')->hourlyAt(17);//当天的地磅数据  每小时第17分钟
