@@ -59,7 +59,7 @@ class NariDataJob implements ShouldQueue
         //获取南瑞数据
         $nari = (new NariData())->setConnection($this->tenement_conn)->setTable($this->nari_data_table);
         $datalist = $nari->findNotComputer(); 
-        for($datalist as $item){
+        foreach($datalist as $item){
             $this->info_list[$item->address] = [
                 'addr'=> $item->address,
                 'value'=> $item->value,
