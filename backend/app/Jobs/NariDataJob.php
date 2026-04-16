@@ -59,7 +59,9 @@ class NariDataJob implements ShouldQueue
         //获取南瑞数据
         $nari = (new NariData())->setConnection($this->tenement_conn)->setTable($this->nari_data_table);
         $datalist = $nari->findNotComputer(); 
+        $ids = array();
         foreach($datalist as $item){
+            $ids[] = $item->id;
             $this->info_list[$item->address] = [
                 'addr'=> $item->address,
                 'value'=> $item->value,
@@ -82,6 +84,7 @@ class NariDataJob implements ShouldQueue
             }
 
             try {
+                $nari->updateByIds(["flag" => 1], $ids);
                 $electricity = (new Electricity())->setConnection($this->tenement_conn)->setTable($this->local_data_table);
                 foreach ($params as $key => $value) {
                     $params[$key]['created_at'] = date('Y-m-d H:i:s');
