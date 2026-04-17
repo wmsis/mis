@@ -34,7 +34,8 @@ use Log;
  */
 class DcsData extends Model
 {
-    protected $collection = 'history';
+    //protected $collection = 'history';
+    protected $collection = 'historian';
     protected $primaryKey = '_id';    //设置id
     protected $fillable = ['tag_name', 'value', 'datetime'];
 
